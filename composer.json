@@ -1,0 +1,42 @@
+{
+  "name": "psx/framework",
+  "description": "Engine of the PSX framework",
+  "keywords": ["psx", "rest", "api", "framework"],
+  "homepage": "http://phpsx.org",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Christoph Kappestein",
+      "email": "christoph.kappestein@gmail.com",
+      "homepage": "http://christoph.kappestein.com/"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "doctrine/annotations": "^1.2",
+    "doctrine/dbal": "^2.5",
+    "jms/serializer": "^1.1",
+    "monolog/monolog": "^1.17",
+    "psr/log": "^1.0",
+    "psx/api": "dev-master",
+    "psx/cache": "dev-master",
+    "psx/data": "dev-master",
+    "psx/http": "dev-master",
+    "psx/schema": "dev-master",
+    "psx/sql": "dev-master",
+    "psx/validate": "dev-master",
+    "symfony/console": "^2.8",
+    "symfony/dependency-injection": "^2.8",
+    "symfony/event-dispatcher": "^2.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "PSX\\Framework\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PSX\\Framework\\Tests\\": "tests/"
+    }
+  }
+}
