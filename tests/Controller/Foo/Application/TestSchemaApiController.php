@@ -100,7 +100,7 @@ class TestSchemaApiController extends SchemaApiAbstract
     protected function doGet()
     {
         return array(
-            'entry' => Environment::getService('table_manager')->getTable('PSX\Sql\Tests\TestTable')->getAll()
+            'entry' => Environment::getService('table_manager')->getTable('PSX\Framework\Tests\TestTable')->getAll()
         );
     }
 

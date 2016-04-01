@@ -36,6 +36,7 @@ use PSX\Sql\Logger as SqlLogger;
 use PSX\Sql\TableManager;
 use PSX\Validate\Validate;
 use PSX\Data\Writer;
+use PSX\Framework\Data\Writer as FrameworkWriter;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -134,7 +135,7 @@ class DefaultContainer extends Container
         );
 
         $processor = new Processor($config);
-        $processor->getConfiguration()->getWriterFactory()->addWriter(new Writer\Html($this->get('template'), $this->get('reverse_router')), 40);
+        $processor->getConfiguration()->getWriterFactory()->addWriter(new FrameworkWriter\Html($this->get('template'), $this->get('reverse_router')), 40);
 
         return $processor;
     }

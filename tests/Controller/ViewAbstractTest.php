@@ -47,7 +47,7 @@ class ViewAbstractTest extends ControllerTestCase
         $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
         $this->assertEquals($base, $data->base);
         $this->assertTrue($render > 0);
-        $this->assertEquals('PSX/Framework/Tests/Controller/Foo/Resource', substr($data->location, -43));
+        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
     }
 
     public function testImplicitTemplate()
@@ -64,7 +64,7 @@ class ViewAbstractTest extends ControllerTestCase
         $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
         $this->assertEquals($base, $data->base);
         $this->assertTrue($render > 0);
-        $this->assertEquals('PSX/Framework/Tests/Controller/Foo/Resource', substr($data->location, -43));
+        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
     }
 
     public function testExplicitTemplate()
@@ -81,7 +81,7 @@ class ViewAbstractTest extends ControllerTestCase
         $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
         $this->assertEquals($base, $data->base);
         $this->assertTrue($render > 0);
-        $this->assertEquals('PSX/Framework/Tests/Controller/Foo/Resource', substr($data->location, -43));
+        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
     }
 
     protected function getPaths()

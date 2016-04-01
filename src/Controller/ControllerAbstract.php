@@ -27,6 +27,7 @@ use PSX\Data\Payload;
 use PSX\Data\TransformerInterface;
 use PSX\Framework\ApplicationStackInterface;
 use PSX\Framework\Controller\Behaviour;
+use PSX\Framework\Data\Writer as FrameworkWriter;
 use PSX\Framework\Filter\ControllerExecutor;
 use PSX\Framework\Loader\Context;
 use PSX\Data\ReaderInterface;
@@ -300,7 +301,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
      */
     protected function configureWriter(WriterInterface $writer)
     {
-        if ($writer instanceof Writer\TemplateAbstract) {
+        if ($writer instanceof FrameworkWriter\TemplateAbstract) {
             if (!$writer->getControllerFile()) {
                 $class = new ReflectionClass($this);
                 $writer->setControllerFile($class->getFilename());

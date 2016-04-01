@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Dependency;
 
-use Doctrine\Common\Annotations;
-use Doctrine\Common\Cache as DoctrineCache;
-use PSX\Api\Listing;
+use PSX\Framework\Api\CachedListing;
+use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Dispatch\ApplicationStackFactory;
@@ -214,12 +213,12 @@ trait Framework
      */
     public function getResourceListing()
     {
-        $resourceListing = new Listing\ControllerDocumentation($this->get('routing_parser'), $this->get('controller_factory'));
+        $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('controller_factory'));
 
         if ($this->get('config')->get('psx_debug')) {
             return $resourceListing;
         } else {
-            return new Listing\CachedListing($resourceListing, $this->get('cache'));
+            return new CachedListing($resourceListing, $this->get('cache'));
         }
     }
 }

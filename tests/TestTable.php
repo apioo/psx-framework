@@ -18,48 +18,48 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Tests;
 
-use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
+use PSX\Sql\NestRule;
+use PSX\Sql\TableAbstract;
+use PSX\Sql\TableInterface;
 
 /**
- * TestApiTableController
+ * TestTable
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiTableController extends ApiAbstract
+class TestTable extends TableAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit_Framework_TestCase
-     */
-    protected $testCase;
-
-    /**
-     * @Inject
-     * @var \PSX\Sql\TableManager
-     */
-    protected $tableManager;
-
-    public function doAll()
+    public function getName()
     {
-        $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getAll()
-        ));
+        return 'psx_handler_comment';
     }
 
-    public function doRow()
+    public function getColumns()
     {
-        $this->setBody($this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getOneById(1));
+        return array(
+            'id'     => TableInterface::TYPE_INT | 10 | TableInterface::PRIMARY_KEY | TableInterface::AUTO_INCREMENT,
+            'userId' => TableInterface::TYPE_INT | 10,
+            'title'  => TableInterface::TYPE_VARCHAR | 32,
+            'date'   => TableInterface::TYPE_DATETIME,
+        );
     }
 
-    public function doNested()
+    public function getNestedResult()
     {
-        $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getNestedResult()
-        ));
+        $sql = '  SELECT id,
+				         userId,
+				         title,
+				         date
+				    FROM psx_handler_comment
+				ORDER BY id DESC';
+
+        $nest = new NestRule();
+        $nest->add('author', ['userId', 'date']);
+
+        return $this->project($sql, array(), null, $nest);
     }
 }

@@ -18,48 +18,33 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Data\Writer;
 
-use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
+use PSX\Http\MediaType;
 
 /**
- * TestApiTableController
+ * Html
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiTableController extends ApiAbstract
+class Html extends TemplateAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit_Framework_TestCase
-     */
-    protected $testCase;
+    protected static $mime = 'text/html';
 
-    /**
-     * @Inject
-     * @var \PSX\Sql\TableManager
-     */
-    protected $tableManager;
-
-    public function doAll()
+    public function isContentTypeSupported(MediaType $contentType)
     {
-        $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getAll()
-        ));
+        return $contentType->getName() == self::$mime;
     }
 
-    public function doRow()
+    public function getContentType()
     {
-        $this->setBody($this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getOneById(1));
+        return self::$mime;
     }
 
-    public function doNested()
+    public function getFileExtension()
     {
-        $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getNestedResult()
-        ));
+        return 'html';
     }
 }
