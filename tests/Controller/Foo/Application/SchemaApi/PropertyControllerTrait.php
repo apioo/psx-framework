@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Framework\Api\Version;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 
 /**
  * PropertyControllerTrait

@@ -21,7 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
+use PSX\Record\Record;
 
 /**
  * RoutingController

@@ -22,7 +22,7 @@ namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 use PSX\Schema\Property;
 use PSX\Validate\Filter;
 use PSX\Framework\Loader\Context;

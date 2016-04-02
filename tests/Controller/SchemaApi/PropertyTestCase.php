@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
-use PSX\Data\Record;
-use PSX\Data\RecordInterface;
+use PSX\Record\Record;
+use PSX\Record\RecordInterface;
 use PSX\Data\Writer;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Date;
@@ -302,34 +302,34 @@ JSON;
      * types
      *
      * @param \PHPUnit_Framework_TestCase $testCase
-     * @param \PSX\Data\RecordInterface $record
+     * @param \PSX\Record\RecordInterface $record
      */
     public static function assertRecord(\PHPUnit_Framework_TestCase $testCase, RecordInterface $record)
     {
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->any);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->any);
         $testCase->assertEquals(['foo' => 'bar'], $record->any->getProperties());
         $testCase->assertInternalType('array', $record->array);
         $testCase->assertEquals(1, count($record->array));
         $testCase->assertEquals(['bar'], $record->array);
         $testCase->assertInternalType('array', $record->arrayComplex);
         $testCase->assertEquals(2, count($record->arrayComplex));
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->arrayComplex[0]);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayComplex[0]);
         $testCase->assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getProperties());
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->arrayComplex[1]);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayComplex[1]);
         $testCase->assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getProperties());
         $testCase->assertInternalType('array', $record->arrayChoice);
         $testCase->assertEquals(3, count($record->arrayChoice));
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->arrayChoice[0]);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[0]);
         $testCase->assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getProperties());
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->arrayChoice[1]);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[1]);
         $testCase->assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getProperties());
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->arrayChoice[2]);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[2]);
         $testCase->assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getProperties());
         $testCase->assertInternalType('boolean', $record->boolean);
         $testCase->assertEquals(true, $record->boolean);
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->choice);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->choice);
         $testCase->assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        $testCase->assertInstanceOf('PSX\Data\RecordInterface', $record->complex);
+        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->complex);
         $testCase->assertEquals(['foo' => 'bar'], $record->complex->getProperties());
         $testCase->assertInstanceOf('PSX\DateTime\Date', $record->date);
         $testCase->assertEquals('2015-05-01', $record->date->format('Y-m-d'));

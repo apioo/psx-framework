@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Template;
 
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 
 /**
  * A generator can generate a generic human-readable representation of 
@@ -35,7 +35,7 @@ interface GeneratorInterface
     /**
      * Generates a string representation from the given data
      *
-     * @param \PSX\Data\RecordInterface $data
+     * @param \PSX\Record\RecordInterface $data
      * @return string
      */
     public function generate(RecordInterface $data);

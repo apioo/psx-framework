@@ -22,7 +22,7 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Framework\Controller\AnnotationApiAbstract;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 
 /**
  * PropertyAnnotationController

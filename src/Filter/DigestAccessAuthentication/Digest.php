@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Filter\DigestAccessAuthentication;
 
-use PSX\Data\RecordObject;
+use PSX\Record\RecordObject;
 
 /**
  * Digest

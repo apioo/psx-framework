@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PSX\Data\RecordObject;
+use PSX\Record\RecordObject;
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
-use PSX\Data\RecordAbstract;
+use PSX\Record\Record;
+use PSX\Record\RecordAbstract;
 use PSX\Sql\Sql;
 use PSX\Framework\Util\Api\FilterParameter;
 

@@ -24,8 +24,8 @@ use PSX\Api\DocumentedInterface;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
 use PSX\Framework\Loader\Context;
-use PSX\Data\Record;
-use PSX\Data\RecordInterface;
+use PSX\Record\Record;
+use PSX\Record\RecordInterface;
 use PSX\Http\Exception as StatusCode;
 use PSX\Schema\SchemaInterface;
 
@@ -40,17 +40,17 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 {
     /**
      * @Inject
-     * @var \PSX\Api\Resource\ListingInterface
+     * @var \PSX\Api\ListingInterface
      */
     protected $resourceListing;
 
     /**
-     * @var \PSX\Data\Record
+     * @var \PSX\Record\Record
      */
     protected $queryParameters;
 
     /**
-     * @var \PSX\Data\Record
+     * @var \PSX\Record\Record
      */
     protected $pathParameters;
 
@@ -151,7 +151,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
-     * @param \PSX\Data\RecordInterface $record
+     * @param \PSX\Record\RecordInterface $record
      * @return mixed
      */
     protected function doPost(RecordInterface $record)
@@ -163,7 +163,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
-     * @param \PSX\Data\RecordInterface $record
+     * @param \PSX\Record\RecordInterface $record
      * @return mixed
      */
     protected function doPut(RecordInterface $record)
@@ -175,7 +175,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
-     * @param \PSX\Data\RecordInterface $record
+     * @param \PSX\Record\RecordInterface $record
      * @return mixed
      */
     protected function doDelete(RecordInterface $record)
@@ -187,7 +187,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @Exclude
      * @see https://tools.ietf.org/html/rfc5789#section-2
-     * @param \PSX\Data\RecordInterface $record
+     * @param \PSX\Record\RecordInterface $record
      * @return mixed
      */
     protected function doPatch(RecordInterface $record)
@@ -198,7 +198,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * Imports the request data based on the schema if available
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
-     * @return \PSX\Data\RecordInterface
+     * @return \PSX\Record\RecordInterface
      */
     protected function parseRequest(MethodAbstract $method)
     {

@@ -65,7 +65,7 @@ class TestApiValidateController extends ApiAbstract
 
         $data = $this->getBodyAs($schema, $validator);
 
-        $this->testCase->assertInstanceOf('PSX\Data\RecordInterface', $data);
+        $this->testCase->assertInstanceOf('PSX\Record\RecordInterface', $data);
 
         $this->setBody([
             'success' => true,

@@ -21,7 +21,7 @@
 namespace PSX\Framework\Controller\Proxy;
 
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\WriterInterface;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Request;

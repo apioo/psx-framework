@@ -130,7 +130,7 @@ use PSX\Framework\Api\Documentation;
 use PSX\Framework\Api\Resource;
 use PSX\Framework\Api\Version;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 use PSX\Framework\Loader\Context;
 
 /**
@@ -153,10 +153,9 @@ class {$className} extends SchemaApiAbstract
 	/**
 	 * Returns the GET response
 	 *
-	 * @param \PSX\Api\Version \$version
-	 * @return array|\PSX\Data\RecordInterface
+	 * @return array|\PSX\Record\RecordInterface
 	 */
-	protected function doGet(Version \$version)
+	protected function doGet()
 	{
 		return array(
 			'message' => 'This is the default controller of PSX'
@@ -166,33 +165,30 @@ class {$className} extends SchemaApiAbstract
 	/**
 	 * Returns the POST response
 	 *
-	 * @param \PSX\Data\RecordInterface \$record
-	 * @param \PSX\Api\Version \$version
-	 * @return array|\PSX\Data\RecordInterface
+	 * @param \PSX\Record\RecordInterface \$record
+	 * @return array|\PSX\Record\RecordInterface
 	 */
-	protected function doPost(RecordInterface \$record, Version \$version)
+	protected function doPost(RecordInterface \$record)
 	{
 	}
 
 	/**
 	 * Returns the PUT response
 	 *
-	 * @param \PSX\Data\RecordInterface \$record
-	 * @param \PSX\Api\Version \$version
-	 * @return array|\PSX\Data\RecordInterface
+	 * @param \PSX\Record\RecordInterface \$record
+	 * @return array|\PSX\Record\RecordInterface
 	 */
-	protected function doPut(RecordInterface \$record, Version \$version)
+	protected function doPut(RecordInterface \$record)
 	{
 	}
 
 	/**
 	 * Returns the DELETE response
 	 *
-	 * @param \PSX\Data\RecordInterface \$record
-	 * @param \PSX\Api\Version \$version
-	 * @return array|\PSX\Data\RecordInterface
+	 * @param \PSX\Record\RecordInterface \$record
+	 * @return array|\PSX\Record\RecordInterface
 	 */
-	protected function doDelete(RecordInterface \$record, Version \$version)
+	protected function doDelete(RecordInterface \$record)
 	{
 	}
 }

@@ -23,7 +23,7 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Resource;
 use PSX\Api\Generator;
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Schema\Generator as SchemaGenerator;
 use PSX\Framework\Exception;
 use PSX\Http\Exception as HttpException;

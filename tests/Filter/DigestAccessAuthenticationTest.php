@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\Filter;
 
-use PSX\Data\Record\Store\Memory;
-use PSX\Data\Record\StoreInterface;
+use PSX\Record\Store\Memory;
+use PSX\Record\StoreInterface;
 use PSX\Framework\Filter\DigestAccessAuthentication;
 use PSX\Http\Authentication;
 use PSX\Http\Exception\UnauthorizedException;

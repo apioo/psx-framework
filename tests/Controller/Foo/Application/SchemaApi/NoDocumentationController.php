@@ -20,11 +20,9 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Framework\Api\Documentation;
-use PSX\Framework\Api\Resource;
-use PSX\Framework\Api\Version;
+use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 
 /**
  * NoDocumentationController

@@ -22,7 +22,7 @@ namespace PSX\Framework\Template\Generator;
 
 use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 use PSX\Framework\Template\GeneratorInterface;
 
 /**
