@@ -71,6 +71,12 @@ class Context
     const KEY_EXCEPTION = 'psx.exception';
 
     /**
+     * This key holds the version if the controller was requested through a
+     * version proxy controller
+     */
+    const KEY_VERSION = 'psx.version';
+
+    /**
      * @var array
      */
     protected $attributes = array();

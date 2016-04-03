@@ -22,6 +22,7 @@ namespace PSX\Framework\Controller\Proxy;
 
 use PSX\Api\DocumentedInterface;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Loader\Context;
 use PSX\Record\Record;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Request;
@@ -40,12 +41,6 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
     const TYPE_ACCEPT = 0x1;
     const TYPE_URI    = 0x2;
     const TYPE_HEADER = 0x3;
-
-    /**
-     * @Inject
-     * @var \PSX\Framework\Dispatch\Dispatch
-     */
-    protected $dispatch;
 
     /**
      * @Inject
@@ -74,40 +69,32 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
 
         $type     = $this->getVersionType();
         $versions = $this->getVersions();
+        $version  = null;
 
         if ($type === self::TYPE_ACCEPT) {
-            $version = $this->getAcceptVersion();
+            $version = (int) $this->getAcceptVersion();
         } elseif ($type == self::TYPE_URI) {
-            $version = $this->getUriVersion();
+            $version = (int) $this->getUriVersion();
         } elseif ($type == self::TYPE_HEADER) {
-            $version = $this->getHeaderVersion();
+            $version = (int) $this->getHeaderVersion();
         } else {
             throw new RuntimeException('Invalid version type');
         }
 
         if (empty($version)) {
             // in case we have no version number get the last available version
-            $controller = end($versions);
+            $class = end($versions);
         } elseif (isset($versions[$version])) {
-            $controller = $versions[$version];
+            $class = $versions[$version];
+
+            $this->context->set(Context::KEY_VERSION, $version);
         } else {
             throw new StatusCode\NotAcceptableException('Version is not available');
         }
 
-        $path = $this->reverseRouter->getPath($controller, $this->uriFragments);
+        $controller = $this->controllerFactory->getController($class, $this->request, $this->response, $this->context);
 
-        if ($path === null) {
-            throw new RuntimeException('Found no path for controller ' . $controller);
-        }
-
-        $request = new Request(
-            $this->request->getUri()->withPath($path),
-            $this->request->getMethod(),
-            $this->request->getHeaders(),
-            $this->request->getBody()
-        );
-
-        $this->dispatch->route($request, $this->response, $this->context);
+        $this->loader->executeController($controller, $this->request, $this->response);
     }
 
     public function getDocumentation($version = null)

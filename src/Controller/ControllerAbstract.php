@@ -72,15 +72,15 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     protected $context;
 
     /**
+     * @var array
+     */
+    protected $uriFragments;
+
+    /**
      * @Inject
      * @var \PSX\Framework\Config\Config
      */
     protected $config;
-
-    /**
-     * @var array
-     */
-    protected $uriFragments;
 
     /**
      * @Inject
@@ -247,7 +247,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     }
 
     /**
-     * Method to set an response body
+     * Method to set a response body
      *
      * @param mixed $data
      * @param string $writerType
@@ -282,6 +282,11 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
         $this->_responseWritten = true;
     }
 
+    /**
+     * @param mixed $data
+     * @param string|\PSX\Schema\SchemaInterface $schema
+     * @param string $writerType
+     */
     protected function setBodyAs($data, $schema, $writerType = null)
     {
         if ($this->_responseWritten) {

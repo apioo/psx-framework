@@ -48,7 +48,7 @@ class EntityController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation()
+    public function getDocumentation($version = null)
     {
         $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
         $resource->addPathParameter(Property::getInteger('fooId'));
@@ -66,10 +66,10 @@ class EntityController extends SchemaApiAbstract
             ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Delete'))
             ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
 
-        return new Documentation\Simple($resource);
+        return $resource;
     }
 
-    protected function doGet(Version $version)
+    protected function doGet()
     {
         $this->testCase->assertEquals(12, $this->queryParameters->getProperty('startIndex'));
         $this->testCase->assertEmpty($this->queryParameters->getProperty('bar'));
@@ -81,11 +81,11 @@ class EntityController extends SchemaApiAbstract
         );
     }
 
-    protected function doPost(RecordInterface $record, Version $version)
+    protected function doPost(RecordInterface $record)
     {
     }
 
-    protected function doPut(RecordInterface $record, Version $version)
+    protected function doPut(RecordInterface $record)
     {
         $this->testCase->assertEquals(8, $this->pathParameters->getProperty('fooId'));
         $this->testCase->assertEmpty($this->pathParameters->getProperty('bar'));
@@ -100,7 +100,7 @@ class EntityController extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete(RecordInterface $record, Version $version)
+    protected function doDelete(RecordInterface $record)
     {
         $this->testCase->assertEquals(8, $this->pathParameters->getProperty('fooId'));
         $this->testCase->assertEmpty($this->pathParameters->getProperty('bar'));

@@ -209,7 +209,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * Returns the validator which is used for a specific request method
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
-     * @return \PSX\Validate\Validator
+     * @return \PSX\Validate\ValidatorInterface
      */
     protected function getValidator(MethodAbstract $method)
     {
@@ -249,7 +249,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      */
     protected function getResource()
     {
-        $resource = $this->resourceListing->getResource($this->context->get(Context::KEY_PATH));
+        $resource = $this->resourceListing->getResource($this->context->get(Context::KEY_PATH), $this->context->get(Context::KEY_VERSION));
 
         if (!$resource instanceof Resource) {
             throw new StatusCode\InternalServerErrorException('Resource is not available');
