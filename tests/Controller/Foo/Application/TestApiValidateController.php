@@ -24,8 +24,8 @@ use PSX\Framework\Controller\ApiAbstract;
 use PSX\Validate\Filter;
 use PSX\Http\Message;
 use PSX\Validate\Validate;
-use PSX\Validate\Property;
-use PSX\Validate\Validator;
+use PSX\Data\Validator\Property;
+use PSX\Data\Validator\Validator;
 
 /**
  * TestApiValidateController

@@ -26,7 +26,7 @@ use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Oauth\Consumer;
-use PSX\Oauth\Provider\Data\Credentials;
+use PSX\Oauth\Data\Credentials;
 use PSX\Uri\Url;
 
 /**
