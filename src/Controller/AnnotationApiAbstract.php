@@ -20,38 +20,15 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Api\Parser;
-use PSX\Framework\Loader\Context;
-
 /**
  * Controller which reads the schema specifications based on the method 
- * annotations
+ * annotations.
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
 abstract class AnnotationApiAbstract extends SchemaApiAbstract
 {
-    /**
-     * @Inject
-     * @var \Doctrine\Common\Annotations\Reader
-     */
-    protected $annotationReader;
-
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManagerInterface
-     */
-    protected $schemaManager;
-
-    public function getDocumentation($version = null)
-    {
-        $parser = new Parser\Annotation(
-            $this->annotationReader,
-            $this->schemaManager
-        );
-
-        return $parser->parse($this, $this->context->get(Context::KEY_PATH));
-    }
 }
