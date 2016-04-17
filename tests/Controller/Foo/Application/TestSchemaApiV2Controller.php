@@ -74,7 +74,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doPost(RecordInterface $record)
+    protected function doPost($record)
     {
         $this->testCase->assertEquals(3, $record->userId);
         $this->testCase->assertEquals('test', $record->title);
@@ -86,7 +86,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doPut(RecordInterface $record)
+    protected function doPut($record)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);
@@ -98,7 +98,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete(RecordInterface $record)
+    protected function doDelete($record)
     {
         $this->testCase->assertEquals(1, $record->id);
 
@@ -108,7 +108,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doPatch(RecordInterface $record)
+    protected function doPatch($record)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);

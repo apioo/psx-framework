@@ -130,7 +130,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/arrayChoice/1 must be one of the following objects [a, b]', substr($data->message, 0, 58), $body);
+        $this->assertEquals('/arrayChoice/1 must be one of the following types (a, b)', substr($data->message, 0, 56), $body);
     }
 
     public function testPostInvalidBoolean()
@@ -164,7 +164,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/choice must be one of the following objects [a, b]', substr($data->message, 0, 51), $body);
+        $this->assertEquals('/choice must be one of the following types (a, b)', substr($data->message, 0, 49), $body);
     }
 
     public function testPostInvalidComplex()

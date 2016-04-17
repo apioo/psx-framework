@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Framework\Controller\AnnotationApiAbstract;
+use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
 use PSX\Record\RecordInterface;
 
@@ -32,7 +32,7 @@ use PSX\Record\RecordInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyAnnotationController extends AnnotationApiAbstract
+class PropertyAnnotationController extends SchemaApiAbstract
 {
     use PropertyControllerTrait;
 
@@ -51,7 +51,7 @@ class PropertyAnnotationController extends AnnotationApiAbstract
      * @Incoming(schema="../../Resource/property.json")
      * @Outgoing(code=200, schema="../../Resource/property.json")
      */
-    protected function doPost(RecordInterface $record)
+    protected function doPost($record)
     {
         PropertyTestCase::assertRecord($this->testCase, $record);
 

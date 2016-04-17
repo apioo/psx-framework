@@ -45,7 +45,7 @@ trait PropertyControllerTrait
         return PropertyTestCase::getDataByType($this->queryParameters->getProperty('type'));
     }
 
-    protected function doPost(RecordInterface $record)
+    protected function doPost($record)
     {
         PropertyTestCase::assertRecord($this->testCase, $record);
 
