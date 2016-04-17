@@ -157,7 +157,9 @@ class DefaultContainer extends Container
      */
     public function getSchemaManager()
     {
-        return new SchemaManager();
+        return new SchemaManager(
+            $this->get('annotation_reader')
+        );
     }
 
     /**
