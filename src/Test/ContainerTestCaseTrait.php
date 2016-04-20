@@ -21,6 +21,7 @@
 namespace PSX\Framework\Test;
 
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\VoidCache;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PSX\Cache\Pool;
@@ -28,6 +29,7 @@ use PSX\Framework\Dispatch\Sender\Noop as DispatchSender;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Loader;
+use PSX\Schema\SchemaManager;
 
 /**
  * ContainerTestCaseTrait
@@ -67,6 +69,13 @@ trait ContainerTestCaseTrait
 
         // enables us to load the same controller multiple times
         Environment::getContainer()->get('loader')->setRecursiveLoading(true);
+
+        // schema manager use void cache
+        Environment::getContainer()->set('schema_manager', new SchemaManager(
+            Environment::getContainer()->get('annotation_reader'),
+            new Pool(new VoidCache()),
+            true
+        ));
 
         // add event listener which redirects PHPUnit exceptions. Because of
         // this we can make assertions inside an controller
