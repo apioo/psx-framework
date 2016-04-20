@@ -20,6 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\Framework\Tests\Controller\Foo\Model\ChoiceA;
+use PSX\Framework\Tests\Controller\Foo\Model\ChoiceB;
+use PSX\Framework\Tests\Controller\Foo\Model\Complex;
+use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Record\Record;
 use PSX\Record\RecordInterface;
 use PSX\Data\Writer;
@@ -358,6 +362,9 @@ JSON;
             [1],
             [2],
             [3],
+            [4],
+            [5],
+            [6],
         ];
     }
 
@@ -373,7 +380,7 @@ JSON;
         switch ($type) {
             case 1:
                 // we return actual types
-                return array(
+                return [
                     'any' => [
                         'foo' => 'bar'
                     ],
@@ -404,12 +411,12 @@ JSON;
                     'integer' => 7,
                     'string' => 'bar',
                     'time' => new Time(13, 37, 14),
-                );
+                ];
                 break;
 
             case 2:
                 // we return only strings like from an database
-                return array(
+                return [
                     'any' => [
                         'foo' => 'bar'
                     ],
@@ -440,12 +447,12 @@ JSON;
                     'integer' => '7',
                     'string' => 'bar',
                     'time' => '13:37:14',
-                );
+                ];
                 break;
 
             case 3:
                 // we return types which we get from the doctrine mapper
-                return array(
+                return [
                     'any' => [
                         'foo' => 'bar'
                     ],
@@ -476,7 +483,107 @@ JSON;
                     'integer' => 7,
                     'string' => 'bar',
                     'time' => new \DateTime('2015-05-01T13:37:14Z'),
-                );
+                ];
+                break;
+
+            case 4:
+                // we return stdClass
+                return (object) [
+                    'any' => (object) [
+                        'foo' => 'bar'
+                    ],
+                    'array' => ['bar'],
+                    'arrayComplex' => [(object) [
+                        'foo' => 'bar'
+                    ], (object) [
+                        'foo' => 'foo'
+                    ]],
+                    'arrayChoice' => [(object) [
+                        'foo' => 'baz'
+                    ], (object) [
+                        'bar' => 'bar'
+                    ], (object) [
+                        'foo' => 'foo'
+                    ]],
+                    'boolean' => true,
+                    'choice' => (object) [
+                        'bar' => 'test'
+                    ],
+                    'complex' => (object) [
+                        'foo' => 'bar'
+                    ],
+                    'date' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'dateTime' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'duration' => 'P1M',
+                    'float' => 13.37,
+                    'integer' => 7,
+                    'string' => 'bar',
+                    'time' => new \DateTime('2015-05-01T13:37:14Z'),
+                ];
+                break;
+
+            case 5:
+                // we return records
+                return Record::fromArray([
+                    'any' => Record::fromArray([
+                        'foo' => 'bar'
+                    ]),
+                    'array' => ['bar'],
+                    'arrayComplex' => [
+                        Record::fromArray([
+                            'foo' => 'bar'
+                        ]),
+                        Record::fromArray([
+                            'foo' => 'foo'
+                        ])
+                    ],
+                    'arrayChoice' => [
+                        Record::fromArray([
+                            'foo' => 'baz'
+                        ]),
+                        Record::fromArray([
+                            'bar' => 'bar'
+                        ]),
+                        Record::fromArray([
+                            'foo' => 'foo'
+                        ])
+                    ],
+                    'boolean' => true,
+                    'choice' => Record::fromArray([
+                        'bar' => 'test'
+                    ]),
+                    'complex' => Record::fromArray([
+                        'foo' => 'bar'
+                    ]),
+                    'date' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'dateTime' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'duration' => 'P1M',
+                    'float' => 13.37,
+                    'integer' => 7,
+                    'string' => 'bar',
+                    'time' => new \DateTime('2015-05-01T13:37:14Z'),
+                ]);
+                break;
+
+            case 6:
+                // we return POPOs
+                $object = new Property();
+                $object->setAny(new ChoiceA('bar'));
+                $object->setArray(['bar']);
+                $object->setArrayComplex([new ChoiceA('bar'), new ChoiceA('foo')]);
+                $object->setArrayChoice([new ChoiceA('baz'), new ChoiceB('bar'), new ChoiceA('foo')]);
+                $object->setBoolean(true);
+                $object->setChoice(new ChoiceB('test'));
+                $object->setComplex(new Complex('bar'));
+                $object->setDate(new \DateTime('2015-05-01T13:37:14Z'));
+                $object->setDateTime(new \DateTime('2015-05-01T13:37:14Z'));
+                $object->setDuration(new \DateInterval('P1M'));
+                $object->setFloat(13.37);
+                $object->setInteger(7);
+                $object->setString('bar');
+                $object->setTime(new \DateTime('2015-05-01T13:37:14Z'));
+
+                return $object;
                 break;
         }
     }
