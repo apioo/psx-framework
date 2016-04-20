@@ -129,8 +129,7 @@ class DefaultContainer extends Container
     {
         $config = Configuration::createDefault(
             $this->get('annotation_reader'),
-            $this->get('cache'),
-            $this->get('config')->get('psx_debug'),
+            $this->get('schema_manager'),
             $this->get('config')->get('psx_soap_namespace')
         );
 
@@ -158,7 +157,9 @@ class DefaultContainer extends Container
     public function getSchemaManager()
     {
         return new SchemaManager(
-            $this->get('annotation_reader')
+            $this->get('annotation_reader'),
+            $this->get('cache'),
+            $this->get('config')->get('psx_debug')
         );
     }
 
