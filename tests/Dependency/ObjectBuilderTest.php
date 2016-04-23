@@ -40,7 +40,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \DateTime());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
         $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService');
 
         $this->assertInstanceof('PSX\Framework\Tests\Dependency\FooService', $object);
@@ -54,7 +54,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectInjectUnknownService()
     {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
         $builder->getObject('PSX\Framework\Tests\Dependency\FooService');
     }
 
@@ -63,7 +63,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectUnknownClass()
     {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
         $builder->getObject('PSX\Framework\Tests\Dependency\BarService');
     }
 
@@ -73,7 +73,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
         $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array(), 'PSX\Framework\Tests\Dependency\FooService');
 
         $this->assertInstanceof('PSX\Framework\Tests\Dependency\FooService', $object);
@@ -88,7 +88,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
         $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array(), 'PSX\Framework\Tests\Dependency\BarService');
     }
 
@@ -98,7 +98,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
         $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array('foo'), 'PSX\Framework\Tests\Dependency\FooService');
 
         $this->assertEquals('foo', $object->getProperty());
@@ -109,13 +109,13 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectConstructorArgumentsInvalid()
     {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader'));
+        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
         $builder->getObject('PSX\Framework\Tests\Dependency\InvalidService');
     }
 
     public function testGetObjectWithoutConstructor()
     {
-        $builder  = new ObjectBuilder(new Container(), Environment::getService('annotation_reader'));
+        $builder  = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
         $stdClass = $builder->getObject('stdClass');
 
         $this->assertInstanceof('stdClass', $stdClass);

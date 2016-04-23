@@ -47,9 +47,9 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     /**
      * @Inject
-     * @var \Doctrine\Common\Annotations\Reader
+     * @var \PSX\Api\ParserInterface
      */
-    protected $annotationReader;
+    protected $apiParser;
 
     /**
      * @Inject
@@ -150,12 +150,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function getDocumentation($version = null)
     {
-        $parser = new Parser\Annotation(
-            $this->annotationReader,
-            $this->schemaManager
-        );
-
-        return $parser->parse($this, $this->context->get(Context::KEY_PATH));
+        return $this->apiParser->parse($this, $this->context->get(Context::KEY_PATH));
     }
 
     /**

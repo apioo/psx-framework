@@ -57,20 +57,20 @@ class DefaultContainer extends Container
      */
     public function getAnnotationReader()
     {
-        $reader = new Annotations\SimpleAnnotationReader();
-        $reader->addNamespace('PSX\\Api\\Annotation');
-        $reader->addNamespace('PSX\\Schema\\Parser\\Popo\\Annotation');
-        $reader->addNamespace('PSX\\Framework\\Annotation');
+        return $this->newDoctrineAnnotationImpl([
+            'PSX\Schema\Parser\Popo\Annotation',
+        ]);
+    }
 
-        if (!$this->get('config')->get('psx_debug')) {
-            $reader = new Annotations\CachedReader(
-                $reader,
-                $this->newDoctrineCacheImpl('annotations/psx'),
-                $this->get('config')->get('psx_debug')
-            );
-        }
-
-        return $reader;
+    /**
+     * @return \Doctrine\Common\Annotations\Reader
+     */
+    public function getAnnotationReaderController()
+    {
+        return $this->newDoctrineAnnotationImpl([
+            'PSX\Api\Annotation',
+            'PSX\Framework\Annotation',
+        ]);
     }
 
     /**
@@ -212,9 +212,35 @@ class DefaultContainer extends Container
     /**
      * If you want to change the doctrine cache which is used in various 
      * components you can override this method
+     * 
+     * @param string $namespace
+     * @return \Doctrine\Common\Cache\Cache
      */
     protected function newDoctrineCacheImpl($namespace)
     {
         return new DoctrineCache\FilesystemCache(PSX_PATH_CACHE . '/' . $namespace);
+    }
+
+    /**
+     * @param array $namespaces
+     * @return \Doctrine\Common\Annotations\Reader
+     */
+    protected function newDoctrineAnnotationImpl(array $namespaces)
+    {
+        $reader = new Annotations\SimpleAnnotationReader();
+
+        foreach ($namespaces as $namespace) {
+            $reader->addNamespace($namespace);
+        }
+
+        if (!$this->get('config')->get('psx_debug')) {
+            $reader = new Annotations\CachedReader(
+                $reader,
+                $this->newDoctrineCacheImpl('annotations/psx'),
+                $this->get('config')->get('psx_debug')
+            );
+        }
+        
+        return $reader;
     }
 }
