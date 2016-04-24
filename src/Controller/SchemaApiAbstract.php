@@ -25,6 +25,7 @@ use PSX\Api\Parser;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Schema\Passthru;
 use PSX\Record\Record;
 use PSX\Record\RecordInterface;
 use PSX\Http\Exception as StatusCode;
@@ -220,7 +221,20 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      */
     protected function parseRequest(MethodAbstract $method)
     {
-        return $method->hasRequest() ? $this->getBodyAs($method->getRequest(), $this->getValidator($method)) : new Record();
+        if ($method->hasRequest()) {
+            $schema = $method->getRequest();
+            if ($schema instanceof Passthru) {
+                $data = $this->getBody();
+            } elseif ($schema instanceof SchemaInterface) {
+                $data = $this->getBodyAs($method->getRequest(), $this->getValidator($method));
+            } else {
+                $data = new Record();
+            }
+        } else {
+            $data = null;
+        }
+
+        return $data;
     }
 
     /**
@@ -251,7 +265,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             $schema = $this->getSuccessfulResponse($method, $statusCode);
         }
 
-        if ($schema instanceof SchemaInterface) {
+        if ($schema instanceof Passthru) {
+            $this->setResponseCode($statusCode);
+            $this->setBody($response);
+        } elseif ($schema instanceof SchemaInterface) {
             $this->setResponseCode($statusCode);
             $this->setBodyAs($response, $schema);
         } else {
