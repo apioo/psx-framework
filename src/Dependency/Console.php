@@ -67,12 +67,7 @@ trait Console
         $application->add(new PSXCommand\ResourceCommand($this->get('config'), $this->get('resource_listing'), new Exporter\Popo($this->get('annotation_reader'))));
         $application->add(new PSXCommand\RouteCommand($this->get('routing_parser')));
         $application->add(new PSXCommand\ServeCommand($this->get('config'), $this->get('dispatch'), $this->get('console_reader')));
-
-        $application->add(new PSXCommand\Generate\ApiCommand($this));
-        $application->add(new PSXCommand\Generate\BootstrapCacheCommand());
-        $application->add(new PSXCommand\Generate\ControllerCommand($this));
-        $application->add(new PSXCommand\Generate\SchemaCommand($this->get('connection')));
-        $application->add(new PSXCommand\Generate\ViewCommand($this));
+        $application->add(new PSXCommand\GenerateCommand());
 
         $application->add(new SchemaCommand($this->get('annotation_reader'), $this->get('config')->get('psx_soap_namespace')));
 
