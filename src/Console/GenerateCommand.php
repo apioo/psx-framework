@@ -77,26 +77,23 @@ class GenerateCommand extends Command
             $schemaFile     = $this->getClassFile($namespace, 'Schema');
 
             if (!$this->isDir($basePath)) {
+                $output->writeln('Created directory: ' . $basePath);
                 if (!$dryRun) {
                     $this->makeDir($basePath);
-                } else {
-                    $output->writeln('Create directory: ' . $basePath);
                 }
             }
 
             if (!$this->isFile($controllerFile)) {
+                $output->writeln('Created file: ' . $controllerFile);
                 if (!$dryRun) {
                     $this->writeFile($controllerFile, $controllerSource);
-                } else {
-                    $output->writeln('Create file: ' . $controllerFile);
                 }
             }
 
             if (!$this->isFile($schemaFile)) {
+                $output->writeln('Created file: ' . $schemaFile);
                 if (!$dryRun) {
                     $this->writeFile($schemaFile, $schemaSource);
-                } else {
-                    $output->writeln('Create file: ' . $schemaFile);
                 }
             }
 
