@@ -37,7 +37,7 @@ class Passthru implements SchemaInterface
     public function __construct()
     {
         $builder = new Builder('passthru');
-        $builder->setDescription('Schema which indic');
+        $builder->setDescription('No schema informations available');
 
         $this->definition = $builder->getProperty();
     }
