@@ -27,6 +27,7 @@ use PSX\Framework\Base;
 use PSX\Framework\Console as PSXCommand;
 use PSX\Framework\Console\Reader;
 use PSX\Schema\Console\SchemaCommand;
+use PSX\Sql\Console as SqlConsole;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -70,6 +71,9 @@ trait Console
         $application->add(new PSXCommand\GenerateCommand());
 
         $application->add(new SchemaCommand($this->get('annotation_reader'), $this->get('config')->get('psx_soap_namespace')));
+
+        $application->add(new SqlConsole\MigrateCommand($this->get('connection'), $this->get('table_manager')));
+        $application->add(new SqlConsole\GenerateCommand($this->get('connection')));
 
         // symfony commands
         $application->add(new SymfonyCommand\HelpCommand());
