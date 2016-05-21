@@ -317,10 +317,12 @@ JSON;
                     "type": "boolean"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -340,7 +342,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -376,7 +379,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -410,7 +414,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -447,10 +452,12 @@ JSON;
                     "type": "boolean"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -486,7 +493,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -520,7 +528,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -554,7 +563,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -588,7 +598,8 @@ JSON;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },

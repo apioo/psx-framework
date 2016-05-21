@@ -124,10 +124,12 @@ JSON;
                         "type": "boolean"
                     },
                     "date": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date"
                     },
                     "datetime": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "additionalProperties": true
@@ -148,7 +150,8 @@ JSON;
                         "pattern": "[A-z]+"
                     },
                     "date": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "title": "item",
@@ -185,7 +188,8 @@ JSON;
                         "pattern": "[A-z]+"
                     },
                     "date": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "required": [
@@ -224,7 +228,8 @@ JSON;
                         "pattern": "[A-z]+"
                     },
                     "date": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "required": [

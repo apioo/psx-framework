@@ -104,7 +104,8 @@ title: foo
                                   "pattern": "[A-z]+"
                               },
                               "date": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date-time"
                               }
                           },
                           "title": "item",
@@ -145,7 +146,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -197,7 +199,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -248,7 +251,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -299,7 +303,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [

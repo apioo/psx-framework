@@ -102,10 +102,12 @@ class ResourceCommandTest extends ControllerTestCase
                     "type": "boolean"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "additionalProperties": true
@@ -126,7 +128,8 @@ class ResourceCommandTest extends ControllerTestCase
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "title": "item",
@@ -163,7 +166,8 @@ class ResourceCommandTest extends ControllerTestCase
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "required": [
@@ -202,7 +206,8 @@ class ResourceCommandTest extends ControllerTestCase
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "required": [
@@ -326,7 +331,8 @@ title: foo
                                   "pattern": "[A-z]+"
                               },
                               "date": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "format": "date-time"
                               }
                           },
                           "title": "item",
@@ -367,7 +373,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -419,7 +426,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -470,7 +478,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -521,7 +530,8 @@ title: foo
                       "pattern": "[A-z]+"
                   },
                   "date": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time"
                   }
               },
               "required": [
@@ -822,10 +832,12 @@ YAML;
                     "type": "boolean"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -845,7 +857,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -881,7 +894,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -915,7 +929,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -952,10 +967,12 @@ YAML;
                     "type": "boolean"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -991,7 +1008,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -1025,7 +1043,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -1059,7 +1078,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -1093,7 +1113,8 @@ YAML;
                     "pattern": "[A-z]+"
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
