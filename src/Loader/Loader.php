@@ -130,7 +130,7 @@ class Loader implements LoaderInterface
 
             return $controller;
         } else {
-            throw new InvalidPathException('Unkown location', $request);
+            throw new InvalidPathException('Unknown location', $request);
         }
     }
 
