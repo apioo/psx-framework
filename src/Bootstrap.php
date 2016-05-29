@@ -78,9 +78,13 @@ class Bootstrap
 
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        // if someone adds an @ to the function call to supress an error message
-        // the error reporting is 0 so in this case we dont throw an exception
         if (error_reporting() == 0) {
+            // if someone adds an @ to the function call to supress an error
+            // message the error reporting is 0 so in this case we dont throw an
+            // exception
+            return false;
+        } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
+            // for deprecation errors we also use the normal PHP error handling
             return false;
         } else {
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
