@@ -46,10 +46,10 @@ class PropertyDocumentationController extends SchemaApiAbstract
     {
         $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
 
-        $resource->addPathParameter(Property::getInteger('id'));
+        $resource->addPathParameter('id', Property::getInteger());
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addQueryParameter(Property::getInteger('type'))
+            ->addQueryParameter('type', Property::getInteger())
             ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Property'))
         );
 

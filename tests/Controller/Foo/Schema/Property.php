@@ -42,7 +42,7 @@ class Property extends SchemaAbstract
         $sb->string('bar');
         $complexB = $sb->getProperty();
 
-        $choice = SchemaProperty::getChoice("choice")
+        $choice = SchemaProperty::getChoice('choice')
             ->add($complexA)
             ->add($complexB);
 
@@ -56,8 +56,8 @@ class Property extends SchemaAbstract
         $sb->arrayType('arrayComplex')->setPrototype($complex);
         $sb->arrayType('arrayChoice')->setPrototype($choice);
         $sb->boolean('boolean');
-        $sb->choiceType($choice);
-        $sb->complexType($complex);
+        $sb->choiceType('choice', $choice);
+        $sb->complexType('complex', $complex);
         $sb->date('date');
         $sb->dateTime('dateTime');
         $sb->duration('duration');
