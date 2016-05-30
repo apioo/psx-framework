@@ -34,11 +34,11 @@ class Property extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('a');
+        $sb = $this->getSchemaBuilder('choiceA');
         $sb->string('foo');
         $complexA = $sb->getProperty();
 
-        $sb = $this->getSchemaBuilder('b');
+        $sb = $this->getSchemaBuilder('choiceB');
         $sb->string('bar');
         $complexB = $sb->getProperty();
 

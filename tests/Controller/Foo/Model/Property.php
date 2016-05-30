@@ -33,7 +33,7 @@ use DateInterval;
 class Property
 {
     /**
-     * @Type("any<string>")
+     * @Type("PSX\Framework\Tests\Controller\Foo\Model\Any")
      */
     protected $any;
 
@@ -48,7 +48,7 @@ class Property
     protected $arrayComplex;
 
     /**
-     * @Type("array<choice<a=PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,b=PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>>")
+     * @Type("array<choice<PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>>")
      */
     protected $arrayChoice;
 
@@ -58,7 +58,7 @@ class Property
     protected $boolean;
 
     /**
-     * @Type("choice<a=PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,b=PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>")
+     * @Type("choice<PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>")
      */
     protected $choice;
 

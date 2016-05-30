@@ -88,13 +88,13 @@ JSON;
         "id": "urn:schema.phpsx.org#",
         "type": "object",
         "definitions": {
-            "ref324d9c87eb6ee494de5207f005abddb8": {
-                "type": "object",
+            "ref1a543de6ef793b231e7e4c78844dbc84": {
                 "title": "path",
+                "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
                         "description": "Name parameter",
+                        "type": "string",
                         "maxLength": 16,
                         "pattern": "[A-z]+"
                     },
@@ -108,13 +108,13 @@ JSON;
                 },
                 "additionalProperties": true
             },
-            "ref85f5cb99d4cb24e97943e04989396c8e": {
-                "type": "object",
+            "ref21726c1551deab178a68a7ffac656c75": {
                 "title": "query",
+                "type": "object",
                 "properties": {
                     "startIndex": {
-                        "type": "integer",
                         "description": "startIndex parameter",
+                        "type": "integer",
                         "maximum": 32
                     },
                     "float": {
@@ -135,6 +135,7 @@ JSON;
                 "additionalProperties": true
             },
             "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
+                "title": "item",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -154,26 +155,24 @@ JSON;
                         "format": "date-time"
                     }
                 },
-                "title": "item",
                 "additionalProperties": false
             },
-            "refae7d4b5627a9dbac0c99945ecef66e17": {
-                "type": "object",
+            "refc6491059d9103dc5bb112e51828416d9": {
                 "title": "collection",
+                "type": "object",
                 "properties": {
                     "entry": {
                         "type": "array",
                         "items": {
                             "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                        },
-                        "title": "entry"
+                        }
                     }
                 },
                 "additionalProperties": false
             },
             "ref70152cdfc48a8a3969f10e9e4fe3b239": {
-                "type": "object",
                 "title": "item",
+                "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer"
@@ -192,15 +191,15 @@ JSON;
                         "format": "date-time"
                     }
                 },
+                "additionalProperties": false,
                 "required": [
                     "title",
                     "date"
-                ],
-                "additionalProperties": false
+                ]
             },
             "ref31ead4d236fd038a7d55a40e2ca1171e": {
-                "type": "object",
                 "title": "message",
+                "type": "object",
                 "properties": {
                     "success": {
                         "type": "boolean"
@@ -212,8 +211,8 @@ JSON;
                 "additionalProperties": false
             },
             "ref774a7a4ece700fad7bb605e81c61fea7": {
-                "type": "object",
                 "title": "item",
+                "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer"
@@ -232,19 +231,19 @@ JSON;
                         "format": "date-time"
                     }
                 },
+                "additionalProperties": false,
                 "required": [
                     "id"
-                ],
-                "additionalProperties": false
+                ]
             },
             "path": {
-                "$ref": "#\/definitions\/ref324d9c87eb6ee494de5207f005abddb8"
+                "$ref": "#\/definitions\/ref1a543de6ef793b231e7e4c78844dbc84"
             },
             "GET-query": {
-                "$ref": "#\/definitions\/ref85f5cb99d4cb24e97943e04989396c8e"
+                "$ref": "#\/definitions\/ref21726c1551deab178a68a7ffac656c75"
             },
             "GET-200-response": {
-                "$ref": "#\/definitions\/refae7d4b5627a9dbac0c99945ecef66e17"
+                "$ref": "#\/definitions\/refc6491059d9103dc5bb112e51828416d9"
             },
             "POST-request": {
                 "$ref": "#\/definitions\/ref70152cdfc48a8a3969f10e9e4fe3b239"

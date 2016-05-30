@@ -284,80 +284,21 @@ JSON;
         }
     ],
     "models": {
-        "ref324d9c87eb6ee494de5207f005abddb8": {
-            "id": "ref324d9c87eb6ee494de5207f005abddb8",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "Name parameter",
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "foo",
-                        "bar"
-                    ]
-                }
-            }
+        "ref1a543de6ef793b231e7e4c78844dbc84": {
+            "id": "ref1a543de6ef793b231e7e4c78844dbc84",
+            "properties": []
         },
-        "ref85f5cb99d4cb24e97943e04989396c8e": {
-            "id": "ref85f5cb99d4cb24e97943e04989396c8e",
-            "properties": {
-                "startIndex": {
-                    "type": "integer",
-                    "description": "startIndex parameter",
-                    "maximum": 32
-                },
-                "float": {
-                    "type": "number"
-                },
-                "boolean": {
-                    "type": "boolean"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+        "ref21726c1551deab178a68a7ffac656c75": {
+            "id": "ref21726c1551deab178a68a7ffac656c75",
+            "properties": []
         },
         "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
             "id": "ref7bde1c36c5f13fd4cf10c2864f8e8a75",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
-        "refae7d4b5627a9dbac0c99945ecef66e17": {
-            "id": "refae7d4b5627a9dbac0c99945ecef66e17",
-            "properties": {
-                "entry": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    },
-                    "title": "entry"
-                }
-            }
+        "refc6491059d9103dc5bb112e51828416d9": {
+            "id": "refc6491059d9103dc5bb112e51828416d9",
+            "properties": []
         },
         "ref70152cdfc48a8a3969f10e9e4fe3b239": {
             "id": "ref70152cdfc48a8a3969f10e9e4fe3b239",
@@ -365,66 +306,25 @@ JSON;
                 "title",
                 "date"
             ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
         "ref31ead4d236fd038a7d55a40e2ca1171e": {
             "id": "ref31ead4d236fd038a7d55a40e2ca1171e",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
+            "properties": []
         },
         "ref774a7a4ece700fad7bb605e81c61fea7": {
             "id": "ref774a7a4ece700fad7bb605e81c61fea7",
             "required": [
                 "id"
             ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
         "path": {
             "id": "path",
             "properties": {
                 "name": {
-                    "type": "string",
                     "description": "Name parameter",
+                    "type": "string",
                     "maxLength": 16,
                     "pattern": "[A-z]+"
                 },
@@ -441,8 +341,8 @@ JSON;
             "id": "GET-query",
             "properties": {
                 "startIndex": {
-                    "type": "integer",
                     "description": "startIndex parameter",
+                    "type": "integer",
                     "maximum": 32
                 },
                 "float": {
@@ -468,8 +368,7 @@ JSON;
                     "type": "array",
                     "items": {
                         "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    },
-                    "title": "entry"
+                    }
                 }
             }
         },

@@ -60,19 +60,20 @@ class ResourceCommandTest extends ControllerTestCase
             'format' => 'jsonschema'
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<'JSON'
 {
     "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
     "id": "urn:schema.phpsx.org#",
     "type": "object",
     "definitions": {
-        "ref324d9c87eb6ee494de5207f005abddb8": {
-            "type": "object",
+        "ref1a543de6ef793b231e7e4c78844dbc84": {
             "title": "path",
+            "type": "object",
             "properties": {
                 "name": {
-                    "type": "string",
                     "description": "Name parameter",
+                    "type": "string",
                     "maxLength": 16,
                     "pattern": "[A-z]+"
                 },
@@ -86,13 +87,13 @@ class ResourceCommandTest extends ControllerTestCase
             },
             "additionalProperties": true
         },
-        "ref85f5cb99d4cb24e97943e04989396c8e": {
-            "type": "object",
+        "ref21726c1551deab178a68a7ffac656c75": {
             "title": "query",
+            "type": "object",
             "properties": {
                 "startIndex": {
-                    "type": "integer",
                     "description": "startIndex parameter",
+                    "type": "integer",
                     "maximum": 32
                 },
                 "float": {
@@ -113,6 +114,7 @@ class ResourceCommandTest extends ControllerTestCase
             "additionalProperties": true
         },
         "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
+            "title": "item",
             "type": "object",
             "properties": {
                 "id": {
@@ -132,26 +134,24 @@ class ResourceCommandTest extends ControllerTestCase
                     "format": "date-time"
                 }
             },
-            "title": "item",
             "additionalProperties": false
         },
-        "refae7d4b5627a9dbac0c99945ecef66e17": {
-            "type": "object",
+        "refc6491059d9103dc5bb112e51828416d9": {
             "title": "collection",
+            "type": "object",
             "properties": {
                 "entry": {
                     "type": "array",
                     "items": {
                         "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    },
-                    "title": "entry"
+                    }
                 }
             },
             "additionalProperties": false
         },
         "ref70152cdfc48a8a3969f10e9e4fe3b239": {
-            "type": "object",
             "title": "item",
+            "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
@@ -170,15 +170,15 @@ class ResourceCommandTest extends ControllerTestCase
                     "format": "date-time"
                 }
             },
+            "additionalProperties": false,
             "required": [
                 "title",
                 "date"
-            ],
-            "additionalProperties": false
+            ]
         },
         "ref31ead4d236fd038a7d55a40e2ca1171e": {
-            "type": "object",
             "title": "message",
+            "type": "object",
             "properties": {
                 "success": {
                     "type": "boolean"
@@ -190,8 +190,8 @@ class ResourceCommandTest extends ControllerTestCase
             "additionalProperties": false
         },
         "ref774a7a4ece700fad7bb605e81c61fea7": {
-            "type": "object",
             "title": "item",
+            "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
@@ -210,19 +210,19 @@ class ResourceCommandTest extends ControllerTestCase
                     "format": "date-time"
                 }
             },
+            "additionalProperties": false,
             "required": [
                 "id"
-            ],
-            "additionalProperties": false
+            ]
         },
         "path": {
-            "$ref": "#\/definitions\/ref324d9c87eb6ee494de5207f005abddb8"
+            "$ref": "#\/definitions\/ref1a543de6ef793b231e7e4c78844dbc84"
         },
         "GET-query": {
-            "$ref": "#\/definitions\/ref85f5cb99d4cb24e97943e04989396c8e"
+            "$ref": "#\/definitions\/ref21726c1551deab178a68a7ffac656c75"
         },
         "GET-200-response": {
-            "$ref": "#\/definitions\/refae7d4b5627a9dbac0c99945ecef66e17"
+            "$ref": "#\/definitions\/refc6491059d9103dc5bb112e51828416d9"
         },
         "POST-request": {
             "$ref": "#\/definitions\/ref70152cdfc48a8a3969f10e9e4fe3b239"
@@ -252,7 +252,7 @@ class ResourceCommandTest extends ControllerTestCase
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString($expect, $commandTester->getDisplay(), $commandTester->getDisplay());
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testRaml()
@@ -263,6 +263,7 @@ JSON;
             'format' => 'raml'
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<'YAML'
 #%RAML 0.8
 ---
@@ -312,10 +313,9 @@ title: foo
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "collection",
                   "definitions": {
                       "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
+                          "title": "item",
                           "type": "object",
                           "properties": {
                               "id": {
@@ -335,17 +335,17 @@ title: foo
                                   "format": "date-time"
                               }
                           },
-                          "title": "item",
                           "additionalProperties": false
                       }
                   },
+                  "title": "collection",
+                  "type": "object",
                   "properties": {
                       "entry": {
                           "type": "array",
                           "items": {
                               "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                          },
-                          "title": "entry"
+                          }
                       }
                   },
                   "additionalProperties": false
@@ -357,8 +357,8 @@ title: foo
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "type": "object",
               "title": "item",
+              "type": "object",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -377,11 +377,11 @@ title: foo
                       "format": "date-time"
                   }
               },
+              "additionalProperties": false,
               "required": [
                   "title",
                   "date"
-              ],
-              "additionalProperties": false
+              ]
           }
     responses:
       201:
@@ -391,8 +391,8 @@ title: foo
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "type": "object",
                   "title": "message",
+                  "type": "object",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -410,8 +410,8 @@ title: foo
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "type": "object",
               "title": "item",
+              "type": "object",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -430,10 +430,10 @@ title: foo
                       "format": "date-time"
                   }
               },
+              "additionalProperties": false,
               "required": [
                   "id"
-              ],
-              "additionalProperties": false
+              ]
           }
     responses:
       200:
@@ -443,8 +443,8 @@ title: foo
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "type": "object",
                   "title": "message",
+                  "type": "object",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -462,8 +462,8 @@ title: foo
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "type": "object",
               "title": "item",
+              "type": "object",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -482,10 +482,10 @@ title: foo
                       "format": "date-time"
                   }
               },
+              "additionalProperties": false,
               "required": [
                   "id"
-              ],
-              "additionalProperties": false
+              ]
           }
     responses:
       200:
@@ -495,8 +495,8 @@ title: foo
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "type": "object",
                   "title": "message",
+                  "type": "object",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -514,8 +514,8 @@ title: foo
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "type": "object",
               "title": "item",
+              "type": "object",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -534,10 +534,10 @@ title: foo
                       "format": "date-time"
                   }
               },
+              "additionalProperties": false,
               "required": [
                   "id"
-              ],
-              "additionalProperties": false
+              ]
           }
     responses:
       200:
@@ -547,8 +547,8 @@ title: foo
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "type": "object",
                   "title": "message",
+                  "type": "object",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -562,7 +562,10 @@ title: foo
 
 YAML;
 
-        Assert::assertStringMatchIgnoreWhitespace($expect, $commandTester->getDisplay());
+        $expect = str_replace(array("\r\n", "\n", "\r"), "\n", $expect);
+        $actual = str_replace(array("\r\n", "\n", "\r"), "\n", $actual);
+
+        $this->assertEquals($expect, $actual, $actual);
     }
 
     public function testSwagger()
@@ -573,6 +576,7 @@ YAML;
             'format' => 'swagger',
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<'JSON'
 {
     "swaggerVersion": "1.2",
@@ -799,80 +803,21 @@ YAML;
         }
     ],
     "models": {
-        "ref324d9c87eb6ee494de5207f005abddb8": {
-            "id": "ref324d9c87eb6ee494de5207f005abddb8",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "Name parameter",
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "foo",
-                        "bar"
-                    ]
-                }
-            }
+        "ref1a543de6ef793b231e7e4c78844dbc84": {
+            "id": "ref1a543de6ef793b231e7e4c78844dbc84",
+            "properties": []
         },
-        "ref85f5cb99d4cb24e97943e04989396c8e": {
-            "id": "ref85f5cb99d4cb24e97943e04989396c8e",
-            "properties": {
-                "startIndex": {
-                    "type": "integer",
-                    "description": "startIndex parameter",
-                    "maximum": 32
-                },
-                "float": {
-                    "type": "number"
-                },
-                "boolean": {
-                    "type": "boolean"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+        "ref21726c1551deab178a68a7ffac656c75": {
+            "id": "ref21726c1551deab178a68a7ffac656c75",
+            "properties": []
         },
         "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
             "id": "ref7bde1c36c5f13fd4cf10c2864f8e8a75",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
-        "refae7d4b5627a9dbac0c99945ecef66e17": {
-            "id": "refae7d4b5627a9dbac0c99945ecef66e17",
-            "properties": {
-                "entry": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    },
-                    "title": "entry"
-                }
-            }
+        "refc6491059d9103dc5bb112e51828416d9": {
+            "id": "refc6491059d9103dc5bb112e51828416d9",
+            "properties": []
         },
         "ref70152cdfc48a8a3969f10e9e4fe3b239": {
             "id": "ref70152cdfc48a8a3969f10e9e4fe3b239",
@@ -880,66 +825,25 @@ YAML;
                 "title",
                 "date"
             ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
         "ref31ead4d236fd038a7d55a40e2ca1171e": {
             "id": "ref31ead4d236fd038a7d55a40e2ca1171e",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
+            "properties": []
         },
         "ref774a7a4ece700fad7bb605e81c61fea7": {
             "id": "ref774a7a4ece700fad7bb605e81c61fea7",
             "required": [
                 "id"
             ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            "properties": []
         },
         "path": {
             "id": "path",
             "properties": {
                 "name": {
-                    "type": "string",
                     "description": "Name parameter",
+                    "type": "string",
                     "maxLength": 16,
                     "pattern": "[A-z]+"
                 },
@@ -956,8 +860,8 @@ YAML;
             "id": "GET-query",
             "properties": {
                 "startIndex": {
-                    "type": "integer",
                     "description": "startIndex parameter",
+                    "type": "integer",
                     "maximum": 32
                 },
                 "float": {
@@ -983,8 +887,7 @@ YAML;
                     "type": "array",
                     "items": {
                         "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    },
-                    "title": "entry"
+                    }
                 }
             }
         },
@@ -1133,7 +1036,7 @@ YAML;
 }
 JSON;
 
-        $this->assertJsonStringEqualsJsonString($expect, $commandTester->getDisplay(), $commandTester->getDisplay());
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testWsdl()
@@ -1144,6 +1047,7 @@ JSON;
             'format' => 'wsdl',
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" name="foo" targetNamespace="http://phpsx.org/2014/data" xmlns:tns="http://phpsx.org/2014/data" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
@@ -1397,7 +1301,7 @@ JSON;
 </wsdl:definitions>
 XML;
 
-        $this->assertXmlStringEqualsXmlString($expect, $commandTester->getDisplay(), $commandTester->getDisplay());
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     public function testXsd()
@@ -1408,6 +1312,7 @@ XML;
             'format' => 'xsd',
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://phpsx.org/2014/data" targetNamespace="http://phpsx.org/2014/data" elementFormDefault="qualified">
@@ -1529,7 +1434,7 @@ XML;
 </xs:schema>
 XML;
 
-        $this->assertXmlStringEqualsXmlString($expect, $commandTester->getDisplay(), $commandTester->getDisplay());
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     public function testCommandAvailable()
@@ -1544,13 +1449,5 @@ XML;
         return [
             [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController']
         ];
-    }
-
-    protected function assertSource($expect, $actual)
-    {
-        $expect = str_replace(array("\r\n", "\n", "\r"), "\n", $expect);
-        $actual = str_replace(array("\r\n", "\n", "\r"), "\n", $actual);
-
-        $this->assertEquals($expect, $actual);
     }
 }

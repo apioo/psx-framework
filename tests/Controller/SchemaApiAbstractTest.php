@@ -103,7 +103,7 @@ JSON;
         $expect = <<<JSON
 {
 	"success": false,
-	"message": "/title must contain less then 16 characters",
+	"message": "/title must contain less or equal then 16 characters",
 	"title": "Internal Server Error"
 }
 JSON;

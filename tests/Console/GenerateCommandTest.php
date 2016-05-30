@@ -92,7 +92,7 @@ class GenerateCommandTest extends ControllerTestCase
         $expect = str_replace(array("\r\n", "\n", "\r"), "\n", $expect);
         $actual = str_replace(array("\r\n", "\n", "\r"), "\n", $actual);
 
-        $this->assertEquals($expect, $actual);
+        $this->assertEquals($expect, $actual, $actual);
     }
 
     protected function getExpectedEndpointSource()
@@ -110,14 +110,14 @@ class Endpoint extends SchemaApiAbstract
 {
     /**
      * @QueryParam(name="type", type="integer")
-     * @Outgoing(code=200, schema="Acme\Foo\Complex001bfdd0")
+     * @Outgoing(code=200, schema="Acme\Foo\Complex148d238a")
      */
     public function doGet($record)
     {
     }
     /**
-     * @Incoming(schema="Acme\Foo\Complex001bfdd0")
-     * @Outgoing(code=200, schema="Acme\Foo\Complex001bfdd0")
+     * @Incoming(schema="Acme\Foo\Complex148d238a")
+     * @Outgoing(code=200, schema="Acme\Foo\Complex148d238a")
      */
     public function doPost($record)
     {
@@ -133,6 +133,12 @@ PHP;
 
 namespace Acme\Foo;
 
+/**
+ * @AdditionalProperties("string")
+ */
+class Complex5525537f extends \ArrayObject
+{
+}
 /**
  * @Title("a")
  * @AdditionalProperties(false)
@@ -154,7 +160,7 @@ class Complex60bd1bf9
     }
 }
 /**
- * @Title("b")
+ * @Title("choiceB")
  * @AdditionalProperties(false)
  */
 class Complex2b8d1694
@@ -174,14 +180,13 @@ class Complex2b8d1694
     }
 }
 /**
- * @Title("getResponse")
  * @AdditionalProperties(false)
  */
-class Complex001bfdd0
+class Complex148d238a
 {
     /**
      * @Key("any")
-     * @Type("any<string>")
+     * @Type("Acme\Foo\Complex5525537f")
      */
     public $any;
     /**
@@ -196,7 +201,7 @@ class Complex001bfdd0
     public $arrayComplex;
     /**
      * @Key("arrayChoice")
-     * @Type("array<choice<a=Acme\Foo\Complex60bd1bf9,b=Acme\Foo\Complex2b8d1694>>")
+     * @Type("array<choice<Acme\Foo\Complex60bd1bf9,Acme\Foo\Complex2b8d1694>>")
      */
     public $arrayChoice;
     /**
@@ -206,7 +211,7 @@ class Complex001bfdd0
     public $boolean;
     /**
      * @Key("choice")
-     * @Type("choice<a=Acme\Foo\Complex60bd1bf9,b=Acme\Foo\Complex2b8d1694>")
+     * @Type("choice<Acme\Foo\Complex60bd1bf9,Acme\Foo\Complex2b8d1694>")
      */
     public $choice;
     /**
@@ -366,21 +371,21 @@ class Complex001bfdd0
  * @Title("root")
  * @AdditionalProperties(false)
  */
-class Complex2889e595
+class Complex81125937
 {
     /**
      * @Key("getResponse")
-     * @Type("Acme\Foo\Complex001bfdd0")
+     * @Type("Acme\Foo\Complex148d238a")
      */
     public $getResponse;
     /**
      * @Key("postRequest")
-     * @Type("Acme\Foo\Complex001bfdd0")
+     * @Type("Acme\Foo\Complex148d238a")
      */
     public $postRequest;
     /**
      * @Key("postResponse")
-     * @Type("Acme\Foo\Complex001bfdd0")
+     * @Type("Acme\Foo\Complex148d238a")
      */
     public $postResponse;
     public function setGetResponse($getResponse)
