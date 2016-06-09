@@ -58,15 +58,15 @@ class TestTable extends TableAbstract
 				    FROM psx_handler_comment
 				ORDER BY id DESC';
 
-        $definition = $this->provider->newCollection($sql, [], [
-            'id' => new Field\Integer('id'),
+        $definition = $this->doCollection($sql, [], [
+            'id' => $this->type('id', TableInterface::TYPE_INT),
             'title' => 'title',
             'author' => [
-                'userId' => new Field\Integer('userId'),
-                'date' => new Field\DateTime('date'),
+                'userId' => $this->type('userId', TableInterface::TYPE_INT),
+                'date' => $this->dateTime('date'),
             ],
         ]);
 
-        return $this->builder->build($definition);
+        return $this->build($definition);
     }
 }
