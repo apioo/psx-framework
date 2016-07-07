@@ -1,4 +1,8 @@
 
+### 1.0.3 (2016-07-07)
+
+* Add CORS filter
+
 ### 1.0.2 (2016-06-09)
 
 * Update test cases
