@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller;
 
 use PSX\Data\WriterInterface;
+use PSX\Framework\Loader\Context;
 use PSX\Framework\Util\Api\FilterParameter;
 
 /**
@@ -34,13 +35,13 @@ abstract class ApiAbstract extends ControllerAbstract
 {
     protected function getSupportedWriter()
     {
-        return array(
+        return array_intersect($this->context->get(Context::KEY_SUPPORTED_WRITER), [
             WriterInterface::ATOM,
             WriterInterface::JSON,
             WriterInterface::JSONP,
             WriterInterface::JSONX,
             WriterInterface::SOAP,
             WriterInterface::XML,
-        );
+        ]);
     }
 }
