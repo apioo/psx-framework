@@ -286,47 +286,11 @@ JSON;
     "models": {
         "ref1a543de6ef793b231e7e4c78844dbc84": {
             "id": "ref1a543de6ef793b231e7e4c78844dbc84",
-            "properties": []
-        },
-        "ref21726c1551deab178a68a7ffac656c75": {
-            "id": "ref21726c1551deab178a68a7ffac656c75",
-            "properties": []
-        },
-        "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
-            "id": "ref7bde1c36c5f13fd4cf10c2864f8e8a75",
-            "properties": []
-        },
-        "refc6491059d9103dc5bb112e51828416d9": {
-            "id": "refc6491059d9103dc5bb112e51828416d9",
-            "properties": []
-        },
-        "ref70152cdfc48a8a3969f10e9e4fe3b239": {
-            "id": "ref70152cdfc48a8a3969f10e9e4fe3b239",
-            "required": [
-                "title",
-                "date"
-            ],
-            "properties": []
-        },
-        "ref31ead4d236fd038a7d55a40e2ca1171e": {
-            "id": "ref31ead4d236fd038a7d55a40e2ca1171e",
-            "properties": []
-        },
-        "ref774a7a4ece700fad7bb605e81c61fea7": {
-            "id": "ref774a7a4ece700fad7bb605e81c61fea7",
-            "required": [
-                "id"
-            ],
-            "properties": []
-        },
-        "path": {
-            "id": "path",
             "properties": {
                 "name": {
                     "description": "Name parameter",
                     "type": "string",
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "maximum": 16
                 },
                 "type": {
                     "type": "string",
@@ -334,6 +298,119 @@ JSON;
                         "foo",
                         "bar"
                     ]
+                }
+            }
+        },
+        "ref21726c1551deab178a68a7ffac656c75": {
+            "id": "ref21726c1551deab178a68a7ffac656c75",
+            "properties": {
+                "startIndex": {
+                    "description": "startIndex parameter",
+                    "type": "integer",
+                    "maximum": 32
+                },
+                "float": {
+                    "type": "number"
+                },
+                "boolean": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "datetime": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
+            "id": "ref7bde1c36c5f13fd4cf10c2864f8e8a75",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minimum": 3,
+                    "maximum": 16
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "refc6491059d9103dc5bb112e51828416d9": {
+            "id": "refc6491059d9103dc5bb112e51828416d9",
+            "properties": {
+                "entry": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
+                    }
+                }
+            }
+        },
+        "ref70152cdfc48a8a3969f10e9e4fe3b239": {
+            "id": "ref70152cdfc48a8a3969f10e9e4fe3b239",
+            "required": [
+                "title",
+                "date"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minimum": 3,
+                    "maximum": 16
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "ref31ead4d236fd038a7d55a40e2ca1171e": {
+            "id": "ref31ead4d236fd038a7d55a40e2ca1171e",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "ref774a7a4ece700fad7bb605e81c61fea7": {
+            "id": "ref774a7a4ece700fad7bb605e81c61fea7",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minimum": 3,
+                    "maximum": 16
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time"
                 }
             }
         },
@@ -387,9 +464,8 @@ JSON;
                 },
                 "title": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "minimum": 3,
+                    "maximum": 16
                 },
                 "date": {
                     "type": "string",
@@ -422,9 +498,8 @@ JSON;
                 },
                 "title": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "minimum": 3,
+                    "maximum": 16
                 },
                 "date": {
                     "type": "string",
@@ -457,9 +532,8 @@ JSON;
                 },
                 "title": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "minimum": 3,
+                    "maximum": 16
                 },
                 "date": {
                     "type": "string",
@@ -492,9 +566,8 @@ JSON;
                 },
                 "title": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "minimum": 3,
+                    "maximum": 16
                 },
                 "date": {
                     "type": "string",
