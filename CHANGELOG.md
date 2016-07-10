@@ -1,5 +1,9 @@
 
-### 1.0.4
+### 1.0.5 (2016-07-10)
+
+* ApiAbstract return only supported writers
+
+### 1.0.4 (2016-07-10)
 
 * Add psx_supported_writer config option
 
