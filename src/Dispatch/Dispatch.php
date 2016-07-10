@@ -112,7 +112,10 @@ class Dispatch
         $this->eventDispatcher->dispatch(Event::REQUEST_INCOMING, new RequestIncomingEvent($request));
 
         // load controller
-        $context = $context ?: new Context();
+        if ($context === null) {
+            $context = new Context();
+            $context->set(Context::KEY_SUPPORTED_WRITER, $this->config->get('psx_supported_writer'));
+        }
 
         try {
             $this->loader->load($request, $response, $context);

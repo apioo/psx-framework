@@ -132,9 +132,10 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     public function onLoad()
     {
-        // we change the supported writer only if not set
-        if ($this->context->get(Context::KEY_SUPPORTED_WRITER) === null) {
-            $this->context->set(Context::KEY_SUPPORTED_WRITER, $this->getSupportedWriter());
+        // we change the supported writer only if available
+        $supportedWriter = $this->getSupportedWriter();
+        if (!empty($supportedWriter)) {
+            $this->context->set(Context::KEY_SUPPORTED_WRITER, $supportedWriter);
         }
     }
 
@@ -332,7 +333,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
      */
     protected function getSupportedWriter()
     {
-        return $this->context->get(Context::KEY_SUPPORTED_WRITER);
+        return null;
     }
 
     /**
@@ -374,7 +375,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
             }
         }
 
-        $supported = $this->getSupportedWriter();
+        $supported = $this->context->get(Context::KEY_SUPPORTED_WRITER);
         $writer    = $this->io->getWriter($contentType, $writerType, $supported);
 
         // set writer specific settings

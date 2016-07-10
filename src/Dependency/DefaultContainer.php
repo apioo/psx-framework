@@ -27,6 +27,7 @@ use Doctrine\ORM;
 use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
+use PSX\Data\WriterInterface;
 use PSX\Framework\Log\LogListener;
 use PSX\Framework\Template;
 use PSX\Http;
@@ -201,6 +202,19 @@ class DefaultContainer extends Container
             'psx_log_uri'             => null,
             'psx_filter_pre'          => [],
             'psx_filter_post'         => [],
+            'psx_supported_writer'    => [
+                WriterInterface::ATOM,
+                WriterInterface::FORM,
+                WriterInterface::JSON,
+                WriterInterface::JSONP,
+                WriterInterface::JSONX,
+                WriterInterface::RSS,
+                WriterInterface::SOAP,
+                WriterInterface::XML,
+                FrameworkWriter\Html::class,
+                FrameworkWriter\Svg::class,
+                FrameworkWriter\Text::class,
+            ],
         );
     }
 

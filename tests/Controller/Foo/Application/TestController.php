@@ -223,7 +223,7 @@ class TestController extends ControllerAbstract
      */
     public function doInheritSupportedWriter()
     {
-        $this->testCase->assertEquals([WriterInterface::XML], $this->getSupportedWriter());
+        $this->testCase->assertEquals([WriterInterface::XML], $this->context->get(Context::KEY_SUPPORTED_WRITER));
 
         $this->setBody([
             'bar' => 'foo'

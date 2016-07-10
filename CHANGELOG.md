@@ -1,4 +1,8 @@
 
+### 1.0.4
+
+* Add psx_supported_writer config option
+
 ### 1.0.3 (2016-07-07)
 
 * Add CORS filter
