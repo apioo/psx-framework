@@ -152,14 +152,18 @@ class Environment
     {
         $params = null;
         switch (getenv('DB')) {
+            case 'config':
             case 'mysql':
-                $params = array(
-                    'dbname'   => $container->get('config')->get('psx_sql_db'),
-                    'user'     => $container->get('config')->get('psx_sql_user'),
-                    'password' => $container->get('config')->get('psx_sql_pw'),
-                    'host'     => $container->get('config')->get('psx_sql_host'),
-                    'driver'   => 'pdo_mysql',
-                );
+                $params = $container->get('config')->get('psx_connection');
+                if (empty($params)) {
+                    $params = array(
+                        'dbname'   => $container->get('config')->get('psx_sql_db'),
+                        'user'     => $container->get('config')->get('psx_sql_user'),
+                        'password' => $container->get('config')->get('psx_sql_pw'),
+                        'host'     => $container->get('config')->get('psx_sql_host'),
+                        'driver'   => 'pdo_mysql',
+                    );
+                }
                 break;
 
             case 'none':

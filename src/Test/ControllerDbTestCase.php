@@ -54,7 +54,10 @@ abstract class ControllerDbTestCase extends \PHPUnit_Extensions_Database_TestCas
             $this->connection = self::$con;
         }
 
-        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), Environment::getService('config')->get('psx_sql_db'));
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = Environment::getService('config')->get('psx_connection');
+
+        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), $connection->getDatabase());
     }
 
     /**
