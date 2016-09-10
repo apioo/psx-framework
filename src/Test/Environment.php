@@ -171,9 +171,11 @@ class Environment
                 break;
 
             default:
+            case 'memory':
             case 'sqlite':
                 $params = array(
-                    'url' => 'sqlite::memory:'
+                    'memory' => true,
+                    'driver' => 'pdo_sqlite',
                 );
                 break;
         }
