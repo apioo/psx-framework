@@ -36,8 +36,14 @@ abstract class ControllerDbTestCase extends \PHPUnit_Extensions_Database_TestCas
 {
     use ContainerTestCaseTrait;
 
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     protected static $con;
 
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     protected $connection;
 
     public function getConnection()
@@ -54,10 +60,7 @@ abstract class ControllerDbTestCase extends \PHPUnit_Extensions_Database_TestCas
             $this->connection = self::$con;
         }
 
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = Environment::getService('config')->get('psx_connection');
-
-        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), $connection->getDatabase());
+        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), $this->connection->getDatabase());
     }
 
     /**
