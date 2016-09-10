@@ -92,13 +92,16 @@ class DefaultContainer extends Container
         $config = new DBAL\Configuration();
         $config->setSQLLogger(new SqlLogger($this->get('logger')));
 
-        $params = array(
-            'dbname'   => $this->get('config')->get('psx_sql_db'),
-            'user'     => $this->get('config')->get('psx_sql_user'),
-            'password' => $this->get('config')->get('psx_sql_pw'),
-            'host'     => $this->get('config')->get('psx_sql_host'),
-            'driver'   => 'pdo_mysql',
-        );
+        $params = $this->get('config')->get('psx_connection');
+        if (empty($params)) {
+            $params = array(
+                'dbname'   => $this->get('config')->get('psx_sql_db'),
+                'user'     => $this->get('config')->get('psx_sql_user'),
+                'password' => $this->get('config')->get('psx_sql_pw'),
+                'host'     => $this->get('config')->get('psx_sql_host'),
+                'driver'   => 'pdo_mysql',
+            );
+        }
 
         return DBAL\DriverManager::getConnection($params, $config);
     }
@@ -182,7 +185,7 @@ class DefaultContainer extends Container
 
     protected function appendDefaultConfig()
     {
-        return array(
+        return [
             'psx_dispatch'            => 'index.php/',
             'psx_timezone'            => 'UTC',
             'psx_error_controller'    => null,
@@ -215,7 +218,7 @@ class DefaultContainer extends Container
                 FrameworkWriter\Svg::class,
                 FrameworkWriter\Text::class,
             ],
-        );
+        ];
     }
 
     protected function appendDefaultListener(EventDispatcherInterface $eventDispatcher)
