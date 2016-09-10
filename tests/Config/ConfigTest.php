@@ -33,9 +33,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorArray()
     {
-        $config = new Config(array(
+        $config = new Config([
             'foo' => 'bar'
-        ));
+        ]);
 
         $this->assertEquals('bar', $config['foo']);
         $this->assertEquals('bar', $config->get('foo'));
@@ -57,7 +57,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefinitionConfigInvalidType()
     {
-        $config = Config::fromFile(__DIR__ . '/definition_invalid_config_type.php');
+        Config::fromFile(__DIR__ . '/definition_invalid_config_type.php');
     }
 
     public function testReturnConfig()
@@ -73,7 +73,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnConfigInvalidType()
     {
-        $config = Config::fromFile(__DIR__ . '/return_invalid_config_type.php');
+        Config::fromFile(__DIR__ . '/return_invalid_config_type.php');
     }
 
     /**
@@ -81,7 +81,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoConfig()
     {
-        $config = Config::fromFile(__DIR__ . '/no_config.php');
+        Config::fromFile(__DIR__ . '/no_config.php');
     }
 
     /**
@@ -89,13 +89,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigFileNotExisting()
     {
-        $config = Config::fromFile(__DIR__ . '/foo_config.php');
+        Config::fromFile(__DIR__ . '/foo_config.php');
     }
 
     public function testConfigOffsetSet()
     {
-        $config = new Config(array());
-
+        $config = new Config([]);
         $config['foo'] = 'bar';
 
         $this->assertEquals('bar', $config['foo']);
@@ -107,7 +106,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigOffsetExists()
     {
-        $config = new Config(array());
+        $config = new Config([]);
 
         $this->assertEquals(false, isset($config['foobar']));
         $this->assertEquals(false, $config->has('foobar'));
@@ -120,8 +119,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigOffsetUnset()
     {
-        $config = new Config(array());
-
+        $config = new Config([]);
         $config['bar'] = 'test';
 
         unset($config['bar']);
@@ -131,11 +129,18 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigOffsetGet()
     {
-        $config = new Config(array());
-
+        $config = new Config([]);
         $config['bar'] = 'test';
 
         $this->assertEquals('test', $config['bar']);
         $this->assertEquals('test', $config->get('bar'));
+    }
+
+    public function testConfigOffsetGetNotExisting()
+    {
+        $config = new Config([]);
+
+        $this->assertNull($config['bar']);
+        $this->assertNull($config->get('bar'));
     }
 }

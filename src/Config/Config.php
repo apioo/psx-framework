@@ -63,6 +63,11 @@ class Config extends ArrayIterator
         return new Config(array_merge($this->getArrayCopy(), $config->getArrayCopy()));
     }
 
+    public function offsetGet($key)
+    {
+        return $this->offsetExists($key) ? parent::offsetGet($key) : null;
+    }
+
     public static function fromFile($file)
     {
         $config = include($file);
