@@ -24,16 +24,16 @@ use PSX\Api\Parser;
 use PSX\Framework\Api\CachedListing;
 use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Dispatch\ApplicationStackFactory;
 use PSX\Framework\Dispatch\ControllerFactory;
+use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Dispatch\RequestFactory;
 use PSX\Framework\Dispatch\ResponseFactory;
 use PSX\Framework\Dispatch\Sender\Basic as BasicSender;
+use PSX\Framework\Exception;
 use PSX\Framework\Loader;
 use PSX\Framework\Session\Session;
 use PSX\Framework\Template;
-use PSX\Framework\Exception;
 
 /**
  * Controller
