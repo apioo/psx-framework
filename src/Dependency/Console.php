@@ -70,7 +70,7 @@ trait Console
         $application->add(new PSXCommand\ServeCommand($this->get('config'), $this->get('dispatch'), $this->get('console_reader')));
         $application->add(new PSXCommand\GenerateCommand());
 
-        $application->add(new SchemaCommand($this->get('annotation_reader'), $this->get('config')->get('psx_soap_namespace')));
+        $application->add(new SchemaCommand($this->get('schema_manager'), $this->get('config')->get('psx_soap_namespace')));
 
         $application->add(new SqlConsole\MigrateCommand($this->get('connection'), $this->get('table_manager')));
         $application->add(new SqlConsole\GenerateCommand($this->get('connection')));
