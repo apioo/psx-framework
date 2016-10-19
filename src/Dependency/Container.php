@@ -28,9 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
- * A simple and fast implementation of an dependency container. Note this
- * implementation does not support nested scopes. You can enter a scope and when
- * you leave the scope you are at the root scope
+ * A simple and fast implementation of a symfony dependency container
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
