@@ -189,6 +189,10 @@ class DefaultContainer extends Container
             'psx_timezone'            => 'UTC',
             'psx_error_controller'    => null,
             'psx_error_template'      => null,
+            'psx_connection'          => [
+                'memory'              => true,
+                'driver'              => 'pdo_sqlite',
+            ],
             'psx_annotation_autoload' => [
                 'PSX\Api\Annotation',
                 'PSX\Schema\Parser\Popo\Annotation',
