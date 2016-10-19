@@ -26,7 +26,6 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\DependencyInjection\ScopeInterface;
 
 /**
  * A simple and fast implementation of an dependency container. Note this
@@ -39,35 +38,29 @@ use Symfony\Component\DependencyInjection\ScopeInterface;
  */
 class Container implements ContainerInterface
 {
-    protected $services   = array();
-    protected $parameters = array();
-    protected $scope      = 'container';
-    protected $scopes     = array('container');
+    protected $services;
+    protected $parameters;
 
     public function __construct()
     {
-        $this->services[$this->scope]   = array();
-        $this->parameters[$this->scope] = array();
+        $this->services   = array();
+        $this->parameters = array();
     }
 
-    public function set($name, $obj, $scope = 'container')
+    public function set($name, $object)
     {
-        if (!in_array($scope, $this->scopes)) {
-            throw new InvalidArgumentException('Invalid scope');
-        }
-
         $name = self::normalizeName($name);
 
-        return $this->services[$scope][$name] = $obj;
+        return $this->services[$name] = $object;
     }
 
     public function get($name, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
         $name = self::normalizeName($name);
 
-        if (!isset($this->services[$this->scope][$name])) {
+        if (!isset($this->services[$name])) {
             if (method_exists($this, $method = 'get' . $name)) {
-                $this->services[$this->scope][$name] = $this->$method();
+                $this->services[$name] = $this->$method();
             } else {
                 if ($invalidBehavior == self::EXCEPTION_ON_INVALID_REFERENCE) {
                     throw new ServiceNotFoundException('Service ' . $name . ' not defined');
@@ -77,21 +70,28 @@ class Container implements ContainerInterface
             }
         }
 
-        return $this->services[$this->scope][$name];
+        return $this->services[$name];
     }
 
     public function has($name)
     {
         $name = self::normalizeName($name);
 
-        return isset($this->services[$this->scope][$name]) || method_exists($this, 'get' . $name);
+        return isset($this->services[$name]) || method_exists($this, 'get' . $name);
+    }
+
+    public function initialized($name)
+    {
+        $name = self::normalizeName($name);
+
+        return isset($this->services[$name]);
     }
 
     public function setParameter($name, $value)
     {
         $name = strtolower($name);
 
-        $this->parameters[$this->scope][$name] = $value;
+        $this->parameters[$name] = $value;
     }
 
     public function getParameter($name)
@@ -99,7 +99,7 @@ class Container implements ContainerInterface
         $name = strtolower($name);
 
         if ($this->hasParameter($name)) {
-            return $this->parameters[$this->scope][$name];
+            return $this->parameters[$name];
         } else {
             throw new InvalidArgumentException('Parameter ' . $name . ' not set');
         }
@@ -109,39 +109,7 @@ class Container implements ContainerInterface
     {
         $name = strtolower($name);
 
-        return isset($this->parameters[$this->scope][$name]);
-    }
-
-    public function enterScope($name)
-    {
-        if (!$this->hasScope($name)) {
-            throw new InvalidArgumentException('Scope ' . $name . ' does not exist');
-        }
-
-        $this->scope = $name;
-    }
-
-    public function leaveScope($name)
-    {
-        $this->scope = 'container';
-    }
-
-    public function addScope(ScopeInterface $scope)
-    {
-        $this->scopes[] = $scope->getName();
-
-        $this->services[$scope->getName()]   = array();
-        $this->parameters[$scope->getName()] = array();
-    }
-
-    public function hasScope($name)
-    {
-        return in_array($name, $this->scopes);
-    }
-
-    public function isScopeActive($name)
-    {
-        return $this->scope == $name;
+        return isset($this->parameters[$name]);
     }
 
     /**

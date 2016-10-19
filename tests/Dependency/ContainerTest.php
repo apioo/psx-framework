@@ -96,6 +96,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $sc = new ProjectServiceContainer();
         $sc->set('foo', new \stdClass());
+
         $this->assertFalse($sc->has('foo1'), '->has() returns false if the service does not exist');
         $this->assertTrue($sc->has('foo'), '->has() returns true if the service exists');
         $this->assertTrue($sc->has('bar'), '->has() returns true if a get*Method() is defined');
@@ -103,70 +104,15 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($sc->has('foo_bar'), '->has() returns true if a get*Method() is defined');
     }
 
-    public function testEnterLeaveCurrentScope()
+    public function testInitialized()
     {
-        $container = new ProjectServiceContainer();
-        $container->addScope(new Scope('foo'));
-        $container->set('scoped', new \stdClass(), 'foo');
-        $container->set('scoped_foo', new \stdClass(), 'foo');
+        $sc = new ProjectServiceContainer();
 
-        $this->assertEquals($container->__bar, $container->get('bar'));
+        $this->assertFalse($sc->initialized('foo_bar'));
 
-        try {
-            $this->assertInstanceOf('stdClass', $container->get('scoped'));
-            $this->fail('Scoped service should not be accessible from default scope');
-        } catch (ServiceNotFoundException $e) {
-        }
+        $sc->get('foo_bar');
 
-        $container->enterScope('foo');
-
-        $this->assertInstanceOf('stdClass', $container->get('scoped'));
-        $this->assertInstanceOf('stdClass', $container->get('scoped_foo'));
-
-        $container->leaveScope('foo');
-
-        $this->assertEquals($container->__bar, $container->get('bar'));
-
-        try {
-            $this->assertInstanceOf('stdClass', $container->get('scoped'));
-            $this->fail('Scoped service should not be accessible after leaving a scope');
-        } catch (ServiceNotFoundException $e) {
-        }
-    }
-
-    public function testAddScope()
-    {
-        $sc = new Container();
-        $sc->addScope(new Scope('foo'));
-        $sc->addScope(new Scope('bar'));
-
-        $this->assertTrue($sc->hasScope('foo'));
-        $this->assertTrue($sc->hasScope('bar'));
-    }
-
-    public function testHasScope()
-    {
-        $sc = new Container();
-
-        $this->assertFalse($sc->hasScope('foo'));
-        $sc->addScope(new Scope('foo'));
-        $this->assertTrue($sc->hasScope('foo'));
-    }
-
-    public function testIsScopeActive()
-    {
-        $sc = new Container();
-
-        $this->assertFalse($sc->isScopeActive('foo'));
-        $sc->addScope(new Scope('foo'));
-
-        $this->assertFalse($sc->isScopeActive('foo'));
-        $sc->enterScope('foo');
-
-        $this->assertTrue($sc->isScopeActive('foo'));
-        $sc->leaveScope('foo');
-
-        $this->assertFalse($sc->isScopeActive('foo'));
+        $this->assertTrue($sc->initialized('foo_bar'));
     }
 
     public function testGetServiceIds()
@@ -185,6 +131,42 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('stdClass', $sc->getReturnType('bar'));
         $this->assertEquals('\stdClass', $sc->getReturnType('foo_bar'));
         $this->assertEquals('array', $sc->getReturnType('scalar'));
+    }
+
+    /**
+     * @dataProvider dataForNormalizeName
+     */
+    public function testNormalizeName($name, $expected)
+    {
+        $this->assertEquals($expected, Container::normalizeName($name));
+    }
+
+    public function dataForNormalizeName()
+    {
+        return array(
+            array('FooBar', 'FooBar'),
+            array('foo_bar', 'FooBar'),
+        );
+    }
+
+    /**
+     * @dataProvider dataForUnderscore
+     */
+    public function testUnderscore($name, $expected)
+    {
+        $this->assertEquals($expected, Container::underscore($name));
+    }
+
+    public function dataForUnderscore()
+    {
+        return array(
+            array('FooBar', 'foo_bar'),
+            array('Foo_Bar', 'foo.bar'),
+            array('Foo_BarBaz', 'foo.bar_baz'),
+            array('FooBar_BazQux', 'foo_bar.baz_qux'),
+            array('_Foo', '.foo'),
+            array('Foo_', 'foo.'),
+        );
     }
 }
 
