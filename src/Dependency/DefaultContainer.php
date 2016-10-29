@@ -23,13 +23,15 @@ namespace PSX\Framework\Dependency;
 use Doctrine\Common\Annotations;
 use Doctrine\Common\Cache as DoctrineCache;
 use Doctrine\DBAL;
+use Monolog\Handler\ErrorLogHandler;
+use Monolog\Logger;
 use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\Writer;
 use PSX\Data\WriterInterface;
 use PSX\Framework\Data\Writer as FrameworkWriter;
-use PSX\Framework\Log\LoggerFactory;
+use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Framework\Template;
 use PSX\Http;
@@ -78,9 +80,7 @@ class DefaultContainer extends Container
      */
     public function getCache()
     {
-        $handler = new DoctrineCache\FilesystemCache($this->get('config')->get('psx_path_cache'));
-
-        return new Cache\Pool($handler);
+        return new Cache\Pool($this->newDoctrineCacheImpl('psx'));
     }
 
     /**
@@ -88,19 +88,9 @@ class DefaultContainer extends Container
      */
     public function getConnection()
     {
+        $params = $this->get('config')->get('psx_connection');
         $config = new DBAL\Configuration();
         $config->setSQLLogger(new SqlLogger($this->get('logger')));
-
-        $params = $this->get('config')->get('psx_connection');
-        if (empty($params)) {
-            $params = array(
-                'dbname'   => $this->get('config')->get('psx_sql_db'),
-                'user'     => $this->get('config')->get('psx_sql_user'),
-                'password' => $this->get('config')->get('psx_sql_pw'),
-                'host'     => $this->get('config')->get('psx_sql_host'),
-                'driver'   => 'pdo_mysql',
-            );
-        }
 
         return DBAL\DriverManager::getConnection($params, $config);
     }
@@ -147,11 +137,10 @@ class DefaultContainer extends Container
      */
     public function getLogger()
     {
-        return LoggerFactory::factory(
-            $this->get('config')->get('psx_log_level'),
-            $this->get('config')->get('psx_log_handler'),
-            $this->get('config')->get('psx_log_uri')
-        );
+        $logger = new Logger('psx');
+        $logger->pushHandler($this->newLoggerHandlerImpl());
+
+        return $logger;
     }
 
     /**
@@ -203,9 +192,8 @@ class DefaultContainer extends Container
             'psx_entity_paths'        => [],
             'psx_soap_namespace'      => 'http://phpsx.org/2014/data',
             'psx_json_namespace'      => 'urn:schema.phpsx.org#',
-            'psx_log_level'           => \Monolog\Logger::ERROR,
-            'psx_log_handler'         => 'system',
-            'psx_log_uri'             => null,
+            'psx_cache_factory'       => null,
+            'psx_logger_factory'      => null,
             'psx_filter_pre'          => [],
             'psx_filter_post'         => [],
             'psx_supported_writer'    => [
@@ -230,15 +218,44 @@ class DefaultContainer extends Container
     }
 
     /**
-     * If you want to change the doctrine cache which is used in various 
-     * components you can override this method
+     * Returns the default log handler
+     * 
+     * @return \Monolog\Handler\HandlerInterface
+     */
+    protected function newLoggerHandlerImpl()
+    {
+        $config  = $this->get('config');
+        $factory = $config->get('psx_logger_factory');
+
+        if ($factory instanceof \Closure) {
+            return $factory($config);
+        } else {
+            $level = $config->get('psx_log_level');
+            $level = !empty($level) ? $level : Logger::ERROR;
+
+            $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $level, true, true);
+            $handler->setFormatter(new ErrorFormatter());
+
+            return $handler;
+        }
+    }
+
+    /**
+     * Returns the default doctrine cache
      * 
      * @param string $namespace
      * @return \Doctrine\Common\Cache\Cache
      */
     protected function newDoctrineCacheImpl($namespace)
     {
-        return new DoctrineCache\FilesystemCache(PSX_PATH_CACHE . '/' . $namespace);
+        $config  = $this->get('config');
+        $factory = $config->get('psx_cache_factory');
+
+        if ($factory instanceof \Closure) {
+            return $factory($config, $namespace);
+        } else {
+            return new DoctrineCache\FilesystemCache($this->get('config')->get('psx_path_cache') . '/' . $namespace);
+        }
     }
 
     /**
@@ -260,7 +277,7 @@ class DefaultContainer extends Container
                 $this->get('config')->get('psx_debug')
             );
         }
-        
+
         return $reader;
     }
 }
