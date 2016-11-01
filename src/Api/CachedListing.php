@@ -34,10 +34,26 @@ use PSX\Schema\Schema;
  */
 class CachedListing implements ListingInterface
 {
+    /**
+     * @var \PSX\Api\ListingInterface
+     */
     protected $listing;
+
+    /**
+     * @var \Psr\Cache\CacheItemPoolInterface
+     */
     protected $cache;
+
+    /**
+     * @var integer|null
+     */
     protected $expire;
 
+    /**
+     * @param \PSX\Api\ListingInterface $listing
+     * @param \Psr\Cache\CacheItemPoolInterface $cache
+     * @param integer|null $expire
+     */
     public function __construct(ListingInterface $listing, CacheItemPoolInterface $cache, $expire = null)
     {
         $this->listing = $listing;
@@ -85,6 +101,11 @@ class CachedListing implements ListingInterface
         }
 
         return null;
+    }
+
+    public function invalidateResource($sourcePath, $version = null)
+    {
+        $this->cache->deleteItem('api-resource-' . substr(md5($sourcePath . $version), 0, 16));
     }
 
     /**

@@ -53,6 +53,10 @@ class ControllerDocumentation implements ListingInterface
      */
     protected $controllerFactory;
 
+    /**
+     * @param \PSX\Framework\Loader\RoutingParserInterface $routingParser
+     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
+     */
     public function __construct(RoutingParserInterface $routingParser, ControllerFactoryInterface $controllerFactory)
     {
         $this->routingParser     = $routingParser;
