@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Api;
 
+use PSX\Cache\Pool;
 use PSX\Framework\Api\CachedListing;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
@@ -70,6 +71,21 @@ class CachedListingTest extends ControllerDbTestCase
         $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('DELETE')->getResponse(200));
         $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PATCH')->getRequest());
         $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PATCH')->getResponse(200));
+    }
+
+    public function testInvalidateResource()
+    {
+        $cache = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['deleteItem'])
+            ->getMock();
+
+        $cache->expects($this->once())
+            ->method('deleteItem')
+            ->with($this->equalTo('api-resource-1effb2475fcfba4f'));
+
+        $listing = new CachedListing(Environment::getService('resource_listing'), $cache);
+        $listing->invalidateResource('/foo');
     }
 
     protected function getPaths()
