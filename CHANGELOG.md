@@ -1,4 +1,8 @@
 
+### 1.1.1 (2016-11-01)
+
+* Add invalidate resource method to api cached listing
+
 ### 1.1.0 (2016-10-30)
 
 * Cache implementation use doctrine cache handler from factory
