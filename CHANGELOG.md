@@ -1,4 +1,8 @@
 
+### 1.1.3 (2016-11-20)
+
+* Use psx_dispatch configuration to provide a way to change the dispatch file
+
 ### 1.1.2 (2016-11-20)
 
 * Request factory handle normal and index.php/ calls independent of the
