@@ -55,11 +55,10 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
         $_SERVER = $this->server;
     }
 
-    public function testCreateRequestNoPathAndNoDispatch()
+    public function testCreateRequestNoPath()
     {
         $config = new Config(array(
-            'psx_url'      => 'http://foo.com',
-            'psx_dispatch' => '',
+            'psx_url' => 'http://foo.com',
         ));
 
         $matrix = array(
@@ -67,10 +66,13 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/', ['REQUEST_URI' => '']],
             ['http://foo.com/', ['REQUEST_URI' => '/']],
             ['http://foo.com/bar', ['REQUEST_URI' => '/bar']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar']],
             ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
             ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/bar/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
         );
 
         foreach ($matrix as $data) {
@@ -84,11 +86,10 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCorrectRequestUriWorks($config);
     }
 
-    public function testCreateRequestNoProtocolNoPathAndNoDispatch()
+    public function testCreateRequestNoProtocolNoPath()
     {
         $config = new Config(array(
-            'psx_url'      => '//foo.com',
-            'psx_dispatch' => '',
+            'psx_url' => '//foo.com',
         ));
 
         $matrix = array(
@@ -96,9 +97,12 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/', ['REQUEST_URI' => '']],
             ['http://foo.com/', ['REQUEST_URI' => '/']],
             ['http://foo.com/bar', ['REQUEST_URI' => '/bar']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar']],
             ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
         );
 
         foreach ($matrix as $data) {
@@ -112,41 +116,10 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCorrectRequestUriWorks($config);
     }
 
-    public function testCreateRequestNoPathAndDispatch()
+    public function testCreateRequestPath()
     {
         $config = new Config(array(
-            'psx_url'      => 'http://foo.com',
-            'psx_dispatch' => 'index.php/',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '']],
-            ['http://foo.com/', ['REQUEST_URI' => '/']],
-            ['http://foo.com/', ['REQUEST_URI' => '/index.php']],
-            ['http://foo.com/', ['REQUEST_URI' => '/index.php/']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/index.php/bar?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
-
-        $this->assertCorrectRequestUriWorks($config);
-    }
-
-    public function testCreateRequestPathAndNoDispatch()
-    {
-        $config = new Config(array(
-            'psx_url'      => 'http://foo.com/sub/folder',
-            'psx_dispatch' => '',
+            'psx_url' => 'http://foo.com/sub/folder',
         ));
 
         $matrix = array(
@@ -161,39 +134,10 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/sub/folder/bar?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder?bar=test']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
-
-        $this->assertCorrectRequestUriWorks($config);
-    }
-
-    public function testCreateRequestPathAndDispatch()
-    {
-        $config = new Config(array(
-            'psx_url'      => 'http://foo.com/sub/folder',
-            'psx_dispatch' => 'index.php/',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder/']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder/index.php']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder/index.php/']],
             ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/index.php/bar']],
             ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/index.php/bar/']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/sub/folder/index.php/bar?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php?bar=test']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
         );
 
         foreach ($matrix as $data) {

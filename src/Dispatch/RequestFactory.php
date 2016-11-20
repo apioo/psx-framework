@@ -65,7 +65,9 @@ class RequestFactory implements RequestFactoryInterface
 
             if (!$this->isCli()) {
                 $path = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-                $skip = (isset($parts['path']) ? $parts['path'] : '') . '/' . $this->config['psx_dispatch'];
+                $path = str_replace(['index.php/', 'index.php'], '', $path);
+
+                $skip = isset($parts['path']) ? $parts['path'] : '';
                 $path = $this->skip($path, $skip);
             } else {
                 $path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
