@@ -1,4 +1,9 @@
 
+### 1.1.2 (2016-11-20)
+
+* Request factory handle normal and index.php/ calls independent of the
+  psx_dispatch configuration
+
 ### 1.1.1 (2016-11-01)
 
 * Add invalidate resource method to api cached listing
