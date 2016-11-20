@@ -71,6 +71,8 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/bar/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
         );
@@ -101,6 +103,8 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
         );
@@ -134,6 +138,8 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/sub/folder/bar?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/?bar=test']],
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php/?bar=test']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php?bar=test']],
             ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/index.php/bar']],
             ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/index.php/bar/']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
@@ -154,8 +160,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateRequestNoProtocol()
     {
         $config = new Config(array(
-            'psx_url'      => '//foo.com',
-            'psx_dispatch' => '',
+            'psx_url' => '//foo.com',
         ));
 
         $matrix = array(
@@ -380,6 +385,12 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Digest foobar', $request->getHeader('Authorization'));
     }
 
+    /**
+     * @param array $env
+     * @param \PSX\Framework\Config $config
+     * @param boolean $isCli
+     * @return \PSX\Http\RequestInterface
+     */
     protected function getRequest(array $env, Config $config, $isCli = false)
     {
         $factory = $this->getMockBuilder('PSX\Framework\Dispatch\RequestFactory')
