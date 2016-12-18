@@ -99,28 +99,6 @@ class ResourceCommand extends Command
                     $response  = $generator->generate($resource);
                     break;
 
-                case 'wsdl':
-                    $path  = ltrim($resource->getPath(), '/');
-                    $title = $resource->getTitle();
-
-                    if (empty($title)) {
-                        $title = str_replace(' ', '', ucwords(str_replace('/', ' ', $path)));
-                    }
-
-                    $endpoint        = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'] . $path;
-                    $targetNamespace = $this->config['psx_soap_namespace'];
-
-                    $generator = new Generator\Wsdl($title, $endpoint, $targetNamespace);
-                    $response  = $generator->generate($resource);
-                    break;
-
-                case 'xsd':
-                    $targetNamespace = $this->config['psx_soap_namespace'];
-
-                    $generator = new Generator\Xsd($targetNamespace);
-                    $response  = $generator->generate($resource);
-                    break;
-
                 default:
                 case 'jsonschema':
                     $targetNamespace = $this->config['psx_json_namespace'];
