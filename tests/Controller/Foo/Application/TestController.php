@@ -258,22 +258,23 @@ class TestController extends ControllerAbstract
 class TestBody
 {
     /**
-     * @var string
+     * @Type("string")
      */
     protected $foo;
 
     /**
-     * @var string
+     * @Type("string")
      */
     protected $title;
 
     /**
-     * @var \PSX\Framework\Tests\Controller\Foo\Application\TestBody
+     * @Ref("\PSX\Framework\Tests\Controller\Foo\Application\TestBody")
      */
     protected $bar;
 
     /**
-     * @var array<\PSX\Framework\Tests\Controller\Foo\Application\TestBody>
+     * @Type("array")
+     * @Items(@Ref("\PSX\Framework\Tests\Controller\Foo\Application\TestBody"))
      */
     protected $entries;
 

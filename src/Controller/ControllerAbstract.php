@@ -21,7 +21,6 @@
 namespace PSX\Framework\Controller;
 
 use DOMDocument;
-use InvalidArgumentException;
 use PSX\Data\Accessor;
 use PSX\Data\Payload;
 use PSX\Data\TransformerInterface;
@@ -39,8 +38,9 @@ use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\StreamInterface;
-use PSX\Schema\RevealerInterface;
-use PSX\Validate\ValidatorInterface;
+use PSX\Schema\Validation\ValidatorInterface;
+use PSX\Schema\Validation\Validator;
+use PSX\Schema\Visitor\TypeVisitor;
 use ReflectionClass;
 use SimpleXMLElement;
 
@@ -225,26 +225,16 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     /**
      * @param string $schema
-     * @param \PSX\Validate\ValidatorInterface|null $validator
-     * @param \PSX\Schema\RevealerInterface $revealer
      * @param string $readerType
      * @return mixed
      */
-    protected function getBodyAs($schema, ValidatorInterface $validator = null, RevealerInterface $revealer = null, $readerType = null)
+    protected function getBodyAs($schema, ValidatorInterface $validator = null, $readerType = null)
     {
         $data    = (string) $this->request->getBody();
         $payload = Payload::create($data, $this->request->getHeader('Content-Type'))
             ->setRwType($readerType);
 
-        if ($validator !== null) {
-            $payload->setValidator($validator);
-        }
-
-        if ($revealer !== null) {
-            $payload->setRevealer($revealer);
-        }
-
-        return $this->io->read($schema, $payload);
+        return $this->io->read($schema, $payload, new TypeVisitor($validator));
     }
 
     /**
@@ -277,25 +267,8 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
         } elseif (is_string($data)) {
             $this->response->getBody()->write($data);
         } else {
-            $this->setResponse($data, null, $writerType);
+            $this->setResponse($data, $writerType);
         }
-
-        $this->_responseWritten = true;
-    }
-
-    /**
-     * @param mixed $data
-     * @param string|\PSX\Schema\SchemaInterface $schema
-     * @param string $writerType
-     */
-    protected function setBodyAs($data, $schema, $writerType = null)
-    {
-        if ($this->_responseWritten) {
-            // we have already written a response
-            return;
-        }
-
-        $this->setResponse($data, $schema, $writerType);
 
         $this->_responseWritten = true;
     }
@@ -363,7 +336,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
      * @param string $writerType
      * @return void
      */
-    private function setResponse($data, $schema = null, $writerType = null)
+    private function setResponse($data, $writerType = null)
     {
         $contentType = $this->getHeader('Accept');
         $format      = $this->getParameter('format');
@@ -389,7 +362,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
             $payload->setRwSupported($supported);
         }
 
-        $response = $this->io->write($payload, $schema);
+        $response = $this->io->write($payload);
 
         // the response may have multiple presentations based on the Accept
         // header field

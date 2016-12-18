@@ -40,7 +40,7 @@ class NestedEntry extends SchemaAbstract
 
         $sb = $this->getSchemaBuilder('item');
         $sb->integer('id');
-        $sb->complexType('author', $author);
+        $sb->objectType('author', $author);
         $sb->string('title')
             ->setMinLength(3)
             ->setMaxLength(16)

@@ -142,26 +142,26 @@ class GenerateCommand extends Command
      */
     protected function getSchemaSource(Resource $resource, $namespace)
     {
-        $methods     = $resource->getMethods();
-        $complexType = new Builder('root');
+        $methods = $resource->getMethods();
+        $root    = new Builder('root');
 
         foreach ($methods as $methodName => $method) {
             $request = $method->getRequest();
             if ($request instanceof SchemaInterface) {
-                $complexType->complexType(strtolower($methodName) . 'Request', $request->getDefinition());
+                $root->objectType(strtolower($methodName) . 'Request', $request->getDefinition());
             }
 
             $responses = $method->getResponses();
             foreach ($responses as $response) {
                 if ($response instanceof SchemaInterface) {
-                    $complexType->complexType(strtolower($methodName) . 'Response', $response->getDefinition());
+                    $root->objectType(strtolower($methodName) . 'Response', $response->getDefinition());
                 }
             }
         }
 
         $generator = new Php($namespace);
 
-        return $generator->generate(new Schema($complexType->getProperty()));
+        return $generator->generate(new Schema($root->getProperty()));
     }
 
     protected function makeDir($path)

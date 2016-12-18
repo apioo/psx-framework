@@ -53,7 +53,7 @@ abstract class TemplateAbstractTestCase extends \PHPUnit_Framework_TestCase
 
     public function testWrite()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -126,7 +126,7 @@ TEXT;
 
     public function testWriteResultSet()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -199,7 +199,7 @@ TEXT;
      */
     public function testAutomaticTemplateDetection()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -232,7 +232,7 @@ TEXT;
      */
     public function testSetNotExistingTemplateFile()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -266,7 +266,7 @@ TEXT;
      */
     public function testSetExistingTemplateFile()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -299,7 +299,7 @@ TEXT;
 
     public function testSetExistingTemplateFileWrongFileExtension()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -336,7 +336,7 @@ TEXT;
 
     public function testSetExistingTemplateFileNoFileExtension()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -377,7 +377,7 @@ TEXT;
      */
     public function testFallbackGenerator()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();

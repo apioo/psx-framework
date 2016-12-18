@@ -75,7 +75,7 @@ JSON;
         $expect = <<<'JSON'
 {
     "success": false,
-    "title": "PSX\\Validate\\ValidationException",
+    "title": "PSX\\Schema\\ValidationException",
     "message": "/title has an invalid length min 3 and max 8 signs",
     "trace": "",
     "context": ""
@@ -96,50 +96,8 @@ JSON;
         $expect = <<<'JSON'
 {
     "success": false,
-    "title": "PSX\\Validate\\ValidationException",
+    "title": "PSX\\Schema\\ValidationException",
     "message": "/author/name has an invalid length min 3 and max 8 signs",
-    "trace": "",
-    "context": ""
-}
-JSON;
-
-        $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
-    }
-
-    public function testInsertUnknownProperty()
-    {
-        $body     = json_encode(['title' => 'foo', 'foo' => 'bar']);
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $body);
-        $body     = (string) $response->getBody();
-        $body     = self::normalizeExceptionResponse($body);
-
-        $expect = <<<'JSON'
-{
-    "success": false,
-    "title": "PSX\\Schema\\ValidationException",
-    "message": "/ property \"foo\" does not exist",
-    "trace": "",
-    "context": ""
-}
-JSON;
-
-        $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
-    }
-
-    public function testInsertUnknownNestedProperty()
-    {
-        $body     = json_encode(['title' => 'foo', 'author' => ['name' => 'foo', 'foo' => 'bar']]);
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $body);
-        $body     = (string) $response->getBody();
-        $body     = self::normalizeExceptionResponse($body);
-
-        $expect = <<<'JSON'
-{
-    "success": false,
-    "title": "PSX\\Schema\\ValidationException",
-    "message": "/author property \"foo\" does not exist",
     "trace": "",
     "context": ""
 }

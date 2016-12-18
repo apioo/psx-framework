@@ -57,9 +57,9 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
 
         $schema = $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Collection');
 
-        // remove userId property so we have a differnt output
+        // remove userId property so we have a different output
         $property = $schema->getDefinition();
-        $property->get('entry')->getPrototype()->remove('userId');
+        $property->getProperty('entry')->getItems()->removeProperty('userId');
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
             ->addResponse(200, new Schema($property)));

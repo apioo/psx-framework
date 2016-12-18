@@ -34,7 +34,7 @@ class Patch extends SchemaAbstract
     public function getDefinition()
     {
         $entry = $this->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Entry');
-        $entry->get('id')->setRequired(true);
+        $entry->setRequired(['id']);
 
         return $entry;
     }

@@ -24,19 +24,24 @@ use PSX\Api\DocumentedInterface;
 use PSX\Api\Parser;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
+use PSX\Data\Record\Transformer;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Schema\Passthru;
 use PSX\Record\Record;
 use PSX\Record\RecordInterface;
 use PSX\Http\Exception as StatusCode;
+use PSX\Schema\PropertyInterface;
+use PSX\Schema\PropertyType;
+use PSX\Schema\Schema;
 use PSX\Schema\SchemaInterface;
+use PSX\Schema\SchemaTraverser;
 
 /**
- * SchemaApiAbstract
+ * The schema api controller helps to build an API based on a API specification
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @link	http://phpsx.org
+ * @link    http://phpsx.org
  */
 abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterface
 {
@@ -80,17 +85,9 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         // get the current resource and check everything is valid
         $this->resource = $this->getResource();
 
-        // validate and assign the path parameters
-        $this->pathParameters = $this->io->assimilate(
-            $this->uriFragments,
-            $this->resource->getPathParameters()
-        );
-
-        // validate and assign the query parameters
-        $this->queryParameters = $this->io->assimilate(
-            $this->request->getUri()->getParameters(),
-            $this->resource->getMethod($this->getMethod())->getQueryParameters()
-        );
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $this->resource->getMethod($this->getMethod())->getQueryParameters());
     }
 
     public function onHead()
@@ -265,12 +262,9 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             $schema = $this->getSuccessfulResponse($method, $statusCode);
         }
 
-        if ($schema instanceof Passthru) {
+        if ($schema instanceof SchemaInterface) {
             $this->setResponseCode($statusCode);
             $this->setBody($response);
-        } elseif ($schema instanceof SchemaInterface) {
-            $this->setResponseCode($statusCode);
-            $this->setBodyAs($response, $schema);
         } else {
             $this->setResponseCode(204);
             $this->setBody('');
@@ -313,7 +307,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @param integer $statusCode
      * @return \PSX\Schema\SchemaInterface
      */
-    protected function getSuccessfulResponse(MethodAbstract $method, &$statusCode)
+    private function getSuccessfulResponse(MethodAbstract $method, &$statusCode)
     {
         $successCodes = [200, 201, 202, 203, 205, 207];
 
@@ -326,5 +320,81 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         }
 
         return null;
+    }
+
+    /**
+     * @param array $data
+     * @param \PSX\Schema\PropertyInterface $property
+     * @return mixed
+     */
+    private function parseParameters(array $data, PropertyInterface $property)
+    {
+        $traverser = new SchemaTraverser();
+
+        $data = $traverser->traverse(
+            $this->convertParameterTypes($data, $property),
+            new Schema($property)
+        );
+
+        return Record::fromStdClass($data);
+    }
+
+    /**
+     * @param array $parameters
+     * @param \PSX\Schema\PropertyInterface $property
+     * @return \stdClass
+     */
+    private function convertParameterTypes(array $parameters, PropertyInterface $property)
+    {
+        $data = new \stdClass();
+        $keys = [];
+
+        $properties = $property->getProperties();
+        if (!empty($properties)) {
+            foreach ($properties as $name => $property) {
+                if (isset($parameters[$name])) {
+                    $data->{$name} = $this->convertPropertyType($parameters[$name], $property);
+
+                    $keys[] = $name;
+                }
+            }
+        }
+
+        $additionalProperties = $property->getAdditionalProperties();
+        if ($additionalProperties === true) {
+            $diff = array_diff(array_keys($parameters), $keys);
+            foreach ($diff as $name) {
+                $data->{$name} = $parameters[$name];
+            }
+        } elseif ($additionalProperties instanceof PropertyInterface) {
+            $diff = array_diff(array_keys($parameters), $keys);
+            foreach ($diff as $name) {
+                $this->convertPropertyType($parameters[$name], $additionalProperties);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param mixed $data
+     * @param \PSX\Schema\PropertyInterface $property
+     * @return mixed
+     */
+    private function convertPropertyType($data, PropertyInterface $property)
+    {
+        if ($property->getType() === PropertyType::TYPE_INTEGER) {
+            return (int) $data;
+        } elseif ($property->getType() === PropertyType::TYPE_NUMBER) {
+            return (float) $data;
+        } elseif ($property->getType() === PropertyType::TYPE_BOOLEAN) {
+            return (bool) $data;
+        } elseif ($property->getType() === PropertyType::TYPE_STRING) {
+            return (string) $data;
+        } elseif ($property->getType() === PropertyType::TYPE_NULL) {
+            return null;
+        } else {
+            return $data;
+        }
     }
 }

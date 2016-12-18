@@ -37,7 +37,7 @@ class RamlControllerTest extends ControllerTestCase
         $raml     = (string) $response->getBody();
 
         $expect = <<<'RAML'
-#%RAML 0.8
+#%RAML 1.0
 ---
 baseUri: 'http://127.0.0.1/'
 version: v1
@@ -72,23 +72,23 @@ title: foo
         type: boolean
         required: false
       date:
-        type: date
+        type: date-only
         required: false
       datetime:
-        type: date
+        type: datetime-only
         required: false
     responses:
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
                   "definitions": {
-                      "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
-                          "title": "item",
+                      "Item": {
                           "type": "object",
+                          "title": "item",
                           "properties": {
                               "id": {
                                   "type": "integer"
@@ -98,39 +98,37 @@ title: foo
                               },
                               "title": {
                                   "type": "string",
+                                  "pattern": "[A-z]+",
                                   "minLength": 3,
-                                  "maxLength": 16,
-                                  "pattern": "[A-z]+"
+                                  "maxLength": 16
                               },
                               "date": {
                                   "type": "string",
                                   "format": "date-time"
                               }
-                          },
-                          "additionalProperties": false
+                          }
                       }
                   },
-                  "title": "collection",
                   "type": "object",
+                  "title": "collection",
                   "properties": {
                       "entry": {
                           "type": "array",
                           "items": {
-                              "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
+                              "$ref": "#\/definitions\/Item"
                           }
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   post:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -140,16 +138,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "title",
                   "date"
@@ -159,12 +156,12 @@ title: foo
       201:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -172,18 +169,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   put:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -193,16 +189,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -211,12 +206,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -224,18 +219,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   delete:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -245,16 +239,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -263,12 +256,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -276,18 +269,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   patch:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -297,16 +289,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -315,12 +306,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -328,8 +319,7 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
 
 RAML;

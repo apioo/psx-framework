@@ -90,7 +90,9 @@ class GenerateCommandTest extends ControllerTestCase
     protected function assertSource($expect, $actual)
     {
         $expect = str_replace(array("\r\n", "\n", "\r"), "\n", $expect);
+        $expect = preg_replace('/Object([0-9A-Fa-f]{8})/', 'ObjectId', $expect);
         $actual = str_replace(array("\r\n", "\n", "\r"), "\n", $actual);
+        $actual = preg_replace('/Object([0-9A-Fa-f]{8})/', 'ObjectId', $actual);
 
         $this->assertEquals($expect, $actual, $actual);
     }
@@ -110,14 +112,14 @@ class Endpoint extends SchemaApiAbstract
 {
     /**
      * @QueryParam(name="type", type="integer")
-     * @Outgoing(code=200, schema="Acme\Foo\Complex148d238a")
+     * @Outgoing(code=200, schema="Acme\Foo\ObjectId")
      */
     public function doGet($record)
     {
     }
     /**
-     * @Incoming(schema="Acme\Foo\Complex148d238a")
-     * @Outgoing(code=200, schema="Acme\Foo\Complex148d238a")
+     * @Incoming(schema="Acme\Foo\ObjectId")
+     * @Outgoing(code=200, schema="Acme\Foo\ObjectId")
      */
     public function doPost($record)
     {
@@ -134,22 +136,65 @@ PHP;
 namespace Acme\Foo;
 
 /**
- * @AdditionalProperties("string")
- */
-class Complex5525537f extends \ArrayObject
-{
-}
-/**
- * @Title("a")
  * @AdditionalProperties(false)
  */
-class Complex60bd1bf9
+class ObjectId
 {
     /**
      * @Key("foo")
      * @Type("string")
      */
-    public $foo;
+    protected $foo;
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+}
+/**
+ * @AdditionalProperties(@Schema(type="string"))
+ */
+class ObjectId extends \ArrayObject
+{
+}
+/**
+ * @AdditionalProperties(false)
+ */
+class ObjectId
+{
+    /**
+     * @Key("foo")
+     * @Type("string")
+     */
+    protected $foo;
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+}
+/**
+ * @AdditionalProperties(@Schema(type="string"))
+ */
+class ObjectId extends \ArrayObject
+{
+}
+/**
+ * @AdditionalProperties(false)
+ */
+class ObjectId
+{
+    /**
+     * @Key("foo")
+     * @Type("string")
+     */
+    protected $foo;
     public function setFoo($foo)
     {
         $this->foo = $foo;
@@ -163,13 +208,13 @@ class Complex60bd1bf9
  * @Title("choiceB")
  * @AdditionalProperties(false)
  */
-class Complex2b8d1694
+class ChoiceB
 {
     /**
      * @Key("bar")
      * @Type("string")
      */
-    public $bar;
+    protected $bar;
     public function setBar($bar)
     {
         $this->bar = $bar;
@@ -180,80 +225,519 @@ class Complex2b8d1694
     }
 }
 /**
+ * @Title("choiceA")
  * @AdditionalProperties(false)
  */
-class Complex148d238a
+class ChoiceA
+{
+    /**
+     * @Key("foo")
+     * @Type("string")
+     */
+    protected $foo;
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+}
+/**
+ * @Title("a")
+ */
+class A
+{
+    /**
+     * @Key("foo")
+     * @Type("string")
+     */
+    protected $foo;
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+}
+/**
+ * @AdditionalProperties(@Schema(type="string"))
+ */
+class ObjectId extends \ArrayObject
+{
+}
+/**
+ */
+class ObjectId
 {
     /**
      * @Key("any")
-     * @Type("Acme\Foo\Complex5525537f")
+     * @Ref("Acme\Foo\ObjectId")
      */
-    public $any;
+    protected $any;
     /**
      * @Key("array")
-     * @Type("array<string>")
+     * @Type("array")
+     * @Items(@Schema(type="string"))
      */
-    public $array;
+    protected $array;
     /**
      * @Key("arrayComplex")
-     * @Type("array<Acme\Foo\Complex60bd1bf9>")
+     * @Type("array")
+     * @Items(@Ref("Acme\Foo\A"))
      */
-    public $arrayComplex;
+    protected $arrayComplex;
     /**
      * @Key("arrayChoice")
-     * @Type("array<choice<Acme\Foo\Complex60bd1bf9,Acme\Foo\Complex2b8d1694>>")
+     * @Type("array")
+     * @Items(@Schema(oneOf={@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB")}))
      */
-    public $arrayChoice;
+    protected $arrayChoice;
     /**
      * @Key("boolean")
      * @Type("boolean")
      */
-    public $boolean;
+    protected $boolean;
     /**
      * @Key("choice")
-     * @Type("choice<Acme\Foo\Complex60bd1bf9,Acme\Foo\Complex2b8d1694>")
+     * @OneOf(@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB"))
      */
-    public $choice;
+    protected $choice;
     /**
      * @Key("complex")
-     * @Type("Acme\Foo\Complex60bd1bf9")
+     * @Ref("Acme\Foo\ObjectId")
      */
-    public $complex;
+    protected $complex;
     /**
      * @Key("date")
-     * @Type("date")
+     * @Type("string")
+     * @Format("date")
      */
-    public $date;
+    protected $date;
     /**
      * @Key("dateTime")
-     * @Type("dateTime")
+     * @Type("string")
+     * @Format("date-time")
      */
-    public $dateTime;
+    protected $dateTime;
     /**
      * @Key("duration")
-     * @Type("duration")
+     * @Type("string")
+     * @Format("duration")
      */
-    public $duration;
+    protected $duration;
     /**
      * @Key("float")
-     * @Type("float")
+     * @Type("number")
      */
-    public $float;
+    protected $float;
     /**
      * @Key("integer")
      * @Type("integer")
      */
-    public $integer;
+    protected $integer;
     /**
      * @Key("string")
      * @Type("string")
      */
-    public $string;
+    protected $string;
     /**
      * @Key("time")
-     * @Type("time")
+     * @Type("string")
+     * @Format("time")
      */
-    public $time;
+    protected $time;
+    public function setAny($any)
+    {
+        $this->any = $any;
+    }
+    public function getAny()
+    {
+        return $this->any;
+    }
+    public function setArray($array)
+    {
+        $this->array = $array;
+    }
+    public function getArray()
+    {
+        return $this->array;
+    }
+    public function setArrayComplex($arrayComplex)
+    {
+        $this->arrayComplex = $arrayComplex;
+    }
+    public function getArrayComplex()
+    {
+        return $this->arrayComplex;
+    }
+    public function setArrayChoice($arrayChoice)
+    {
+        $this->arrayChoice = $arrayChoice;
+    }
+    public function getArrayChoice()
+    {
+        return $this->arrayChoice;
+    }
+    public function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
+    }
+    public function getBoolean()
+    {
+        return $this->boolean;
+    }
+    public function setChoice($choice)
+    {
+        $this->choice = $choice;
+    }
+    public function getChoice()
+    {
+        return $this->choice;
+    }
+    public function setComplex($complex)
+    {
+        $this->complex = $complex;
+    }
+    public function getComplex()
+    {
+        return $this->complex;
+    }
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+    public function getDate()
+    {
+        return $this->date;
+    }
+    public function setDateTime($dateTime)
+    {
+        $this->dateTime = $dateTime;
+    }
+    public function getDateTime()
+    {
+        return $this->dateTime;
+    }
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    }
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+    public function setFloat($float)
+    {
+        $this->float = $float;
+    }
+    public function getFloat()
+    {
+        return $this->float;
+    }
+    public function setInteger($integer)
+    {
+        $this->integer = $integer;
+    }
+    public function getInteger()
+    {
+        return $this->integer;
+    }
+    public function setString($string)
+    {
+        $this->string = $string;
+    }
+    public function getString()
+    {
+        return $this->string;
+    }
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+    public function getTime()
+    {
+        return $this->time;
+    }
+}
+/**
+ */
+class ObjectId
+{
+    /**
+     * @Key("any")
+     * @Ref("Acme\Foo\ObjectId")
+     */
+    protected $any;
+    /**
+     * @Key("array")
+     * @Type("array")
+     * @Items(@Schema(type="string"))
+     */
+    protected $array;
+    /**
+     * @Key("arrayComplex")
+     * @Type("array")
+     * @Items(@Ref("Acme\Foo\A"))
+     */
+    protected $arrayComplex;
+    /**
+     * @Key("arrayChoice")
+     * @Type("array")
+     * @Items(@Schema(oneOf={@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB")}))
+     */
+    protected $arrayChoice;
+    /**
+     * @Key("boolean")
+     * @Type("boolean")
+     */
+    protected $boolean;
+    /**
+     * @Key("choice")
+     * @OneOf(@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB"))
+     */
+    protected $choice;
+    /**
+     * @Key("complex")
+     * @Ref("Acme\Foo\ObjectId")
+     */
+    protected $complex;
+    /**
+     * @Key("date")
+     * @Type("string")
+     * @Format("date")
+     */
+    protected $date;
+    /**
+     * @Key("dateTime")
+     * @Type("string")
+     * @Format("date-time")
+     */
+    protected $dateTime;
+    /**
+     * @Key("duration")
+     * @Type("string")
+     * @Format("duration")
+     */
+    protected $duration;
+    /**
+     * @Key("float")
+     * @Type("number")
+     */
+    protected $float;
+    /**
+     * @Key("integer")
+     * @Type("integer")
+     */
+    protected $integer;
+    /**
+     * @Key("string")
+     * @Type("string")
+     */
+    protected $string;
+    /**
+     * @Key("time")
+     * @Type("string")
+     * @Format("time")
+     */
+    protected $time;
+    public function setAny($any)
+    {
+        $this->any = $any;
+    }
+    public function getAny()
+    {
+        return $this->any;
+    }
+    public function setArray($array)
+    {
+        $this->array = $array;
+    }
+    public function getArray()
+    {
+        return $this->array;
+    }
+    public function setArrayComplex($arrayComplex)
+    {
+        $this->arrayComplex = $arrayComplex;
+    }
+    public function getArrayComplex()
+    {
+        return $this->arrayComplex;
+    }
+    public function setArrayChoice($arrayChoice)
+    {
+        $this->arrayChoice = $arrayChoice;
+    }
+    public function getArrayChoice()
+    {
+        return $this->arrayChoice;
+    }
+    public function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
+    }
+    public function getBoolean()
+    {
+        return $this->boolean;
+    }
+    public function setChoice($choice)
+    {
+        $this->choice = $choice;
+    }
+    public function getChoice()
+    {
+        return $this->choice;
+    }
+    public function setComplex($complex)
+    {
+        $this->complex = $complex;
+    }
+    public function getComplex()
+    {
+        return $this->complex;
+    }
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+    public function getDate()
+    {
+        return $this->date;
+    }
+    public function setDateTime($dateTime)
+    {
+        $this->dateTime = $dateTime;
+    }
+    public function getDateTime()
+    {
+        return $this->dateTime;
+    }
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    }
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+    public function setFloat($float)
+    {
+        $this->float = $float;
+    }
+    public function getFloat()
+    {
+        return $this->float;
+    }
+    public function setInteger($integer)
+    {
+        $this->integer = $integer;
+    }
+    public function getInteger()
+    {
+        return $this->integer;
+    }
+    public function setString($string)
+    {
+        $this->string = $string;
+    }
+    public function getString()
+    {
+        return $this->string;
+    }
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+    public function getTime()
+    {
+        return $this->time;
+    }
+}
+/**
+ */
+class ObjectId
+{
+    /**
+     * @Key("any")
+     * @Ref("Acme\Foo\ObjectId")
+     */
+    protected $any;
+    /**
+     * @Key("array")
+     * @Type("array")
+     * @Items(@Schema(type="string"))
+     */
+    protected $array;
+    /**
+     * @Key("arrayComplex")
+     * @Type("array")
+     * @Items(@Ref("Acme\Foo\A"))
+     */
+    protected $arrayComplex;
+    /**
+     * @Key("arrayChoice")
+     * @Type("array")
+     * @Items(@Schema(oneOf={@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB")}))
+     */
+    protected $arrayChoice;
+    /**
+     * @Key("boolean")
+     * @Type("boolean")
+     */
+    protected $boolean;
+    /**
+     * @Key("choice")
+     * @OneOf(@Ref("Acme\Foo\ChoiceA"), @Ref("Acme\Foo\ChoiceB"))
+     */
+    protected $choice;
+    /**
+     * @Key("complex")
+     * @Ref("Acme\Foo\ObjectId")
+     */
+    protected $complex;
+    /**
+     * @Key("date")
+     * @Type("string")
+     * @Format("date")
+     */
+    protected $date;
+    /**
+     * @Key("dateTime")
+     * @Type("string")
+     * @Format("date-time")
+     */
+    protected $dateTime;
+    /**
+     * @Key("duration")
+     * @Type("string")
+     * @Format("duration")
+     */
+    protected $duration;
+    /**
+     * @Key("float")
+     * @Type("number")
+     */
+    protected $float;
+    /**
+     * @Key("integer")
+     * @Type("integer")
+     */
+    protected $integer;
+    /**
+     * @Key("string")
+     * @Type("string")
+     */
+    protected $string;
+    /**
+     * @Key("time")
+     * @Type("string")
+     * @Format("time")
+     */
+    protected $time;
     public function setAny($any)
     {
         $this->any = $any;
@@ -369,25 +853,24 @@ class Complex148d238a
 }
 /**
  * @Title("root")
- * @AdditionalProperties(false)
  */
-class Complex81125937
+class Root
 {
     /**
      * @Key("getResponse")
-     * @Type("Acme\Foo\Complex148d238a")
+     * @Ref("Acme\Foo\ObjectId")
      */
-    public $getResponse;
+    protected $getResponse;
     /**
      * @Key("postRequest")
-     * @Type("Acme\Foo\Complex148d238a")
+     * @Ref("Acme\Foo\ObjectId")
      */
-    public $postRequest;
+    protected $postRequest;
     /**
      * @Key("postResponse")
-     * @Type("Acme\Foo\Complex148d238a")
+     * @Ref("Acme\Foo\ObjectId")
      */
-    public $postResponse;
+    protected $postResponse;
     public function setGetResponse($getResponse)
     {
         $this->getResponse = $getResponse;

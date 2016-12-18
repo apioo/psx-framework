@@ -323,7 +323,7 @@ class LogListenerTest extends ControllerTestCase
 
     protected function getLogger()
     {
-        return $this->getMock('Psr\Log\LoggerInterface', array('emergency', 'alert', 'critical', 'warning', 'debug', 'log', 'info', 'notice', 'error'));
+        return $this->createMock('Psr\Log\LoggerInterface', array('emergency', 'alert', 'critical', 'warning', 'debug', 'log', 'info', 'notice', 'error'));
     }
 
     protected function getPaths()

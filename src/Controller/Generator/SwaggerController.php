@@ -51,28 +51,13 @@ class SwaggerController extends ControllerAbstract
      */
     protected $annotationReader;
 
-    public function doIndex()
-    {
-        $resourceListing = new ResourceListing('1.0');
-        $resources       = $this->resourceListing->getResourceIndex();
-
-        foreach ($resources as $resource) {
-            $path = '/*';
-            $path.= Inflection::transformRoutePlaceholder($resource->getPath());
-
-            $resourceListing->addResource(new ResourceObject($path));
-        }
-
-        $this->setBody($resourceListing, WriterInterface::JSON);
-    }
-
-    public function doDetail()
+    public function onGet()
     {
         $version  = (int) $this->getUriFragment('version');
         $resource = $this->resourceListing->getResource($this->getUriFragment('path'), $version);
 
         if ($resource instanceof Resource) {
-            $baseUri         = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
+            $baseUri         = '/' . $this->config['psx_dispatch'];
             $targetNamespace = $this->config['psx_json_namespace'];
 
             $generator = new Generator\Swagger(new Exporter\Popo($this->annotationReader), $version, $baseUri, $targetNamespace);

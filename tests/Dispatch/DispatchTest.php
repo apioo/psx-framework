@@ -40,7 +40,7 @@ class DispatchTest extends ControllerTestCase
     {
         $testCase = $this;
 
-        $requestIncomingListener = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
+        $requestIncomingListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
         $requestIncomingListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function (RequestIncomingEvent $event) use ($testCase) {
@@ -50,7 +50,7 @@ class DispatchTest extends ControllerTestCase
                 return true;
             }));
 
-        $responseSendListener = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
+        $responseSendListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
         $responseSendListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function (ResponseSendEvent $event) use ($testCase) {
@@ -83,7 +83,7 @@ class DispatchTest extends ControllerTestCase
     {
         $testCase = $this;
 
-        $exceptionListener = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
+        $exceptionListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
         $exceptionListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function (ExceptionThrownEvent $event) use ($testCase) {

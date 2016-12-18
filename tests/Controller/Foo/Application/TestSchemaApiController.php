@@ -58,21 +58,19 @@ class TestSchemaApiController extends SchemaApiAbstract
 
         $resource->addPathParameter('name', Property::getString()
             ->setDescription('Name parameter')
-            ->setRequired(false)
             ->setMinLength(0)
             ->setMaxLength(16)
             ->setPattern('[A-z]+'));
         $resource->addPathParameter('type', Property::getString()
-            ->setEnumeration(['foo', 'bar']));
+            ->setEnum(['foo', 'bar']));
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
             ->setDescription('Returns a collection')
             ->addQueryParameter('startIndex', Property::getInteger()
                 ->setDescription('startIndex parameter')
-                ->setRequired(false)
-                ->setMin(0)
-                ->setMax(32))
-            ->addQueryParameter('float', Property::getFloat())
+                ->setMinimum(0)
+                ->setMaximum(32))
+            ->addQueryParameter('float', Property::getNumber())
             ->addQueryParameter('boolean', Property::getBoolean())
             ->addQueryParameter('date', Property::getDate())
             ->addQueryParameter('datetime', Property::getDateTime())

@@ -123,7 +123,7 @@ JSON;
         $expect = <<<JSON
 {
 	"success": false,
-	"message": "/title is required",
+	"message": "/ the following properties are required: title, date",
 	"title": "Internal Server Error"
 }
 JSON;

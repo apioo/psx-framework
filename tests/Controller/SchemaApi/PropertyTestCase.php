@@ -80,7 +80,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/any/foo must be a string', substr($data->message, 0, 25), $body);
+        $this->assertEquals('/any/foo must be of type string', substr($data->message, 0, 31), $body);
     }
 
     public function testPostInvalidArray()
@@ -96,7 +96,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/array must be an array', substr($data->message, 0, 23), $body);
+        $this->assertEquals('/array must be of type array', substr($data->message, 0, 28), $body);
     }
 
     public function testPostInvalidArrayComplex()
@@ -112,7 +112,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/arrayComplex must be an array', substr($data->message, 0, 30), $body);
+        $this->assertEquals('/arrayComplex must be of type array', substr($data->message, 0, 35), $body);
     }
 
     public function testPostInvalidArrayChoice()
@@ -134,7 +134,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/arrayChoice/1 must be one of the following types (choiceA, choiceB)', substr($data->message, 0, 68), $body);
+        $this->assertEquals('/arrayChoice/1 must match one required schema', substr($data->message, 0, 45), $body);
     }
 
     public function testPostInvalidBoolean()
@@ -150,7 +150,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/boolean must be a boolean', substr($data->message, 0, 26), $body);
+        $this->assertEquals('/boolean must be of type boolean', substr($data->message, 0, 32), $body);
     }
 
     public function testPostInvalidChoice()
@@ -168,7 +168,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/choice must be one of the following types (choiceA, choiceB)', substr($data->message, 0, 61), $body);
+        $this->assertEquals('/choice must match one required schema', substr($data->message, 0, 38), $body);
     }
 
     public function testPostInvalidComplex()
@@ -202,7 +202,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/dateTime must be a valid date-time format (Y-m-d\TH:i:sP)', substr($data->message, 0, 58), $body);
+        $this->assertEquals('/dateTime must be a valid date-time format [RFC3339]', substr($data->message, 0, 52), $body);
     }
 
     public function testPostInvalidDate()
@@ -218,7 +218,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/date must be a valid full-date format (date-fullyear "-" date-month "-" date-mday) [RFC3339]', substr($data->message, 0, 93), $body);
+        $this->assertEquals('/date must be a valid full-date format [RFC3339]', substr($data->message, 0, 48), $body);
     }
 
     public function testPostInvalidDuration()
@@ -250,7 +250,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/float must be a float', substr($data->message, 0, 22), $body);
+        $this->assertEquals('/float must be of type number', substr($data->message, 0, 29), $body);
     }
 
     public function testPostInvalidInteger()
@@ -266,7 +266,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/integer must be a integer', substr($data->message, 0, 26), $body);
+        $this->assertEquals('/integer must be of type integer', substr($data->message, 0, 32), $body);
     }
 
     public function testPostInvalidString()
@@ -282,7 +282,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/string must be a string', substr($data->message, 0, 24), $body);
+        $this->assertEquals('/string must be of type string', substr($data->message, 0, 30), $body);
     }
 
     public function testPostInvalidTime()
@@ -298,7 +298,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/time must be a valid full-time format (partial-time time-offset) [RFC3339]', substr($data->message, 0, 75), $body);
+        $this->assertEquals('/time must be a valid full-time format [RFC3339]', substr($data->message, 0, 48), $body);
     }
 
     /**
@@ -363,8 +363,6 @@ JSON;
             [2],
             [3],
             [4],
-            [5],
-            [6],
         ];
     }
 
@@ -415,78 +413,6 @@ JSON;
                 break;
 
             case 2:
-                // we return only strings like from an database
-                return [
-                    'any' => [
-                        'foo' => 'bar'
-                    ],
-                    'array' => ['bar'],
-                    'arrayComplex' => [[
-                        'foo' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'arrayChoice' => [[
-                        'foo' => 'baz'
-                    ],[
-                        'bar' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'boolean' => 'true',
-                    'choice' => [
-                        'bar' => 'test'
-                    ],
-                    'complex' => [
-                        'foo' => 'bar'
-                    ],
-                    'date' => '2015-05-01',
-                    'dateTime' => '2015-05-01T13:37:14Z',
-                    'duration' => 'P1M',
-                    'float' => '13.37',
-                    'integer' => '7',
-                    'string' => 'bar',
-                    'time' => '13:37:14',
-                ];
-                break;
-
-            case 3:
-                // we return types which we get from the doctrine mapper
-                return [
-                    'any' => [
-                        'foo' => 'bar'
-                    ],
-                    'array' => ['bar'],
-                    'arrayComplex' => [[
-                        'foo' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'arrayChoice' => [[
-                        'foo' => 'baz'
-                    ],[
-                        'bar' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'boolean' => true,
-                    'choice' => [
-                        'bar' => 'test'
-                    ],
-                    'complex' => [
-                        'foo' => 'bar'
-                    ],
-                    'date' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'dateTime' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'duration' => 'P1M',
-                    'float' => 13.37,
-                    'integer' => 7,
-                    'string' => 'bar',
-                    'time' => new \DateTime('2015-05-01T13:37:14Z'),
-                ];
-                break;
-
-            case 4:
                 // we return stdClass
                 return (object) [
                     'any' => (object) [
@@ -512,17 +438,17 @@ JSON;
                     'complex' => (object) [
                         'foo' => 'bar'
                     ],
-                    'date' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'dateTime' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'duration' => 'P1M',
+                    'date' => new Date(2015, 5, 1),
+                    'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+                    'duration' => new Duration('P1M'),
                     'float' => 13.37,
                     'integer' => 7,
                     'string' => 'bar',
-                    'time' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'time' => new Time(13, 37, 14),
                 ];
                 break;
 
-            case 5:
+            case 3:
                 // we return records
                 return Record::fromArray([
                     'any' => Record::fromArray([
@@ -555,17 +481,17 @@ JSON;
                     'complex' => Record::fromArray([
                         'foo' => 'bar'
                     ]),
-                    'date' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'dateTime' => new \DateTime('2015-05-01T13:37:14Z'),
-                    'duration' => 'P1M',
+                    'date' => new Date(2015, 5, 1),
+                    'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+                    'duration' => new Duration('P1M'),
                     'float' => 13.37,
                     'integer' => 7,
                     'string' => 'bar',
-                    'time' => new \DateTime('2015-05-01T13:37:14Z'),
+                    'time' => new Time(13, 37, 14),
                 ]);
                 break;
 
-            case 6:
+            case 4:
                 // we return POPOs
                 $object = new Property();
                 $object->setAny(new ChoiceA('bar'));
@@ -575,13 +501,13 @@ JSON;
                 $object->setBoolean(true);
                 $object->setChoice(new ChoiceB('test'));
                 $object->setComplex(new Complex('bar'));
-                $object->setDate(new \DateTime('2015-05-01T13:37:14Z'));
-                $object->setDateTime(new \DateTime('2015-05-01T13:37:14Z'));
-                $object->setDuration(new \DateInterval('P1M'));
+                $object->setDate(new Date(2015, 5, 1));
+                $object->setDateTime(new DateTime(2015, 5, 1, 13, 37, 14));
+                $object->setDuration(new Duration('P1M'));
                 $object->setFloat(13.37);
                 $object->setInteger(7);
                 $object->setString('bar');
-                $object->setTime(new \DateTime('2015-05-01T13:37:14Z'));
+                $object->setTime(new Time(13, 37, 14));
 
                 return $object;
                 break;

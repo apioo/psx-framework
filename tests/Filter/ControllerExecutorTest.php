@@ -20,8 +20,10 @@
 
 namespace PSX\Framework\Tests\Filter;
 
+use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Filter\ControllerExecutor;
 use PSX\Framework\Filter\FilterChain;
+use PSX\Framework\Tests\Filter\ControllerExecutor\FooController;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Framework\Loader;
@@ -45,17 +47,20 @@ class ControllerExecutorTest extends \PHPUnit_Framework_TestCase
         $request  = new Request(new Url('http://localhost'), $method);
         $response = new Response();
 
-        $controller = $this->getMock('PSX\Framework\Controller\ControllerInterface', array(
-            'onLoad',
-            'onGet',
-            'onHead',
-            'onPost',
-            'onPut',
-            'onDelete',
-            'onOptions',
-            'onPatch',
-            'processResponse',
-        ));
+        $controller = $this->getMockBuilder(ControllerInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'onLoad',
+                'onGet',
+                'onHead',
+                'onPost',
+                'onPut',
+                'onDelete',
+                'onOptions',
+                'onPatch',
+                'processResponse',
+            ])
+            ->getMock();
 
         $controller->expects($this->once())
             ->method('onLoad');
@@ -88,18 +93,21 @@ class ControllerExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteControllerMethod()
     {
-        $controller = $this->getMock('PSX\Framework\Controller\ControllerInterface', array(
-            'onLoad',
-            'onGet',
-            'onHead',
-            'onPost',
-            'onPut',
-            'onDelete',
-            'onOptions',
-            'onPatch',
-            'processResponse',
-            'doFoo',
-        ));
+        $controller = $this->getMockBuilder(ControllerInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'onLoad',
+                'onGet',
+                'onHead',
+                'onPost',
+                'onPut',
+                'onDelete',
+                'onOptions',
+                'onPatch',
+                'processResponse',
+                'doFoo',
+            ])
+            ->getMock();
 
         $controller->expects($this->once())
             ->method('onLoad');

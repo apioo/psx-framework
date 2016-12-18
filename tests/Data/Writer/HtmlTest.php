@@ -41,7 +41,7 @@ class HtmlTest extends TemplateAbstractTestCase
 
     public function testIsContentTypeSupported()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -54,7 +54,7 @@ class HtmlTest extends TemplateAbstractTestCase
 
     public function testGetContentType()
     {
-        $template = $this->getMock('PSX\Framework\Template\TemplateInterface');
+        $template = $this->createMock('PSX\Framework\Template\TemplateInterface');
         $router   = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
             ->disableOriginalConstructor()
             ->getMock();

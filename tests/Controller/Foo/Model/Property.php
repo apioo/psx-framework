@@ -29,26 +29,30 @@ use DateInterval;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @AdditionalProperties(false)
  */
 class Property
 {
     /**
-     * @Type("PSX\Framework\Tests\Controller\Foo\Model\Any")
+     * @Ref("PSX\Framework\Tests\Controller\Foo\Model\Any")
      */
     protected $any;
 
     /**
-     * @Type("array<string>")
+     * @Type("array")
+     * @Items(@Schema(type="string"))
      */
     protected $array;
 
     /**
-     * @Type("array<PSX\Framework\Tests\Controller\Foo\Model\Complex>")
+     * @Type("array")
+     * @Items(@Ref("PSX\Framework\Tests\Controller\Foo\Model\Complex"))
      */
     protected $arrayComplex;
 
     /**
-     * @Type("array<choice<PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>>")
+     * @Type("array")
+     * @Items(@Schema(oneOf={@Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceA"), @Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceB")}))
      */
     protected $arrayChoice;
 
@@ -58,32 +62,35 @@ class Property
     protected $boolean;
 
     /**
-     * @Type("choice<PSX\Framework\Tests\Controller\Foo\Model\ChoiceA,PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>")
+     * @OneOf(@Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceA"), @Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceB"))
      */
     protected $choice;
 
     /**
-     * @Type("PSX\Framework\Tests\Controller\Foo\Model\Complex")
+     * @Ref("PSX\Framework\Tests\Controller\Foo\Model\Complex")
      */
     protected $complex;
 
     /**
-     * @Type("date")
+     * @Type("string")
+     * @Format("date")
      */
     protected $date;
 
     /**
-     * @Type("datetime")
+     * @Type("string")
+     * @Format("date-time")
      */
     protected $dateTime;
 
     /**
-     * @Type("duration")
+     * @Type("string")
+     * @Format("duration")
      */
     protected $duration;
 
     /**
-     * @Type("float")
+     * @Type("number")
      */
     protected $float;
 
@@ -98,7 +105,8 @@ class Property
     protected $string;
 
     /**
-     * @Type("time")
+     * @Type("string")
+     * @Format("time")
      */
     protected $time;
 

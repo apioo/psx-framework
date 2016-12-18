@@ -65,93 +65,22 @@ class ResourceCommandTest extends ControllerTestCase
 {
     "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
     "id": "urn:schema.phpsx.org#",
-    "type": "object",
     "definitions": {
-        "ref1a543de6ef793b231e7e4c78844dbc84": {
-            "title": "path",
+        "Collection": {
             "type": "object",
-            "properties": {
-                "name": {
-                    "description": "Name parameter",
-                    "type": "string",
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "foo",
-                        "bar"
-                    ]
-                }
-            },
-            "additionalProperties": true
-        },
-        "ref21726c1551deab178a68a7ffac656c75": {
-            "title": "query",
-            "type": "object",
-            "properties": {
-                "startIndex": {
-                    "description": "startIndex parameter",
-                    "type": "integer",
-                    "maximum": 32
-                },
-                "float": {
-                    "type": "number"
-                },
-                "boolean": {
-                    "type": "boolean"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            },
-            "additionalProperties": true
-        },
-        "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
-            "title": "item",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            },
-            "additionalProperties": false
-        },
-        "refc6491059d9103dc5bb112e51828416d9": {
             "title": "collection",
-            "type": "object",
             "properties": {
                 "entry": {
                     "type": "array",
                     "items": {
-                        "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
+                        "$ref": "#\/definitions\/Item"
                     }
                 }
-            },
-            "additionalProperties": false
+            }
         },
-        "ref70152cdfc48a8a3969f10e9e4fe3b239": {
-            "title": "item",
+        "Item": {
             "type": "object",
+            "title": "item",
             "properties": {
                 "id": {
                     "type": "integer"
@@ -161,24 +90,22 @@ class ResourceCommandTest extends ControllerTestCase
                 },
                 "title": {
                     "type": "string",
+                    "pattern": "[A-z]+",
                     "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
+                    "maxLength": 16
                 },
                 "date": {
                     "type": "string",
                     "format": "date-time"
                 }
             },
-            "additionalProperties": false,
             "required": [
-                "title",
-                "date"
+                "id"
             ]
         },
-        "ref31ead4d236fd038a7d55a40e2ca1171e": {
-            "title": "message",
+        "Message": {
             "type": "object",
+            "title": "message",
             "properties": {
                 "success": {
                     "type": "boolean"
@@ -186,67 +113,7 @@ class ResourceCommandTest extends ControllerTestCase
                 "message": {
                     "type": "string"
                 }
-            },
-            "additionalProperties": false
-        },
-        "ref774a7a4ece700fad7bb605e81c61fea7": {
-            "title": "item",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 16,
-                    "pattern": "[A-z]+"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            },
-            "additionalProperties": false,
-            "required": [
-                "id"
-            ]
-        },
-        "path": {
-            "$ref": "#\/definitions\/ref1a543de6ef793b231e7e4c78844dbc84"
-        },
-        "GET-query": {
-            "$ref": "#\/definitions\/ref21726c1551deab178a68a7ffac656c75"
-        },
-        "GET-200-response": {
-            "$ref": "#\/definitions\/refc6491059d9103dc5bb112e51828416d9"
-        },
-        "POST-request": {
-            "$ref": "#\/definitions\/ref70152cdfc48a8a3969f10e9e4fe3b239"
-        },
-        "POST-201-response": {
-            "$ref": "#\/definitions\/ref31ead4d236fd038a7d55a40e2ca1171e"
-        },
-        "PUT-request": {
-            "$ref": "#\/definitions\/ref774a7a4ece700fad7bb605e81c61fea7"
-        },
-        "PUT-200-response": {
-            "$ref": "#\/definitions\/ref31ead4d236fd038a7d55a40e2ca1171e"
-        },
-        "DELETE-request": {
-            "$ref": "#\/definitions\/ref774a7a4ece700fad7bb605e81c61fea7"
-        },
-        "DELETE-200-response": {
-            "$ref": "#\/definitions\/ref31ead4d236fd038a7d55a40e2ca1171e"
-        },
-        "PATCH-request": {
-            "$ref": "#\/definitions\/ref774a7a4ece700fad7bb605e81c61fea7"
-        },
-        "PATCH-200-response": {
-            "$ref": "#\/definitions\/ref31ead4d236fd038a7d55a40e2ca1171e"
+            }
         }
     }
 }
@@ -265,7 +132,7 @@ JSON;
 
         $actual = $commandTester->getDisplay();
         $expect = <<<'YAML'
-#%RAML 0.8
+#%RAML 1.0
 ---
 baseUri: 'http://127.0.0.1/'
 version: v1
@@ -300,23 +167,23 @@ title: foo
         type: boolean
         required: false
       date:
-        type: date
+        type: date-only
         required: false
       datetime:
-        type: date
+        type: datetime-only
         required: false
     responses:
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
                   "definitions": {
-                      "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
-                          "title": "item",
+                      "Item": {
                           "type": "object",
+                          "title": "item",
                           "properties": {
                               "id": {
                                   "type": "integer"
@@ -326,39 +193,37 @@ title: foo
                               },
                               "title": {
                                   "type": "string",
+                                  "pattern": "[A-z]+",
                                   "minLength": 3,
-                                  "maxLength": 16,
-                                  "pattern": "[A-z]+"
+                                  "maxLength": 16
                               },
                               "date": {
                                   "type": "string",
                                   "format": "date-time"
                               }
-                          },
-                          "additionalProperties": false
+                          }
                       }
                   },
-                  "title": "collection",
                   "type": "object",
+                  "title": "collection",
                   "properties": {
                       "entry": {
                           "type": "array",
                           "items": {
-                              "$ref": "#\/definitions\/ref7bde1c36c5f13fd4cf10c2864f8e8a75"
+                              "$ref": "#\/definitions\/Item"
                           }
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   post:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -368,16 +233,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "title",
                   "date"
@@ -387,12 +251,12 @@ title: foo
       201:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -400,18 +264,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   put:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -421,16 +284,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -439,12 +301,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -452,18 +314,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   delete:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -473,16 +334,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -491,12 +351,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -504,18 +364,17 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
   patch:
     body:
       application/json:
-        schema: |
+        type: |
           {
               "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
               "id": "urn:schema.phpsx.org#",
-              "title": "item",
               "type": "object",
+              "title": "item",
               "properties": {
                   "id": {
                       "type": "integer"
@@ -525,16 +384,15 @@ title: foo
                   },
                   "title": {
                       "type": "string",
+                      "pattern": "[A-z]+",
                       "minLength": 3,
-                      "maxLength": 16,
-                      "pattern": "[A-z]+"
+                      "maxLength": 16
                   },
                   "date": {
                       "type": "string",
                       "format": "date-time"
                   }
               },
-              "additionalProperties": false,
               "required": [
                   "id"
               ]
@@ -543,12 +401,12 @@ title: foo
       200:
         body:
           application/json:
-            schema: |
+            type: |
               {
                   "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
                   "id": "urn:schema.phpsx.org#",
-                  "title": "message",
                   "type": "object",
+                  "title": "message",
                   "properties": {
                       "success": {
                           "type": "boolean"
@@ -556,8 +414,7 @@ title: foo
                       "message": {
                           "type": "string"
                       }
-                  },
-                  "additionalProperties": false
+                  }
               }
 
 YAML;
@@ -579,308 +436,191 @@ YAML;
         $actual = $commandTester->getDisplay();
         $expect = <<<'JSON'
 {
-    "swaggerVersion": "1.2",
-    "apiVersion": 1,
+    "swagger": "2.0",
+    "info": {
+        "title": "PSX",
+        "version": "1"
+    },
     "basePath": "http:\/\/127.0.0.1\/",
-    "resourcePath": "\/api",
-    "apis": [
-        {
-            "path": "\/api",
-            "description": "lorem ipsum",
-            "operations": [
-                {
-                    "method": "GET",
-                    "summary": "Returns a collection",
-                    "nickname": "getCollection",
-                    "parameters": [
-                        {
-                            "paramType": "path",
-                            "name": "name",
-                            "description": "Name parameter",
-                            "required": false,
-                            "type": "string",
-                            "minimum": 0,
-                            "maximum": 16
-                        },
-                        {
-                            "paramType": "path",
-                            "name": "type",
-                            "type": "string",
-                            "enum": [
-                                "foo",
-                                "bar"
-                            ]
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "startIndex",
-                            "description": "startIndex parameter",
-                            "required": false,
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 32
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "float",
-                            "type": "number"
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "boolean",
-                            "type": "boolean"
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "date",
-                            "type": "string",
-                            "format": "date"
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "datetime",
-                            "type": "string",
-                            "format": "date-time"
+    "paths": {
+        "\/api": {
+            "get": {
+                "description": "Returns a collection",
+                "operationId": "getCollection",
+                "parameters": [
+                    {
+                        "description": "startIndex parameter",
+                        "name": "startIndex",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer",
+                        "maximum": 32,
+                        "minimum": 0
+                    },
+                    {
+                        "name": "float",
+                        "in": "query",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "boolean",
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "datetime",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GET 200 response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Collection"
                         }
-                    ],
-                    "responseMessages": [
-                        {
-                            "code": 200,
-                            "message": "200 response",
-                            "responseModel": "GET-200-response"
-                        }
-                    ]
-                },
-                {
-                    "method": "POST",
-                    "nickname": "postItem",
-                    "parameters": [
-                        {
-                            "paramType": "path",
-                            "name": "name",
-                            "description": "Name parameter",
-                            "required": false,
-                            "type": "string",
-                            "minimum": 0,
-                            "maximum": 16
-                        },
-                        {
-                            "paramType": "path",
-                            "name": "type",
-                            "type": "string",
-                            "enum": [
-                                "foo",
-                                "bar"
-                            ]
-                        },
-                        {
-                            "paramType": "body",
-                            "name": "body",
-                            "required": true,
-                            "type": "POST-request"
-                        }
-                    ],
-                    "responseMessages": [
-                        {
-                            "code": 201,
-                            "message": "201 response",
-                            "responseModel": "POST-201-response"
-                        }
-                    ]
-                },
-                {
-                    "method": "PUT",
-                    "nickname": "putItem",
-                    "parameters": [
-                        {
-                            "paramType": "path",
-                            "name": "name",
-                            "description": "Name parameter",
-                            "required": false,
-                            "type": "string",
-                            "minimum": 0,
-                            "maximum": 16
-                        },
-                        {
-                            "paramType": "path",
-                            "name": "type",
-                            "type": "string",
-                            "enum": [
-                                "foo",
-                                "bar"
-                            ]
-                        },
-                        {
-                            "paramType": "body",
-                            "name": "body",
-                            "required": true,
-                            "type": "PUT-request"
-                        }
-                    ],
-                    "responseMessages": [
-                        {
-                            "code": 200,
-                            "message": "200 response",
-                            "responseModel": "PUT-200-response"
-                        }
-                    ]
-                },
-                {
-                    "method": "DELETE",
-                    "nickname": "deleteItem",
-                    "parameters": [
-                        {
-                            "paramType": "path",
-                            "name": "name",
-                            "description": "Name parameter",
-                            "required": false,
-                            "type": "string",
-                            "minimum": 0,
-                            "maximum": 16
-                        },
-                        {
-                            "paramType": "path",
-                            "name": "type",
-                            "type": "string",
-                            "enum": [
-                                "foo",
-                                "bar"
-                            ]
-                        },
-                        {
-                            "paramType": "body",
-                            "name": "body",
-                            "required": true,
-                            "type": "DELETE-request"
-                        }
-                    ],
-                    "responseMessages": [
-                        {
-                            "code": 200,
-                            "message": "200 response",
-                            "responseModel": "DELETE-200-response"
-                        }
-                    ]
-                },
-                {
-                    "method": "PATCH",
-                    "nickname": "patchItem",
-                    "parameters": [
-                        {
-                            "paramType": "path",
-                            "name": "name",
-                            "description": "Name parameter",
-                            "required": false,
-                            "type": "string",
-                            "minimum": 0,
-                            "maximum": 16
-                        },
-                        {
-                            "paramType": "path",
-                            "name": "type",
-                            "type": "string",
-                            "enum": [
-                                "foo",
-                                "bar"
-                            ]
-                        },
-                        {
-                            "paramType": "body",
-                            "name": "body",
-                            "required": true,
-                            "type": "PATCH-request"
-                        }
-                    ],
-                    "responseMessages": [
-                        {
-                            "code": 200,
-                            "message": "200 response",
-                            "responseModel": "PATCH-200-response"
-                        }
-                    ]
+                    }
                 }
-            ]
-        }
-    ],
-    "models": {
-        "ref1a543de6ef793b231e7e4c78844dbc84": {
-            "id": "ref1a543de6ef793b231e7e4c78844dbc84",
-            "properties": {
-                "name": {
+            },
+            "put": {
+                "operationId": "putItem",
+                "parameters": [
+                    {
+                        "description": "PUT request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#\/definitions\/Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PUT 200 response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Message"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "postItem",
+                "parameters": [
+                    {
+                        "description": "POST request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#\/definitions\/Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "POST 201 response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Message"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteItem",
+                "parameters": [
+                    {
+                        "description": "DELETE request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#\/definitions\/Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "DELETE 200 response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Message"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "patchItem",
+                "parameters": [
+                    {
+                        "description": "PATCH request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#\/definitions\/Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PATCH 200 response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Message"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
                     "description": "Name parameter",
+                    "name": "name",
+                    "in": "path",
+                    "required": true,
                     "type": "string",
-                    "maximum": 16
+                    "maxLength": 16,
+                    "minLength": 0,
+                    "pattern": "[A-z]+"
                 },
-                "type": {
+                {
+                    "name": "type",
+                    "in": "path",
+                    "required": true,
                     "type": "string",
                     "enum": [
                         "foo",
                         "bar"
                     ]
                 }
-            }
-        },
-        "ref21726c1551deab178a68a7ffac656c75": {
-            "id": "ref21726c1551deab178a68a7ffac656c75",
-            "properties": {
-                "startIndex": {
-                    "description": "startIndex parameter",
-                    "type": "integer",
-                    "maximum": 32
-                },
-                "float": {
-                    "type": "number"
-                },
-                "boolean": {
-                    "type": "boolean"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "ref7bde1c36c5f13fd4cf10c2864f8e8a75": {
-            "id": "ref7bde1c36c5f13fd4cf10c2864f8e8a75",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "refc6491059d9103dc5bb112e51828416d9": {
-            "id": "refc6491059d9103dc5bb112e51828416d9",
+            ]
+        }
+    },
+    "definitions": {
+        "Collection": {
+            "type": "object",
+            "title": "collection",
             "properties": {
                 "entry": {
                     "type": "array",
                     "items": {
-                        "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
+                        "$ref": "#\/definitions\/Item"
                     }
                 }
             }
         },
-        "ref70152cdfc48a8a3969f10e9e4fe3b239": {
-            "id": "ref70152cdfc48a8a3969f10e9e4fe3b239",
-            "required": [
-                "title",
-                "date"
-            ],
+        "Item": {
+            "type": "object",
+            "title": "item",
             "properties": {
                 "id": {
                     "type": "integer"
@@ -890,212 +630,22 @@ YAML;
                 },
                 "title": {
                     "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
+                    "pattern": "[A-z]+",
+                    "minLength": 3,
+                    "maxLength": 16
                 },
                 "date": {
                     "type": "string",
                     "format": "date-time"
                 }
-            }
-        },
-        "ref31ead4d236fd038a7d55a40e2ca1171e": {
-            "id": "ref31ead4d236fd038a7d55a40e2ca1171e",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "ref774a7a4ece700fad7bb605e81c61fea7": {
-            "id": "ref774a7a4ece700fad7bb605e81c61fea7",
+            },
             "required": [
                 "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
+            ]
         },
-        "GET-query": {
-            "id": "GET-query",
-            "properties": {
-                "startIndex": {
-                    "description": "startIndex parameter",
-                    "type": "integer",
-                    "maximum": 32
-                },
-                "float": {
-                    "type": "number"
-                },
-                "boolean": {
-                    "type": "boolean"
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "GET-200-response": {
-            "id": "GET-200-response",
-            "properties": {
-                "entry": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "ref7bde1c36c5f13fd4cf10c2864f8e8a75"
-                    }
-                }
-            }
-        },
-        "POST-request": {
-            "id": "POST-request",
-            "required": [
-                "title",
-                "date"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "POST-201-response": {
-            "id": "POST-201-response",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "PUT-request": {
-            "id": "PUT-request",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "PUT-200-response": {
-            "id": "PUT-200-response",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "DELETE-request": {
-            "id": "DELETE-request",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "DELETE-200-response": {
-            "id": "DELETE-200-response",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "PATCH-request": {
-            "id": "PATCH-request",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string",
-                    "minimum": 3,
-                    "maximum": 16
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "PATCH-200-response": {
-            "id": "PATCH-200-response",
+        "Message": {
+            "type": "object",
+            "title": "message",
             "properties": {
                 "success": {
                     "type": "boolean"
@@ -1110,404 +660,6 @@ YAML;
 JSON;
 
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
-    public function testWsdl()
-    {
-        $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
-            'path'   => '/api',
-            'format' => 'wsdl',
-        ));
-
-        $actual = $commandTester->getDisplay();
-        $expect = <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" name="foo" targetNamespace="http://phpsx.org/2014/data" xmlns:tns="http://phpsx.org/2014/data" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-  <wsdl:types xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://phpsx.org/2014/data" elementFormDefault="qualified" xmlns:tns="http://phpsx.org/2014/data">
-      <xs:element name="getRequest" type="tns:void"/>
-      <xs:element name="getResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="entry" type="tns:type7bde1c36c5f13fd4cf10c2864f8e8a75" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:complexType name="type7bde1c36c5f13fd4cf10c2864f8e8a75">
-        <xs:sequence>
-          <xs:element name="id" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:simpleType name="type6a76407ff2bfa4ff2bdec08659df49a7">
-        <xs:restriction base="xs:string">
-          <xs:minLength value="3"/>
-          <xs:maxLength value="16"/>
-          <xs:pattern value="[A-z]+"/>
-        </xs:restriction>
-      </xs:simpleType>
-      <xs:element name="postRequest">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="id" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="title" type="tns:type5a75177c616e21aec2af3478247229d6" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="date" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:simpleType name="type5a75177c616e21aec2af3478247229d6">
-        <xs:restriction base="xs:string">
-          <xs:minLength value="3"/>
-          <xs:maxLength value="16"/>
-          <xs:pattern value="[A-z]+"/>
-        </xs:restriction>
-      </xs:simpleType>
-      <xs:element name="postResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="putRequest">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="putResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="deleteRequest">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="deleteResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="patchRequest">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="patchResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:complexType name="fault">
-        <xs:sequence>
-          <xs:element name="success" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
-          <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="1"/>
-          <xs:element name="trace" type="xs:string" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="context" type="xs:string" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="void">
-        <xs:sequence/>
-      </xs:complexType>
-      <xs:element name="error" type="tns:fault"/>
-    </xs:schema>
-  </wsdl:types>
-  <wsdl:message name="getCollectionInput">
-    <wsdl:part name="body" element="tns:getRequest"/>
-  </wsdl:message>
-  <wsdl:message name="getCollectionOutput">
-    <wsdl:part name="body" element="tns:getResponse"/>
-  </wsdl:message>
-  <wsdl:message name="postItemInput">
-    <wsdl:part name="body" element="tns:postRequest"/>
-  </wsdl:message>
-  <wsdl:message name="postItemOutput">
-    <wsdl:part name="body" element="tns:postResponse"/>
-  </wsdl:message>
-  <wsdl:message name="putItemInput">
-    <wsdl:part name="body" element="tns:putRequest"/>
-  </wsdl:message>
-  <wsdl:message name="putItemOutput">
-    <wsdl:part name="body" element="tns:putResponse"/>
-  </wsdl:message>
-  <wsdl:message name="deleteItemInput">
-    <wsdl:part name="body" element="tns:deleteRequest"/>
-  </wsdl:message>
-  <wsdl:message name="deleteItemOutput">
-    <wsdl:part name="body" element="tns:deleteResponse"/>
-  </wsdl:message>
-  <wsdl:message name="patchItemInput">
-    <wsdl:part name="body" element="tns:patchRequest"/>
-  </wsdl:message>
-  <wsdl:message name="patchItemOutput">
-    <wsdl:part name="body" element="tns:patchResponse"/>
-  </wsdl:message>
-  <wsdl:message name="faultOutput">
-    <wsdl:part name="body" element="tns:error"/>
-  </wsdl:message>
-  <wsdl:portType name="fooPortType">
-    <wsdl:operation name="getCollection">
-      <wsdl:input message="tns:getCollectionInput"/>
-      <wsdl:output message="tns:getCollectionOutput"/>
-      <wsdl:fault message="tns:faultOutput" name="SoapFaultException"/>
-    </wsdl:operation>
-    <wsdl:operation name="postItem">
-      <wsdl:input message="tns:postItemInput"/>
-      <wsdl:output message="tns:postItemOutput"/>
-      <wsdl:fault message="tns:faultOutput" name="SoapFaultException"/>
-    </wsdl:operation>
-    <wsdl:operation name="putItem">
-      <wsdl:input message="tns:putItemInput"/>
-      <wsdl:output message="tns:putItemOutput"/>
-      <wsdl:fault message="tns:faultOutput" name="SoapFaultException"/>
-    </wsdl:operation>
-    <wsdl:operation name="deleteItem">
-      <wsdl:input message="tns:deleteItemInput"/>
-      <wsdl:output message="tns:deleteItemOutput"/>
-      <wsdl:fault message="tns:faultOutput" name="SoapFaultException"/>
-    </wsdl:operation>
-    <wsdl:operation name="patchItem">
-      <wsdl:input message="tns:patchItemInput"/>
-      <wsdl:output message="tns:patchItemOutput"/>
-      <wsdl:fault message="tns:faultOutput" name="SoapFaultException"/>
-    </wsdl:operation>
-  </wsdl:portType>
-  <wsdl:binding name="fooBinding" type="tns:fooPortType">
-    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="getCollection">
-      <soap:operation soapAction="/api#GET"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SoapFaultException">
-        <soap:body use="literal" name="SoapFaultException"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="postItem">
-      <soap:operation soapAction="/api#POST"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SoapFaultException">
-        <soap:body use="literal" name="SoapFaultException"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="putItem">
-      <soap:operation soapAction="/api#PUT"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SoapFaultException">
-        <soap:body use="literal" name="SoapFaultException"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="deleteItem">
-      <soap:operation soapAction="/api#DELETE"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SoapFaultException">
-        <soap:body use="literal" name="SoapFaultException"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="patchItem">
-      <soap:operation soapAction="/api#PATCH"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SoapFaultException">
-        <soap:body use="literal" name="SoapFaultException"/>
-      </wsdl:fault>
-    </wsdl:operation>
-  </wsdl:binding>
-  <wsdl:service name="fooService">
-    <wsdl:port name="fooPort" binding="tns:fooBinding">
-      <soap:address location="http://127.0.0.1/api"/>
-    </wsdl:port>
-  </wsdl:service>
-</wsdl:definitions>
-XML;
-
-        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
-    }
-
-    public function testXsd()
-    {
-        $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
-            'path'   => '/api',
-            'format' => 'xsd',
-        ));
-
-        $actual = $commandTester->getDisplay();
-        $expect = <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://phpsx.org/2014/data" targetNamespace="http://phpsx.org/2014/data" elementFormDefault="qualified">
-  <xs:element name="getRequest" type="tns:void"/>
-  <xs:element name="getResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="entry" type="tns:type7bde1c36c5f13fd4cf10c2864f8e8a75" minOccurs="0" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="type7bde1c36c5f13fd4cf10c2864f8e8a75">
-    <xs:sequence>
-      <xs:element name="id" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:simpleType name="type6a76407ff2bfa4ff2bdec08659df49a7">
-    <xs:restriction base="xs:string">
-      <xs:minLength value="3"/>
-      <xs:maxLength value="16"/>
-      <xs:pattern value="[A-z]+"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="postRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="id" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="title" type="tns:type5a75177c616e21aec2af3478247229d6" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="date" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:simpleType name="type5a75177c616e21aec2af3478247229d6">
-    <xs:restriction base="xs:string">
-      <xs:minLength value="3"/>
-      <xs:maxLength value="16"/>
-      <xs:pattern value="[A-z]+"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="postResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="putRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="putResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="deleteRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="deleteResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="patchRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="userId" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="title" type="tns:type6a76407ff2bfa4ff2bdec08659df49a7" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="date" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="patchResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="success" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="fault">
-    <xs:sequence>
-      <xs:element name="success" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="trace" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="context" type="xs:string" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="void">
-    <xs:sequence/>
-  </xs:complexType>
-  <xs:element name="error" type="tns:fault"/>
-</xs:schema>
-XML;
-
-        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     public function testCommandAvailable()

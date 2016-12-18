@@ -28,7 +28,7 @@ use PSX\Record\Record;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @AdditionalProperties("string")
+ * @AdditionalProperties(@Schema(type="string"))
  */
 class Any extends Record
 {

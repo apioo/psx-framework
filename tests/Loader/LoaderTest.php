@@ -58,7 +58,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         });
 
         // test events
-        $routeMatchedListener = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener', array('on'));
+        $routeMatchedListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener');
         $routeMatchedListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function ($event) use ($testCase) {
@@ -72,7 +72,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
                 return true;
             }));
 
-        $controllerExecuteListener = $this->getMock('PSX\Dispatch\TestListener', array('on'));
+        $controllerExecuteListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener');
         $controllerExecuteListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function ($event) use ($testCase) {
@@ -84,7 +84,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
                 return true;
             }));
 
-        $controllerProcessedListener = $this->getMock('PSX\Dispatch\TestListener', array('on'));
+        $controllerProcessedListener = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener');
         $controllerProcessedListener->expects($this->once())
             ->method('on')
             ->with($this->callback(function ($event) use ($testCase) {
@@ -205,7 +205,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         });
 
         $controller = new \stdClass();
-        $resolver   = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver   = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -246,7 +246,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         });
 
         $controller = new \stdClass();
-        $resolver   = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver   = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -293,7 +293,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             $filterChain->handle($request, $response);
         };
 
-        $filter2 = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener');
+        $filter2 = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener');
         $filter2->expects($this->once())
             ->method('on')
             ->with($request, $response);
@@ -301,7 +301,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $controller = new FilterController($request, $response);
         $controller->setPreFilter(array($filter1, array($filter2, 'on')));
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -338,7 +338,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $controller = new FilterController($request, $response);
         $controller->setPreFilter(array('foo'));
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -372,7 +372,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             $filterChain->handle($request, $response);
         };
 
-        $filter2 = $this->getMock('PSX\Framework\Tests\Dispatch\TestListener');
+        $filter2 = $this->createMock('PSX\Framework\Tests\Dispatch\TestListener');
         $filter2->expects($this->once())
             ->method('on')
             ->with($request, $response);
@@ -380,7 +380,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $controller = new FilterController($request, $response);
         $controller->setPostFilter(array($filter1, array($filter2, 'on')));
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -417,7 +417,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $controller = new FilterController($request, $response);
         $controller->setPostFilter(array('foo'));
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -448,7 +448,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         });
 
         $controller = new \stdClass();
-        $resolver   = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver   = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -492,7 +492,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $filter2 = __NAMESPACE__ . '\LoaderFilterTest';
         $filter3 = new LoaderFilterTest();
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
@@ -541,7 +541,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $filter2 = __NAMESPACE__ . '\LoaderFilterTest';
         $filter3 = new LoaderFilterTest();
 
-        $resolver = $this->getMock('PSX\Framework\Loader\CallbackResolverInterface');
+        $resolver = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
 
         $resolver
             ->method('resolve')
