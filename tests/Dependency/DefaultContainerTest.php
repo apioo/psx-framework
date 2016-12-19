@@ -64,7 +64,7 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PSX\Framework\Loader\RoutingParserInterface', $container->get('routing_parser'));
         $this->assertInstanceOf('PSX\Framework\Loader\ReverseRouter', $container->get('reverse_router'));
         $this->assertInstanceOf('PSX\Api\ListingInterface', $container->get('resource_listing'));
-        $this->assertInstanceOf('PSX\Api\ParserInterface', $container->get('api_parser'));
+        $this->assertInstanceOf('PSX\Api\ApiManager', $container->get('api_manager'));
 
         // default container
         $this->assertInstanceOf('Doctrine\Common\Annotations\Reader', $container->get('annotation_reader'));

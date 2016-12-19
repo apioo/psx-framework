@@ -53,9 +53,9 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     /**
      * @Inject
-     * @var \PSX\Api\ParserInterface
+     * @var \PSX\Api\ApiManager
      */
-    protected $apiParser;
+    protected $apiManager;
 
     /**
      * @Inject
@@ -148,7 +148,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function getDocumentation($version = null)
     {
-        return $this->apiParser->parse($this, $this->context->get(Context::KEY_PATH));
+        return $this->apiManager->getApi(get_class($this), $this->context->get(Context::KEY_PATH));
     }
 
     /**

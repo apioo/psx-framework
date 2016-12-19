@@ -22,6 +22,7 @@ namespace PSX\Framework\Dependency;
 
 use Doctrine\DBAL\Tools\Console\Command as DBALCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use PSX\Api\Console\ApiCommand;
 use PSX\Data\Exporter;
 use PSX\Framework\Base;
 use PSX\Framework\Console as PSXCommand;
@@ -65,12 +66,12 @@ trait Console
     protected function appendConsoleCommands(Application $application)
     {
         $application->add(new PSXCommand\ContainerCommand($this));
-        $application->add(new PSXCommand\ResourceCommand($this->get('config'), $this->get('resource_listing'), new Exporter\Popo($this->get('annotation_reader'))));
         $application->add(new PSXCommand\RouteCommand($this->get('routing_parser')));
         $application->add(new PSXCommand\ServeCommand($this->get('config'), $this->get('dispatch'), $this->get('console_reader')));
         $application->add(new PSXCommand\GenerateCommand());
 
-        $application->add(new SchemaCommand($this->get('schema_manager'), $this->get('config')->get('psx_soap_namespace')));
+        $application->add(new ApiCommand($this->get('api_manager'), $this->get('annotation_reader'), $this->get('config')->get('psx_json_namespace'), $this->get('config')->get('psx_url'), $this->get('config')->get('psx_dispatch')));
+        $application->add(new SchemaCommand($this->get('schema_manager')));
 
         $application->add(new SqlConsole\MigrateCommand($this->get('connection'), $this->get('table_manager')));
         $application->add(new SqlConsole\GenerateCommand($this->get('connection')));

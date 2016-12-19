@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Dependency;
 
+use PSX\Api\ApiManager;
 use PSX\Api\Parser;
 use PSX\Framework\Api\CachedListing;
 use PSX\Framework\Api\ControllerDocumentation;
@@ -224,13 +225,15 @@ trait Framework
     }
 
     /**
-     * @return \PSX\Api\ParserInterface
+     * @return \PSX\Api\ApiManager
      */
-    public function getApiParser()
+    public function getApiManager()
     {
-        return new Parser\Annotation(
+        return new ApiManager(
             $this->get('annotation_reader_controller'),
-            $this->get('schema_manager')
+            $this->get('schema_manager'),
+            $this->get('cache'),
+            $this->get('config')->get('psx_debug')
         );
     }
 }

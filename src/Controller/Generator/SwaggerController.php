@@ -60,7 +60,7 @@ class SwaggerController extends ControllerAbstract
             $baseUri         = '/' . $this->config['psx_dispatch'];
             $targetNamespace = $this->config['psx_json_namespace'];
 
-            $generator = new Generator\Swagger(new Exporter\Popo($this->annotationReader), $version, $baseUri, $targetNamespace);
+            $generator = new Generator\Swagger($this->annotationReader, $version, $baseUri, $targetNamespace);
             $swagger   = $generator->generate($resource);
 
             $this->setHeader('Content-Type', 'application/json');
