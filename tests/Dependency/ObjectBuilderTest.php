@@ -104,15 +104,6 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $object->getProperty());
     }
 
-    /**
-     * @expectedException \ErrorException
-     */
-    public function testGetObjectConstructorArgumentsInvalid()
-    {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
-        $builder->getObject('PSX\Framework\Tests\Dependency\InvalidService');
-    }
-
     public function testGetObjectWithoutConstructor()
     {
         $builder  = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
