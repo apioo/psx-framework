@@ -1,4 +1,9 @@
 
+### 2.0.0 (2016-12-20)
+
+* Remove soap and wsdl controller
+* Update psx schema and data to 2.0
+
 ### 1.1.3 (2016-11-20)
 
 * Use psx_dispatch configuration to provide a way to change the dispatch file
