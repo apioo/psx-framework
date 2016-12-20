@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use DOMDocument;
+use PSX\Data\Accessor;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Data\ReaderInterface;
 use PSX\Record\Record;
@@ -101,10 +102,12 @@ class TestController extends ControllerAbstract
         $this->testCase->assertEquals($data, $this->getBody(ReaderInterface::JSON));
 
         // accessor
-        $this->testCase->assertEquals('bar', $this->getAccessor()->get('/foo'));
-        $this->testCase->assertEquals('nested', $this->getAccessor()->get('/bar/foo'));
-        $this->testCase->assertEquals('bar', $this->getAccessor()->get('/entries/0/title'));
-        $this->testCase->assertEquals('foo', $this->getAccessor()->get('/entries/1/title'));
+        $body = $this->getBody();
+
+        $this->testCase->assertEquals('bar', Accessor::get($body, '/foo'));
+        $this->testCase->assertEquals('nested', Accessor::get($body, '/bar/foo'));
+        $this->testCase->assertEquals('bar', Accessor::get($body, '/entries/0/title'));
+        $this->testCase->assertEquals('foo', Accessor::get($body, '/entries/1/title'));
 
         // import
         $body = $this->getBodyAs(TestBody::class);

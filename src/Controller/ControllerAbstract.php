@@ -96,8 +96,6 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     private $_responseWritten = false;
 
-    private $_accessor;
-
     /**
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
@@ -225,6 +223,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     /**
      * @param string $schema
+     * @param \PSX\Schema\Validation\ValidatorInterface $validator
      * @param string $readerType
      * @return mixed
      */
@@ -307,25 +306,6 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     protected function getSupportedWriter()
     {
         return null;
-    }
-
-    /**
-     * Returns an accessor object with that you can easily access values from
-     * the request body
-     *
-     * @return \PSX\Data\Accessor
-     */
-    protected function getAccessor()
-    {
-        if ($this->_accessor === null) {
-            $payload  = Payload::create((string) $this->request->getBody(), $this->request->getHeader('Content-Type'));
-            $data     = $this->io->parse($payload);
-            $accessor = new Accessor($this->validate, $data);
-
-            $this->_accessor = $accessor;
-        }
-
-        return $this->_accessor;
     }
 
     /**
