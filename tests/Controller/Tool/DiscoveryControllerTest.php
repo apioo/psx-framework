@@ -53,16 +53,12 @@ class DiscoveryControllerTest extends ControllerTestCase
             "href": "http:\/\/127.0.0.1\/doc"
         },
         {
-            "rel": "raml",
-            "href": "http:\/\/127.0.0.1\/raml"
-        },
-        {
-            "rel": "wsdl",
-            "href": "http:\/\/127.0.0.1\/wsdl"
-        },
-        {
             "rel": "swagger",
             "href": "http:\/\/127.0.0.1\/swagger"
+        },
+        {
+            "rel": "raml",
+            "href": "http:\/\/127.0.0.1\/raml"
         }
     ]
 }
@@ -80,8 +76,7 @@ JSON;
             [['GET'], '/doc', 'PSX\Framework\Controller\Tool\DocumentationController::doIndex'],
             [['GET'], '/doc/:version/*path', 'PSX\Framework\Controller\Tool\DocumentationController::doDetail'],
             [['GET'], '/raml', 'PSX\Framework\Controller\Generator\RamlController'],
-            [['GET'], '/wsdl', 'PSX\Framework\Controller\Generator\WsdlController'],
-            [['GET'], '/swagger', 'PSX\Framework\Controller\Generator\SwaggerController::doDetail'],
+            [['GET'], '/swagger', 'PSX\Framework\Controller\Generator\SwaggerController'],
         );
     }
 }

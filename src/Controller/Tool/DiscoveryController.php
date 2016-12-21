@@ -68,27 +68,19 @@ class DiscoveryController extends ApiAbstract
             ]);
         }
 
+        $swaggerGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\SwaggerController', ['{version}', '{path}']);
+        if ($swaggerGeneratorPath !== null) {
+            $links[] = Record::fromArray([
+                'rel'  => 'swagger',
+                'href' => $swaggerGeneratorPath,
+            ]);
+        }
+
         $ramlGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\RamlController', ['{version}', '{path}']);
         if ($ramlGeneratorPath !== null) {
             $links[] = Record::fromArray([
                 'rel'  => 'raml',
                 'href' => $ramlGeneratorPath,
-            ]);
-        }
-
-        $wsdlGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\WsdlController', ['{version}', '{path}']);
-        if ($wsdlGeneratorPath !== null) {
-            $links[] = Record::fromArray([
-                'rel'  => 'wsdl',
-                'href' => $wsdlGeneratorPath,
-            ]);
-        }
-
-        $swaggerGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\SwaggerController::doDetail', ['{version}', '{path}']);
-        if ($swaggerGeneratorPath !== null) {
-            $links[] = Record::fromArray([
-                'rel'  => 'swagger',
-                'href' => $swaggerGeneratorPath,
             ]);
         }
 
