@@ -1,4 +1,8 @@
 
+### 2.0.1 (2016-12-21)
+
+* Remove wsdl from discovery controller
+
 ### 2.0.0 (2016-12-20)
 
 * Remove soap and wsdl controller
