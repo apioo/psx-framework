@@ -171,7 +171,17 @@ JSON;
                 "200": "#\/definitions\/PATCH-200-response"
             }
         }
-    }
+    },
+    "links": [
+        {
+            "rel": "swagger",
+            "href": "\/swagger"
+        },
+        {
+            "rel": "raml",
+            "href": "\/raml"
+        }
+    ]
 }
 JSON;
 
@@ -185,6 +195,8 @@ JSON;
             [['GET'], '/doc', 'PSX\Framework\Controller\Tool\DocumentationController::doIndex'],
             [['GET'], '/doc/:version/*path', 'PSX\Framework\Controller\Tool\DocumentationController::doDetail'],
             [['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController'],
+            [['GET'], '/swagger', 'PSX\Framework\Controller\Generator\SwaggerController'],
+            [['GET'], '/raml', 'PSX\Framework\Controller\Generator\RamlController'],
         );
     }
 }

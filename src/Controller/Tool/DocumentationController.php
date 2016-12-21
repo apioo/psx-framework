@@ -168,15 +168,7 @@ class DocumentationController extends ApiAbstract
         $path   = ltrim($path, '/');
         $result = [];
 
-        $wsdlPath = $this->reverseRouter->getAbsolutePath('PSX\Framework\Controller\Generator\WsdlController', array('version' => $version, 'path' => $path));
-        if ($wsdlPath !== null) {
-            $result[] = [
-                'rel'  => 'wsdl',
-                'href' => $wsdlPath,
-            ];
-        }
-
-        $swaggerPath = $this->reverseRouter->getAbsolutePath('PSX\Framework\Controller\Generator\SwaggerController::doDetail', array('version' => $version, 'path' => $path));
+        $swaggerPath = $this->reverseRouter->getAbsolutePath('PSX\Framework\Controller\Generator\SwaggerController', array('version' => $version, 'path' => $path));
         if ($swaggerPath !== null) {
             $result[] = [
                 'rel'  => 'swagger',
