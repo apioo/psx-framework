@@ -26,7 +26,7 @@
     "psx/oauth": "^2.0",
     "psx/oauth2": "^2.0",
     "psx/schema": "^2.0",
-    "psx/sql": "^1.0",
+    "psx/sql": "^2.0",
     "psx/uri": "^1.0",
     "psx/validate": "^1.0",
     "symfony/console": "~2.8|~3.0",
