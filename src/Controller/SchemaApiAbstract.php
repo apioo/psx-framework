@@ -110,9 +110,8 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPost()
     {
-        $method = $this->resource->getMethod('POST');
-        $record = $this->parseRequest($method);
-
+        $method   = $this->resource->getMethod('POST');
+        $record   = $this->parseRequest($method);
         $response = $this->doPost($record);
 
         $this->sendResponse($method, $response);
@@ -120,9 +119,8 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPut()
     {
-        $method = $this->resource->getMethod('PUT');
-        $record = $this->parseRequest($method);
-
+        $method   = $this->resource->getMethod('PUT');
+        $record   = $this->parseRequest($method);
         $response = $this->doPut($record);
 
         $this->sendResponse($method, $response);
