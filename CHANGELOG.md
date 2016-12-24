@@ -1,4 +1,9 @@
 
+### 2.0.2 (2016-12-24)
+
+* Increase version
+* Fix code style
+
 ### 2.0.1 (2016-12-21)
 
 * Remove wsdl from discovery controller
