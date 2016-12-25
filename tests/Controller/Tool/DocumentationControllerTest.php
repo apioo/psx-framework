@@ -135,6 +135,33 @@ JSON;
                         "type": "string"
                     }
                 }
+            },
+            "GET-200-response": {
+                "$ref": "#\/definitions\/Collection"
+            },
+            "POST-request": {
+                "$ref": "#\/definitions\/Item"
+            },
+            "POST-201-response": {
+                "$ref": "#\/definitions\/Message"
+            },
+            "PUT-request": {
+                "$ref": "#\/definitions\/Item"
+            },
+            "PUT-200-response": {
+                "$ref": "#\/definitions\/Message"
+            },
+            "DELETE-request": {
+                "$ref": "#\/definitions\/Item"
+            },
+            "DELETE-200-response": {
+                "$ref": "#\/definitions\/Message"
+            },
+            "PATCH-request": {
+                "$ref": "#\/definitions\/Item"
+            },
+            "PATCH-200-response": {
+                "$ref": "#\/definitions\/Message"
             }
         }
     },
