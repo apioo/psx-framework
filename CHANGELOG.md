@@ -1,4 +1,13 @@
 
+### 2.0.4 (2016-12-25)
+
+* Fix documentation test
+
+### 2.0.3 (2016-12-24)
+
+* Increased version
+* Fixed code style
+
 ### 2.0.2 (2016-12-24)
 
 * Increase version
