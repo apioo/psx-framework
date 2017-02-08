@@ -1,7 +1,7 @@
 
 ### 2.0.5 (2017-02-08)
 
-* Fix documentation test
+* Use writer factory to get writer by format
 
 ### 2.0.4 (2016-12-25)
 
