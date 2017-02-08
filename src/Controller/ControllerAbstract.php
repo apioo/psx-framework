@@ -322,10 +322,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
         $format      = $this->getParameter('format');
 
         if (!empty($format) && $writerType === null) {
-            $constant = 'PSX\\Data\\WriterInterface::' . strtoupper($format);
-            if (defined($constant)) {
-                $writerType = constant($constant);
-            }
+            $writerType = $this->io->getConfiguration()->getWriterFactory()->getWriterClassNameByFormat($format);
         }
 
         $supported = $this->context->get(Context::KEY_SUPPORTED_WRITER);
