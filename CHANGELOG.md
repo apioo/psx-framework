@@ -1,4 +1,8 @@
 
+### 2.0.5 (2017-02-08)
+
+* Fix documentation test
+
 ### 2.0.4 (2016-12-25)
 
 * Fix documentation test
