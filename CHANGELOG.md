@@ -1,4 +1,8 @@
 
+### 2.0.6 (2017-04-04)
+
+* Object builder cache annotations in production mode
+
 ### 2.0.5 (2017-02-08)
 
 * Use writer factory to get writer by format
