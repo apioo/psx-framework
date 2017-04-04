@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Dependency;
 
 use Doctrine\Common\Annotations;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
 use PSX\Framework\Dependency\Container;
 use PSX\Framework\Dependency\ObjectBuilder;
 use PSX\Framework\Test\Environment;
@@ -40,12 +42,12 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \DateTime());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
-        $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService');
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $object  = $builder->getObject(FooService::class);
 
-        $this->assertInstanceof('PSX\Framework\Tests\Dependency\FooService', $object);
-        $this->assertInstanceof('stdClass', $object->getFoo());
-        $this->assertInstanceof('DateTime', $object->getBar());
+        $this->assertInstanceof(FooService::class, $object);
+        $this->assertInstanceof(\stdClass::class, $object->getFoo());
+        $this->assertInstanceof(\DateTime::class, $object->getBar());
         $this->assertNull($object->getProperty());
     }
 
@@ -54,8 +56,8 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectInjectUnknownService()
     {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
-        $builder->getObject('PSX\Framework\Tests\Dependency\FooService');
+        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $builder->getObject(FooService::class);
     }
 
     /**
@@ -63,7 +65,7 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetObjectUnknownClass()
     {
-        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
+        $builder = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
         $builder->getObject('PSX\Framework\Tests\Dependency\BarService');
     }
 
@@ -73,10 +75,10 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
-        $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array(), 'PSX\Framework\Tests\Dependency\FooService');
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $object  = $builder->getObject(FooService::class, array(), FooService::class);
 
-        $this->assertInstanceof('PSX\Framework\Tests\Dependency\FooService', $object);
+        $this->assertInstanceof(FooService::class, $object);
     }
 
     /**
@@ -88,8 +90,8 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
-        $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array(), 'PSX\Framework\Tests\Dependency\BarService');
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $builder->getObject(FooService::class, array(), 'PSX\Framework\Tests\Dependency\BarService');
     }
 
     public function testGetObjectConstructorArguments()
@@ -98,17 +100,43 @@ class ObjectBuilderTest extends \PHPUnit_Framework_TestCase
         $container->set('foo', new \stdClass());
         $container->set('foo_bar', new \stdClass());
 
-        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'));
-        $object  = $builder->getObject('PSX\Framework\Tests\Dependency\FooService', array('foo'), 'PSX\Framework\Tests\Dependency\FooService');
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $object  = $builder->getObject(FooService::class, array('foo'), FooService::class);
 
+        $this->assertInstanceof(FooService::class, $object);
         $this->assertEquals('foo', $object->getProperty());
     }
 
     public function testGetObjectWithoutConstructor()
     {
-        $builder  = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'));
-        $stdClass = $builder->getObject('stdClass');
+        $builder  = new ObjectBuilder(new Container(), Environment::getService('annotation_reader_controller'), Environment::getService('cache'), true);
+        $stdClass = $builder->getObject(\stdClass::class);
 
-        $this->assertInstanceof('stdClass', $stdClass);
+        $this->assertInstanceof(\stdClass::class, $stdClass);
+    }
+
+    public function testGetObjectCache()
+    {
+        $container = new Container();
+        $container->set('foo', new \stdClass());
+        $container->set('foo_bar', new \stdClass());
+
+        $cache   = new Pool(new ArrayCache());
+        $builder = new ObjectBuilder($container, Environment::getService('annotation_reader_controller'), $cache, false);
+        $object  = $builder->getObject(FooService::class);
+
+        $item = $cache->getItem(ObjectBuilder::class . FooService::class);
+
+        $this->assertInstanceof(FooService::class, $object);
+        $this->assertTrue($item->isHit());
+        $this->assertEquals(['foo' => 'foo', 'bar' => 'foo_bar'], $item->get());
+
+        $item = $cache->getItem(ObjectBuilder::class . FooService::class);
+
+        $object = $builder->getObject(FooService::class);
+
+        $this->assertInstanceof(FooService::class, $object);
+        $this->assertTrue($item->isHit());
+        $this->assertEquals(['foo' => 'foo', 'bar' => 'foo_bar'], $item->get());
     }
 }

@@ -22,6 +22,7 @@ namespace PSX\Framework\Dependency;
 
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
+use Psr\Cache\CacheItemPoolInterface;
 use PSX\Framework\Annotation\Inject;
 use ReflectionClass;
 use RuntimeException;
@@ -36,13 +37,32 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ObjectBuilder implements ObjectBuilderInterface
 {
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
     protected $container;
+
+    /**
+     * @var \Doctrine\Common\Annotations\Reader
+     */
     protected $reader;
 
-    public function __construct(ContainerInterface $container, Reader $reader)
+    /**
+     * @var \Psr\Cache\CacheItemPoolInterface
+     */
+    protected $cache;
+
+    /**
+     * @var boolean
+     */
+    protected $debug;
+
+    public function __construct(ContainerInterface $container, Reader $reader, CacheItemPoolInterface $cache, $debug)
     {
         $this->container = $container;
         $this->reader    = $reader;
+        $this->cache     = $cache;
+        $this->debug     = $debug;
     }
 
     public function getObject($className, array $constructorArguments = array(), $instanceOf = null)
@@ -59,7 +79,42 @@ class ObjectBuilder implements ObjectBuilderInterface
             throw new InvalidArgumentException('Class ' . $className . ' must be an instanceof ' . $instanceOf);
         }
 
+        // if we are not in debug mode we can cache the dependency annotations
+        // of each class so we do not need to parse the annotations
+        if (!$this->debug) {
+            $key  = __CLASS__ . $className;
+            $item = $this->cache->getItem($key);
+
+            if ($item->isHit()) {
+                $properties = $item->get();
+            } else {
+                $properties = $this->getProperties($class);
+
+                $item->set($properties);
+                $this->cache->save($item);
+            }
+        } else {
+            $properties = $this->getProperties($class);
+        }
+
+        foreach ($properties as $propertyName => $service) {
+            if ($this->container->has($service)) {
+                $property = $class->getProperty($propertyName);
+                $property->setAccessible(true);
+                $property->setValue($object, $this->container->get($service));
+            } else {
+                throw new RuntimeException('Trying to inject a not existing service ' . $service);
+            }
+        }
+
+        return $object;
+    }
+
+    private function getProperties(ReflectionClass $class)
+    {
         $properties = $class->getProperties();
+        $result     = [];
+
         foreach ($properties as $property) {
             $inject = $this->reader->getPropertyAnnotation($property, '\\PSX\\Framework\\Annotation\\Inject');
             if ($inject instanceof Inject) {
@@ -68,15 +123,10 @@ class ObjectBuilder implements ObjectBuilderInterface
                     $service = $property->getName();
                 }
 
-                if ($this->container->has($service)) {
-                    $property->setAccessible(true);
-                    $property->setValue($object, $this->container->get($service));
-                } else {
-                    throw new RuntimeException('Trying to inject a not existing service ' . $service);
-                }
+                $result[$property->getName()] = $service;
             }
         }
 
-        return $object;
+        return $result;
     }
 }

@@ -71,7 +71,9 @@ trait Framework
     {
         return new ObjectBuilder(
             $this,
-            $this->get('annotation_reader_controller')
+            $this->get('annotation_reader_controller'),
+            $this->get('cache'),
+            $this->get('config')->get('psx_debug')
         );
     }
 
