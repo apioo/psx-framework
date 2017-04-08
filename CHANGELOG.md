@@ -1,4 +1,9 @@
 
+### 2.0.7
+
+* Added upload file from environment method
+* Removed buffered stream
+
 ### 2.0.6 (2017-04-04)
 
 * Object builder cache annotations in production mode
