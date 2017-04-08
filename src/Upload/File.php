@@ -137,4 +137,13 @@ class File
     {
         return move_uploaded_file($tmpName, $path);
     }
+
+    public static function fromEnvironment($name)
+    {
+        if (isset($_FILES[$name])) {
+            return new self($_FILES[$name]);
+        } else {
+            throw new Exception('Unknown upload key');
+        }
+    }
 }

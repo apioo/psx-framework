@@ -130,6 +130,33 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->createFile('foo', 'text/plain', 12, 'bar', -1);
     }
 
+    /**
+     * @expectedException \PSX\Framework\Upload\Exception
+     */
+    public function testFromEnvironmentInvalidUpload()
+    {
+        $key = uniqid('upload_');
+
+        $_FILES[$key] = [
+            'name'     => 'upload.txt',
+            'type'     => 'text/plain',
+            'size'     => 12,
+            'tmp_name' => '/tmp/tmp123',
+            'error'    => UPLOAD_ERR_OK,
+        ];
+
+        // this call fails on the is_upload_file check
+        File::fromEnvironment($key);
+    }
+
+    /**
+     * @expectedException \PSX\Framework\Upload\Exception
+     */
+    public function testFromEnvironmentNotExisting()
+    {
+        File::fromEnvironment('foo');
+    }
+
     protected function createFile($name, $type, $size, $tmpName, $error)
     {
         return new File(array(
