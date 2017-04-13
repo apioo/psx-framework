@@ -25,10 +25,11 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Config\Config;
+use PSX\Framework\Dependency\Container;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Environment
@@ -39,9 +40,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Environment
 {
+    /**
+     * @var string
+     */
     protected static $basePath;
+
+    /**
+     * @var \PSX\Framework\Dependency\Container
+     */
     protected static $container;
+
+    /**
+     * @var array
+     */
     protected static $config;
+
+    /**
+     * @var boolean
+     */
     protected static $hasConnection = false;
 
     /**
@@ -70,7 +86,7 @@ class Environment
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * @return \PSX\Framework\Dependency\Container
      */
     public static function getContainer()
     {
@@ -136,7 +152,7 @@ class Environment
         self::$container = require_once($file);
 
         if (!self::$container instanceof ContainerInterface) {
-            throw new RuntimeException('The container file "' . $file . '" must return an Symfony\Component\DependencyInjection\ContainerInterface');
+            throw new RuntimeException('The container file "' . $file . '" must return an Psr\Container\ContainerInterface');
         }
 
         // set test config
@@ -145,7 +161,7 @@ class Environment
 
     /**
      * @codeCoverageIgnore
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface $container
      * @param \Closure $schemaSetup
      */
     protected static function setupConnection(ContainerInterface $container, Closure $schemaSetup = null)
@@ -199,7 +215,9 @@ class Environment
                     }
                 }
 
-                $container->set('connection', $connection);
+                if (method_exists($connection, 'set')) {
+                    $container->set('connection', $connection);
+                }
 
                 self::$hasConnection = true;
             } catch (DBALException $e) {
@@ -210,7 +228,7 @@ class Environment
 
     /**
      * @codeCoverageIgnore
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface $container
      * @return \PSX\Framework\Config\Config
      */
     protected static function buildConfig(ContainerInterface $container)

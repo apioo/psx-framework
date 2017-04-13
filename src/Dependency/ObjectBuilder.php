@@ -23,10 +23,10 @@ namespace PSX\Framework\Dependency;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Annotation\Inject;
 use ReflectionClass;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * ObjectBuilder
@@ -38,7 +38,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ObjectBuilder implements ObjectBuilderInterface
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var \Psr\Container\ContainerInterface
      */
     protected $container;
 

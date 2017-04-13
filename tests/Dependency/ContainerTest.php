@@ -21,8 +21,6 @@
 namespace PSX\Framework\Tests\Dependency;
 
 use PSX\Framework\Dependency\Container;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\DependencyInjection\Scope;
 
 /**
  * Most tests are taken from the symfony di container test
@@ -61,7 +59,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @expectedException \Psr\Container\NotFoundExceptionInterface
      */
     public function testGetThrowServiceNotFoundException()
     {

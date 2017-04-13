@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Console;
 
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Dependency\Container;
 use PSX\Framework\Util\Annotation;
 use ReflectionClass;
@@ -28,7 +29,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Displays all available services from the DI container. Note the getServiceIds

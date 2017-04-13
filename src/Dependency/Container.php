@@ -21,11 +21,10 @@
 namespace PSX\Framework\Dependency;
 
 use InvalidArgumentException;
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Util\Annotation;
 use ReflectionClass;
 use ReflectionException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * A simple and fast implementation of a symfony dependency container
@@ -52,7 +51,7 @@ class Container implements ContainerInterface
         return $this->services[$name] = $object;
     }
 
-    public function get($name, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($name)
     {
         $name = self::normalizeName($name);
 
@@ -60,11 +59,7 @@ class Container implements ContainerInterface
             if (method_exists($this, $method = 'get' . $name)) {
                 $this->services[$name] = $this->$method();
             } else {
-                if ($invalidBehavior == self::EXCEPTION_ON_INVALID_REFERENCE) {
-                    throw new ServiceNotFoundException('Service ' . $name . ' not defined');
-                } elseif ($invalidBehavior == self::NULL_ON_INVALID_REFERENCE) {
-                    return null;
-                }
+                throw new NotFoundException('Service ' . $name . ' not defined');
             }
         }
 

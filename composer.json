@@ -18,6 +18,7 @@
     "jms/serializer": "^1.1",
     "monolog/monolog": "^1.17",
     "psr/log": "^1.0",
+    "psr/container": "^1.0",
     "psx/api": "^2.0",
     "psx/cache": "^1.0",
     "psx/data": "^2.0",
@@ -30,7 +31,6 @@
     "psx/uri": "^1.0",
     "psx/validate": "^1.0",
     "symfony/console": "~2.8|~3.0",
-    "symfony/dependency-injection": "~3.0",
     "symfony/event-dispatcher": "~2.8|~3.0"
   },
   "require-dev": {
