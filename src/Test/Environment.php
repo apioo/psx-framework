@@ -215,9 +215,7 @@ class Environment
                     }
                 }
 
-                if (method_exists($connection, 'set')) {
-                    $container->set('connection', $connection);
-                }
+                $container->set('connection', $connection);
 
                 self::$hasConnection = true;
             } catch (DBALException $e) {
