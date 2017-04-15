@@ -1,6 +1,7 @@
 
-### 2.0.7
+### 2.1.0 (2017-04-15)
 
+* Implemented PSR-11 container interface and removed symfony di dependency
 * Added upload file from environment method
 * Removed buffered stream
 
