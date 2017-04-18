@@ -91,7 +91,10 @@ class RequestFactory implements RequestFactoryInterface
             $requestMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 
             if (in_array($requestMethod, array('POST', 'PUT', 'DELETE', 'PATCH'))) {
-                $body = new TempStream(fopen('php://input', 'r'));
+                // apparently also in 5.6 and 7 it is not possible to read the
+                // php://input stream multiple times therefore we use the
+                // buffered stream
+                $body = new BufferedStream(new TempStream(fopen('php://input', 'r')));
             }
 
             return new Request($url, $method, $headers, $body);
