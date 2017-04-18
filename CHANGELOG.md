@@ -1,4 +1,8 @@
 
+### 2.1.1 (2017-04-18)
+
+* Revert buffered stream usage
+
 ### 2.1.0 (2017-04-15)
 
 * Implemented PSR-11 container interface and removed symfony di dependency
