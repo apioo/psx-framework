@@ -93,7 +93,7 @@ class DocumentationController extends ApiAbstract
 
             // path parameters
             if ($resource->hasPathParameters()) {
-                $api->pathParameters = '#/definitions/path';
+                $api->pathParameters = '#/definitions/path-template';
             }
 
             // methods

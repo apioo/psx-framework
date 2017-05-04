@@ -87,15 +87,49 @@ JSON;
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
-            "Collection": {
+            "path-template": {
                 "type": "object",
-                "title": "collection",
+                "title": "path",
                 "properties": {
-                    "entry": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#\/definitions\/Item"
-                        }
+                    "name": {
+                        "type": "string",
+                        "description": "Name parameter",
+                        "pattern": "[A-z]+",
+                        "minLength": 0,
+                        "maxLength": 16
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "foo",
+                            "bar"
+                        ]
+                    }
+                }
+            },
+            "GET-query": {
+                "type": "object",
+                "title": "query",
+                "properties": {
+                    "startIndex": {
+                        "type": "integer",
+                        "description": "startIndex parameter",
+                        "minimum": 0,
+                        "maximum": 32
+                    },
+                    "float": {
+                        "type": "number"
+                    },
+                    "boolean": {
+                        "type": "boolean"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "datetime": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 }
             },
@@ -123,6 +157,18 @@ JSON;
                 "required": [
                     "id"
                 ]
+            },
+            "Collection": {
+                "type": "object",
+                "title": "collection",
+                "properties": {
+                    "entry": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/definitions\/Item"
+                        }
+                    }
+                }
             },
             "Message": {
                 "type": "object",
@@ -165,7 +211,7 @@ JSON;
             }
         }
     },
-    "pathParameters": "#\/definitions\/path",
+    "pathParameters": "#\/definitions\/path-template",
     "methods": {
         "GET": {
             "description": "Returns a collection",
