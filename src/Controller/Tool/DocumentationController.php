@@ -23,9 +23,9 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Resource;
 use PSX\Api\Generator;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\Generator\RamlController;
+use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Record\Record;
-use PSX\Schema\Generator as SchemaGenerator;
-use PSX\Framework\Exception;
 use PSX\Http\Exception as HttpException;
 
 /**
@@ -168,7 +168,7 @@ class DocumentationController extends ApiAbstract
         $path   = ltrim($path, '/');
         $result = [];
 
-        $swaggerPath = $this->reverseRouter->getAbsolutePath('PSX\Framework\Controller\Generator\SwaggerController', array('version' => $version, 'path' => $path));
+        $swaggerPath = $this->reverseRouter->getAbsolutePath(SwaggerController::class, array('version' => $version, 'path' => $path));
         if ($swaggerPath !== null) {
             $result[] = [
                 'rel'  => 'swagger',
@@ -176,7 +176,7 @@ class DocumentationController extends ApiAbstract
             ];
         }
 
-        $ramlPath = $this->reverseRouter->getAbsolutePath('PSX\Framework\Controller\Generator\RamlController', array('version' => $version, 'path' => $path));
+        $ramlPath = $this->reverseRouter->getAbsolutePath(RamlController::class, array('version' => $version, 'path' => $path));
         if ($ramlPath !== null) {
             $result[] = [
                 'rel'  => 'raml',
