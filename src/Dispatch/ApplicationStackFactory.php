@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Dispatch;
 
+use PSX\Framework\ApplicationStackInterface;
 use PSX\Framework\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Http\RequestInterface;
@@ -43,6 +44,6 @@ class ApplicationStackFactory implements ControllerFactoryInterface
 
     public function getController($className, RequestInterface $request, ResponseInterface $response, Context $context)
     {
-        return $this->objectBuilder->getObject($className, array($request, $response, $context), 'PSX\\Framework\\ApplicationStackInterface');
+        return $this->objectBuilder->getObject($className, array($request, $response, $context), ApplicationStackInterface::class);
     }
 }
