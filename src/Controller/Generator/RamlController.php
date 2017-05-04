@@ -43,8 +43,6 @@ class RamlController extends ControllerAbstract
 
     public function onGet()
     {
-        parent::onGet();
-
         $version  = (int) $this->getUriFragment('version');
         $resource = $this->resourceListing->getResource($this->getUriFragment('path'), $version);
 
