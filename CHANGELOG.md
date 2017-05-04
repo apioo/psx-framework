@@ -2,6 +2,7 @@
 ### 2.1.3 (2017-05-04)
 
 * Fix documentation schema reference
+* Use class notation
 
 ### 2.1.2 (2017-05-04)
 
