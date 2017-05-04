@@ -21,8 +21,7 @@
 namespace PSX\Framework\Dispatch;
 
 use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\ControllerFactoryInterface;
-use PSX\Framework\Dispatch\SenderInterface;
+use PSX\Framework\Controller\ErrorController;
 use PSX\Framework\Event\Context\ControllerContext;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
@@ -134,7 +133,7 @@ class Dispatch
             try {
                 $context->set(Context::KEY_EXCEPTION, $e);
 
-                $class      = isset($this->config['psx_error_controller']) ? $this->config['psx_error_controller'] : 'PSX\\Framework\\Controller\\ErrorController';
+                $class      = isset($this->config['psx_error_controller']) ? $this->config['psx_error_controller'] : ErrorController::class;
                 $controller = $this->factory->getController($class, $request, $response, $context);
 
                 $this->loader->executeController($controller, $request, $response);
