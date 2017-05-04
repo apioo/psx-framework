@@ -1,4 +1,12 @@
 
+### 2.1.3 (2017-05-04)
+
+* Fix documentation schema reference
+
+### 2.1.2 (2017-05-04)
+
+* Documentation controller use class notation
+
 ### 2.1.1 (2017-04-18)
 
 * Revert buffered stream usage
