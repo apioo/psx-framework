@@ -20,19 +20,17 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\DateTime\Date;
+use PSX\DateTime\DateTime;
+use PSX\DateTime\Duration;
+use PSX\DateTime\Time;
+use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Tests\Controller\Foo\Model\ChoiceA;
 use PSX\Framework\Tests\Controller\Foo\Model\ChoiceB;
 use PSX\Framework\Tests\Controller\Foo\Model\Complex;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Record\Record;
 use PSX\Record\RecordInterface;
-use PSX\Data\Writer;
-use PSX\DateTime\DateTime;
-use PSX\DateTime\Date;
-use PSX\DateTime\Duration;
-use PSX\DateTime\Time;
-use PSX\Json\Parser;
-use PSX\Framework\Test\ControllerTestCase;
 
 /**
  * PropertyTestCase

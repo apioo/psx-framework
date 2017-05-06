@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
-use PSX\Http\Request;
-use PSX\Http\Response;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Http\Request;
+use PSX\Http\Response;
 use PSX\Uri\Url;
 
 /**

@@ -23,11 +23,10 @@ namespace PSX\Framework\Tests\Filter;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Filter\ControllerExecutor;
 use PSX\Framework\Filter\FilterChain;
+use PSX\Framework\Loader\Context;
 use PSX\Framework\Tests\Filter\ControllerExecutor\FooController;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Framework\Loader;
-use PSX\Framework\Loader\Context;
 use PSX\Uri\Url;
 
 /**

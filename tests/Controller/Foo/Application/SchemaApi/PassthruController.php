@@ -25,8 +25,6 @@ use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
-use stdClass;
 
 /**
  * PassthruController

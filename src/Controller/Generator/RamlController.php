@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Controller\Generator;
 
-use PSX\Api\Resource;
 use PSX\Api\Generator;
+use PSX\Api\Resource;
 use PSX\Api\Util\Inflection;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as HttpException;

@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Data\WriterInterface;
+use PSX\Framework\Controller\ControllerAbstract;
 
 /**
  * TestSupportedWriterController

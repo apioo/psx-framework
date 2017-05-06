@@ -20,12 +20,9 @@
 
 namespace PSX\Framework\Controller\Generator;
 
-use PSX\Api\Resource;
 use PSX\Api\Generator;
-use PSX\Api\Util\Inflection;
-use PSX\Data\Exporter;
+use PSX\Api\Resource;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Data\WriterInterface;
 use PSX\Http\Exception as HttpException;
 use PSX\Model\Swagger\ResourceListing;
 use PSX\Model\Swagger\ResourceObject;

@@ -21,25 +21,19 @@
 namespace PSX\Framework\Controller;
 
 use DOMDocument;
-use PSX\Data\Accessor;
 use PSX\Data\Payload;
-use PSX\Data\TransformerInterface;
+use PSX\Data\Writer;
+use PSX\Data\WriterInterface;
 use PSX\Framework\ApplicationStackInterface;
 use PSX\Framework\Controller\Behaviour;
 use PSX\Framework\Data\Writer as FrameworkWriter;
 use PSX\Framework\Filter\ControllerExecutor;
 use PSX\Framework\Loader\Context;
-use PSX\Data\ReaderInterface;
-use PSX\Record\Record;
-use PSX\Record\RecordInterface;
-use PSX\Data\Writer;
-use PSX\Data\WriterInterface;
-use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\StreamInterface;
+use PSX\Record\Record;
 use PSX\Schema\Validation\ValidatorInterface;
-use PSX\Schema\Validation\Validator;
 use PSX\Schema\Visitor\TypeVisitor;
 use ReflectionClass;
 use SimpleXMLElement;

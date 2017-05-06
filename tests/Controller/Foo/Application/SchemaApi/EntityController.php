@@ -22,10 +22,10 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Record\RecordInterface;
-use PSX\Schema\Property;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Record\RecordInterface;
+use PSX\Schema\Property;
 
 /**
  * EntityController

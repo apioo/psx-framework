@@ -21,13 +21,13 @@
 namespace PSX\Framework\Oauth2;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Http\Exception as StatusCode;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 use PSX\Oauth2\Authorization\Exception\ServerErrorException;
 use PSX\Oauth2\Authorization\Exception\UnauthorizedClientException;
 use PSX\Oauth2\Authorization\Exception\UnsupportedResponseTypeException;
 use PSX\Uri\Url;
-use PSX\Http\Exception as StatusCode;
 
 /**
  * AuthorizationAbstract

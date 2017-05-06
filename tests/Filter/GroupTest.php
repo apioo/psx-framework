@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests\Filter;
 
-use PSX\Framework\Filter\Group;
 use PSX\Framework\Filter\FilterChain;
 use PSX\Framework\Filter\FilterChainInterface;
 use PSX\Framework\Filter\FilterInterface;
+use PSX\Framework\Filter\Group;
 use PSX\Http\Request;
 use PSX\Http\RequestInterface;
 use PSX\Http\Response;

@@ -21,15 +21,12 @@
 namespace PSX\Framework\Controller;
 
 use PSX\Api\DocumentedInterface;
-use PSX\Api\Parser;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
-use PSX\Data\Record\Transformer;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Schema\Passthru;
-use PSX\Record\Record;
-use PSX\Record\RecordInterface;
 use PSX\Http\Exception as StatusCode;
+use PSX\Record\Record;
 use PSX\Schema\PropertyInterface;
 use PSX\Schema\PropertyType;
 use PSX\Schema\Schema;

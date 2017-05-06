@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Util\Api;
 
-use PSX\DateTime\DateTime;
 use PSX\Sql\Condition;
 use PSX\Sql\Sql;
 

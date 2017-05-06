@@ -21,7 +21,6 @@
 namespace PSX\Framework\Config;
 
 use ArrayIterator;
-use PSX\Framework\Config\NotFoundException;
 
 /**
  * Simple config class which uses a simple array to store all values. Here an

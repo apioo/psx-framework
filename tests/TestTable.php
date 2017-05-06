@@ -23,7 +23,6 @@ namespace PSX\Framework\Tests;
 use PSX\Sql\NestRule;
 use PSX\Sql\TableAbstract;
 use PSX\Sql\TableInterface;
-use PSX\Sql\Field;
 
 /**
  * TestTable

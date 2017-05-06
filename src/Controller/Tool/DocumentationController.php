@@ -20,13 +20,13 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Api\Resource;
 use PSX\Api\Generator;
+use PSX\Api\Resource;
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Record\Record;
 use PSX\Http\Exception as HttpException;
+use PSX\Record\Record;
 
 /**
  * DocumentationController

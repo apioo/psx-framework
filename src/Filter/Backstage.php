@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Filter;
 
-use PSX\Framework\Loader;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 

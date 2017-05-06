@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Filter;
 
-use PSX\Http\Exception\BadRequestException;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 

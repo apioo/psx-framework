@@ -22,7 +22,6 @@ namespace PSX\Framework\Controller;
 
 use PSX\Data\WriterInterface;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Util\Api\FilterParameter;
 
 /**
  * ApiAbstract

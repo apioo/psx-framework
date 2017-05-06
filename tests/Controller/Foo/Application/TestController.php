@@ -22,14 +22,14 @@ namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use DOMDocument;
 use PSX\Data\Accessor;
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Data\ReaderInterface;
-use PSX\Record\Record;
 use PSX\Data\WriterInterface;
-use PSX\Validate\Filter;
-use PSX\Http\Stream\FileStream;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
+use PSX\Http\Stream\FileStream;
+use PSX\Record\Record;
 use PSX\Uri\Url;
+use PSX\Validate\Filter;
 use PSX\Validate\Validate;
 use SimpleXMLElement;
 

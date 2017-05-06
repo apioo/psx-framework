@@ -28,7 +28,6 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseParser;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\AuthorizationCode;
-use PSX\Oauth2\Tests\Authorization\ClientCredentialsTest;
 use PSX\Uri\Url;
 
 /**

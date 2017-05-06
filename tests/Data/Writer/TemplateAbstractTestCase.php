@@ -20,11 +20,10 @@
 
 namespace PSX\Framework\Tests\Data\Writer;
 
-use PSX\Record\Record;
-use PSX\Data\Tests\WriterTestCase;
 use PSX\DateTime\DateTime;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Template\TemplateInterface;
+use PSX\Record\Record;
 
 /**
  * TemplateAbstractTestCase

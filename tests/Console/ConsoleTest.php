@@ -22,7 +22,6 @@ namespace PSX\Framework\Tests\Console;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
-use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * ConsoleTest

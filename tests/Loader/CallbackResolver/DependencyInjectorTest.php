@@ -21,10 +21,10 @@
 namespace PSX\Framework\Tests\Loader\CallbackResolver;
 
 use PSX\Framework\Loader\CallbackResolver\DependencyInjector;
-use PSX\Http\Request;
-use PSX\Http\Response;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Http\Request;
+use PSX\Http\Response;
 use PSX\Uri\Url;
 
 /**

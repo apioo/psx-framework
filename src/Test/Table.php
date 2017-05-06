@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Test;
 
-use PSX\Framework\Exception;
 use PSX\Sql\TableInterface;
 
 /**

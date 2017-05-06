@@ -23,7 +23,6 @@ namespace PSX\Framework\Dependency;
 use Doctrine\DBAL\Tools\Console\Command as DBALCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 use PSX\Api\Console\ApiCommand;
-use PSX\Data\Exporter;
 use PSX\Framework\Base;
 use PSX\Framework\Console as PSXCommand;
 use PSX\Framework\Console\Reader;

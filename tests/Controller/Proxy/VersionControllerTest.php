@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Proxy;
 
-use Doctrine\DBAL\Version;
 use PSX\Framework\Controller\Proxy\VersionController;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Json\Parser;

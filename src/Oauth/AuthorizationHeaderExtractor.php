@@ -21,9 +21,9 @@
 namespace PSX\Framework\Oauth;
 
 use PSX\Data\InvalidDataException;
-use PSX\Record\RecordInterface;
 use PSX\Http\MessageInterface;
 use PSX\Oauth\Consumer;
+use PSX\Record\RecordInterface;
 
 /**
  * AuthorizationHeaderExtractor

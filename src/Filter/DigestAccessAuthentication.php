@@ -21,14 +21,13 @@
 namespace PSX\Framework\Filter;
 
 use Closure;
-use PSX\Record\StoreInterface;
 use PSX\Framework\Filter\DigestAccessAuthentication\Digest;
-use PSX\Framework\Exception;
 use PSX\Http\Authentication;
 use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Record\StoreInterface;
 
 /**
  * Implementation of the http digest authentication. Note the digest

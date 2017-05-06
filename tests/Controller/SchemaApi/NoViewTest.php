@@ -20,10 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
-use PSX\Record\Record;
-use PSX\Data\Writer;
-use PSX\Json\Parser;
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Json\Parser;
 
 /**
  * NoViewTest

@@ -23,8 +23,8 @@ namespace PSX\Framework\Oauth2;
 use PSX\Data\ReaderInterface;
 use PSX\Data\WriterInterface;
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 
 /**
  * TokenAbstract

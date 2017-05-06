@@ -28,7 +28,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Config\Config;
-use PSX\Framework\Dependency\Container;
 use RuntimeException;
 
 /**

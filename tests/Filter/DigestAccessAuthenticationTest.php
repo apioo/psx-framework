@@ -20,13 +20,13 @@
 
 namespace PSX\Framework\Tests\Filter;
 
-use PSX\Record\Store\Memory;
-use PSX\Record\StoreInterface;
 use PSX\Framework\Filter\DigestAccessAuthentication;
 use PSX\Http\Authentication;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Request;
 use PSX\Http\Response;
+use PSX\Record\Store\Memory;
+use PSX\Record\StoreInterface;
 use PSX\Uri\Url;
 
 /**

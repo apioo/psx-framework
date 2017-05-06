@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
-use PSX\Json\Parser;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**

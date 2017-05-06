@@ -21,12 +21,11 @@
 namespace PSX\Framework\Tests\Filter;
 
 use PSX\Framework\Filter\Oauth2Authentication;
-use PSX\Http\Http as HttpClient;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Oauth2\Client;
 use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Client;
 use PSX\Uri\Url;
 
 /**

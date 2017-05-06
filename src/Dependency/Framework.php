@@ -21,7 +21,6 @@
 namespace PSX\Framework\Dependency;
 
 use PSX\Api\ApiManager;
-use PSX\Api\Parser;
 use PSX\Framework\Api\CachedListing;
 use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;

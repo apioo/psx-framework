@@ -21,7 +21,6 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
-use PSX\Record\RecordInterface;
 
 /**
  * PropertyControllerTrait

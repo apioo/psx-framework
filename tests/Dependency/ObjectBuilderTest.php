@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Dependency;
 
-use Doctrine\Common\Annotations;
 use Doctrine\Common\Cache\ArrayCache;
 use PSX\Cache\Pool;
 use PSX\Framework\Dependency\Container;

@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use DateTime;
 use DateInterval;
+use DateTime;
 
 /**
  * Property

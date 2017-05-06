@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
-use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ResponseFactory;
 
 /**

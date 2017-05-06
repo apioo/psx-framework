@@ -21,7 +21,6 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Record\Record;
 
 /**
  * TestApiTableController

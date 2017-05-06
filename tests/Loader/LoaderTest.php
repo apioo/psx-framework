@@ -22,9 +22,9 @@ namespace PSX\Framework\Tests\Loader;
 
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
+use PSX\Framework\Event\Event;
 use PSX\Framework\Filter\FilterChainInterface;
 use PSX\Framework\Filter\FilterInterface;
-use PSX\Framework\Event\Event;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\Loader;
 use PSX\Framework\Loader\LocationFinder\CallbackMethod;

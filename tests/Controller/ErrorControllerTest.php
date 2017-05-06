@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller;
 
-use PSX\Json\Parser;
 use PSX\Framework\Test\Assert;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Json\Parser;
 
 /**
  * ErrorControllerTest

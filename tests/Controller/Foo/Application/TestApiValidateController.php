@@ -20,12 +20,11 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PSX\Framework\Controller\ApiAbstract;
-use PSX\Validate\Filter;
-use PSX\Http\Message;
-use PSX\Validate\Validate;
 use PSX\Data\Validator\Property;
 use PSX\Data\Validator\Validator;
+use PSX\Framework\Controller\ApiAbstract;
+use PSX\Validate\Filter;
+use PSX\Validate\Validate;
 
 /**
  * TestApiValidateController

@@ -21,9 +21,8 @@
 namespace PSX\Framework\Tests\Session\Handler;
 
 use PSX\Framework\Session\Handler\Sql;
-use PSX\Sql\Table;
-use PSX\Sql\Table\ColumnAllocation;
 use PSX\Framework\Test\DbTestCase;
+use PSX\Sql\Table\ColumnAllocation;
 
 /**
  * SqlTest

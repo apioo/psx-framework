@@ -22,9 +22,9 @@ namespace PSX\Framework\Tests\Filter;
 
 use Doctrine\Common\Cache\ArrayCache;
 use PSX\Cache;
-use PSX\Framework\Filter\StaticCache;
 use PSX\Framework\Filter\FilterChain;
 use PSX\Framework\Filter\FilterChainInterface;
+use PSX\Framework\Filter\StaticCache;
 use PSX\Http\Request;
 use PSX\Http\RequestInterface;
 use PSX\Http\Response;

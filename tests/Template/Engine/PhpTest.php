@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Template\Engine;
 
-use PSX\Record\Record;
 use PSX\Framework\Template\Engine\Php;
 use PSX\Framework\Template\ErrorException;
 

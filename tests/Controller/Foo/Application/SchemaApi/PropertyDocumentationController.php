@@ -22,8 +22,8 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Schema\Property;
 use PSX\Framework\Loader\Context;
+use PSX\Schema\Property;
 
 /**
  * PropertyDocumentationController

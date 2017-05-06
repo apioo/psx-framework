@@ -21,23 +21,23 @@
 namespace PSX\Framework\Tests\Log;
 
 use PSX\Framework\DisplayException;
-use PSX\Framework\Event\Event;
 use PSX\Framework\Event\Context\ControllerContext;
 use PSX\Framework\Event\ControllerExecuteEvent;
 use PSX\Framework\Event\ControllerProcessedEvent;
+use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Event\RequestIncomingEvent;
 use PSX\Framework\Event\ResponseSendEvent;
 use PSX\Framework\Event\RouteMatchedEvent;
+use PSX\Framework\Loader\Context;
 use PSX\Framework\Log\LogListener;
+use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Test\Environment;
 use PSX\Http\Exception\InternalServerErrorException;
 use PSX\Http\Exception\NotFoundException;
 use PSX\Http\Exception\SeeOtherException;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Framework\Loader\Context;
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
 use PSX\Uri\Uri;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

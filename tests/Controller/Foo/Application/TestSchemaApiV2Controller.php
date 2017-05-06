@@ -22,13 +22,9 @@ namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Record\RecordInterface;
-use PSX\Schema\Property;
-use PSX\Schema\Schema;
-use PSX\Validate\Filter;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
-use PSX\Validate\Validate;
+use PSX\Schema\Schema;
 
 /**
  * TestSchemaApiV2Controller

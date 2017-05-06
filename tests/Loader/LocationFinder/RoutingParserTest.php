@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests\Loader\LocationFinder;
 
-use PSX\Framework\Loader\LocationFinder\RoutingParser;
-use PSX\Http\Request;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Loader\LocationFinder\RoutingParser;
 use PSX\Framework\Loader\RoutingParser\RoutingFile;
+use PSX\Http\Request;
 use PSX\Uri\Uri;
 
 /**

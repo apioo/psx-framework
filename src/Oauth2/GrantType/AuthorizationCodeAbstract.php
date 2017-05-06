@@ -20,9 +20,9 @@
 
 namespace PSX\Framework\Oauth2\GrantType;
 
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantTypeInterface;
+use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 
 /**
  * AuthorizationCodeAbstract
