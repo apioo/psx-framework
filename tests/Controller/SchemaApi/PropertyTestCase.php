@@ -184,7 +184,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/complex property "baz" does not exist', substr($data->message, 0, 38), $body);
+        $this->assertEquals('/complex property "baz" is not allowed', substr($data->message, 0, 38), $body);
     }
 
     public function testPostInvalidDateTime()
