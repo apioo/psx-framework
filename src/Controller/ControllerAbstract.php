@@ -28,9 +28,11 @@ use PSX\Framework\ApplicationStackInterface;
 use PSX\Framework\Controller\Behaviour;
 use PSX\Framework\Data\Writer as FrameworkWriter;
 use PSX\Framework\Filter\ControllerExecutor;
+use PSX\Framework\Http\Body;
 use PSX\Framework\Loader\Context;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Http\Stream\FileStream;
 use PSX\Http\StreamInterface;
 use PSX\Record\Record;
 use PSX\Schema\Validation\ValidatorInterface;
@@ -244,21 +246,23 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
         }
 
         if ($data instanceof DOMDocument) {
-            if (!$this->response->hasHeader('Content-Type')) {
-                $this->response->setHeader('Content-Type', 'application/xml');
-            }
-
-            $this->response->getBody()->write($data->saveXML());
+            $data = new Body\Xml($data);
         } elseif ($data instanceof SimpleXMLElement) {
-            if (!$this->response->hasHeader('Content-Type')) {
-                $this->response->setHeader('Content-Type', 'application/xml');
-            }
-
-            $this->response->getBody()->write($data->asXML());
+            $data = new Body\Xml($data);
         } elseif ($data instanceof StreamInterface) {
-            $this->response->setBody($data);
+            if ($data instanceof FileStream) {
+                trigger_error('Use of the FileStream is deprecated please use the PSX\Framework\Http\Body\File wrapper', E_USER_DEPRECATED);
+
+                $data = new Body\File($data, $data->getFileName(), $data->getContentType());
+            } else {
+                $data = new Body\Stream($data);
+            }
         } elseif (is_string($data)) {
-            $this->response->getBody()->write($data);
+            $data = new Body\Body($data);
+        }
+
+        if ($data instanceof Body\BodyInterface) {
+            $data->writeTo($this->response);
         } else {
             $this->setResponse($data, $writerType);
         }
