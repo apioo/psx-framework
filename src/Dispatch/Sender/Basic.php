@@ -61,9 +61,6 @@ class Basic implements SenderInterface
         }
 
         if ($this->shouldSendHeader()) {
-            // if we have a file stream body set custom header
-            $this->prepareFileStream($response);
-
             // send status line
             $this->sendStatusLine($response);
 
@@ -78,25 +75,6 @@ class Basic implements SenderInterface
     protected function shouldSendHeader()
     {
         return PHP_SAPI != 'cli' && !headers_sent();
-    }
-
-    protected function prepareFileStream(ResponseInterface $response)
-    {
-        if ($response->getBody() instanceof FileStream) {
-            $fileName = $response->getBody()->getFileName();
-            if (empty($fileName)) {
-                $fileName = 'file';
-            }
-
-            $contentType = $response->getBody()->getContentType();
-            if (empty($contentType)) {
-                $contentType = 'application/octet-stream';
-            }
-
-            $response->setHeader('Content-Type', $contentType);
-            $response->setHeader('Content-Disposition', 'attachment; filename="' . addcslashes($fileName, '"') . '"');
-            $response->setHeader('Transfer-Encoding', 'chunked');
-        }
     }
 
     protected function sendStatusLine(ResponseInterface $response)
