@@ -241,9 +241,9 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
     }
 
     /**
-     * Gets the schema for the status code and formats the response according to
-     * the schema. If no status code was provided the schema of an successful
-     * response is taken
+     * Checks whether a response schema is defined for the provided status code
+     * and writes the data to the body if a status code is available. Otherwise 
+     * the API returns 204 no content
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
      * @param mixed $response
@@ -251,13 +251,17 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
     protected function sendResponse(MethodAbstract $method, $response)
     {
         $statusCode = $this->response->getStatusCode();
-        if (!empty($statusCode) && $method->hasResponse($statusCode)) {
-            $schema = $method->getResponse($statusCode);
-        } else {
-            $schema = $this->getSuccessfulResponse($method, $statusCode);
+        if (empty($statusCode)) {
+            // in case we have only one defined response use this code
+            $responses = $method->getResponses();
+            if (count($responses) == 1) {
+                $statusCode = key($responses);
+            } else {
+                $statusCode = 200;
+            }
         }
 
-        if ($schema instanceof SchemaInterface) {
+        if ($method->hasResponse($statusCode)) {
             $this->setResponseCode($statusCode);
             $this->setBody($response);
         } else {
@@ -293,28 +297,6 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         }
 
         return $resource;
-    }
-
-    /**
-     * Returns the successful response of a method or null if no is available
-     *
-     * @param \PSX\Api\Resource\MethodAbstract $method
-     * @param integer $statusCode
-     * @return \PSX\Schema\SchemaInterface
-     */
-    private function getSuccessfulResponse(MethodAbstract $method, &$statusCode)
-    {
-        $successCodes = [200, 201, 202, 203, 205, 207];
-
-        foreach ($successCodes as $successCode) {
-            if ($method->hasResponse($successCode)) {
-                $statusCode = $successCode;
-
-                return $method->getResponse($successCode);
-            }
-        }
-
-        return null;
     }
 
     /**
