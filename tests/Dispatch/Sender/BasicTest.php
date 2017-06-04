@@ -173,58 +173,6 @@ class BasicTest extends SenderTestCase
         $this->assertEquals(gzencode('foobar'), $actual);
     }
 
-    public function testSendFileStream()
-    {
-        $handle = fopen('php://memory', 'r+');
-        fwrite($handle, 'foobar');
-        fseek($handle, 0);
-
-        $response = new Response();
-        $response->setHeader('Content-Encoding', 'gzip');
-        $response->setBody(new FileStream($handle, 'foo.txt', 'text/plain'));
-
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
-            ->setMethods(array('shouldSendHeader', 'sendHeader'))
-            ->getMock();
-
-        $sender->expects($this->once())
-            ->method('shouldSendHeader')
-            ->will($this->returnValue(true));
-
-        $actual = $this->captureOutput($sender, $response);
-
-        $this->assertEquals('text/plain', $response->getHeader('Content-Type'));
-        $this->assertEquals('attachment; filename="foo.txt"', $response->getHeader('Content-Disposition'));
-        $this->assertEquals('chunked', $response->getHeader('Transfer-Encoding'));
-        $this->assertEquals('6' . "\r\n" . 'foobar' . "\r\n" . '0' . "\r\n" . "\r\n", $actual);
-    }
-
-    public function testSendFileStreamNoContentType()
-    {
-        $handle = fopen('php://memory', 'r+');
-        fwrite($handle, 'foobar');
-        fseek($handle, 0);
-
-        $response = new Response();
-        $response->setHeader('Content-Encoding', 'gzip');
-        $response->setBody(new FileStream($handle, 'foo.txt'));
-
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
-            ->setMethods(array('shouldSendHeader', 'sendHeader'))
-            ->getMock();
-
-        $sender->expects($this->once())
-            ->method('shouldSendHeader')
-            ->will($this->returnValue(true));
-
-        $actual = $this->captureOutput($sender, $response);
-
-        $this->assertEquals('application/octet-stream', $response->getHeader('Content-Type'));
-        $this->assertEquals('attachment; filename="foo.txt"', $response->getHeader('Content-Disposition'));
-        $this->assertEquals('chunked', $response->getHeader('Transfer-Encoding'));
-        $this->assertEquals('6' . "\r\n" . 'foobar' . "\r\n" . '0' . "\r\n" . "\r\n", $actual);
-    }
-
     public function testEmpyBodyStatusCode()
     {
         $emptyCodes = array(100, 101, 204, 304);
