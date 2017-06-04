@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
-use PSX\Framework\Http\Body\Resource;
+use PSX\Framework\Http\Body\Stream;
 use PSX\Http\Response;
 use PSX\Http\Stream\StringStream;
 
@@ -37,7 +37,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $response = new Response(200);
 
-        $body = new Resource(new StringStream('foobar'));
+        $body = new Stream(new StringStream('foobar'));
         $body->writeTo($response);
 
         $this->assertEquals(['content-type' => ['application/octet-stream']], $response->getHeaders());
