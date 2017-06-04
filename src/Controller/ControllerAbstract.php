@@ -253,7 +253,10 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
             if ($data instanceof FileStream) {
                 trigger_error('Use of the FileStream is deprecated please use the PSX\Framework\Http\Body\File wrapper', E_USER_DEPRECATED);
 
-                $data = new Body\File($data, $data->getFileName(), $data->getContentType());
+                $this->response->setHeader('Content-Type', $data->getContentType());
+                $this->response->setHeader('Content-Disposition', 'attachment; filename="' . addcslashes($data->getFileName(), '"') . '"');
+
+                $data = new Body\Body($data->getContents());
             } else {
                 $data = new Body\Stream($data);
             }
