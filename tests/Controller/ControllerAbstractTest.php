@@ -117,6 +117,7 @@ class ControllerAbstractTest extends ControllerTestCase
 JSON;
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
@@ -130,6 +131,7 @@ JSON;
 JSON;
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
@@ -143,6 +145,7 @@ JSON;
 JSON;
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
@@ -157,6 +160,7 @@ JSON;
 XML;
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/xml']], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
 
@@ -171,6 +175,7 @@ XML;
 XML;
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/xml']], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
 
@@ -190,18 +195,11 @@ TEXT;
     public function testSetStreamBody()
     {
         $response = $this->sendRequest('http://127.0.0.1/controller/file', 'GET');
-        $body     = $response->getBody();
+        $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertInstanceOf('PSX\Http\Stream\FileStream', $body);
-        $this->assertEquals('foo.txt', $body->getFileName());
-        $this->assertEquals('application/octet-stream', $body->getContentType());
-
-        $expect = <<<TEXT
-foobar
-TEXT;
-
-        $this->assertEquals($expect, (string) $body);
+        $this->assertEquals(['content-type' => ['application/octet-stream'], 'content-disposition' => ['attachment; filename="foo.txt"']], $response->getHeaders(), $body);
+        $this->assertEquals('foobar', $body, $body);
     }
 
     /**
