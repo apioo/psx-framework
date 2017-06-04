@@ -25,6 +25,7 @@ use PSX\Data\Accessor;
 use PSX\Data\ReaderInterface;
 use PSX\Data\WriterInterface;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Framework\Http\Body;
 use PSX\Framework\Loader\Context;
 use PSX\Http\Stream\FileStream;
 use PSX\Record\Record;
@@ -205,6 +206,11 @@ class TestController extends ControllerAbstract
     public function doSetStreamBody()
     {
         $this->setBody(new FileStream(fopen(__DIR__ . '/../Resource/test_file', 'r'), 'foo.txt', 'application/octet-stream'));
+    }
+
+    public function doSetBodyBody()
+    {
+        $this->setBody(new Body\Json(['foo' => 'bar']));
     }
 
     /**

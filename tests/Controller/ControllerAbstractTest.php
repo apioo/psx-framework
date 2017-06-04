@@ -202,6 +202,16 @@ TEXT;
         $this->assertEquals('foobar', $body, $body);
     }
 
+    public function testSetBodyBody()
+    {
+        $response = $this->sendRequest('http://127.0.0.1/controller/body', 'GET');
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(['content-type' => ['application/json']], $response->getHeaders(), $body);
+        $this->assertJsonStringEqualsJsonString('{"foo": "bar"}', $body, $body);
+    }
+
     /**
      * In case the controller calls the setBody method multiple times only the
      * first call gets written as response since the response gets appendend
@@ -272,6 +282,7 @@ TEXT;
             [['GET'], '/controller/simplexml', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetSimpleXmlBody'],
             [['GET'], '/controller/string', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetStringBody'],
             [['GET'], '/controller/file', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetStreamBody'],
+            [['GET'], '/controller/body', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetBodyBody'],
             [['GET'], '/controller/double_body', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetDoubleBody'],
             [['GET'], '/redirect/:foo', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doRedirectDestiniation'],
             [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doIndex'],
