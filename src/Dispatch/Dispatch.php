@@ -27,7 +27,7 @@ use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Event\RequestIncomingEvent;
 use PSX\Framework\Event\ResponseSendEvent;
-use PSX\Framework\Exception\Converter;
+use PSX\Framework\Exception\ConverterInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\LoaderInterface;
 use PSX\Http\Authentication;
@@ -81,7 +81,7 @@ class Dispatch
 
     protected $level;
 
-    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, SenderInterface $sender, EventDispatcherInterface $eventDispatcher, Converter $exceptionConverter)
+    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, SenderInterface $sender, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
     {
         $this->config             = $config;
         $this->loader             = $loader;
