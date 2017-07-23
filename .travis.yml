@@ -11,8 +11,8 @@ before_install:
   - phpenv config-rm xdebug.ini
 install:
   - composer install
-  - composer require doctrine/orm ~2.5
-  - composer require twig/twig ~1.16
+  - composer require doctrine/orm ^2.5
+  - composer require twig/twig ^1.16
 before_script:
   - if [ $DB = 'mysql' ]; then mysql -e 'create database psx;'; fi;
 script:
