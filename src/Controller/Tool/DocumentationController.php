@@ -23,6 +23,7 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Generator;
 use PSX\Api\Resource;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Http\Exception as HttpException;
@@ -167,6 +168,14 @@ class DocumentationController extends ApiAbstract
     {
         $path   = ltrim($path, '/');
         $result = [];
+
+        $openAPIPath = $this->reverseRouter->getAbsolutePath(OpenAPIController::class, array('version' => $version, 'path' => $path));
+        if ($openAPIPath !== null) {
+            $result[] = [
+                'rel'  => 'openapi',
+                'href' => $openAPIPath,
+            ];
+        }
 
         $swaggerPath = $this->reverseRouter->getAbsolutePath(SwaggerController::class, array('version' => $version, 'path' => $path));
         if ($swaggerPath !== null) {
