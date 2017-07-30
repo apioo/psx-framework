@@ -1,4 +1,8 @@
 
+### 2.1.4 (2017-07-30)
+
+* Add OpenAPI controller
+
 ### 2.1.3 (2017-05-04)
 
 * Fix documentation schema reference
