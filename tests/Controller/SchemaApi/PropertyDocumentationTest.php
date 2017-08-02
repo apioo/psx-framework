@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyDocumentationController;
+
 /**
  * PropertyDocumentationTest
  *
@@ -32,7 +34,7 @@ class PropertyDocumentationTest extends PropertyTestCase
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyDocumentationController'],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyDocumentationController::class],
         );
     }
 }

@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyAnnotationController;
+
 /**
  * PropertyAnnotationTest
  *
@@ -32,7 +34,7 @@ class PropertyAnnotationTest extends PropertyTestCase
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyAnnotationController'],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyAnnotationController::class],
         );
     }
 }

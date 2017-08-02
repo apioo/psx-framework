@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyRamlController;
+
 /**
  * PropertyRamlTest
  *
@@ -32,7 +34,7 @@ class PropertyRamlTest extends PropertyTestCase
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyRamlController'],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyRamlController::class],
         );
     }
 }

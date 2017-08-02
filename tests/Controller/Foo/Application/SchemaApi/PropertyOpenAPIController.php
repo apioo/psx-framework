@@ -25,18 +25,18 @@ use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Loader\Context;
 
 /**
- * PropertyRamlController
+ * PropertyOpenAPIController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyRamlController extends SchemaApiAbstract
+class PropertyOpenAPIController extends SchemaApiAbstract
 {
     use PropertyControllerTrait;
 
     public function getDocumentation($version = null)
     {
-        return Parser\Raml::fromFile(__DIR__ . '/../../Resource/raml.yaml', $this->context->get(Context::KEY_PATH));
+        return Parser\OpenAPI::fromFile(__DIR__ . '/../../Resource/openapi.json', $this->context->get(Context::KEY_PATH));
     }
 }

@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyPopoController;
+
 /**
  * PropertyPopoTest
  *
@@ -32,7 +34,7 @@ class PropertyPopoTest extends PropertyTestCase
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyPopoController'],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyPopoController::class],
         );
     }
 }
