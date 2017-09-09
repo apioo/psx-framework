@@ -1,4 +1,9 @@
 
+### 2.1.6
+
+* Add factory support for DI container
+* Use server REQUEST_TIME_FLOAT
+
 ### 2.1.5 (2017-07-30)
 
 * Add OpenAPI controller
