@@ -34,8 +34,41 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testSet()
     {
         $sc = new Container();
+
+        $this->assertFalse($sc->has('foo'));
+
         $sc->set('foo', $foo = new \stdClass());
-        $this->assertEquals($foo, $sc->get('foo'), '->set() sets a service');
+
+        $this->assertTrue($sc->has('foo'));
+        $this->assertEquals($foo, $sc->get('foo'));
+    }
+
+    public function testSetFactory()
+    {
+        $sc = new Container();
+        $sc->setParameter('bar', 'foo');
+        $sc->set('foo', function(Container $c){
+            $service = new \stdClass();
+            $service->parameter = $c->getParameter('bar');
+            return $service;
+        });
+
+        $this->assertTrue($sc->has('foo'));
+
+        $service = $sc->get('foo');
+
+        $this->assertTrue($sc->has('foo'));
+        $this->assertInstanceOf(\stdClass::class, $service);
+        $this->assertEquals('foo', $service->parameter);
+        $this->assertSame($service, $sc->get('foo'));
+    }
+
+    public function testSetMethod()
+    {
+        $sc = new ProjectServiceContainer();
+
+        $this->assertTrue($sc->has('bar'));
+        $this->assertInstanceOf(\stdClass::class, $sc->get('bar'));
     }
 
     public function testSetWithNullResetTheService()
@@ -117,9 +150,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $sc = new ProjectServiceContainer();
 
+        $sc->set('baz', function(){
+            return new \stdClass();
+        });
+
         $services = $sc->getServiceIds();
 
-        $this->assertEquals(array('bar', 'foo_bar', 'scalar'), $services);
+        $this->assertEquals(array('bar', 'baz', 'foo_bar', 'scalar'), $services);
     }
 
     public function testGetReturnType()

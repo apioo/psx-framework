@@ -27,7 +27,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * A simple and fast implementation of a symfony dependency container
+ * A simple and fast PSR container implementation
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -35,28 +35,56 @@ use ReflectionException;
  */
 class Container implements ContainerInterface
 {
+    /**
+     * @var array
+     */
+    protected $factories;
+
+    /**
+     * @var array
+     */
     protected $services;
+
+    /**
+     * @var array
+     */
     protected $parameters;
 
     public function __construct()
     {
-        $this->services   = array();
-        $this->parameters = array();
+        $this->factories  = [];
+        $this->services   = [];
+        $this->parameters = [];
     }
 
+    /**
+     * @param string $name
+     * @param mixed $object
+     */
     public function set($name, $object)
     {
         $name = self::normalizeName($name);
 
-        return $this->services[$name] = $object;
+        if ($object instanceof \Closure) {
+            $this->factories[$name] = $object;
+        } else {
+            $this->services[$name] = $object;
+        }
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function get($name)
     {
         $name = self::normalizeName($name);
 
         if (!isset($this->services[$name])) {
-            if (method_exists($this, $method = 'get' . $name)) {
+            if (isset($this->factories[$name])) {
+                $this->services[$name] = call_user_func_array($this->factories[$name], [$this]);
+            } elseif (method_exists($this, $method = 'get' . $name)) {
                 $this->services[$name] = $this->$method();
             } else {
                 throw new NotFoundException('Service ' . $name . ' not defined');
@@ -66,13 +94,21 @@ class Container implements ContainerInterface
         return $this->services[$name];
     }
 
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public function has($name)
     {
         $name = self::normalizeName($name);
 
-        return isset($this->services[$name]) || method_exists($this, 'get' . $name);
+        return isset($this->services[$name]) || isset($this->factories[$name]) || method_exists($this, 'get' . $name);
     }
 
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public function initialized($name)
     {
         $name = self::normalizeName($name);
@@ -80,6 +116,10 @@ class Container implements ContainerInterface
         return isset($this->services[$name]);
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
     public function setParameter($name, $value)
     {
         $name = strtolower($name);
@@ -87,6 +127,10 @@ class Container implements ContainerInterface
         $this->parameters[$name] = $value;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function getParameter($name)
     {
         $name = strtolower($name);
@@ -98,6 +142,10 @@ class Container implements ContainerInterface
         }
     }
 
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public function hasParameter($name)
     {
         $name = strtolower($name);
@@ -112,14 +160,21 @@ class Container implements ContainerInterface
      */
     public function getServiceIds()
     {
-        $services  = array();
+        $services  = [];
+        $reserved  = ['get', 'getParameter', 'getServiceIds', 'getReturnType'];
         $container = new \ReflectionClass($this);
 
+        foreach ($this->factories as $name => $factory) {
+            $services[] = self::underscore($name);
+        }
+
         foreach ($container->getMethods() as $method) {
-            if (!in_array($method->name, array('get', 'getParameter', 'getServiceIds', 'getReturnType')) && preg_match('/^get(.+)$/', $method->name, $match)) {
+            if (!in_array($method->name, $reserved) && preg_match('/^get(.+)$/', $method->name, $match)) {
                 $services[] = self::underscore($match[1]);
             }
         }
+
+        sort($services);
 
         return $services;
     }
@@ -160,11 +215,19 @@ class Container implements ContainerInterface
         }
     }
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public static function normalizeName($name)
     {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
     }
 
+    /**
+     * @param string $id
+     * @return string
+     */
     public static function underscore($id)
     {
         return strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), strtr($id, '_', '.')));
