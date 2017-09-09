@@ -4,6 +4,7 @@
 * Use Throwable instead of Exception
 * Add factory support for DI container
 * Use server REQUEST_TIME_FLOAT
+* Set PHP 7.0 as minimum version
 
 ### 2.1.5 (2017-07-30)
 
