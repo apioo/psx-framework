@@ -142,7 +142,7 @@ abstract class TemplateAbstract implements WriterInterface
         } else {
             // assign default values
             $self   = isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) ? $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] : $_SERVER['PHP_SELF'];
-            $render = round(microtime(true) - $GLOBALS['psx_benchmark'], 6);
+            $render = isset($_SERVER['REQUEST_TIME_FLOAT']) ? round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 6) : 0;
 
             $this->template->assign('self', htmlspecialchars($self));
             $this->template->assign('url', $this->reverseRouter->getDispatchUrl());

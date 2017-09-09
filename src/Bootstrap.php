@@ -42,9 +42,6 @@ class Bootstrap
     public static function setupEnvironment(Config $config)
     {
         if (!defined('PSX')) {
-            // define benchmark
-            $GLOBALS['psx_benchmark'] = microtime(true);
-
             // define paths
             define('PSX_PATH_CACHE', $config['psx_path_cache']);
             define('PSX_PATH_LIBRARY', $config['psx_path_library']);
