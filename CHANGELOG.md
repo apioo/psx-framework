@@ -1,6 +1,7 @@
 
-### 2.1.6
+### 2.2.0
 
+* Use Throwable instead of Exception
 * Add factory support for DI container
 * Use server REQUEST_TIME_FLOAT
 
