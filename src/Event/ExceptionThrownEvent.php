@@ -34,7 +34,7 @@ class ExceptionThrownEvent extends SymfonyEvent
     protected $exception;
     protected $context;
 
-    public function __construct(\Exception $exception, ContextInterface $context)
+    public function __construct(\Throwable $exception, ContextInterface $context)
     {
         $this->exception = $exception;
         $this->context   = $context;

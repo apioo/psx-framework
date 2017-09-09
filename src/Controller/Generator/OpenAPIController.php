@@ -22,9 +22,8 @@ namespace PSX\Framework\Controller\Generator;
 
 use PSX\Api\Generator;
 use PSX\Api\Resource;
-use PSX\Api\Util\Inflection;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Exception as HttpException;
+use PSX\Http\Exception as StatusCode;
 
 /**
  * OpenAPIController
@@ -62,7 +61,7 @@ class OpenAPIController extends ControllerAbstract
             $this->setHeader('Content-Type', 'application/json');
             $this->setBody($openAPI);
         } else {
-            throw new HttpException\NotFoundException('Invalid resource');
+            throw new StatusCode\NotFoundException('Invalid resource');
         }
     }
 }

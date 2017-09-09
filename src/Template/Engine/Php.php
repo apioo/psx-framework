@@ -42,7 +42,7 @@ class Php extends EngineAbstract
             includeTemplateScope($this->data, $file);
 
             $html = ob_get_clean();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new ErrorException($e->getMessage(), $e, $file, ob_get_clean());
         }
 

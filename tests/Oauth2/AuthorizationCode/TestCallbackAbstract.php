@@ -93,7 +93,7 @@ TEXT;
         $this->response->getBody()->write('SUCCESS');
     }
 
-    protected function onError(\Exception $e)
+    protected function onError(\Throwable $e)
     {
         $this->response->setStatus(500);
         $this->response->getBody()->write(get_class($e));

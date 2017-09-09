@@ -124,7 +124,7 @@ class ControllerDocumentation implements ListingInterface
     {
         try {
             return $this->controllerFactory->getController($className, $request, $response, $context);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

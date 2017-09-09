@@ -95,7 +95,7 @@ abstract class TokenAbstract extends ApiAbstract
             $this->response->setStatus(400);
 
             $this->setBody($error, WriterInterface::JSON);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $error = new Error();
             $error->setError('server_error');
             $error->setErrorDescription($e->getMessage());

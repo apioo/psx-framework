@@ -125,7 +125,7 @@ class Dispatch
             $response->setStatus($e->getStatusCode());
             $response->setHeader('Location', $e->getLocation());
             $response->setBody(new StringStream());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
 
             $this->handleException($e, $response);
@@ -137,7 +137,7 @@ class Dispatch
                 $controller = $this->factory->getController($class, $request, $response, $context);
 
                 $this->loader->executeController($controller, $request, $response);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // in this case the error controller has thrown an exception.
                 // This can happen i.e. if we can not represent the error in an
                 // fitting media type. In this case we send json to the client
@@ -161,7 +161,7 @@ class Dispatch
         }
     }
 
-    protected function handleException(\Exception $e, ResponseInterface $response)
+    protected function handleException(\Throwable $e, ResponseInterface $response)
     {
         if ($e instanceof StatusCode\StatusCodeException) {
             $this->handleStatusCodeException($e, $response);

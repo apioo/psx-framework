@@ -24,7 +24,7 @@ use PSX\Api\Generator;
 use PSX\Api\Resource;
 use PSX\Api\Util\Inflection;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Exception as HttpException;
+use PSX\Http\Exception as StatusCode;
 
 /**
  * RamlController
@@ -63,7 +63,7 @@ class RamlController extends ControllerAbstract
             $this->setHeader('Content-Type', 'application/raml+yaml');
             $this->setBody($raml);
         } else {
-            throw new HttpException\NotFoundException('Invalid resource');
+            throw new StatusCode\NotFoundException('Invalid resource');
         }
     }
 }

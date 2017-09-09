@@ -33,7 +33,7 @@ class ErrorException extends \Exception
     protected $templateFile;
     protected $renderedHtml;
 
-    public function __construct($message, \Exception $originException, $templateFile, $renderedHtml)
+    public function __construct($message, \Throwable $originException, $templateFile, $renderedHtml)
     {
         parent::__construct($message);
 

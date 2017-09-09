@@ -23,9 +23,7 @@ namespace PSX\Framework\Controller\Generator;
 use PSX\Api\Generator;
 use PSX\Api\Resource;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Exception as HttpException;
-use PSX\Model\Swagger\ResourceListing;
-use PSX\Model\Swagger\ResourceObject;
+use PSX\Http\Exception as StatusCode;
 
 /**
  * SwaggerController
@@ -63,7 +61,7 @@ class SwaggerController extends ControllerAbstract
             $this->setHeader('Content-Type', 'application/json');
             $this->setBody($swagger);
         } else {
-            throw new HttpException\NotFoundException('Invalid resource');
+            throw new StatusCode\NotFoundException('Invalid resource');
         }
     }
 }

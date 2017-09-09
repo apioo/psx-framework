@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Exception;
 
-use Exception;
 use PSX\Framework\DisplayException;
 use PSX\Framework\Template\ErrorException;
 use PSX\Http\Exception as StatusCode;
@@ -48,7 +47,7 @@ class Converter implements ConverterInterface
         $this->contextSize = $contextSize;
     }
 
-    public function convert(Exception $exception)
+    public function convert(\Throwable $exception)
     {
         if ($this->isDebug === true) {
             if ($exception instanceof ErrorException) {

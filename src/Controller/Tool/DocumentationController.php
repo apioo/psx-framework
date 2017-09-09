@@ -26,7 +26,7 @@ use PSX\Framework\Controller\ApiAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Http\Exception as HttpException;
+use PSX\Http\Exception as StatusCode;
 use PSX\Record\Record;
 
 /**
@@ -77,7 +77,7 @@ class DocumentationController extends ApiAbstract
         $path    = $this->getUriFragment('path') ?: '/';
 
         if (empty($version) || empty($path)) {
-            throw new HttpException\BadRequestException('Version and path not provided');
+            throw new StatusCode\BadRequestException('Version and path not provided');
         }
 
         $resource = $this->resourceListing->getResource($path, $version);
@@ -144,7 +144,7 @@ class DocumentationController extends ApiAbstract
 
             $this->setBody($api);
         } else {
-            throw new HttpException\BadRequestException('Invalid api version');
+            throw new StatusCode\BadRequestException('Invalid api version');
         }
     }
 

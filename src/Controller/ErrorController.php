@@ -46,7 +46,7 @@ class ErrorController extends ViewAbstract
         }
     }
 
-    protected function handleException(\Exception $exception)
+    protected function handleException(\Throwable $exception)
     {
         // set error template
         $class = str_replace('\\', '/', get_class($this));

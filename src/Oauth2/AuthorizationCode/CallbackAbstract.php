@@ -86,7 +86,7 @@ abstract class CallbackAbstract extends ApiAbstract
     /**
      * Is called if the client was redirected with an GET error parameter
      *
-     * @param \Exception $e
+     * @param \Throwable $e
      */
-    abstract protected function onError(\Exception $e);
+    abstract protected function onError(\Throwable $e);
 }
