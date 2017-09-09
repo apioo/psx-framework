@@ -62,12 +62,6 @@ class Bootstrap
                 self::registerAnnotationLoader($namespaces);
             }
 
-            // ini settings
-            ini_set('date.timezone', $config['psx_timezone']);
-            ini_set('session.use_only_cookies', '1');
-            ini_set('docref_root', '');
-            ini_set('html_errors', '0');
-
             // define in psx
             define('PSX', true);
         }
