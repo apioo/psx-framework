@@ -20,6 +20,12 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
+use PSX\Framework\Controller\Generator\OpenAPIController;
+use PSX\Framework\Controller\Generator\RamlController;
+use PSX\Framework\Controller\Generator\SwaggerController;
+use PSX\Framework\Controller\Tool\DiscoveryController;
+use PSX\Framework\Controller\Tool\DocumentationController;
+use PSX\Framework\Controller\Tool\RoutingController;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**
@@ -52,6 +58,10 @@ class DiscoveryControllerTest extends ControllerTestCase
             "href": "http:\/\/127.0.0.1\/doc"
         },
         {
+            "rel": "openapi",
+            "href": "http:\/\/127.0.0.1\/openapi"
+        },
+        {
             "rel": "swagger",
             "href": "http:\/\/127.0.0.1\/swagger"
         },
@@ -70,12 +80,13 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/discovery', 'PSX\Framework\Controller\Tool\DiscoveryController'],
-            [['GET'], '/routing', 'PSX\Framework\Controller\Tool\RoutingController'],
-            [['GET'], '/doc', 'PSX\Framework\Controller\Tool\DocumentationController::doIndex'],
-            [['GET'], '/doc/:version/*path', 'PSX\Framework\Controller\Tool\DocumentationController::doDetail'],
-            [['GET'], '/raml', 'PSX\Framework\Controller\Generator\RamlController'],
-            [['GET'], '/swagger', 'PSX\Framework\Controller\Generator\SwaggerController'],
+            [['GET'], '/discovery', DiscoveryController::class],
+            [['GET'], '/routing', RoutingController::class],
+            [['GET'], '/doc', DocumentationController::class . '::doIndex'],
+            [['GET'], '/doc/:version/*path', DocumentationController::class . '::doDetail'],
+            [['GET'], '/openapi', OpenAPIController::class],
+            [['GET'], '/swagger', SwaggerController::class],
+            [['GET'], '/raml', RamlController::class],
         );
     }
 }

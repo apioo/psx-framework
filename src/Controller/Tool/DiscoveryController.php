@@ -21,6 +21,9 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\Generator\OpenAPIController;
+use PSX\Framework\Controller\Generator\RamlController;
+use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Record\Record;
 
 /**
@@ -52,7 +55,7 @@ class DiscoveryController extends ApiAbstract
             ]);
         }
 
-        $routingPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Tool\RoutingController');
+        $routingPath = $this->reverseRouter->getUrl(RoutingController::class);
         if ($routingPath !== null) {
             $links[] = Record::fromArray([
                 'rel'  => 'routing',
@@ -60,7 +63,7 @@ class DiscoveryController extends ApiAbstract
             ]);
         }
 
-        $documentationPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Tool\DocumentationController::doIndex');
+        $documentationPath = $this->reverseRouter->getUrl(DocumentationController::class . '::doIndex');
         if ($documentationPath !== null) {
             $links[] = Record::fromArray([
                 'rel'  => 'documentation',
@@ -68,20 +71,20 @@ class DiscoveryController extends ApiAbstract
             ]);
         }
 
-        $swaggerGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\SwaggerController', ['{version}', '{path}']);
-        if ($swaggerGeneratorPath !== null) {
-            $links[] = Record::fromArray([
-                'rel'  => 'swagger',
-                'href' => $swaggerGeneratorPath,
-            ]);
-        }
+        $generators = [
+            'openapi' => OpenAPIController::class,
+            'swagger' => SwaggerController::class,
+            'raml'    => RamlController::class,
+        ];
 
-        $ramlGeneratorPath = $this->reverseRouter->getUrl('PSX\Framework\Controller\Generator\RamlController', ['{version}', '{path}']);
-        if ($ramlGeneratorPath !== null) {
-            $links[] = Record::fromArray([
-                'rel'  => 'raml',
-                'href' => $ramlGeneratorPath,
-            ]);
+        foreach ($generators as $rel => $class) {
+            $generatorPath = $this->reverseRouter->getUrl($class, ['{version}', '{path}']);
+            if ($generatorPath !== null) {
+                $links[] = Record::fromArray([
+                    'rel'  => $rel,
+                    'href' => $generatorPath,
+                ]);
+            }
         }
 
         $this->setBody([
