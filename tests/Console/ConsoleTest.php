@@ -47,6 +47,7 @@ class ConsoleTest extends ControllerTestCase
             'dbal:import',
             'dbal:reserved-words',
             'dbal:run-sql',
+            'documentation',
             'help',
             'list',
             'route',
