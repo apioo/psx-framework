@@ -1,5 +1,10 @@
 
-### 2.2.0
+### 2.2.1
+
+* Add documentation generation command
+* Add OpenAPI to discovery controller
+
+### 2.2.0 (2017-09-09)
 
 * Use Throwable instead of Exception
 * Add factory support for DI container
