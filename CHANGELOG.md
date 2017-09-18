@@ -1,5 +1,5 @@
 
-### 2.2.1
+### 2.2.1 (2017-09-18)
 
 * Add documentation generation command
 * Add OpenAPI to discovery controller
