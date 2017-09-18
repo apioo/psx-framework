@@ -21,7 +21,6 @@
 namespace PSX\Framework\Loader;
 
 use Countable;
-use Iterator;
 
 /**
  * RoutingCollection
@@ -30,7 +29,7 @@ use Iterator;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RoutingCollection implements Iterator, Countable
+class RoutingCollection implements \IteratorAggregate, Countable
 {
     const ROUTING_METHODS = 0;
     const ROUTING_PATH    = 1;
@@ -38,9 +37,7 @@ class RoutingCollection implements Iterator, Countable
 
     protected $routings;
 
-    private $_pointer;
-
-    public function __construct(array $routings = array())
+    public function __construct(array $routings = [])
     {
         $this->routings = $routings;
     }
@@ -55,29 +52,9 @@ class RoutingCollection implements Iterator, Countable
         return $this->routings;
     }
 
-    public function current()
+    public function getIterator()
     {
-        return current($this->routings);
-    }
-
-    public function key()
-    {
-        return key($this->routings);
-    }
-
-    public function next()
-    {
-        return $this->_pointer = next($this->routings);
-    }
-
-    public function rewind()
-    {
-        $this->_pointer = reset($this->routings);
-    }
-
-    public function valid()
-    {
-        return $this->_pointer;
+        return new \ArrayIterator($this->routings);
     }
 
     public function count()

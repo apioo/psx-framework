@@ -39,110 +39,125 @@ class RoutingFileTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PSX\Framework\Loader\RoutingCollection', $collection);
 
-        $routing = $collection->current();
+        $iterator = $collection->getIterator();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo1Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(0, $collection->key());
+        $this->assertEquals(0, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/foo/bar', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo2Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(1, $collection->key());
+        $this->assertEquals(1, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/foo/:bar', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo3Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(2, $collection->key());
+        $this->assertEquals(2, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/foo/:bar/:foo', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo4Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(3, $collection->key());
+        $this->assertEquals(3, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/bar', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo5Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(4, $collection->key());
+        $this->assertEquals(4, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/bar/foo', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo6Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(5, $collection->key());
+        $this->assertEquals(5, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/bar/$foo<[0-9]+>', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo7Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(6, $collection->key());
+        $this->assertEquals(6, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/bar/$foo<[0-9]+>/$bar<[0-9]+>', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo8Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(7, $collection->key());
+        $this->assertEquals(7, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['POST'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/bar', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo9Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(8, $collection->key());
+        $this->assertEquals(8, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/whitespace', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo10Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(9, $collection->key());
+        $this->assertEquals(9, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET', 'POST'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/test', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo11Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(10, $collection->key());
+        $this->assertEquals(10, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/alias', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('~/foo/bar', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(11, $collection->key());
+        $this->assertEquals(11, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/files/*path', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo12Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(12, $collection->key());
+        $this->assertEquals(12, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('http://cdn.foo.com/serve/*path', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo13Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(13, $collection->key());
+        $this->assertEquals(13, $iterator->key());
 
-        $routing = $collection->next();
+        $iterator->next();
+        $routing = $iterator->current();
 
         $this->assertEquals(['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'], $routing[RoutingCollection::ROUTING_METHODS]);
         $this->assertEquals('/baz', $routing[RoutingCollection::ROUTING_PATH]);
         $this->assertEquals('PSX\Framework\Loader\Foo14Controller', $routing[RoutingCollection::ROUTING_SOURCE]);
-        $this->assertEquals(14, $collection->key());
+        $this->assertEquals(14, $iterator->key());
 
         // test traversable
         foreach ($collection as $route) {
