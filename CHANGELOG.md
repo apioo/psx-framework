@@ -1,4 +1,8 @@
 
+### 2.2.2
+
+* Route collection implement iterator aggregate
+
 ### 2.2.1 (2017-09-18)
 
 * Add documentation generation command
