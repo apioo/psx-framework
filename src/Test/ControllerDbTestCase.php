@@ -20,11 +20,6 @@
 
 namespace PSX\Framework\Test;
 
-use PSX\Http\Request;
-use PSX\Http\Response;
-use PSX\Http\Stream\TempStream;
-use PSX\Uri\Uri;
-
 /**
  * ControllerDbTestCase
  *
@@ -61,37 +56,5 @@ abstract class ControllerDbTestCase extends \PHPUnit_Extensions_Database_TestCas
         }
 
         return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), $this->connection->getDatabase());
-    }
-
-    /**
-     * Loads an specific controller
-     *
-     * @param \PSX\Http\Request $request
-     * @param \PSX\Http\Response $response
-     * @return \PSX\Framework\Controller\ControllerInterface
-     */
-    protected function loadController(Request $request, Response $response)
-    {
-        return Environment::getService('dispatch')->route($request, $response);
-    }
-
-    /**
-     * Sends an request to the system and returns the http response
-     *
-     * @param string|\PSX\Uri\Uri $url
-     * @param string $method
-     * @param array $headers
-     * @param string $body
-     * @return \PSX\Http\ResponseInterface
-     */
-    protected function sendRequest($uri, $method, $headers = array(), $body = null)
-    {
-        $request  = new Request(is_string($uri) ? new Uri($uri) : $uri, $method, $headers, $body);
-        $response = new Response();
-        $response->setBody(new TempStream(fopen('php://memory', 'r+')));
-
-        $this->loadController($request, $response);
-
-        return $response;
     }
 }

@@ -29,7 +29,11 @@ use PSX\Framework\Dispatch\Sender\Noop as DispatchSender;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Loader;
+use PSX\Http\Request;
+use PSX\Http\Response;
+use PSX\Http\Stream\TempStream;
 use PSX\Schema\SchemaManager;
+use PSX\Uri\Uri;
 
 /**
  * ContainerTestCaseTrait
@@ -139,5 +143,37 @@ trait ContainerTestCaseTrait
     protected function getPaths()
     {
         return null;
+    }
+
+    /**
+     * Loads an specific controller
+     *
+     * @param \PSX\Http\Request $request
+     * @param \PSX\Http\Response $response
+     * @return \PSX\Framework\Controller\ControllerInterface
+     */
+    protected function loadController(Request $request, Response $response)
+    {
+        return Environment::getService('dispatch')->route($request, $response);
+    }
+
+    /**
+     * Sends an request to the system and returns the http response
+     *
+     * @param string|\PSX\Uri\Uri $url
+     * @param string $method
+     * @param array $headers
+     * @param string $body
+     * @return \PSX\Http\ResponseInterface
+     */
+    protected function sendRequest($uri, $method, $headers = array(), $body = null)
+    {
+        $request  = new Request(is_string($uri) ? new Uri($uri) : $uri, $method, $headers, $body);
+        $response = new Response();
+        $response->setBody(new TempStream(fopen('php://memory', 'r+')));
+
+        $this->loadController($request, $response);
+
+        return $response;
     }
 }
