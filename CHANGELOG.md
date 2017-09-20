@@ -1,6 +1,7 @@
 
-### 2.2.2
+### 2.2.2 (2017-09-20)
 
+* Move controller test case sendRequest and loadController to test trait
 * Route collection implement iterator aggregate
 
 ### 2.2.1 (2017-09-18)
