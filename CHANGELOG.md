@@ -1,4 +1,8 @@
 
+### 2.2.3 (2017-09-30)
+
+* Markdown generator use html schema generator
+
 ### 2.2.2 (2017-09-20)
 
 * Move controller test case sendRequest and loadController to test trait
