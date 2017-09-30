@@ -24,6 +24,7 @@ use PSX\Api\ListingInterface;
 use PSX\Api\Resource;
 use PSX\Api\Generator;
 use PSX\Framework\Loader\RoutingParserInterface;
+use PSX\Schema\Generator\Html;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -98,7 +99,7 @@ class DocumentationCommand extends Command
     private function generateResource($path, $format)
     {
         $resource = $this->resourceListing->getResource($path);
-        
+
         if ($resource instanceof Resource) {
             return $this->getGenerator($format)->generate($resource);
         } else {
@@ -117,10 +118,10 @@ class DocumentationCommand extends Command
 
             case 'markdown':
             default:
-                return new Generator\Markdown();
+                return new Generator\Markdown(new Html(4));
         }
     }
-    
+
     private function getFileName($route, $format)
     {
         $route = trim($route, '/');
