@@ -1,4 +1,8 @@
 
+### 2.3.0 (2017-10-04)
+
+* Use API package commands
+
 ### 2.2.3 (2017-09-30)
 
 * Markdown generator use html schema generator
