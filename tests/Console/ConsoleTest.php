@@ -42,16 +42,17 @@ class ConsoleTest extends ControllerTestCase
         sort($keys);
 
         $expect = [
-            'api',
+            'api:generate',
+            'api:parse',
+            'api:resource',
             'container',
             'dbal:import',
             'dbal:reserved-words',
             'dbal:run-sql',
-            'documentation',
             'help',
             'list',
             'route',
-            'schema',
+            'schema:generate',
             'serve',
             'sql:generate',
             'sql:migrate',

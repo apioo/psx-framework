@@ -27,17 +27,17 @@ use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * DocumentationCommandTest
+ * ApiGenerateCommandTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DocumentationCommandTest extends ControllerTestCase
+class ApiGenerateCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService('console')->find('documentation');
+        $command = Environment::getService('console')->find('api:generate');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
