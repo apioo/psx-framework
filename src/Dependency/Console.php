@@ -22,11 +22,11 @@ namespace PSX\Framework\Dependency;
 
 use Doctrine\DBAL\Tools\Console\Command as DBALCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use PSX\Api\Console\ApiCommand;
+use PSX\Api\Console as ApiConsole;
 use PSX\Framework\Base;
-use PSX\Framework\Console as PSXCommand;
+use PSX\Framework\Console as FrameworkConsole;
 use PSX\Framework\Console\Reader;
-use PSX\Schema\Console\SchemaCommand;
+use PSX\Schema\Console as SchemaConsole;
 use PSX\Sql\Console as SqlConsole;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command as SymfonyCommand;
@@ -64,13 +64,15 @@ trait Console
 
     protected function appendConsoleCommands(Application $application)
     {
-        $application->add(new PSXCommand\ContainerCommand($this));
-        $application->add(new PSXCommand\RouteCommand($this->get('routing_parser')));
-        $application->add(new PSXCommand\ServeCommand($this->get('config'), $this->get('dispatch'), $this->get('console_reader')));
-        $application->add(new PSXCommand\DocumentationCommand($this->get('routing_parser'), $this->get('resource_listing')));
+        $application->add(new FrameworkConsole\ContainerCommand($this));
+        $application->add(new FrameworkConsole\RouteCommand($this->get('routing_parser')));
+        $application->add(new FrameworkConsole\ServeCommand($this->get('config'), $this->get('dispatch'), $this->get('console_reader')));
 
-        $application->add(new ApiCommand($this->get('api_manager'), $this->get('annotation_reader'), $this->get('config')->get('psx_json_namespace'), $this->get('config')->get('psx_url'), $this->get('config')->get('psx_dispatch')));
-        $application->add(new SchemaCommand($this->get('schema_manager')));
+        $application->add(new ApiConsole\ParseCommand($this->get('api_manager'), $this->get('annotation_reader'), $this->get('config')->get('psx_json_namespace'), $this->get('config')->get('psx_url'), $this->get('config')->get('psx_dispatch')));
+        $application->add(new ApiConsole\ResourceCommand($this->get('resource_listing'), $this->get('annotation_reader'), $this->get('config')->get('psx_json_namespace'), $this->get('config')->get('psx_url'), $this->get('config')->get('psx_dispatch')));
+        $application->add(new ApiConsole\GenerateCommand($this->get('resource_listing'), $this->get('annotation_reader'), $this->get('config')->get('psx_json_namespace'), $this->get('config')->get('psx_url'), $this->get('config')->get('psx_dispatch')));
+
+        $application->add(new SchemaConsole\ParseCommand($this->get('schema_manager')));
 
         $application->add(new SqlConsole\MigrateCommand($this->get('connection'), $this->get('table_manager')));
         $application->add(new SqlConsole\GenerateCommand($this->get('connection')));
