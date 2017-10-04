@@ -52,7 +52,7 @@ class ConsoleTest extends ControllerTestCase
             'help',
             'list',
             'route',
-            'schema:generate',
+            'schema:parse',
             'serve',
             'sql:generate',
             'sql:migrate',
