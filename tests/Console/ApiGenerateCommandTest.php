@@ -41,7 +41,8 @@ class ApiGenerateCommandTest extends ControllerTestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            'dir' => __DIR__ . '/output'
+            'dir'      => __DIR__ . '/output',
+            '--format' => 'markdown',
         ]);
 
         $response = $commandTester->getDisplay();
