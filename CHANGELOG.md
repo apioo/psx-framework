@@ -1,4 +1,8 @@
 
+### 2.3.1 (2017-10-06)
+
+* Improve HEAD and OPTIONS method handling
+
 ### 2.3.0 (2017-10-04)
 
 * Use API package commands
