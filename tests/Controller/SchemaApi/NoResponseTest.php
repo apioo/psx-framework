@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\NoResponseController;
 
 /**
  * NoResponseTest
@@ -31,9 +32,18 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class NoResponseTest extends ControllerTestCase
 {
+    public function testHead()
+    {
+        $response = $this->sendRequest('/api', 'HEAD');
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEmpty($body);
+    }
+
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -43,7 +53,7 @@ class NoResponseTest extends ControllerTestCase
     public function testPost()
     {
         $data     = json_encode(array('userId' => 3, 'title' => 'test', 'date' => '2013-05-29T16:56:32+00:00'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -53,7 +63,7 @@ class NoResponseTest extends ControllerTestCase
     public function testPut()
     {
         $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PUT', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'PUT', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -63,17 +73,41 @@ class NoResponseTest extends ControllerTestCase
     public function testDelete()
     {
         $data     = json_encode(array('id' => 1));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals('', $body);
     }
 
+    public function testPatch()
+    {
+        $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
+        $response = $this->sendRequest('/api', 'PATCH', ['Content-Type' => 'application/json'], $data);
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals('', $body);
+    }
+
+    public function testOptions()
+    {
+        $response = $this->sendRequest('/api', 'OPTIONS');
+        $body     = (string) $response->getBody();
+
+        $expect = [
+            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']
+        ];
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals($expect, $response->getHeaders());
+        $this->assertEquals('', $body);
+    }
+
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\NoResponseController'],
+            [['ANY'], '/api', NoResponseController::class],
         );
     }
 }

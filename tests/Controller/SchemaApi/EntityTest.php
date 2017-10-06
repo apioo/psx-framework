@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PSX\Framework\Test\ControllerDbTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
 
 /**
  * EntityTest
@@ -36,13 +37,30 @@ class EntityTest extends ControllerDbTestCase
         return $this->createFlatXMLDataSet(__DIR__ . '/../../table_fixture.xml');
     }
 
+    public function testHead()
+    {
+        $response = $this->sendRequest('/api/8?startIndex=12', 'HEAD');
+        $body     = (string) $response->getBody();
+
+        $expect = [
+            'vary' => ['Accept'],
+            'content-type' => ['application/json'],
+            'content-length' => ['577'],
+        ];
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals($expect, $response->getHeaders());
+        $this->assertEmpty($body);
+    }
+
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/8?startIndex=12', 'GET');
+        $response = $this->sendRequest('/api/8?startIndex=12', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
-{"entry": [
+{
+  "entry": [
     {
       "id": 4,
       "userId": 3,
@@ -67,22 +85,40 @@ class EntityTest extends ControllerDbTestCase
       "title": "foo",
       "date": "2013-04-29T16:56:32Z"
     }
-  ]}
+  ]
+}
 JSON;
 
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+    }
+
+    public function testPost()
+    {
+        $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'test', 'date' => '2013-04-29T16:56:32Z'));
+        $response = $this->sendRequest('/api/8', 'POST', ['Content-Type' => 'application/json'], $data);
+        $body     = (string) $response->getBody();
+
+        $expect = <<<JSON
+{
+  "success": true,
+  "message": "You have successful post a record"
+}
+JSON;
+
+        $this->assertEquals(201, $response->getStatusCode(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
     public function testPut()
     {
         $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
-        $response = $this->sendRequest('http://127.0.0.1/api/8', 'PUT', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api/8', 'PUT', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
 {
-	"success": true,
-	"message": "You have successful put a record"
+  "success": true,
+  "message": "You have successful put a record"
 }
 JSON;
 
@@ -93,13 +129,13 @@ JSON;
     public function testDelete()
     {
         $data     = json_encode(array('id' => 1));
-        $response = $this->sendRequest('http://127.0.0.1/api/8', 'DELETE', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api/8', 'DELETE', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
 {
-	"success": true,
-	"message": "You have successful delete a record"
+  "success": true,
+  "message": "You have successful delete a record"
 }
 JSON;
 
@@ -107,10 +143,41 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
+    public function testPatch()
+    {
+        $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
+        $response = $this->sendRequest('/api/8', 'PATCH', ['Content-Type' => 'application/json'], $data);
+        $body     = (string) $response->getBody();
+
+        $expect = <<<JSON
+{
+  "success": true,
+  "message": "You have successful patch a record"
+}
+JSON;
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+    }
+
+    public function testOptions()
+    {
+        $response = $this->sendRequest('/api/8', 'OPTIONS');
+        $body     = (string) $response->getBody();
+
+        $expect = [
+            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
+        ];
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals($expect, $response->getHeaders());
+        $this->assertEmpty($body);
+    }
+
     protected function getPaths()
     {
         return array(
-            [['GET', 'PUT', 'DELETE'], '/api/:fooId', 'PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController'],
+            [['ANY'], '/api/:fooId', TestSchemaApiController::class],
         );
     }
 }

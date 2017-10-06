@@ -75,6 +75,10 @@ class ControllerDocumentation implements ListingInterface
             $className = isset($parts[0]) ? $parts[0] : null;
             $resource  = new Resource(Resource::STATUS_ACTIVE, $path);
 
+            if ($methods === ['ANY']) {
+                $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+            }
+
             foreach ($methods as $methodName) {
                 $method = Resource\Factory::getMethod($methodName);
 

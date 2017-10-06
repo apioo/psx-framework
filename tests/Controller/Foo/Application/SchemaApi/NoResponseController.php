@@ -60,6 +60,9 @@ class NoResponseController extends SchemaApiAbstract
         $resource->addMethod(Resource\Factory::getMethod('DELETE')
             ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Delete')));
 
+        $resource->addMethod(Resource\Factory::getMethod('PATCH')
+            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Patch')));
+
         return $resource;
     }
 

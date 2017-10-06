@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\RestrictMethodController;
 
 /**
  * RestrictMethodTest
@@ -31,9 +32,18 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class RestrictMethodTest extends ControllerTestCase
 {
+    public function testHead()
+    {
+        $response = $this->sendRequest('http://127.0.0.1/api', 'HEAD');
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEmpty($body);
+    }
+
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -45,7 +55,7 @@ class RestrictMethodTest extends ControllerTestCase
         $body     = (string) $response->getBody();
 
         $this->assertEquals(405, $response->getStatusCode());
-        $this->assertEquals('GET, DELETE', $response->getHeader('Allow'));
+        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'));
     }
 
     public function testPut()
@@ -54,7 +64,7 @@ class RestrictMethodTest extends ControllerTestCase
         $body     = (string) $response->getBody();
 
         $this->assertEquals(405, $response->getStatusCode());
-        $this->assertEquals('GET, DELETE', $response->getHeader('Allow'));
+        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'));
     }
 
     public function testDelete()
@@ -65,10 +75,28 @@ class RestrictMethodTest extends ControllerTestCase
         $this->assertEquals(204, $response->getStatusCode());
     }
 
+    public function testPatch()
+    {
+        $response = $this->sendRequest('http://127.0.0.1/api', 'PATCH', ['Content-Type' => 'application/json']);
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'));
+    }
+
+    public function testOptions()
+    {
+        $response = $this->sendRequest('http://127.0.0.1/api', 'OPTIONS', ['Content-Type' => 'application/json']);
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'));
+    }
+
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\RestrictMethodController'],
+            [['ANY'], '/api', RestrictMethodController::class],
         );
     }
 }

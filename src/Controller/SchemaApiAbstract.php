@@ -81,15 +81,22 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
         // get the current resource and check everything is valid
         $this->resource = $this->getResource();
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $this->resource->getMethod($this->getMethod())->getQueryParameters());
     }
 
     public function onHead()
     {
-        $method   = $this->resource->getMethod('GET');
+        // we support HEAD only if the resource supports a GET request since a
+        // HEAD request is basically a GET without body
+        if (!$this->resource->hasMethod('GET')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('GET');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $response = $this->doGet();
 
         // the setResponse method removes the body so we behave like on a GET 
@@ -99,7 +106,16 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onGet()
     {
-        $method   = $this->resource->getMethod('GET');
+        if (!$this->resource->hasMethod('GET')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('GET');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $response = $this->doGet();
 
         $this->sendResponse($method, $response);
@@ -107,7 +123,16 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPost()
     {
-        $method   = $this->resource->getMethod('POST');
+        if (!$this->resource->hasMethod('POST')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('POST');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $record   = $this->parseRequest($method);
         $response = $this->doPost($record);
 
@@ -116,7 +141,16 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPut()
     {
-        $method   = $this->resource->getMethod('PUT');
+        if (!$this->resource->hasMethod('PUT')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('PUT');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $record   = $this->parseRequest($method);
         $response = $this->doPut($record);
 
@@ -125,7 +159,16 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onDelete()
     {
-        $method   = $this->resource->getMethod('DELETE');
+        if (!$this->resource->hasMethod('DELETE')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('DELETE');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $record   = $this->parseRequest($method);
         $response = $this->doDelete($record);
 
@@ -134,11 +177,27 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPatch()
     {
-        $method   = $this->resource->getMethod('PATCH');
+        if (!$this->resource->hasMethod('PATCH')) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+        }
+
+        $method = $this->resource->getMethod('PATCH');
+
+        // validate and assign query and path parameters
+        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
+        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
+
         $record   = $this->parseRequest($method);
         $response = $this->doPatch($record);
 
         $this->sendResponse($method, $response);
+    }
+
+    public function onOptions()
+    {
+        $this->setHeader('Allow', implode(', ', $this->getAllowedMethods()));
+        $this->setResponseCode(200);
+        $this->setBody('');
     }
 
     public function getDocumentation($version = null)
@@ -292,10 +351,6 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             $this->response->addHeader('Warning', '199 PSX "Resource is in development"');
         }
 
-        if (!$resource->hasMethod($this->getMethod())) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $resource->getAllowedMethods());
-        }
-
         return $resource;
     }
 
@@ -373,5 +428,22 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         } else {
             return $data;
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllowedMethods()
+    {
+        $methods = $this->resource->getAllowedMethods();
+        $allowed = ['OPTIONS'];
+        if (in_array('GET', $methods)) {
+            $allowed[] = 'HEAD';
+        }
+
+        return array_merge(
+            $allowed,
+            $methods
+        );
     }
 }

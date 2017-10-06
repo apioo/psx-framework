@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PassthruController;
 
 /**
  * PassthruTest
@@ -90,7 +91,7 @@ class PassthruTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PassthruController'],
+            [['GET', 'POST'], '/api', PassthruController::class],
         );
     }
 }

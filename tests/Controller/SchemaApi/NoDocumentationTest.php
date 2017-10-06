@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\NoDocumentationController;
+use PSX\Http\ResponseInterface;
 use PSX\Json\Parser;
 
 /**
@@ -32,81 +34,82 @@ use PSX\Json\Parser;
  */
 class NoDocumentationTest extends ControllerTestCase
 {
-    public function testGet()
+    public function testHead()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
-        $body     = Parser::decode((string) $response->getBody(), true);
+        $response = $this->sendRequest('/api', 'HEAD');
+        $body     = (string) $response->getBody();
 
         $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEmpty($body);
+    }
 
-        $this->assertArrayHasKey('success', $body);
-        $this->assertArrayHasKey('title', $body);
-        $this->assertArrayHasKey('message', $body);
-        $this->assertArrayHasKey('trace', $body);
-        $this->assertArrayHasKey('context', $body);
+    public function testGet()
+    {
+        $response = $this->sendRequest('/api', 'GET');
 
-        $this->assertEquals(false, $body['success']);
-        $this->assertEquals('Resource is not available', substr($body['message'], 0, 25));
+        $this->assertErrorResponse($response);
     }
 
     public function testPost()
     {
         $data     = json_encode(array('userId' => 3, 'title' => 'test', 'date' => '2013-05-29T16:56:32+00:00'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $data);
-        $body     = Parser::decode((string) $response->getBody(), true);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $data);
 
-        $this->assertEquals(500, $response->getStatusCode());
-
-        $this->assertArrayHasKey('success', $body);
-        $this->assertArrayHasKey('title', $body);
-        $this->assertArrayHasKey('message', $body);
-        $this->assertArrayHasKey('trace', $body);
-        $this->assertArrayHasKey('context', $body);
-
-        $this->assertEquals(false, $body['success']);
-        $this->assertEquals('Resource is not available', substr($body['message'], 0, 25));
+        $this->assertErrorResponse($response);
     }
 
     public function testPut()
     {
         $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PUT', ['Content-Type' => 'application/json'], $data);
-        $body     = Parser::decode((string) $response->getBody(), true);
+        $response = $this->sendRequest('/api', 'PUT', ['Content-Type' => 'application/json'], $data);
 
-        $this->assertEquals(500, $response->getStatusCode());
-
-        $this->assertArrayHasKey('success', $body);
-        $this->assertArrayHasKey('title', $body);
-        $this->assertArrayHasKey('message', $body);
-        $this->assertArrayHasKey('trace', $body);
-        $this->assertArrayHasKey('context', $body);
-
-        $this->assertEquals(false, $body['success']);
-        $this->assertEquals('Resource is not available', substr($body['message'], 0, 25));
+        $this->assertErrorResponse($response);
     }
 
     public function testDelete()
     {
         $data     = json_encode(array('id' => 1));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
-        $body     = Parser::decode((string) $response->getBody(), true);
+        $response = $this->sendRequest('/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertErrorResponse($response);
+    }
 
-        $this->assertArrayHasKey('success', $body);
-        $this->assertArrayHasKey('title', $body);
-        $this->assertArrayHasKey('message', $body);
-        $this->assertArrayHasKey('trace', $body);
-        $this->assertArrayHasKey('context', $body);
+    public function testPatch()
+    {
+        $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
+        $response = $this->sendRequest('/api', 'PATCH', ['Content-Type' => 'application/json'], $data);
 
-        $this->assertEquals(false, $body['success']);
-        $this->assertEquals('Resource is not available', substr($body['message'], 0, 25));
+        $this->assertErrorResponse($response);
+    }
+
+    public function testOptions()
+    {
+        $response = $this->sendRequest('/api', 'OPTIONS');
+
+        $this->assertErrorResponse($response);
     }
 
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\NoDocumentationController'],
+            [['ANY'], '/api', NoDocumentationController::class],
         );
+    }
+
+    private function assertErrorResponse(ResponseInterface $response)
+    {
+        $body = (string) $response->getBody();
+        $data = Parser::decode($body, true);
+
+        $this->assertEquals(500, $response->getStatusCode());
+
+        $this->assertArrayHasKey('success', $data);
+        $this->assertArrayHasKey('title', $data);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('context', $data);
+
+        $this->assertEquals(false, $data['success']);
+        $this->assertEquals('Resource is not available', substr($data['message'], 0, 25));
     }
 }
