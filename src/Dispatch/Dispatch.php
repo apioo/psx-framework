@@ -79,8 +79,19 @@ class Dispatch
      */
     protected $exceptionConverter;
 
+    /**
+     * @var integer
+     */
     protected $level;
 
+    /**
+     * @param \PSX\Framework\Config\Config $config
+     * @param \PSX\Framework\Loader\LoaderInterface $loader
+     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $factory
+     * @param \PSX\Framework\Dispatch\SenderInterface $sender
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \PSX\Framework\Exception\ConverterInterface $exceptionConverter
+     */
     public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, SenderInterface $sender, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
     {
         $this->config             = $config;
