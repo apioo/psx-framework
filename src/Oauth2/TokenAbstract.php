@@ -20,10 +20,13 @@
 
 namespace PSX\Framework\Oauth2;
 
-use PSX\Data\ReaderInterface;
+use PSX\Api\Resource;
 use PSX\Data\WriterInterface;
-use PSX\Framework\Controller\ApiAbstract;
-use PSX\Http\Exception as StatusCode;
+use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Filter\FilterChainInterface;
+use PSX\Framework\Loader\Context;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 
 /**
@@ -33,7 +36,7 @@ use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class TokenAbstract extends ApiAbstract
+abstract class TokenAbstract extends SchemaApiAbstract
 {
     /**
      * @Inject("oauth2_grant_type_factory")
@@ -41,20 +44,57 @@ abstract class TokenAbstract extends ApiAbstract
      */
     protected $grantTypeFactory;
 
-    public function onLoad()
+    /**
+     * @param integer $version
+     * @return \PSX\Api\Resource
+     */
+    public function getDocumentation($version = null)
     {
-        parent::onLoad();
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
 
-        if (!in_array($this->request->getMethod(), ['GET', 'POST'])) {
-            throw new StatusCode\MethodNotAllowedException('Invalid request method', ['GET', 'POST']);
-        }
+        $resource->addMethod(Resource\Factory::getMethod('POST')
+            ->setRequest($this->schemaManager->getSchema(Schema\Request::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\AccessToken::class))
+            ->addResponse(400, $this->schemaManager->getSchema(Schema\Error::class))
+        );
 
-        $this->doHandle();
+        return $resource;
     }
 
-    protected function doHandle()
+    public function getPreFilter()
     {
-        $parameters  = (array) $this->getBody(ReaderInterface::FORM);
+        return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
+            try {
+                // the endpoint must return a specific error response see:
+                // https://tools.ietf.org/html/rfc6749#section-5.2
+                $filterChain->handle($request, $response);
+            } catch (ErrorExceptionAbstract $e) {
+                $error = new Error();
+                $error->setError($e->getType());
+                $error->setErrorDescription($e->getMessage());
+                $error->setState(null);
+
+                $this->response->setStatus(400);
+                $this->setBody($error, WriterInterface::JSON);
+            } catch (\Throwable $e) {
+                $error = new Error();
+                $error->setError('server_error');
+                $error->setErrorDescription($e->getMessage());
+                $error->setState(null);
+
+                $this->response->setStatus(400);
+                $this->setBody($error, WriterInterface::JSON);
+            }
+        }];
+    }
+
+    public function doPost($record)
+    {
+        $this->doHandle($record->getProperties());
+    }
+
+    protected function doHandle(array $parameters)
+    {
         $grantType   = isset($parameters['grant_type']) ? $parameters['grant_type'] : null;
         $scope       = isset($parameters['scope']) ? $parameters['scope'] : null;
         $credentials = null;
@@ -78,32 +118,11 @@ abstract class TokenAbstract extends ApiAbstract
             $credentials = new Credentials($parameters['client_id'], $parameters['client_secret']);
         }
 
-        try {
-            // we get the grant type factory from the DI container the factory
-            // contains the available grant types
-            $accessToken = $this->grantTypeFactory->get($grantType)->generateAccessToken($credentials, $parameters);
+        // we get the grant type factory from the DI container the factory
+        // contains the available grant types
+        $accessToken = $this->grantTypeFactory->get($grantType)->generateAccessToken($credentials, $parameters);
 
-            $this->response->setStatus(200);
-
-            $this->setBody($accessToken, WriterInterface::JSON);
-        } catch (ErrorExceptionAbstract $e) {
-            $error = new Error();
-            $error->setError($e->getType());
-            $error->setErrorDescription($e->getMessage());
-            $error->setState(null);
-
-            $this->response->setStatus(400);
-
-            $this->setBody($error, WriterInterface::JSON);
-        } catch (\Throwable $e) {
-            $error = new Error();
-            $error->setError('server_error');
-            $error->setErrorDescription($e->getMessage());
-            $error->setState(null);
-
-            $this->response->setStatus(400);
-
-            $this->setBody($error, WriterInterface::JSON);
-        }
+        $this->response->setStatus(200);
+        $this->setBody($accessToken, WriterInterface::JSON);
     }
 }

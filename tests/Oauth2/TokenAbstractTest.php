@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Oauth2;
 
+use PSX\Framework\Controller\Tool\DocumentationController;
 use PSX\Framework\Oauth2\GrantTypeFactory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
@@ -62,10 +63,10 @@ class TokenAbstractTest extends ControllerTestCase
 
         $expect = <<<JSON
 {
-	"access_token":"2YotnFZFEjr1zCsicMWpAA",
-	"token_type":"example",
-	"expires_in":3600,
-	"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  "token_type":"example",
+  "expires_in":3600,
+  "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
 }
 JSON;
 
@@ -83,10 +84,10 @@ JSON;
 
         $expect = <<<JSON
 {
-	"access_token":"2YotnFZFEjr1zCsicMWpAA",
-	"token_type":"example",
-	"expires_in":3600,
-	"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  "token_type":"example",
+  "expires_in":3600,
+  "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
 }
 JSON;
 
@@ -106,10 +107,10 @@ JSON;
 
         $expect = <<<JSON
 {
-	"access_token":"2YotnFZFEjr1zCsicMWpAA",
-	"token_type":"example",
-	"expires_in":3600,
-	"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  "token_type":"example",
+  "expires_in":3600,
+  "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
 }
 JSON;
 
@@ -128,10 +129,10 @@ JSON;
 
         $expect = <<<JSON
 {
-	"access_token":"2YotnFZFEjr1zCsicMWpAA",
-	"token_type":"example",
-	"expires_in":3600,
-	"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
+  "access_token":"2YotnFZFEjr1zCsicMWpAA",
+  "token_type":"example",
+  "expires_in":3600,
+  "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
 }
 JSON;
 
@@ -149,8 +150,8 @@ JSON;
 
         $expect = <<<JSON
 {
-	"error":"server_error",
-	"error_description":"Invalid grant type"
+  "error":"server_error",
+  "error_description":"/grant_type must match one required schema"
 }
 JSON;
 
@@ -162,13 +163,19 @@ JSON;
 
     protected function callEndpoint($clientId, $clientSecret, array $params)
     {
-        return $this->sendRequest('http://127.0.0.1/token', 'POST', ['Authorization' => 'Basic ' . base64_encode($clientId . ':' . $clientSecret)], http_build_query($params, '', '&'));
+        $headers = [
+            'Authorization' => 'Basic ' . base64_encode($clientId . ':' . $clientSecret),
+            'Content-Type'  => 'application/x-www-form-urlencoded'
+        ];
+
+        return $this->sendRequest('/token', 'POST', $headers, http_build_query($params, '', '&'));
     }
 
     protected function getPaths()
     {
         return array(
-            [['POST'], '/token', 'PSX\Framework\Tests\Oauth2\TestTokenAbstract'],
+            [['ANY'], '/token', TestTokenAbstract::class],
+            [['ANY'], '/doc/:version/:path', DocumentationController::class],
         );
     }
 }
