@@ -338,6 +338,15 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
+    public function testOptionsRequest()
+    {
+        $response = $this->sendRequest('/token', 'OPTIONS');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(['allow' => ['OPTIONS, POST']], $response->getHeaders());
+        $this->assertEmpty((string) $response->getBody());
+    }
+
     protected function callEndpoint($clientId, $clientSecret, array $params)
     {
         $headers = [
