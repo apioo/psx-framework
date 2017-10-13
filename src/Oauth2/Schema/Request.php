@@ -64,11 +64,13 @@ class Request extends SchemaAbstract
         $sb->setRequired(['grant_type', 'refresh_token']);
         $refreshToken = $sb->getProperty();
 
-        return Property::get()->setOneOf([
-            $authorizationCode,
-            $password,
-            $clientCredentials,
-            $refreshToken,
-        ]);
+        return Property::get()
+            ->setTitle('authorization')
+            ->setOneOf([
+                $authorizationCode,
+                $password,
+                $clientCredentials,
+                $refreshToken,
+            ]);
     }
 }

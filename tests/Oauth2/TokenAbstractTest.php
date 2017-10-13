@@ -53,6 +53,183 @@ class TokenAbstractTest extends ControllerTestCase
         Environment::getContainer()->set('oauth2_grant_type_factory', $grantTypeFactory);
     }
 
+    public function testDocumentation()
+    {
+        $response = $this->sendRequest('/doc/*/token', 'GET');
+
+        $actual = (string) $response->getBody();
+        $expect = <<<'JSON'
+{
+    "path": "\/token",
+    "version": "*",
+    "status": 1,
+    "description": "",
+    "schema": {
+        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+        "id": "urn:schema.phpsx.org#",
+        "definitions": {
+            "Authorization_code": {
+                "type": "object",
+                "title": "authorization_code",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "const": "authorization_code"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "redirect_uri": {
+                        "type": "string"
+                    },
+                    "client_id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "grant_type",
+                    "code"
+                ]
+            },
+            "Password": {
+                "type": "object",
+                "title": "password",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "const": "password"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "scope": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "grant_type",
+                    "username",
+                    "password"
+                ]
+            },
+            "Client_credentials": {
+                "type": "object",
+                "title": "client_credentials",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "const": "client_credentials"
+                    },
+                    "scope": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "grant_type"
+                ]
+            },
+            "Refresh_token": {
+                "type": "object",
+                "title": "refresh_token",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "const": "refresh_token"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    },
+                    "scope": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "grant_type",
+                    "refresh_token"
+                ]
+            },
+            "Authorization": {
+                "title": "authorization",
+                "oneOf": [
+                    {
+                        "$ref": "#\/definitions\/Authorization_code"
+                    },
+                    {
+                        "$ref": "#\/definitions\/Password"
+                    },
+                    {
+                        "$ref": "#\/definitions\/Client_credentials"
+                    },
+                    {
+                        "$ref": "#\/definitions\/Refresh_token"
+                    }
+                ]
+            },
+            "Access_token": {
+                "type": "object",
+                "title": "access_token",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "token_type": {
+                        "type": "string"
+                    },
+                    "expires_in": {
+                        "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "title": "error",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "error_description": {
+                        "type": "string"
+                    },
+                    "error_uri": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    }
+                }
+            },
+            "POST-request": {
+                "$ref": "#\/definitions\/Authorization"
+            },
+            "POST-200-response": {
+                "$ref": "#\/definitions\/Access_token"
+            },
+            "POST-400-response": {
+                "$ref": "#\/definitions\/Error"
+            }
+        }
+    },
+    "methods": {
+        "POST": {
+            "request": "#\/definitions\/POST-request",
+            "responses": {
+                "200": "#\/definitions\/POST-200-response",
+                "400": "#\/definitions\/POST-400-response"
+            }
+        }
+    }
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     public function testAuthorizationCodeGrant()
     {
         $response = $this->callEndpoint('foo', 'bar', array(
@@ -175,7 +352,7 @@ JSON;
     {
         return array(
             [['ANY'], '/token', TestTokenAbstract::class],
-            [['ANY'], '/doc/:version/:path', DocumentationController::class],
+            [['ANY'], '/doc/:version/:path', DocumentationController::class . '::doDetail'],
         );
     }
 }
