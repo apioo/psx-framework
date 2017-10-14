@@ -20,35 +20,27 @@
 
 namespace PSX\Framework\Schema;
 
-use PSX\Schema\Builder;
-use PSX\Schema\SchemaInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * File upload
+ * File upload schema
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class File implements SchemaInterface
+class File extends SchemaAbstract
 {
-    protected $definition;
-
-    public function __construct()
-    {
-        $builder = new Builder('file');
-        $builder->setDescription('File upload provided through a multipart/form-data post');
-        $builder->string('name');
-        $builder->string('type');
-        $builder->integer('size');
-        $builder->string('tmp_name');
-        $builder->integer('error');
-
-        $this->definition = $builder->getProperty();
-    }
-
     public function getDefinition()
     {
-        return $this->definition;
+        $sb = $this->getSchemaBuilder('file');
+        $sb->setDescription('File upload provided through a multipart/form-data post');
+        $sb->string('name');
+        $sb->string('type');
+        $sb->integer('size');
+        $sb->string('tmp_name');
+        $sb->integer('error');
+
+        return $sb->getProperty();
     }
 }

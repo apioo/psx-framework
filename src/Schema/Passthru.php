@@ -21,7 +21,7 @@
 namespace PSX\Framework\Schema;
 
 use PSX\Schema\Builder;
-use PSX\Schema\SchemaInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
  * Special schema which tells the framework to redirect all data
@@ -30,20 +30,13 @@ use PSX\Schema\SchemaInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Passthru implements SchemaInterface
+class Passthru extends SchemaAbstract
 {
-    protected $definition;
-
-    public function __construct()
-    {
-        $builder = new Builder('passthru');
-        $builder->setDescription('No schema informations available');
-
-        $this->definition = $builder->getProperty();
-    }
-
     public function getDefinition()
     {
-        return $this->definition;
+        $sb = new Builder('passthru');
+        $sb->setDescription('No schema information available');
+
+        return $sb->getProperty();
     }
 }
