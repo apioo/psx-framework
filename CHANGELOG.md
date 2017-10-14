@@ -1,4 +1,9 @@
 
+### 2.3.2 (2017-10-14)
+
+* OAuth2 token endpoint extend schema api
+* Improve cors preflight request handling
+
 ### 2.3.1 (2017-10-06)
 
 * Improve HEAD and OPTIONS method handling
