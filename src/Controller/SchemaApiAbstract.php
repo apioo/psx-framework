@@ -199,11 +199,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
         $corsMethod = $this->getHeader('Access-Control-Request-Method');
         if (!empty($corsMethod)) {
-            if (in_array($corsMethod, $methods)) {
-                $this->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
-            } else {
-                throw new StatusCode\MethodNotAllowedException('Method not allowed', $methods);
-            }
+            $this->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
         }
 
         $this->setHeader('Allow', implode(', ', $methods));
