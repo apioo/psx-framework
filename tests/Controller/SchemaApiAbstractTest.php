@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
 
 /**
  * SchemaApiAbstractTest
@@ -39,7 +40,7 @@ class SchemaApiAbstractTest extends ControllerDbTestCase
 
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -78,7 +79,7 @@ JSON;
     public function testPost()
     {
         $data     = json_encode(array('userId' => 3, 'title' => 'test', 'date' => '2013-05-29T16:56:32Z'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -97,7 +98,7 @@ JSON;
         Environment::getService('config')->set('psx_debug', false);
 
         $data     = json_encode(array('userId' => 3, 'title' => 'foobarfoobarfoobarfoobar', 'date' => '2013-05-29T16:56:32Z'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -117,7 +118,7 @@ JSON;
         Environment::getService('config')->set('psx_debug', false);
 
         $data     = json_encode(array('foobar' => 'title'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -135,7 +136,7 @@ JSON;
     public function testPut()
     {
         $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PUT', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'PUT', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -152,7 +153,7 @@ JSON;
     public function testDelete()
     {
         $data     = json_encode(array('id' => 1));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'DELETE', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -169,7 +170,7 @@ JSON;
     public function testPatch()
     {
         $data     = json_encode(array('id' => 1, 'userId' => 3, 'title' => 'foobar'));
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PATCH', ['Content-Type' => 'application/json'], $data);
+        $response = $this->sendRequest('/api', 'PATCH', ['Content-Type' => 'application/json'], $data);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -183,10 +184,30 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
+    public function testOptions()
+    {
+        $response = $this->sendRequest('/api', 'OPTIONS', ['Content-Type' => 'application/json']);
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertEquals(['allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']], $response->getHeaders());
+        $this->assertEmpty($body);
+    }
+
+    public function testOptionsCors()
+    {
+        $response = $this->sendRequest('/api', 'OPTIONS', ['Content-Type' => 'application/json', 'Access-Control-Request-Method' => 'DELETE', 'Access-Control-Request-Headers' => 'origin, x-requested-with', 'Origin' => 'https://foo.bar.org']);
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertEquals(['access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'], 'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']], $response->getHeaders());
+        $this->assertEmpty($body);
+    }
+
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController'],
+            [['ANY'], '/api', TestSchemaApiController::class],
         );
     }
 }

@@ -195,7 +195,18 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onOptions()
     {
-        $this->setHeader('Allow', implode(', ', $this->getAllowedMethods()));
+        $methods = $this->getAllowedMethods();
+
+        $corsMethod = $this->getHeader('Access-Control-Request-Method');
+        if (!empty($corsMethod)) {
+            if (in_array($corsMethod, $methods)) {
+                $this->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
+            } else {
+                throw new StatusCode\MethodNotAllowedException('Method not allowed', $methods);
+            }
+        }
+
+        $this->setHeader('Allow', implode(', ', $methods));
         $this->setResponseCode(200);
         $this->setBody('');
     }
