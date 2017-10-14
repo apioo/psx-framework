@@ -1,5 +1,5 @@
 
-### 2.3.2 (2017-10-14)
+### 2.4.0 (2017-10-14)
 
 * Added file upload schema and deprecated upload classes
 * OAuth2 token endpoint extend schema api
