@@ -1,4 +1,9 @@
 
+### 2.4.1 (2017-11-02)
+
+* Remove jms serializer dependency
+* Require doctrine dbal 2.5.x
+
 ### 2.4.0 (2017-10-14)
 
 * Added file upload schema and deprecated upload classes
