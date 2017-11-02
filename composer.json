@@ -15,7 +15,6 @@
     "php": ">=7.0",
     "doctrine/annotations": "^1.3",
     "doctrine/dbal": "~2.5.0",
-    "jms/serializer": "^1.1",
     "monolog/monolog": "^1.17",
     "psr/log": "^1.0",
     "psr/container": "^1.0",
