@@ -39,6 +39,7 @@ use PSX\Sql\TableManager;
 use PSX\Validate\Validate;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * DefaultContainer
@@ -194,6 +195,7 @@ class DefaultContainer extends Container
             'psx_logger_factory'      => null,
             'psx_filter_pre'          => [],
             'psx_filter_post'         => [],
+            'psx_events'              => [],
             'psx_supported_writer'    => [
                 WriterInterface::ATOM,
                 WriterInterface::FORM,
@@ -210,9 +212,29 @@ class DefaultContainer extends Container
         ];
     }
 
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
     protected function appendDefaultListener(EventDispatcherInterface $eventDispatcher)
     {
-        $eventDispatcher->addSubscriber(new LogListener($this->get('logger'), $this->get('config')->get('psx_debug')));
+        $events = $this->get('config')->get('psx_events');
+        if (!empty($events)) {
+            $builder = $this->get('object_builder');
+
+            foreach ($events as $eventName => $event) {
+                if (is_string($event)) {
+                    $eventDispatcher->addSubscriber($builder->getObject($event, [], EventSubscriberInterface::class));
+                } elseif ($event instanceof EventSubscriberInterface) {
+                    $eventDispatcher->addSubscriber($event);
+                } elseif ($event instanceof \Closure) {
+                    $eventDispatcher->addListener($eventName, $event);
+                } else {
+                    throw new \RuntimeException('Event must be either a classname, instance of Symfony\Component\EventDispatcher\EventSubscriberInterface or closure');
+                }
+            }
+        }
+
+        $eventDispatcher->addSubscriber(new LogListener($this->get('logger')));
     }
 
     /**
