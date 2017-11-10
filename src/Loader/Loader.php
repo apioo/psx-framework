@@ -172,7 +172,7 @@ class Loader implements LoaderInterface
         $result = [];
         foreach ($filters as $filter) {
             if (is_string($filter)) {
-                $result[] = $this->objectBuilder->getObject($filter, [], 'PSX\Framework\Filter\FilterInterface');
+                $result[] = $this->objectBuilder->getObject($filter, [], FilterInterface::class);
             } elseif ($filter instanceof FilterInterface) {
                 $result[] = $filter;
             } elseif ($filter instanceof Closure) {
