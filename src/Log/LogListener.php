@@ -43,13 +43,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LogListener implements EventSubscriberInterface
 {
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     protected $logger;
-    protected $debug;
 
-    public function __construct(LoggerInterface $logger, $debug = false)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->debug  = $debug;
     }
 
     public function onRequestIncomming(RequestIncomingEvent $event)
@@ -60,7 +61,7 @@ class LogListener implements EventSubscriberInterface
     public function onRouteMatched(RouteMatchedEvent $event)
     {
         $request    = $event->getRequest();
-        $path       = '/' . ltrim($request->getUri()->getPath(), '/');
+        $path       = $request->getUri()->getPath() ?: '/';
         $controller = $event->getContext()->get(Context::KEY_SOURCE);
 
         $this->logger->info('Route matched ' . $request->getMethod() . ' ' . $path . ' -> ' . $controller);
