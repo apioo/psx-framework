@@ -32,7 +32,6 @@ use PSX\Framework\Event\RouteMatchedEvent;
 use PSX\Framework\Loader\Context;
 use PSX\Http\Exception\StatusCodeException;
 use PSX\Http\Http;
-use PSX\Http\Stream\Util;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -56,13 +55,6 @@ class LogListener implements EventSubscriberInterface
     public function onRequestIncomming(RequestIncomingEvent $event)
     {
         $this->logger->info('Incoming request ' . $event->getRequest()->getMethod() . ' ' . $event->getRequest()->getRequestTarget());
-
-        if ($this->debug) {
-            $body = Util::toString($event->getRequest()->getBody());
-            if (!empty($body)) {
-                $this->logger->debug($body);
-            }
-        }
     }
 
     public function onRouteMatched(RouteMatchedEvent $event)
@@ -94,13 +86,6 @@ class LogListener implements EventSubscriberInterface
         $code = isset(Http::$codes[$code]) ? $code : 200;
 
         $this->logger->info('Send response ' . $code);
-
-        if ($this->debug) {
-            $body = Util::toString($event->getResponse()->getBody());
-            if (!empty($body)) {
-                $this->logger->debug($body);
-            }
-        }
     }
 
     public function onExceptionThrown(ExceptionThrownEvent $event)
