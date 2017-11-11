@@ -1,4 +1,8 @@
 
+### 2.4.2 (2017-11-11)
+
+* Update generator controller
+
 ### 2.4.1 (2017-11-02)
 
 * Remove jms serializer dependency
