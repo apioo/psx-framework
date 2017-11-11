@@ -21,7 +21,7 @@
 namespace PSX\Framework\Tests\Api;
 
 use PSX\Cache\Pool;
-use PSX\Framework\Api\CachedListing;
+use PSX\Api\Listing\CachedListing;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
 
@@ -82,7 +82,7 @@ class CachedListingTest extends ControllerDbTestCase
 
         $cache->expects($this->once())
             ->method('deleteItem')
-            ->with($this->equalTo('api-resource-1effb2475fcfba4f'));
+            ->with($this->equalTo('api-resource-1effb2475fcfba4f-0'));
 
         $listing = new CachedListing(Environment::getService('resource_listing'), $cache);
         $listing->invalidateResource('/foo');
