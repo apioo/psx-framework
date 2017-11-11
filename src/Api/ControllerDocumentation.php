@@ -23,6 +23,7 @@ namespace PSX\Framework\Api;
 use PSX\Api\DocumentedInterface;
 use PSX\Api\ListingInterface;
 use PSX\Api\Resource;
+use PSX\Api\ResourceCollection;
 use PSX\Framework\Dispatch\ControllerFactoryInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\PathMatcher;
@@ -63,6 +64,9 @@ class ControllerDocumentation implements ListingInterface
         $this->controllerFactory = $controllerFactory;
     }
 
+    /**
+     * @return \PSX\Api\Resource[]
+     */
     public function getResourceIndex()
     {
         $collections = $this->routingParser->getCollection();
@@ -90,7 +94,7 @@ class ControllerDocumentation implements ListingInterface
             // because creating a new instance of a controller is expensive
             // since we resolve all dependencies we use class_implements to
             // check whether this is a documented API endpoint
-            if (class_exists($className) && in_array('PSX\Api\DocumentedInterface', class_implements($className))) {
+            if (class_exists($className) && in_array(DocumentedInterface::class, class_implements($className))) {
                 $result[] = $resource;
             }
         }
@@ -98,13 +102,18 @@ class ControllerDocumentation implements ListingInterface
         return $result;
     }
 
+    /**
+     * @param string $sourcePath
+     * @param integer|null $version
+     * @return \PSX\Api\Resource
+     */
     public function getResource($sourcePath, $version = null)
     {
-        $matcher     = new PathMatcher($sourcePath);
-        $collections = $this->routingParser->getCollection();
+        $matcher    = new PathMatcher($sourcePath);
+        $collection = $this->routingParser->getCollection();
 
-        foreach ($collections as $collection) {
-            list($methods, $path, $source) = $collection;
+        foreach ($collection as $route) {
+            list($methods, $path, $source) = $route;
 
             $parts     = explode('::', $source, 2);
             $className = isset($parts[0]) ? $parts[0] : null;
@@ -112,7 +121,7 @@ class ControllerDocumentation implements ListingInterface
             if (class_exists($className) && $matcher->match($path)) {
                 $request    = new Request(new Uri('/'), 'GET');
                 $response   = new Response();
-                $context    = $this->newContext($collection);
+                $context    = $this->newContext($route);
                 $controller = $this->newController($className, $request, $response, $context);
 
                 if ($controller instanceof DocumentedInterface) {
@@ -124,6 +133,29 @@ class ControllerDocumentation implements ListingInterface
         return null;
     }
 
+    /**
+     * @param integer|null $version
+     * @return \PSX\Api\ResourceCollection
+     */
+    public function getResourceCollection($version = null)
+    {
+        $collection = new ResourceCollection();
+        $index      = $this->getResourceIndex();
+
+        foreach ($index as $res) {
+            $collection->set($this->getResource($res->getPath(), $version));
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param string $className
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
+     * @param \PSX\Framework\Loader\Context $context
+     * @return \PSX\Framework\Controller\ControllerInterface
+     */
     protected function newController($className, RequestInterface $request, ResponseInterface $response, Context $context)
     {
         try {
@@ -133,6 +165,10 @@ class ControllerDocumentation implements ListingInterface
         }
     }
 
+    /**
+     * @param array $route
+     * @return \PSX\Framework\Loader\Context
+     */
     protected function newContext(array $route)
     {
         $context = new Context();

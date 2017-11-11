@@ -20,114 +20,14 @@
 
 namespace PSX\Framework\Api;
 
-use Psr\Cache\CacheItemPoolInterface;
-use PSX\Api\ListingInterface;
-use PSX\Api\Resource;
-use PSX\Schema\Schema;
-
 /**
  * CachedListing
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class CachedListing implements ListingInterface
+class CachedListing extends \PSX\Api\Listing\CachedListing
 {
-    /**
-     * @var \PSX\Api\ListingInterface
-     */
-    protected $listing;
-
-    /**
-     * @var \Psr\Cache\CacheItemPoolInterface
-     */
-    protected $cache;
-
-    /**
-     * @var integer|null
-     */
-    protected $expire;
-
-    /**
-     * @param \PSX\Api\ListingInterface $listing
-     * @param \Psr\Cache\CacheItemPoolInterface $cache
-     * @param integer|null $expire
-     */
-    public function __construct(ListingInterface $listing, CacheItemPoolInterface $cache, $expire = null)
-    {
-        $this->listing = $listing;
-        $this->cache   = $cache;
-        $this->expire  = $expire;
-    }
-
-    public function getResourceIndex()
-    {
-        $item = $this->cache->getItem('api-resources');
-
-        if ($item->isHit()) {
-            return $item->get();
-        } else {
-            $result = $this->listing->getResourceIndex();
-
-            $item->set($result);
-            $item->expiresAfter($this->expire);
-
-            $this->cache->save($item);
-
-            return $result;
-        }
-    }
-
-    public function getResource($sourcePath, $version = null)
-    {
-        $item = $this->cache->getItem('api-resource-' . substr(md5($sourcePath . $version), 0, 16));
-
-        if ($item->isHit()) {
-            return $item->get();
-        } else {
-            $resource = $this->listing->getResource($sourcePath, $version);
-
-            if ($resource instanceof Resource) {
-                $this->materializeResource($resource);
-
-                $item->set($resource);
-                $item->expiresAfter($this->expire);
-
-                $this->cache->save($item);
-
-                return $resource;
-            }
-        }
-
-        return null;
-    }
-
-    public function invalidateResource($sourcePath, $version = null)
-    {
-        $this->cache->deleteItem('api-resource-' . substr(md5($sourcePath . $version), 0, 16));
-    }
-
-    /**
-     * A resource can contain schema definitions which are only resolved if we
-     * actual call the getDefinition method i.e. the schema is stored in a
-     * database. So before we cache the documentation we must get the actual
-     * definition object which we can serialize
-     *
-     * @param \PSX\Api\Resource $resource
-     */
-    protected function materializeResource(Resource $resource)
-    {
-        foreach ($resource as $method) {
-            $request = $method->getRequest();
-            if ($request) {
-                $method->setRequest(new Schema($request->getDefinition()));
-            }
-
-            $responses = $method->getResponses();
-            foreach ($responses as $statusCode => $response) {
-                $method->addResponse($statusCode, new Schema($response->getDefinition()));
-            }
-        }
-    }
 }
