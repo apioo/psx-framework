@@ -20,7 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Generator;
 
+use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 
 /**
  * OpenAPIControllerTest
@@ -35,265 +38,18 @@ class OpenAPIControllerTest extends ControllerTestCase
     {
         $response = $this->sendRequest('http://127.0.0.1/openapi/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
+        $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
 
-        $expect = <<<'JSON'
-{
-    "openapi": "3.0.0",
-    "info": {
-        "title": "PSX",
-        "version": "1"
-    },
-    "servers": [
-        {
-            "url": "http:\/\/127.0.0.1\/"
-        }
-    ],
-    "paths": {
-        "\/api": {
-            "get": {
-                "description": "Returns a collection",
-                "operationId": "getCollection",
-                "parameters": [
-                    {
-                        "name": "startIndex",
-                        "in": "query",
-                        "description": "startIndex parameter",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "description": "startIndex parameter",
-                            "minimum": 0,
-                            "maximum": 32
-                        }
-                    },
-                    {
-                        "name": "float",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "boolean",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "datetime",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date-time"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "GET 200 response",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "$ref": "#\/components\/schemas\/Collection"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "operationId": "putItem",
-                "requestBody": {
-                    "content": {
-                        "application\/json": {
-                            "schema": {
-                                "$ref": "#\/components\/schemas\/Item"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "PUT 200 response",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "$ref": "#\/components\/schemas\/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "operationId": "postItem",
-                "requestBody": {
-                    "content": {
-                        "application\/json": {
-                            "schema": {
-                                "$ref": "#\/components\/schemas\/Item"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "POST 201 response",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "$ref": "#\/components\/schemas\/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "operationId": "deleteItem",
-                "requestBody": {
-                    "content": {
-                        "application\/json": {
-                            "schema": {
-                                "$ref": "#\/components\/schemas\/Item"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "DELETE 200 response",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "$ref": "#\/components\/schemas\/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "operationId": "patchItem",
-                "requestBody": {
-                    "content": {
-                        "application\/json": {
-                            "schema": {
-                                "$ref": "#\/components\/schemas\/Item"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "PATCH 200 response",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "$ref": "#\/components\/schemas\/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "parameters": [
-                {
-                    "name": "name",
-                    "in": "path",
-                    "description": "Name parameter",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "description": "Name parameter",
-                        "pattern": "[A-z]+",
-                        "minLength": 0,
-                        "maxLength": 16
-                    }
-                },
-                {
-                    "name": "type",
-                    "in": "path",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "enum": [
-                            "foo",
-                            "bar"
-                        ]
-                    }
-                }
-            ]
-        }
-    },
-    "components": {
-        "schemas": {
-            "Collection": {
-                "type": "object",
-                "title": "collection",
-                "properties": {
-                    "entry": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#\/components\/schemas\/Item"
-                        }
-                    }
-                }
-            },
-            "Item": {
-                "type": "object",
-                "title": "item",
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "userId": {
-                        "type": "integer"
-                    },
-                    "title": {
-                        "type": "string",
-                        "pattern": "[A-z]+",
-                        "minLength": 3,
-                        "maxLength": 16
-                    },
-                    "date": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "required": [
-                    "id"
-                ]
-            },
-            "Message": {
-                "type": "object",
-                "title": "message",
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "message": {
-                        "type": "string"
-                    }
-                }
-            }
-        }
+        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
+        $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
-}
-JSON;
+
+    public function testCollection()
+    {
+        $response = $this->sendRequest('http://127.0.0.1/openapi/1/*', 'GET', ['Accept' => 'application/json']);
+        $json     = (string) $response->getBody();
+        $expect   = file_get_contents(__DIR__ . '/resource/openapi_collection.json');
 
         $this->assertEquals(null, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
@@ -303,8 +59,9 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/openapi/:version/*path', 'PSX\Framework\Controller\Generator\OpenAPIController'],
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController'],
+            [['GET'], '/openapi/:version/*path', OpenAPIController::class],
+            [['ANY'], '/api', TestSchemaApiController::class],
+            [['ANY'], '/endpoint', TestSchemaApiV2Controller::class],
         );
     }
 }
