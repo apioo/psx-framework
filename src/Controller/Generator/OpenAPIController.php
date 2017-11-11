@@ -48,20 +48,33 @@ class OpenAPIController extends ControllerAbstract
 
     public function onGet()
     {
-        $version  = (int) $this->getUriFragment('version');
-        $resource = $this->resourceListing->getResource($this->getUriFragment('path'), $version);
+        $version   = (int) $this->getUriFragment('version');
+        $path      = $this->getUriFragment('path');
+        $generator = $this->newGenerator($version);
 
-        if ($resource instanceof Resource) {
-            $baseUri         = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
-            $targetNamespace = $this->config['psx_json_namespace'];
-
-            $generator = new Generator\OpenAPI($this->annotationReader, $version, $baseUri, $targetNamespace);
-            $openAPI   = $generator->generate($resource);
-
-            $this->setHeader('Content-Type', 'application/json');
-            $this->setBody($openAPI);
+        if ($path == '*') {
+            $collection = $this->resourceListing->getResourceCollection();
+            $openAPI = $generator->generateAll($collection);
         } else {
-            throw new StatusCode\NotFoundException('Invalid resource');
+            $resource = $this->resourceListing->getResource($path, $version);
+
+            if (!$resource instanceof Resource) {
+                throw new StatusCode\NotFoundException('Invalid resource');
+            }
+
+            $openAPI = $generator->generate($resource);
         }
+
+        $this->setHeader('Content-Type', 'application/json');
+        $this->setBody($openAPI);
+    }
+
+    private function newGenerator($version)
+    {
+        $baseUri   = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
+        $namespace = $this->config['psx_json_namespace'];
+        $generator = new Generator\OpenAPI($this->annotationReader, $version, $baseUri, $namespace);
+
+        return $generator;
     }
 }

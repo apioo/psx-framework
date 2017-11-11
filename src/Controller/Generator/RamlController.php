@@ -22,7 +22,6 @@ namespace PSX\Framework\Controller\Generator;
 
 use PSX\Api\Generator;
 use PSX\Api\Resource;
-use PSX\Api\Util\Inflection;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 
@@ -43,27 +42,34 @@ class RamlController extends ControllerAbstract
 
     public function onGet()
     {
-        $version  = (int) $this->getUriFragment('version');
-        $resource = $this->resourceListing->getResource($this->getUriFragment('path'), $version);
+        $version   = (int) $this->getUriFragment('version');
+        $path      = $this->getUriFragment('path');
+        $generator = $this->newGenerator($version);
 
-        if ($resource instanceof Resource) {
-            $path  = ltrim($resource->getPath(), '/');
-            $title = $resource->getTitle();
+        if ($path == '*') {
+            $collection = $this->resourceListing->getResourceCollection($version);
+            $raml = $generator->generateAll($collection);
+        } else {
+            $resource = $this->resourceListing->getResource($path, $version);
 
-            if (empty($title)) {
-                $title = Inflection::generateTitleFromRoute($path);
+            if (!$resource instanceof Resource) {
+                throw new StatusCode\NotFoundException('Invalid resource');
             }
 
-            $baseUri         = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
-            $targetNamespace = $this->config['psx_json_namespace'];
-
-            $generator = new Generator\Raml($title, $version, $baseUri, $targetNamespace);
-            $raml      = $generator->generate($resource);
-
-            $this->setHeader('Content-Type', 'application/raml+yaml');
-            $this->setBody($raml);
-        } else {
-            throw new StatusCode\NotFoundException('Invalid resource');
+            $raml = $generator->generate($resource);
         }
+
+        $this->setHeader('Content-Type', 'application/raml+yaml');
+        $this->setBody($raml);
+    }
+
+    private function newGenerator($version)
+    {
+        $title     = parse_url($this->config['psx_url'], PHP_URL_HOST) . ' API';
+        $baseUri   = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
+        $namespace = $this->config['psx_json_namespace'];
+        $generator = new Generator\Raml($title, $version, $baseUri, $namespace);
+
+        return $generator;
     }
 }
