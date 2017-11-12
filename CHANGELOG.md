@@ -1,4 +1,8 @@
 
+### 2.4.4
+
+* Add filter to documentation endpoint
+
 ### 2.4.3 (2017-11-12)
 
 * Add resource listing filter factory
