@@ -42,6 +42,12 @@ class SwaggerController extends ControllerAbstract
 
     /**
      * @Inject
+     * @var \PSX\Api\Listing\FilterFactoryInterface
+     */
+    protected $listingFilterFactory;
+
+    /**
+     * @Inject
      * @var \Doctrine\Common\Annotations\Reader
      */
     protected $annotationReader;
@@ -53,8 +59,9 @@ class SwaggerController extends ControllerAbstract
         $generator = $this->newGenerator($version);
 
         if ($path == '*') {
-            $collection = $this->resourceListing->getResourceCollection($version);
-            $swagger = $generator->generateAll($collection);
+            $filter     = $this->listingFilterFactory->getFilter($this->getParameter('filter'));
+            $collection = $this->resourceListing->getResourceCollection($version, $filter);
+            $swagger    = $generator->generateAll($collection);
         } else {
             $resource = $this->resourceListing->getResource($path, $version);
 

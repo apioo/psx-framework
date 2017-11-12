@@ -21,7 +21,8 @@
 namespace PSX\Framework\Dependency;
 
 use PSX\Api\ApiManager;
-use PSX\Framework\Api\CachedListing;
+use PSX\Api\Listing\CachedListing;
+use PSX\Api\Listing\FilterFactory;
 use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ApplicationStackFactory;
@@ -223,6 +224,14 @@ trait Framework
         } else {
             return new CachedListing($resourceListing, $this->get('cache'));
         }
+    }
+
+    /**
+     * @return \PSX\Api\Listing\FilterFactoryInterface
+     */
+    public function getListingFilterFactory()
+    {
+        return new FilterFactory();
     }
 
     /**

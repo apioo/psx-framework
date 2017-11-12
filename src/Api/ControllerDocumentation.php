@@ -21,6 +21,7 @@
 namespace PSX\Framework\Api;
 
 use PSX\Api\DocumentedInterface;
+use PSX\Api\Listing\FilterInterface;
 use PSX\Api\ListingInterface;
 use PSX\Api\Resource;
 use PSX\Api\ResourceCollection;
@@ -65,15 +66,19 @@ class ControllerDocumentation implements ListingInterface
     }
 
     /**
-     * @return \PSX\Api\Resource[]
+     * @inheritdoc
      */
-    public function getResourceIndex()
+    public function getResourceIndex(FilterInterface $filter = null)
     {
         $collections = $this->routingParser->getCollection();
         $result      = array();
 
         foreach ($collections as $collection) {
             list($methods, $path, $source) = $collection;
+
+            if ($filter !== null && !$filter->match($path)) {
+                continue;
+            }
 
             $parts     = explode('::', $source, 2);
             $className = isset($parts[0]) ? $parts[0] : null;
@@ -103,9 +108,7 @@ class ControllerDocumentation implements ListingInterface
     }
 
     /**
-     * @param string $sourcePath
-     * @param integer|null $version
-     * @return \PSX\Api\Resource
+     * @inheritdoc
      */
     public function getResource($sourcePath, $version = null)
     {
@@ -134,16 +137,15 @@ class ControllerDocumentation implements ListingInterface
     }
 
     /**
-     * @param integer|null $version
-     * @return \PSX\Api\ResourceCollection
+     * @inheritdoc
      */
-    public function getResourceCollection($version = null)
+    public function getResourceCollection($version = null, FilterInterface $filter = null)
     {
         $collection = new ResourceCollection();
-        $index      = $this->getResourceIndex();
+        $index      = $this->getResourceIndex($filter);
 
-        foreach ($index as $res) {
-            $collection->set($this->getResource($res->getPath(), $version));
+        foreach ($index as $resource) {
+            $collection->set($this->getResource($resource->getPath(), $version));
         }
 
         return $collection;

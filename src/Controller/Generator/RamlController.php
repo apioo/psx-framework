@@ -40,6 +40,12 @@ class RamlController extends ControllerAbstract
      */
     protected $resourceListing;
 
+    /**
+     * @Inject
+     * @var \PSX\Api\Listing\FilterFactoryInterface
+     */
+    protected $listingFilterFactory;
+
     public function onGet()
     {
         $version   = (int) $this->getUriFragment('version');
@@ -47,8 +53,9 @@ class RamlController extends ControllerAbstract
         $generator = $this->newGenerator($version);
 
         if ($path == '*') {
-            $collection = $this->resourceListing->getResourceCollection($version);
-            $raml = $generator->generateAll($collection);
+            $filter     = $this->listingFilterFactory->getFilter($this->getParameter('filter'));
+            $collection = $this->resourceListing->getResourceCollection($version, $filter);
+            $raml       = $generator->generateAll($collection);
         } else {
             $resource = $this->resourceListing->getResource($path, $version);
 
