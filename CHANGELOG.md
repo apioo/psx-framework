@@ -1,4 +1,8 @@
 
+### 2.4.3 (2017-11-12)
+
+* Add resource listing filter factory
+
 ### 2.4.2 (2017-11-11)
 
 * Update generator controller
