@@ -46,6 +46,12 @@ class DocumentationController extends ApiAbstract
 
     /**
      * @Inject
+     * @var \PSX\Api\Listing\FilterFactoryInterface
+     */
+    protected $listingFilterFactory;
+
+    /**
+     * @Inject
      * @var \PSX\Framework\Loader\ReverseRouter
      */
     protected $reverseRouter;
@@ -150,8 +156,9 @@ class DocumentationController extends ApiAbstract
 
     protected function getRoutings()
     {
+        $filter    = $this->listingFilterFactory->getFilter($this->getParameter('filter'));
         $routings  = array();
-        $resources = $this->resourceListing->getResourceIndex();
+        $resources = $this->resourceListing->getResourceIndex($filter);
 
         foreach ($resources as $resource) {
             $routings[] = new Record('routing', [
