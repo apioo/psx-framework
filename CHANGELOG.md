@@ -1,5 +1,9 @@
 
-### 2.4.4
+### 2.4.5
+
+* Use generator factory
+
+### 2.4.4 (2017-11-12)
 
 * Add filter to documentation endpoint
 
