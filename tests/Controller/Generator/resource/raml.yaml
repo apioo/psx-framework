@@ -2,7 +2,7 @@
 ---
 baseUri: 'http://127.0.0.1/'
 version: v1
-title: '127.0.0.1 API'
+title: PSX
 /api:
   description: 'lorem ipsum'
   uriParameters:

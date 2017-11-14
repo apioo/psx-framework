@@ -21,6 +21,7 @@
 namespace PSX\Framework\Dependency;
 
 use PSX\Api\ApiManager;
+use PSX\Api\GeneratorFactory;
 use PSX\Api\Listing\CachedListing;
 use PSX\Api\Listing\FilterFactory;
 use PSX\Framework\Api\ControllerDocumentation;
@@ -232,6 +233,19 @@ trait Framework
     public function getListingFilterFactory()
     {
         return new FilterFactory();
+    }
+
+    /**
+     * @return \PSX\Api\GeneratorFactoryInterface
+     */
+    public function getGeneratorFactory()
+    {
+        return new GeneratorFactory(
+            $this->get('annotation_reader'),
+            $this->get('config')->get('psx_json_namespace'),
+            $this->get('config')->get('psx_url'),
+            $this->get('config')->get('psx_dispatch')
+        );
     }
 
     /**

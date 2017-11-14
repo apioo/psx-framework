@@ -20,10 +20,7 @@
 
 namespace PSX\Framework\Controller\Generator;
 
-use PSX\Api\Generator;
-use PSX\Api\Resource;
-use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Exception as StatusCode;
+use PSX\Api\GeneratorFactoryInterface;
 
 /**
  * RamlController
@@ -32,51 +29,10 @@ use PSX\Http\Exception as StatusCode;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RamlController extends ControllerAbstract
+class RamlController extends GeneratorControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Api\ListingInterface
-     */
-    protected $resourceListing;
-
-    /**
-     * @Inject
-     * @var \PSX\Api\Listing\FilterFactoryInterface
-     */
-    protected $listingFilterFactory;
-
-    public function onGet()
+    protected function getType()
     {
-        $version   = (int) $this->getUriFragment('version');
-        $path      = $this->getUriFragment('path');
-        $generator = $this->newGenerator($version);
-
-        if ($path == '*') {
-            $filter     = $this->listingFilterFactory->getFilter($this->getParameter('filter'));
-            $collection = $this->resourceListing->getResourceCollection($version, $filter);
-            $raml       = $generator->generateAll($collection);
-        } else {
-            $resource = $this->resourceListing->getResource($path, $version);
-
-            if (!$resource instanceof Resource) {
-                throw new StatusCode\NotFoundException('Invalid resource');
-            }
-
-            $raml = $generator->generate($resource);
-        }
-
-        $this->setHeader('Content-Type', 'application/raml+yaml');
-        $this->setBody($raml);
-    }
-
-    private function newGenerator($version)
-    {
-        $title     = parse_url($this->config['psx_url'], PHP_URL_HOST) . ' API';
-        $baseUri   = $this->config['psx_url'] . '/' . $this->config['psx_dispatch'];
-        $namespace = $this->config['psx_json_namespace'];
-        $generator = new Generator\Raml($title, $version, $baseUri, $namespace);
-
-        return $generator;
+        return GeneratorFactoryInterface::TYPE_RAML;
     }
 }
