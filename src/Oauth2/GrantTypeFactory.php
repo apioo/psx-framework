@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Oauth2;
 
-use RuntimeException;
+use PSX\Oauth2\Authorization\Exception\UnsupportedGrantTypeException;
 
 /**
  * GrantTypeFactory
@@ -45,7 +45,7 @@ class GrantTypeFactory
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return \PSX\Framework\Oauth2\GrantTypeInterface
      */
     public function get($type)
@@ -56,6 +56,6 @@ class GrantTypeFactory
             }
         }
 
-        throw new RuntimeException('Invalid grant type');
+        throw new UnsupportedGrantTypeException('Invalid grant type');
     }
 }
