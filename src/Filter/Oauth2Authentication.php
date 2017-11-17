@@ -21,7 +21,6 @@
 namespace PSX\Framework\Filter;
 
 use Closure;
-use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -35,9 +34,29 @@ use PSX\Http\ResponseInterface;
  */
 class Oauth2Authentication implements FilterInterface
 {
+    /**
+     * @var \Closure
+     */
     protected $accessCallback;
+
+    /**
+     * @var string
+     */
+    protected $realm;
+
+    /**
+     * @var \Closure
+     */
     protected $successCallback;
+
+    /**
+     * @var \Closure
+     */
     protected $failureCallback;
+
+    /**
+     * @var \Closure
+     */
     protected $missingCallback;
 
     /**
@@ -45,23 +64,29 @@ class Oauth2Authentication implements FilterInterface
      * moment this class supports only Bearer authentication. If the
      * accessCallback explicit return true the authorization was successful
      *
-     * @param Closure $accessCallback
+     * @param \Closure $accessCallback
+     * @param string $realm
      */
-    public function __construct(Closure $accessCallback)
+    public function __construct(Closure $accessCallback, $realm = null)
     {
         $this->accessCallback = $accessCallback;
+        $this->realm = $realm;
 
         $this->onSuccess(function () {
             // authentication successful
         });
 
         $this->onFailure(function () {
-            throw new BadRequestException('Invalid access token');
+            $params = array(
+                'realm' => $this->realm ?: 'psx',
+            );
+
+            throw new UnauthorizedException('Invalid access token', 'Bearer', $params);
         });
 
         $this->onMissing(function (ResponseInterface $response) {
             $params = array(
-                'realm' => 'psx',
+                'realm' => $this->realm ?: 'psx',
             );
 
             throw new UnauthorizedException('Missing authorization header', 'Bearer', $params);
