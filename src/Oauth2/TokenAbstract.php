@@ -74,7 +74,13 @@ abstract class TokenAbstract extends SchemaApiAbstract
                 $error->setErrorDescription($e->getMessage());
                 $error->setState(null);
 
-                $this->response->setStatus(400);
+                if ($e->getType() == 'invalid_client') {
+                    $this->setResponseCode(401);
+                    $this->setHeader('WWW-Authenticate', 'Bearer');
+                } else {
+                    $this->setResponseCode(400);
+                }
+
                 $this->setBody($error, WriterInterface::JSON);
             } catch (\Throwable $e) {
                 $error = new Error();
@@ -82,7 +88,7 @@ abstract class TokenAbstract extends SchemaApiAbstract
                 $error->setErrorDescription($e->getMessage());
                 $error->setState(null);
 
-                $this->response->setStatus(400);
+                $this->setResponseCode(400);
                 $this->setBody($error, WriterInterface::JSON);
             }
         }];
