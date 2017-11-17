@@ -172,7 +172,7 @@ abstract class AuthorizationAbstract extends ApiAbstract
      * redirect the user to an login form and display an form where the user can
      * grant the authorization request
      *
-     * @param \PSX\Framework\Oauth2\Provider\AccessRequest $request
+     * @param \PSX\Framework\Oauth2\AccessRequest $request
      * @return boolean
      */
     abstract protected function hasGrant(AccessRequest $request);
@@ -180,7 +180,7 @@ abstract class AuthorizationAbstract extends ApiAbstract
     /**
      * Generates an authorization code which is assigned to the request
      *
-     * @param \PSX\Framework\Oauth2\Provider\AccessRequest $request
+     * @param \PSX\Framework\Oauth2\AccessRequest $request
      * @return string
      */
     abstract protected function generateCode(AccessRequest $request);
