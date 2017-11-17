@@ -1,5 +1,9 @@
 
-### 2.4.5
+### 2.4.6 (2017-11-17)
+
+* Use better error exceptions at OAuth2 token endpoint
+
+### 2.4.5 (2017-11-14)
 
 * Use generator factory
 
