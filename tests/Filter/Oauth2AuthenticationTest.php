@@ -66,7 +66,7 @@ class Oauth2AuthenticationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
+     * @expectedException \PSX\Http\Exception\UnauthorizedException
      */
     public function testFailure()
     {
