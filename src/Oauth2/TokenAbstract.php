@@ -76,7 +76,10 @@ abstract class TokenAbstract extends SchemaApiAbstract
 
                 if ($e->getType() == 'invalid_client') {
                     $this->setResponseCode(401);
-                    $this->setHeader('WWW-Authenticate', 'Bearer');
+
+                    if ($request->hasHeader('Authorization')) {
+                        $this->setHeader('WWW-Authenticate', 'Bearer');
+                    }
                 } else {
                     $this->setResponseCode(400);
                 }
