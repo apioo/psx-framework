@@ -1,4 +1,8 @@
 
+### 2.4.8 (2017-11-26)
+
+* Schema api handle already written response
+
 ### 2.4.7 (2017-11-26)
 
 * Set response in case data is available independent of the available response
