@@ -23,6 +23,7 @@ namespace PSX\Framework\Controller;
 use PSX\Api\DocumentedInterface;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
+use PSX\Data\GraphTraverser;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Schema\Passthru;
 use PSX\Http\Exception as StatusCode;
@@ -327,7 +328,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             }
         }
 
-        if ($method->hasResponse($statusCode)) {
+        if (!GraphTraverser::isEmpty($response)) {
             $this->setResponseCode($statusCode);
             $this->setBody($response);
         } else {

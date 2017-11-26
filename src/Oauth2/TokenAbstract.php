@@ -99,7 +99,7 @@ abstract class TokenAbstract extends SchemaApiAbstract
 
     public function doPost($record)
     {
-        $this->doHandle($record->getProperties());
+        return $this->doHandle($record->getProperties());
     }
 
     protected function doHandle(array $parameters)
@@ -129,9 +129,6 @@ abstract class TokenAbstract extends SchemaApiAbstract
 
         // we get the grant type factory from the DI container the factory
         // contains the available grant types
-        $accessToken = $this->grantTypeFactory->get($grantType)->generateAccessToken($credentials, $parameters);
-
-        $this->response->setStatus(200);
-        $this->setBody($accessToken, WriterInterface::JSON);
+        return $this->grantTypeFactory->get($grantType)->generateAccessToken($credentials, $parameters);
     }
 }

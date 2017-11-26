@@ -37,7 +37,7 @@ class RestrictMethodTest extends ControllerTestCase
         $response = $this->sendRequest('http://127.0.0.1/api', 'HEAD');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertEmpty($body);
     }
 
@@ -46,7 +46,14 @@ class RestrictMethodTest extends ControllerTestCase
         $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $expect = <<<JSON
+{
+    "foo": "bar"
+}
+JSON;
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
     public function testPost()
@@ -54,8 +61,8 @@ class RestrictMethodTest extends ControllerTestCase
         $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(405, $response->getStatusCode());
-        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'));
+        $this->assertEquals(405, $response->getStatusCode(), $body);
+        $this->assertEquals('OPTIONS, HEAD, GET, DELETE', $response->getHeader('Allow'), $body);
     }
 
     public function testPut()
