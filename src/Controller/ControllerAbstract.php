@@ -90,6 +90,9 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
      */
     protected $io;
 
+    /**
+     * @var boolean
+     */
     private $_responseWritten = false;
 
     /**
@@ -184,9 +187,8 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     public function processResponse()
     {
-        $body = $this->response->getBody();
-
-        if ($body->tell() == 0 && !$this->_responseWritten) {
+        if (!$this->hasResponseWritten()) {
+            // in case no response was set we set an empty record
             $this->setBody(new Record());
         }
     }
@@ -294,6 +296,16 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
                 $writer->setCallbackName($this->getParameter('callback'));
             }
         }
+    }
+
+    /**
+     * Returns whether the controller has written data to the response
+     * 
+     * @return boolean
+     */
+    protected function hasResponseWritten()
+    {
+        return $this->_responseWritten || $this->response->getBody()->tell() > 0;
     }
 
     /**

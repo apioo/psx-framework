@@ -331,6 +331,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         if (!GraphTraverser::isEmpty($response)) {
             $this->setResponseCode($statusCode);
             $this->setBody($response);
+        } elseif ($this->hasResponseWritten()) {
+            // in case a controller has manually set the response i.e. through
+            // setBody we only set the status code
+            $this->setResponseCode($statusCode);
         } else {
             $this->setResponseCode(204);
             $this->setBody('');
