@@ -1,4 +1,9 @@
 
+### 2.4.7 (2017-11-26)
+
+* Set response in case data is available independent of the available response
+  schemas
+
 ### 2.4.6 (2017-11-17)
 
 * Use better error exceptions at OAuth2 token endpoint
