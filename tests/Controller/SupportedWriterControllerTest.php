@@ -38,8 +38,8 @@ class SupportedWriterControllerTest extends ControllerTestCase
         $body     = (string) $response->getBody();
 
         $expect = <<<XML
-<record>
-  <foo>bar</foo>
+<record type="object">
+  <foo type="string">bar</foo>
 </record>
 XML;
 
@@ -53,8 +53,8 @@ XML;
         $body     = (string) $response->getBody();
 
         $expect = <<<XML
-<record>
-  <bar>foo</bar>
+<record type="object">
+  <bar type="string">foo</bar>
 </record>
 XML;
 
@@ -70,10 +70,11 @@ XML;
         $body     = (string) $response->getBody();
 
         $expect = <<<XML
-<error>
-  <success>false</success>
-  <title>Internal Server Error</title>
-  <message>The server encountered an internal error and was unable to complete your request.</message>
+<?xml version="1.0" encoding="UTF-8"?>
+<error type="object">
+ <success type="boolean">false</success>
+ <title type="string">Internal Server Error</title>
+ <message type="string">The server encountered an internal error and was unable to complete your request.</message>
 </error>
 XML;
 

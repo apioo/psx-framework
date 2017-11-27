@@ -58,8 +58,8 @@ class ServeCommandTest extends ControllerTestCase
 
         $expect = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
-<foo>
- <bar>foo</bar>
+<foo type="object">
+  <bar type="string">foo</bar>
 </foo>
 XML;
 

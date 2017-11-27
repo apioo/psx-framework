@@ -46,34 +46,36 @@ class SoapControllerTest extends ControllerDbTestCase
         $expect = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
- <soap:Body>
-  <getResponse xmlns="http://phpsx.org/2014/data">
-   <entry>
-    <id>4</id>
-    <userId>3</userId>
-    <title>blub</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>3</id>
-    <userId>2</userId>
-    <title>test</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>2</id>
-    <userId>1</userId>
-    <title>bar</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>1</id>
-    <userId>1</userId>
-    <title>foo</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-  </getResponse>
- </soap:Body>
+  <soap:Body>
+    <record xmlns="http://phpsx.org/2014/data" type="object">
+      <entry type="array">
+        <entry type="object">
+          <id type="integer">4</id>
+          <userId type="integer">3</userId>
+          <title type="string">blub</title>
+          <date type="date-time">2013-04-29T16:56:32Z</date>
+        </entry>
+        <entry type="object">
+          <id type="integer">3</id>
+          <userId type="integer">2</userId>
+          <title type="string">test</title>
+          <date type="date-time">2013-04-29T16:56:32Z</date>
+        </entry>
+        <entry type="object">
+          <id type="integer">2</id>
+          <userId type="integer">1</userId>
+          <title type="string">bar</title>
+          <date type="date-time">2013-04-29T16:56:32Z</date>
+        </entry>
+        <entry type="object">
+          <id type="integer">1</id>
+          <userId type="integer">1</userId>
+          <title type="string">foo</title>
+          <date type="date-time">2013-04-29T16:56:32Z</date>
+        </entry>
+      </entry>
+    </record>
+  </soap:Body>
 </soap:Envelope>
 XML;
 
@@ -105,10 +107,10 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <postResponse xmlns="http://phpsx.org/2014/data">
-   <success>true</success>
-   <message>You have successful post a record</message>
-  </postResponse>
+  <record type="object" xmlns="http://phpsx.org/2014/data">
+   <success type="boolean">true</success>
+   <message type="string">You have successful post a record</message>
+  </record>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -180,32 +182,34 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <getResponse xmlns="http://phpsx.org/2014/data">
-   <entry>
-    <id>4</id>
-    <userId>3</userId>
-    <title>blub</title>
-    <date>2013-04-29T16:56:32Z</date>
+  <record type="object" xmlns="http://phpsx.org/2014/data">
+   <entry type="array">
+    <entry type="object">
+     <id type="integer">4</id>
+     <userId type="integer">3</userId>
+     <title type="string">blub</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">3</id>
+     <userId type="integer">2</userId>
+     <title type="string">test</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">2</id>
+     <userId type="integer">1</userId>
+     <title type="string">bar</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">1</id>
+     <userId type="integer">1</userId>
+     <title type="string">foo</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
    </entry>
-   <entry>
-    <id>3</id>
-    <userId>2</userId>
-    <title>test</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>2</id>
-    <userId>1</userId>
-    <title>bar</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>1</id>
-    <userId>1</userId>
-    <title>foo</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-  </getResponse>
+  </record>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -227,32 +231,34 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <getResponse xmlns="http://phpsx.org/2014/data">
-   <entry>
-    <id>4</id>
-    <userId>3</userId>
-    <title>blub</title>
-    <date>2013-04-29T16:56:32Z</date>
+  <record type="object" xmlns="http://phpsx.org/2014/data">
+   <entry type="array">
+    <entry type="object">
+     <id type="integer">4</id>
+     <userId type="integer">3</userId>
+     <title type="string">blub</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">3</id>
+     <userId type="integer">2</userId>
+     <title type="string">test</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">2</id>
+     <userId type="integer">1</userId>
+     <title type="string">bar</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">1</id>
+     <userId type="integer">1</userId>
+     <title type="string">foo</title>
+     <date type="date-time">2013-04-29T16:56:32Z</date>
+    </entry>
    </entry>
-   <entry>
-    <id>3</id>
-    <userId>2</userId>
-    <title>test</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>2</id>
-    <userId>1</userId>
-    <title>bar</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-   <entry>
-    <id>1</id>
-    <userId>1</userId>
-    <title>foo</title>
-    <date>2013-04-29T16:56:32Z</date>
-   </entry>
-  </getResponse>
+  </record>
  </soap:Body>
 </soap:Envelope>
 XML;

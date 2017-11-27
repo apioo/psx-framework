@@ -205,10 +205,10 @@ HTML;
 
         $expect = <<<XML
 <?xml version="1.0"?>
-<error>
-	<success>false</success>
-	<title>Internal Server Error</title>
-	<message>The server encountered an internal error and was unable to complete your request.</message>
+<error type="object">
+  <success type="boolean">false</success>
+  <title type="string">Internal Server Error</title>
+  <message type="string">The server encountered an internal error and was unable to complete your request.</message>
 </error>
 XML;
 
