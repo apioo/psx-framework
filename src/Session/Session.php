@@ -85,6 +85,10 @@ class Session
 
     public function setName($name)
     {
+        if (headers_sent()) {
+            return;
+        }
+
         session_name($this->name = $name);
     }
 
