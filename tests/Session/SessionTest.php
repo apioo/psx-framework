@@ -74,6 +74,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetter()
     {
+        $this->assertEquals('psx_session', $this->sess->getName());
         $this->assertEquals('PSX\Framework\Session\Session', $this->sess->getSessionTokenKey());
 
         // token is always the same since we are on CLI and have no user agent

@@ -31,9 +31,19 @@ use SessionHandlerInterface;
  */
 class Session
 {
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var string
+     */
     protected $token;
 
+    /**
+     * @var string
+     */
     protected $sessionTokenKey;
 
     public function __construct($name, SessionHandlerInterface $handler = null)
@@ -85,11 +95,7 @@ class Session
 
     public function setName($name)
     {
-        if (headers_sent()) {
-            return;
-        }
-
-        session_name($this->name = $name);
+        $this->name = $name;
     }
 
     public function getName()
@@ -147,6 +153,8 @@ class Session
      */
     public function start()
     {
+        session_name($this->name);
+
         session_start();
 
         if (isset($_SESSION[$this->sessionTokenKey]) && $_SESSION[$this->sessionTokenKey] === $this->token) {
