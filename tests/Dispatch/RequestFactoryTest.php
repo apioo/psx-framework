@@ -35,285 +35,180 @@ use PSX\Framework\Dispatch\RequestFactory;
 class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var array
+     * @dataProvider createRequestNoPathProvider
      */
-    protected $server;
-
-    protected function setUp()
+    public function testCreateRequestNoPath($uri, $server)
     {
-        parent::setUp();
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, $server);
+        $request = $factory->createRequest();
 
-        // the test modifies the global server variable so store and reset the
-        // values after the test
-        $this->server = $_SERVER;
+        $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
     }
 
-    protected function tearDown()
+    public function createRequestNoPathProvider()
     {
-        parent::tearDown();
-
-        $_SERVER = $this->server;
-    }
-
-    public function testCreateRequestNoPath()
-    {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '']],
-            ['http://foo.com/', ['REQUEST_URI' => '/']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/bar']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
-            ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/bar/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
-
-        $this->assertCorrectRequestUriWorks($config);
-    }
-
-    public function testCreateRequestNoProtocolNoPath()
-    {
-        $config = new Config(array(
-            'psx_url' => '//foo.com',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '']],
-            ['http://foo.com/', ['REQUEST_URI' => '/']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/bar']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
-
-        $this->assertCorrectRequestUriWorks($config);
-    }
-
-    public function testCreateRequestPath()
-    {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com/sub/folder',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder']],
-            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder/']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/bar']],
-            ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/bar/']],
-            ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/sub/folder/bar/?bar=test']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/sub/folder/bar?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php?bar=test']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/index.php/bar']],
-            ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/index.php/bar/']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token']],
-            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
-
-        $this->assertCorrectRequestUriWorks($config);
-    }
-
-    public function testCreateRequestNoProtocol()
-    {
-        $config = new Config(array(
-            'psx_url' => '//foo.com',
-        ));
-
-        $matrix = array(
-            ['http://foo.com/', []],
-            ['http://foo.com/', ['HTTPS' => '']],
-            ['http://foo.com/', ['HTTPS' => '0']],
-            ['https://foo.com/', ['HTTPS' => '1']],
-            ['https://foo.com/', ['HTTPS' => 'on']],
-            ['http://foo.com/', ['HTTPS' => 'off']],
-            ['https://foo.com/', ['HTTPS' => 'ON']],
-            ['http://foo.com/', ['HTTPS' => 'OFF']],
-        );
-
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
+        return [
+            ['http://foo.com/', ['REQUEST_URI' => null, 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/bar#foo', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar/', ['REQUEST_URI' => '/bar/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test#foo', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/bar/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token', 'SERVER_NAME' => 'foo.com']],
+        ];
     }
 
     /**
-     * This ensures that if an correct request uri arrives at our application we
-     * get the correct uri even if we have setup an dispatch or path segment
-     * in the url
+     * @dataProvider createRequestNoProtocolNoPathProvider
      */
-    public function assertCorrectRequestUriWorks($config)
+    public function testCreateRequestNoProtocolNoPath($uri, $server)
     {
-        $matrix = array(
-            ['http://foo.com/', ['REQUEST_URI' => null]],
-            ['http://foo.com/', ['REQUEST_URI' => '']],
-            ['http://foo.com/', ['REQUEST_URI' => '/']],
-            ['http://foo.com/bar', ['REQUEST_URI' => '/bar']],
-            ['http://foo.com/bar/', ['REQUEST_URI' => '/bar/']],
-            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test']],
-            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test']],
-        );
+        $config  = new Config(['psx_url' => '//foo.com']);
+        $factory = new RequestFactory($config, $server);
+        $request = $factory->createRequest();
 
-        foreach ($matrix as $data) {
-            list($uri, $env) = $data;
-
-            $request = $this->getRequest($env, $config);
-
-            $this->assertEquals($uri, (string) $request->getUri(), var_export($env, true));
-        }
+        $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
     }
 
-    public function testCreateRequestInCli()
+    public function createRequestNoProtocolNoPathProvider()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $factory = $this->getMockBuilder('PSX\Framework\Dispatch\RequestFactory')
-            ->setConstructorArgs(array($config))
-            ->setMethods(array('isCli'))
-            ->getMock();
-
-        $factory->expects($this->once())
-            ->method('isCli')
-            ->will($this->returnValue(true));
-
-        $_SERVER['argv'][1] = '/foo';
-
-        $this->assertEquals('http://foo.com/foo', (string) $factory->createRequest()->getUri());
+        return [
+            ['http://foo.com/', ['REQUEST_URI' => null, 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token', 'SERVER_NAME' => 'foo.com']],
+        ];
     }
 
     /**
-     * @expectedException \UnexpectedValueException
+     * @dataProvider createRequestPathProvider
      */
+    public function testCreateRequestPath($uri, $server)
+    {
+        $config  = new Config(['psx_url' => 'http://foo.com/sub/folder']);
+        $factory = new RequestFactory($config, $server);
+        $request = $factory->createRequest();
+
+        $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
+    }
+
+    public function createRequestPathProvider()
+    {
+        return [
+            ['http://foo.com/', ['REQUEST_URI' => null, 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/sub', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/sub/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/sub/folder/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/bar/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar/?bar=test', ['REQUEST_URI' => '/sub/folder/bar/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/sub/folder/bar?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/index.php/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/index.php/bar/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token', 'SERVER_NAME' => 'foo.com']],
+        ];
+    }
+
+    /**
+     * @dataProvider createRequestNoProtocolProvider
+     */
+    public function testCreateRequestNoProtocol($uri, $server)
+    {
+        $config  = new Config(['psx_url' => '//foo.com']);
+        $factory = new RequestFactory($config, $server);
+        $request = $factory->createRequest();
+
+        $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
+    }
+
+    public function createRequestNoProtocolProvider()
+    {
+        return [
+            ['http://foo.com/', ['SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['HTTPS' => '', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['HTTPS' => '0', 'SERVER_NAME' => 'foo.com']],
+            ['https://foo.com/', ['HTTPS' => '1', 'SERVER_NAME' => 'foo.com']],
+            ['https://foo.com/', ['HTTPS' => 'on', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['HTTPS' => 'off', 'SERVER_NAME' => 'foo.com']],
+            ['https://foo.com/', ['HTTPS' => 'ON', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['HTTPS' => 'OFF', 'SERVER_NAME' => 'foo.com']],
+        ];
+    }
+
     public function testCreateRequestInvalidUrl()
     {
-        $config = new Config(array(
-            'psx_url' => 'foobar',
-        ));
+        $config  = new Config(['psx_url' => 'foobar']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com']);
+        $request = $factory->createRequest();
 
-        $factory = new RequestFactory($config);
-        $factory->createRequest();
+        $this->assertEquals('http://foo.com/', (string) $request->getUri());
     }
 
     public function testGetRequestMethod()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('REQUEST_METHOD' => 'POST');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'foobar']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('POST', $request->getMethod());
     }
 
     public function testGetRequestMethodOverwrite()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'PUT');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'PUT']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('PUT', $request->getMethod());
     }
 
     public function testGetRequestMethodOverwriteInvalid()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'FOO');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'FOO']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('POST', $request->getMethod());
     }
 
     public function testGetRequestHeader()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
     }
 
     public function testGetRequestHeaderContentHeader()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar', 'CONTENT_LENGTH' => 8, 'CONTENT_MD5' => 'foobar', 'CONTENT_TYPE' => 'text/html');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'CONTENT_LENGTH' => 8, 'CONTENT_MD5' => 'foobar', 'CONTENT_TYPE' => 'text/html']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
         $this->assertEquals(8, $request->getHeader('Content-Length'));
@@ -323,15 +218,9 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderRedirectAuthorizationHeader()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar', 'REDIRECT_HTTP_AUTHORIZATION' => 'Basic Zm9vOmJhcg==');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'REDIRECT_HTTP_AUTHORIZATION' => 'Basic Zm9vOmJhcg==']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
         $this->assertEquals('Basic Zm9vOmJhcg==', $request->getHeader('Authorization'));
@@ -339,15 +228,9 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderPhpAuthUser()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => 'bar');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => 'bar']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
         $this->assertEquals('Basic Zm9vOmJhcg==', $request->getHeader('Authorization'));
@@ -355,15 +238,9 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderPhpAuthUserNoPw()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => null);
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => null]);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
         $this->assertEquals('Basic Zm9vOg==', $request->getHeader('Authorization'));
@@ -371,41 +248,11 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderDigest()
     {
-        $config = new Config(array(
-            'psx_url' => 'http://foo.com',
-        ));
-
-        $env = array('HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_DIGEST' => 'Digest foobar');
-
-        $_SERVER['argv'][1] = '/';
-
-        $request = $this->getRequest($env, $config, true);
+        $config  = new Config(['psx_url' => 'http://foo.com']);
+        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_DIGEST' => 'Digest foobar']);
+        $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
         $this->assertEquals('Digest foobar', $request->getHeader('Authorization'));
-    }
-
-    /**
-     * @param array $env
-     * @param \PSX\Framework\Config $config
-     * @param boolean $isCli
-     * @return \PSX\Http\RequestInterface
-     */
-    protected function getRequest(array $env, Config $config, $isCli = false)
-    {
-        $factory = $this->getMockBuilder('PSX\Framework\Dispatch\RequestFactory')
-            ->setConstructorArgs(array($config))
-            ->setMethods(array('isCli'))
-            ->getMock();
-
-        $factory->expects($this->once())
-            ->method('isCli')
-            ->will($this->returnValue($isCli));
-
-        foreach ($env as $key => $value) {
-            $_SERVER[$key] = $value;
-        }
-
-        return $factory->createRequest();
     }
 }
