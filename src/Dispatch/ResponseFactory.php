@@ -32,11 +32,27 @@ use PSX\Http\Stream\TempStream;
  */
 class ResponseFactory implements ResponseFactoryInterface
 {
+    /**
+     * @var array
+     */
+    protected $server;
+
+    /**
+     * @param array|null $server
+     */
+    public function __construct(array $server = null)
+    {
+        $this->server = $server === null ? $_SERVER : $server;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function createResponse()
     {
-        $version  = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+        $protocol = isset($this->server['SERVER_PROTOCOL']) ? $this->server['SERVER_PROTOCOL'] : 'HTTP/1.1';
         $response = new Response();
-        $response->setProtocolVersion($version);
+        $response->setProtocolVersion($protocol);
         $response->setHeader('X-Powered-By', 'psx');
         $response->setBody(new TempStream(fopen('php://temp', 'r+')));
 
