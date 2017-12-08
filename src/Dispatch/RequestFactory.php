@@ -24,8 +24,7 @@ use PSX\Framework\Config\Config;
 use PSX\Http\Request;
 use PSX\Http\Stream\BufferedStream;
 use PSX\Http\Stream\TempStream;
-use PSX\Uri\Url;
-use UnexpectedValueException;
+use PSX\Uri\Uri;
 
 /**
  * RequestFactory
@@ -36,71 +35,80 @@ use UnexpectedValueException;
  */
 class RequestFactory implements RequestFactoryInterface
 {
+    /**
+     * @var \PSX\Framework\Config\Config
+     */
     protected $config;
 
-    public function __construct(Config $config)
+    /**
+     * @var array
+     */
+    protected $server;
+
+    /**
+     * @param \PSX\Framework\Config\Config $config
+     * @param array|null $server
+     */
+    public function __construct(Config $config, array $server = null)
     {
         $this->config = $config;
+        $this->server = $server === null ? $_SERVER : $server;
     }
 
     /**
-     * If the psx_url from the config contains an path in the url this path gets
-     * removed from the request url. Because of this you can have an psx project
-     * also in an sub folder
-     *
-     * @return \PSX\Http\RequestInterface
+     * @inheritdoc
      */
     public function createRequest()
     {
-        $parts = parse_url($this->config['psx_url']);
+        $https  = isset($this->server['HTTPS']) ? strtolower($this->server['HTTPS']) : null;
+        $scheme = !empty($https) && $https != 'off' ? 'https' : 'http';
+        $host   = isset($this->server['SERVER_NAME']) ? $this->server['SERVER_NAME'] : null;
+        $query  = null;
 
-        if ($parts !== false && isset($parts['host'])) {
-            $scheme = isset($parts['scheme']) ? $parts['scheme'] : null;
-            if (empty($scheme)) {
-                $https  = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : null;
-                $scheme = !empty($https) && $https != 'off' ? 'https' : 'http';
+        if (isset($this->server['REQUEST_URI'])) {
+            $path = $this->server['REQUEST_URI'];
+            $path = str_replace(['index.php/', 'index.php'], '', $path);
+
+            // remove fragment
+            if (($pos = strpos($path, '#')) !== false) {
+                $path = substr($path, 0, $pos);
             }
 
-            $port = !empty($parts['port']) ? ':' . $parts['port'] : '';
-
-            if (!$this->isCli()) {
-                $dispatch = $this->config['psx_dispatch'];
-                if (empty($dispatch)) {
-                    $dispatch = 'index.php/';
-                }
-
-                $path = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-                $path = str_replace([$dispatch, rtrim($dispatch, '/')], '', $path);
-
-                $skip = isset($parts['path']) ? $parts['path'] : '';
-                $path = $this->skip($path, $skip);
-            } else {
-                $path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
+            // remove query
+            if (($pos = strpos($path, '?')) !== false) {
+                $query = substr($path, $pos + 1);
+                $path  = substr($path, 0, $pos);
             }
 
-            $path = '/' . ltrim($path, '/');
-            $self = $scheme . '://' . $parts['host'] . $port . $path;
-
-            // create request
-            $url     = new Url($self);
-            $method  = $this->getRequestMethod();
-            $headers = $this->getRequestHeaders();
-            $body    = null;
-
-            // create body
-            $requestMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
-
-            if (in_array($requestMethod, array('POST', 'PUT', 'DELETE', 'PATCH'))) {
-                // apparently also in 5.6 and 7 it is not possible to read the
-                // php://input stream multiple times therefore we use the
-                // buffered stream
-                $body = new BufferedStream(new TempStream(fopen('php://input', 'r')));
+            // skip base path
+            $basePath = parse_url($this->config['psx_url'], PHP_URL_PATH);
+            if (!empty($basePath)) {
+                $path = $this->skip($path, $basePath);
+                $path = '/' . ltrim($path, '/');
             }
 
-            return new Request($url, $method, $headers, $body);
+            if (empty($path)) {
+                $path = '/';
+            }
         } else {
-            throw new UnexpectedValueException('Invalid PSX url');
+            $path = '/';
         }
+
+        // create request
+        $uri     = new Uri($scheme, $host, $path, $query);
+        $method  = $this->getRequestMethod();
+        $headers = $this->getRequestHeaders();
+        $body    = null;
+
+        // create body
+        if (in_array($method, array('POST', 'PUT', 'DELETE', 'PATCH'))) {
+            // apparently also in 5.6 and 7 it is not possible to read the
+            // php://input stream multiple times therefore we use the
+            // buffered stream
+            $body = new BufferedStream(new TempStream(fopen('php://input', 'r')));
+        }
+
+        return new Request($uri, $method, $headers, $body);
     }
 
     /**
@@ -111,13 +119,12 @@ class RequestFactory implements RequestFactoryInterface
      */
     protected function getRequestMethod()
     {
-        if (isset($_SERVER['REQUEST_METHOD'])) {
+        if (isset($this->server['REQUEST_METHOD'])) {
             // check for X-HTTP-Method-Override
-            if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) &&
-                in_array($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'], array('OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'))) {
-                return $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+            if (isset($this->server['HTTP_X_HTTP_METHOD_OVERRIDE']) && in_array($this->server['HTTP_X_HTTP_METHOD_OVERRIDE'], ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'])) {
+                return $this->server['HTTP_X_HTTP_METHOD_OVERRIDE'];
             } else {
-                return $_SERVER['REQUEST_METHOD'];
+                return $this->server['REQUEST_METHOD'];
             }
         } else {
             return 'GET';
@@ -134,7 +141,7 @@ class RequestFactory implements RequestFactoryInterface
         $contentKeys = array('CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true);
         $headers     = array();
 
-        foreach ($_SERVER as $key => $value) {
+        foreach ($this->server as $key => $value) {
             if (strpos($key, 'HTTP_') === 0) {
                 $headers[str_replace('_', '-', substr($key, 5))] = $value;
             } elseif (isset($contentKeys[$key])) {
@@ -143,26 +150,16 @@ class RequestFactory implements RequestFactoryInterface
         }
 
         if (!isset($headers['AUTHORIZATION'])) {
-            if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-                $headers['AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-            } elseif (isset($_SERVER['PHP_AUTH_USER'])) {
-                $headers['AUTHORIZATION'] = 'Basic ' . base64_encode($_SERVER['PHP_AUTH_USER'] . ':' . (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : ''));
-            } elseif (isset($_SERVER['PHP_AUTH_DIGEST'])) {
-                $headers['AUTHORIZATION'] = $_SERVER['PHP_AUTH_DIGEST'];
+            if (isset($this->server['REDIRECT_HTTP_AUTHORIZATION'])) {
+                $headers['AUTHORIZATION'] = $this->server['REDIRECT_HTTP_AUTHORIZATION'];
+            } elseif (isset($this->server['PHP_AUTH_USER'])) {
+                $headers['AUTHORIZATION'] = 'Basic ' . base64_encode($this->server['PHP_AUTH_USER'] . ':' . (isset($this->server['PHP_AUTH_PW']) ? $this->server['PHP_AUTH_PW'] : ''));
+            } elseif (isset($this->server['PHP_AUTH_DIGEST'])) {
+                $headers['AUTHORIZATION'] = $this->server['PHP_AUTH_DIGEST'];
             }
         }
 
         return $headers;
-    }
-
-    /**
-     * Returns whether we are in CLI mode or not
-     *
-     * @return boolean
-     */
-    protected function isCli()
-    {
-        return PHP_SAPI == 'cli';
     }
 
     /**
