@@ -1,4 +1,11 @@
 
+### 3.0.0
+
+* Added Aerys, CLI, Swoole and classical WebServer engine
+* Add abstract environment engine to use different webserver types
+* Removed not needed services: console_reader, dispatch_sender, request_factory,
+  response_factory
+
 ### 2.4.8 (2017-11-26)
 
 * Schema api handle already written response
