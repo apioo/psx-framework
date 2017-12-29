@@ -25,7 +25,6 @@ use Doctrine\Common\Cache\VoidCache;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PSX\Cache\Pool;
-use PSX\Framework\Dispatch\Sender\Noop as DispatchSender;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Loader;
@@ -67,9 +66,6 @@ trait ContainerTestCaseTrait
 
         // use null cache
         Environment::getContainer()->set('cache', new Pool(new ArrayCache()));
-
-        // use void sender
-        Environment::getContainer()->set('dispatch_sender', new DispatchSender());
 
         // enables us to load the same controller multiple times
         Environment::getContainer()->get('loader')->setRecursiveLoading(true);
