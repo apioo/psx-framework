@@ -23,12 +23,13 @@ namespace PSX\Framework\Tests\Dependency;
 use Doctrine\Common\Cache\ArrayCache;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
+use PSX\Framework;
 use PSX\Framework\Test\ContainerTestCaseTrait;
 use PSX\Framework\Test\Environment;
 
 /**
- * Check whether all default classes are available. We want fix this here becase
- * applications rely on these services
+ * Check whether all default classes are available. We want fix this here 
+ * because applications rely on these services
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -43,43 +44,39 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
         $container = Environment::getContainer();
 
         // console
-        $this->assertInstanceOf('Symfony\Component\Console\Application', $container->get('console'));
-        $this->assertInstanceOf('PSX\Framework\Console\ReaderInterface', $container->get('console_reader'));
+        $this->assertInstanceOf(\Symfony\Component\Console\Application::class, $container->get('console'));
 
         // framework
-        $this->assertInstanceOf('PSX\Framework\Config\Config', $container->get('config'));
-        $this->assertInstanceOf('PSX\Framework\Template\TemplateInterface', $container->get('template'));
-        $this->assertInstanceOf('PSX\Framework\Dependency\ObjectBuilderInterface', $container->get('object_builder'));
-        $this->assertInstanceOf('PSX\Framework\Exception\ConverterInterface', $container->get('exception_converter'));
-        $this->assertInstanceOf('PSX\Framework\Session\Session', $container->get('session'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\ControllerFactoryInterface', $container->get('application_stack_factory'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\ControllerFactoryInterface', $container->get('controller_factory'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\SenderInterface', $container->get('dispatch_sender'));
-        $this->assertInstanceOf('PSX\Framework\Loader\LocationFinderInterface', $container->get('loader_location_finder'));
-        $this->assertInstanceOf('PSX\Framework\Loader\CallbackResolverInterface', $container->get('loader_callback_resolver'));
-        $this->assertInstanceOf('PSX\Framework\Loader\LoaderInterface', $container->get('loader'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\RequestFactoryInterface', $container->get('request_factory'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\ResponseFactoryInterface', $container->get('response_factory'));
-        $this->assertInstanceOf('PSX\Framework\Dispatch\Dispatch', $container->get('dispatch'));
-        $this->assertInstanceOf('PSX\Framework\Loader\RoutingParserInterface', $container->get('routing_parser'));
-        $this->assertInstanceOf('PSX\Framework\Loader\ReverseRouter', $container->get('reverse_router'));
-        $this->assertInstanceOf('PSX\Api\ListingInterface', $container->get('resource_listing'));
-        $this->assertInstanceOf('PSX\Api\ApiManager', $container->get('api_manager'));
+        $this->assertInstanceOf(Framework\Config\Config::class, $container->get('config'));
+        $this->assertInstanceOf(Framework\Template\TemplateInterface::class, $container->get('template'));
+        $this->assertInstanceOf(Framework\Dependency\ObjectBuilderInterface::class, $container->get('object_builder'));
+        $this->assertInstanceOf(Framework\Exception\ConverterInterface::class, $container->get('exception_converter'));
+        $this->assertInstanceOf(Framework\Session\Session::class, $container->get('session'));
+        $this->assertInstanceOf(Framework\Dispatch\ControllerFactoryInterface::class, $container->get('application_stack_factory'));
+        $this->assertInstanceOf(Framework\Dispatch\ControllerFactoryInterface::class, $container->get('controller_factory'));
+        $this->assertInstanceOf(Framework\Loader\LocationFinderInterface::class, $container->get('loader_location_finder'));
+        $this->assertInstanceOf(Framework\Loader\CallbackResolverInterface::class, $container->get('loader_callback_resolver'));
+        $this->assertInstanceOf(Framework\Loader\LoaderInterface::class, $container->get('loader'));
+        $this->assertInstanceOf(Framework\Dispatch\Dispatch::class, $container->get('dispatch'));
+        $this->assertInstanceOf(Framework\Loader\RoutingParserInterface::class, $container->get('routing_parser'));
+        $this->assertInstanceOf(Framework\Loader\ReverseRouter::class, $container->get('reverse_router'));
+        $this->assertInstanceOf(\PSX\Api\ListingInterface::class, $container->get('resource_listing'));
+        $this->assertInstanceOf(\PSX\Api\ApiManager::class, $container->get('api_manager'));
 
         // default container
-        $this->assertInstanceOf('Doctrine\Common\Annotations\Reader', $container->get('annotation_reader'));
-        $this->assertInstanceOf('Doctrine\Common\Annotations\Reader', $container->get('annotation_reader_controller'));
-        $this->assertInstanceOf('Psr\Cache\CacheItemPoolInterface', $container->get('cache'));
-        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventDispatcherInterface', $container->get('event_dispatcher'));
-        $this->assertInstanceOf('PSX\Http\Client', $container->get('http_client'));
-        $this->assertInstanceOf('PSX\Data\Processor', $container->get('io'));
-        $this->assertInstanceOf('Psr\Log\LoggerInterface', $container->get('logger'));
-        $this->assertInstanceOf('PSX\Schema\SchemaManagerInterface', $container->get('schema_manager'));
-        $this->assertInstanceOf('PSX\Validate\Validate', $container->get('validate'));
+        $this->assertInstanceOf(\Doctrine\Common\Annotations\Reader::class, $container->get('annotation_reader'));
+        $this->assertInstanceOf(\Doctrine\Common\Annotations\Reader::class, $container->get('annotation_reader_controller'));
+        $this->assertInstanceOf(\Psr\Cache\CacheItemPoolInterface::class, $container->get('cache'));
+        $this->assertInstanceOf(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class, $container->get('event_dispatcher'));
+        $this->assertInstanceOf(\PSX\Http\Client::class, $container->get('http_client'));
+        $this->assertInstanceOf(\PSX\Data\Processor::class, $container->get('io'));
+        $this->assertInstanceOf(\Psr\Log\LoggerInterface::class, $container->get('logger'));
+        $this->assertInstanceOf(\PSX\Schema\SchemaManagerInterface::class, $container->get('schema_manager'));
+        $this->assertInstanceOf(\PSX\Validate\Validate::class, $container->get('validate'));
 
         if (Environment::hasConnection()) {
-            $this->assertInstanceOf('Doctrine\DBAL\Connection', $container->get('connection'));
-            $this->assertInstanceOf('PSX\Sql\TableManager', $container->get('table_manager'));
+            $this->assertInstanceOf(\Doctrine\DBAL\Connection::class, $container->get('connection'));
+            $this->assertInstanceOf(\PSX\Sql\TableManager::class, $container->get('table_manager'));
         }
     }
 
