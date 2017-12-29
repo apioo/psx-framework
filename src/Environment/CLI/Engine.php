@@ -89,7 +89,7 @@ class Engine implements EngineInterface
         }
 
         $body = null;
-        if ($this->input instanceof StreamableInputInterface && in_array($method, ['POST', 'PUT'])) {
+        if ($this->input instanceof StreamableInputInterface && in_array($method, ['POST', 'PUT', 'DELETE', 'PATCH'])) {
             $body = $this->readStdin($this->input->getStream());
         }
 

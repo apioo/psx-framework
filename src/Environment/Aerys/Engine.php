@@ -27,7 +27,6 @@ use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Environment\EngineInterface;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Uri\Uri;
 
@@ -86,11 +85,7 @@ class Engine implements EngineInterface
 
         $response = $dispatch->route($request, $response);
 
-        $this->send($aerysResponse, $response);
-    }
-
-    private function send(AerysResponse $aerysResponse, ResponseInterface $response)
-    {
+        // send response
         $aerysResponse->setStatus($response->getStatusCode() ?: 200);
 
         $headers = $response->getHeaders();
