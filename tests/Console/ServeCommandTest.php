@@ -35,27 +35,18 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ServeCommandTest extends ControllerTestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-
-        // use memory sender
-        Environment::getContainer()->set('dispatch_sender', new Memory());
-    }
-
     public function testCommand()
     {
-        $stream = fopen('php://memory', 'r+');
-        fwrite($stream, 'GET /api HTTP/1.1' . "\n" . 'Accept: application/xml' . "\n" . "\x04");
-        rewind($stream);
-
         $command = Environment::getService('console')->find('serve');
-        $command->setReader(new Stdin($stream));
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
+            'method'  => 'GET',
+            'uri'     => '/api',
+            'headers' => 'Accept=application/xml',
         ));
 
+        $actual = $commandTester->getDisplay();
         $expect = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <foo type="object">
@@ -63,7 +54,7 @@ class ServeCommandTest extends ControllerTestCase
 </foo>
 XML;
 
-        $this->assertXmlStringEqualsXmlString($expect, Environment::getService('dispatch_sender')->getResponse());
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     protected function getPaths()
