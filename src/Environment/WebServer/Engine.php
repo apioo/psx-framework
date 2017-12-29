@@ -40,7 +40,7 @@ class Engine implements EngineInterface
      */
     public function serve(Dispatch $dispatch, Config $config)
     {
-        $requestFactory  = new RequestFactory($config);
+        $requestFactory  = new RequestFactory($config->get('psx_url'));
         $responseFactory = new ResponseFactory();
         $sender          = new Sender();
 

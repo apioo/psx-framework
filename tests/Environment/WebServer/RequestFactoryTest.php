@@ -39,8 +39,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateRequestNoPath($uri, $server)
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, $server);
+        $factory = new RequestFactory('http://foo.com', $server);
         $request = $factory->createRequest();
 
         $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
@@ -73,8 +72,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateRequestNoProtocolNoPath($uri, $server)
     {
-        $config  = new Config(['psx_url' => '//foo.com']);
-        $factory = new RequestFactory($config, $server);
+        $factory = new RequestFactory('//foo.com', $server);
         $request = $factory->createRequest();
 
         $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
@@ -103,8 +101,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateRequestPath($uri, $server)
     {
-        $config  = new Config(['psx_url' => 'http://foo.com/sub/folder']);
-        $factory = new RequestFactory($config, $server);
+        $factory = new RequestFactory('http://foo.com/sub/folder', $server);
         $request = $factory->createRequest();
 
         $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
@@ -152,8 +149,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateRequestNoProtocol($uri, $server)
     {
-        $config  = new Config(['psx_url' => '//foo.com']);
-        $factory = new RequestFactory($config, $server);
+        $factory = new RequestFactory('//foo.com', $server);
         $request = $factory->createRequest();
 
         $this->assertEquals($uri, (string) $request->getUri(), var_export($server, true));
@@ -175,8 +171,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateRequestInvalidUrl()
     {
-        $config  = new Config(['psx_url' => 'foobar']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com']);
+        $factory = new RequestFactory('foobar', ['SERVER_NAME' => 'foo.com']);
         $request = $factory->createRequest();
 
         $this->assertEquals('http://foo.com/', (string) $request->getUri());
@@ -184,8 +179,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestMethod()
     {
-        $config  = new Config(['psx_url' => 'foobar']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST']);
+        $factory = new RequestFactory('foobar', ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST']);
         $request = $factory->createRequest();
 
         $this->assertEquals('POST', $request->getMethod());
@@ -193,8 +187,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestMethodOverwrite()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'PUT']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'PUT']);
         $request = $factory->createRequest();
 
         $this->assertEquals('PUT', $request->getMethod());
@@ -202,8 +195,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestMethodOverwriteInvalid()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'FOO']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'REQUEST_METHOD' => 'POST', 'HTTP_X_HTTP_METHOD_OVERRIDE' => 'FOO']);
         $request = $factory->createRequest();
 
         $this->assertEquals('POST', $request->getMethod());
@@ -211,8 +203,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeader()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar']);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
@@ -220,8 +211,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderContentHeader()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'CONTENT_LENGTH' => 8, 'CONTENT_MD5' => 'foobar', 'CONTENT_TYPE' => 'text/html']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'CONTENT_LENGTH' => 8, 'CONTENT_MD5' => 'foobar', 'CONTENT_TYPE' => 'text/html']);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
@@ -232,8 +222,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderRedirectAuthorizationHeader()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'REDIRECT_HTTP_AUTHORIZATION' => 'Basic Zm9vOmJhcg==']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'REDIRECT_HTTP_AUTHORIZATION' => 'Basic Zm9vOmJhcg==']);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
@@ -242,8 +231,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderPhpAuthUser()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => 'bar']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => 'bar']);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
@@ -252,8 +240,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderPhpAuthUserNoPw()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => null]);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_USER' => 'foo', 'PHP_AUTH_PW' => null]);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));
@@ -262,8 +249,7 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestHeaderDigest()
     {
-        $config  = new Config(['psx_url' => 'http://foo.com']);
-        $factory = new RequestFactory($config, ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_DIGEST' => 'Digest foobar']);
+        $factory = new RequestFactory('http://foo.com', ['SERVER_NAME' => 'foo.com', 'HTTP_FOO_BAR' => 'foobar', 'PHP_AUTH_DIGEST' => 'Digest foobar']);
         $request = $factory->createRequest();
 
         $this->assertEquals('foobar', $request->getHeader('Foo-Bar'));

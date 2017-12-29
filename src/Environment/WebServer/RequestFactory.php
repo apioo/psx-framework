@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\RequestFactoryInterface;
 use PSX\Http\Request;
 use PSX\Http\Stream\BufferedStream;
@@ -37,9 +36,9 @@ use PSX\Uri\Uri;
 class RequestFactory implements RequestFactoryInterface
 {
     /**
-     * @var \PSX\Framework\Config\Config
+     * @var string
      */
-    protected $config;
+    protected $baseUri;
 
     /**
      * @var array
@@ -47,13 +46,13 @@ class RequestFactory implements RequestFactoryInterface
     protected $server;
 
     /**
-     * @param \PSX\Framework\Config\Config $config
+     * @param string|null $baseUri
      * @param array|null $server
      */
-    public function __construct(Config $config, array $server = null)
+    public function __construct($baseUri = null, array $server = null)
     {
-        $this->config = $config;
-        $this->server = $server === null ? $_SERVER : $server;
+        $this->baseUri = $baseUri;
+        $this->server  = $server === null ? $_SERVER : $server;
     }
 
     /**
@@ -82,10 +81,12 @@ class RequestFactory implements RequestFactoryInterface
             }
 
             // skip base path
-            $basePath = parse_url($this->config['psx_url'], PHP_URL_PATH);
-            if (!empty($basePath)) {
-                $path = $this->skip($path, $basePath);
-                $path = '/' . ltrim($path, '/');
+            if (!empty($this->baseUri)) {
+                $basePath = parse_url($this->baseUri, PHP_URL_PATH);
+                if (!empty($basePath)) {
+                    $path = $this->skip($path, $basePath);
+                    $path = '/' . ltrim($path, '/');
+                }
             }
 
             if (empty($path)) {
