@@ -68,33 +68,28 @@ class Engine implements EngineInterface
         return (new \Aerys\Host())
             ->expose($this->ip, $this->port)
             ->use(function(AerysRequest $aerysRequest, AerysResponse $aerysResponse) use ($dispatch){
-                $this->process($aerysRequest, $aerysResponse, $dispatch);
+                $request  = new Request(new Uri($aerysRequest->getUri()), $aerysRequest->getMethod(), $aerysRequest->getAllHeaders());
+                $response = new Response();
+
+                // read body
+                if (in_array($aerysRequest->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
+                    $body = yield $aerysRequest->getBody();
+                    $request->setBody(new StringStream($body));
+                }
+
+                $response = $dispatch->route($request, $response);
+
+                // send response
+                $aerysResponse->setStatus($response->getStatusCode() ?: 200);
+
+                $headers = $response->getHeaders();
+                foreach ($headers as $name => $value) {
+                    foreach ($value as $val) {
+                        $aerysResponse->addHeader($name, $val);
+                    }
+                }
+
+                $aerysResponse->end($response->getBody()->__toString());
             });
-    }
-
-    private function process(AerysRequest $aerysRequest, AerysResponse $aerysResponse, Dispatch $dispatch)
-    {
-        $request  = new Request(new Uri($aerysRequest->getUri()), $aerysRequest->getMethod(), $aerysRequest->getAllHeaders());
-        $response = new Response();
-
-        // read body
-        if (in_array($aerysRequest->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
-            $body = yield $aerysRequest->getBody();
-            $request->setBody(new StringStream($body));
-        }
-
-        $response = $dispatch->route($request, $response);
-
-        // send response
-        $aerysResponse->setStatus($response->getStatusCode() ?: 200);
-
-        $headers = $response->getHeaders();
-        foreach ($headers as $name => $value) {
-            foreach ($value as $val) {
-                $aerysResponse->addHeader($name, $val);
-            }
-        }
-
-        $aerysResponse->end($response->getBody()->__toString());
     }
 }
