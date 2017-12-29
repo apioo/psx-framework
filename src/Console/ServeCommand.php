@@ -20,14 +20,11 @@
 
 namespace PSX\Framework\Console;
 
-use PSX\Framework\Command\ParameterParser;
-use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\Dispatch;
-use PSX\Http\RequestParser;
-use PSX\Http\Response;
-use PSX\Http\Stream\TempStream;
-use PSX\Uri\Url;
+use Psr\Container\ContainerInterface;
+use PSX\Framework\Environment\CLI\Engine;
+use PSX\Framework\Environment\Environment;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,49 +37,30 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ServeCommand extends Command
 {
-    protected $config;
-    protected $dispatch;
-    protected $reader;
+    protected $container;
 
-    public function __construct(Config $config, Dispatch $dispatch, ReaderInterface $reader)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct();
 
-        $this->config   = $config;
-        $this->dispatch = $dispatch;
-        $this->reader   = $reader;
-    }
-
-    public function setReader(ReaderInterface $reader)
-    {
-        $this->reader = $reader;
+        $this->container = $container;
     }
 
     protected function configure()
     {
         $this
             ->setName('serve')
-            ->setDescription('Accepts an HTTP request via stdin and returns the HTTP response');
+            ->setDescription('Accepts an HTTP request via stdin and returns the HTTP response')
+            ->addArgument('method', InputArgument::REQUIRED, 'HTTP method i.e. GET or POST')
+            ->addArgument('uri', InputArgument::REQUIRED, 'Request URI i.e. /foo')
+            ->addArgument('headers', InputArgument::OPTIONAL, 'Request headers form encoded i.e. "Content-Type=application/json&X-Header=foo"');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // request
-        $baseUrl = new Url($this->config['psx_url']);
-        $baseUrl = $baseUrl->withPath(null);
+        $engine      = new Engine($input, $output);
+        $environment = new Environment($this->container, $engine);
 
-        $parser   = new RequestParser($baseUrl, RequestParser::MODE_LOOSE);
-        $request  = $parser->parse($this->reader->read());
-
-        // response
-        $response = new Response();
-        $response->setHeader('X-Powered-By', 'psx');
-        $response->setBody(new TempStream(fopen('php://memory', 'r+')));
-
-        // dispatch request
-        $this->dispatch->route($request, $response);
-
-        // determine return code
-        return $response->getStatusCode() >= 400 && $response->getStatusCode() < 600 ? 1 : 0;
+        return $environment->serve();
     }
 }

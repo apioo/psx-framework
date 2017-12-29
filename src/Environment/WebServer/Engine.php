@@ -18,30 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch\Sender;
+namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Framework\Dispatch\Sender\Noop;
-use PSX\Http\Response;
-use PSX\Http\Stream\StringStream;
+use PSX\Framework\Config\Config;
+use PSX\Framework\Dispatch\Dispatch;
+use PSX\Framework\Environment\EngineInterface;
 
 /**
- * NoopTest
- *
+ * Uses a classical PHP web server like Apache or Nginx. In this context we dont 
+ * need to setup any web server instead the web server calls this code on every 
+ * request. We get all request information from the global variables.
+ * 
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class NoopTest extends SenderTestCase
+class Engine implements EngineInterface
 {
-    public function testSend()
+    /**
+     * @inheritdoc
+     */
+    public function serve(Dispatch $dispatch, Config $config)
     {
-        $response = new Response();
-        $response->setBody(new StringStream('foobar'));
+        $requestFactory  = new RequestFactory($config);
+        $responseFactory = new ResponseFactory();
+        $sender          = new Sender();
 
-        $sender = new Noop();
+        $response = $dispatch->route($requestFactory->createRequest(), $responseFactory->createResponse());
 
-        $actual = $this->captureOutput($sender, $response);
-
-        $this->assertEmpty($actual);
+        $sender->send($response);
     }
 }

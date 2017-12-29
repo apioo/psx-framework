@@ -18,29 +18,24 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch\Sender;
+namespace PSX\Framework\Environment;
 
-use PSX\Framework\Dispatch\SenderInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Framework\Config\Config;
+use PSX\Framework\Dispatch\Dispatch;
 
 /**
- * Memory
+ * EngineInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Memory implements SenderInterface
+interface EngineInterface
 {
-    protected $response;
-
-    public function send(ResponseInterface $response)
-    {
-        $this->response = (string) $response->getBody();
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
+    /**
+     * @param \PSX\Framework\Dispatch\Dispatch $dispatch
+     * @param \PSX\Framework\Config\Config $config
+     * @return mixed
+     */
+    public function serve(Dispatch $dispatch, Config $config);
 }

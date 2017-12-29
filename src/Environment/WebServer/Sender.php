@@ -18,13 +18,12 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch\Sender;
+namespace PSX\Framework\Environment\WebServer;
 
 use PSX\Framework\Dispatch\SenderInterface;
 use PSX\Http\Http;
 use PSX\Http\ResponseInterface;
 use PSX\Http\ResponseParser;
-use PSX\Http\Stream\FileStream;
 use PSX\Http\Stream\StringStream;
 
 /**
@@ -35,7 +34,7 @@ use PSX\Http\Stream\StringStream;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Basic implements SenderInterface
+class Sender implements SenderInterface
 {
     protected $chunkSize = 8192;
 

@@ -18,44 +18,52 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch;
+namespace PSX\Framework\Environment;
 
-use PSX\Http\Response;
-use PSX\Http\Stream\TempStream;
+use Psr\Container\ContainerInterface;
+use PSX\Framework\Bootstrap;
 
 /**
- * ResponseFactory
+ * Environment
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ResponseFactory implements ResponseFactoryInterface
+class Environment
 {
     /**
-     * @var array
+     * @var \Psr\Container\ContainerInterface
      */
-    protected $server;
+    protected $container;
 
     /**
-     * @param array|null $server
+     * @var \PSX\Framework\Environment\EngineInterface
      */
-    public function __construct(array $server = null)
+    protected $engine;
+
+    /**
+     * @param \Psr\Container\ContainerInterface $container
+     * @param \PSX\Framework\Environment\EngineInterface $engine
+     */
+    public function __construct(ContainerInterface $container, EngineInterface $engine)
     {
-        $this->server = $server === null ? $_SERVER : $server;
+        $this->container = $container;
+        $this->engine    = $engine;
     }
 
     /**
-     * @inheritdoc
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @return mixed
      */
-    public function createResponse()
+    public function serve()
     {
-        $protocol = isset($this->server['SERVER_PROTOCOL']) ? $this->server['SERVER_PROTOCOL'] : 'HTTP/1.1';
-        $response = new Response();
-        $response->setProtocolVersion($protocol);
-        $response->setHeader('X-Powered-By', 'psx');
-        $response->setBody(new TempStream(fopen('php://temp', 'r+')));
+        $dispatch = $this->container->get('dispatch');
+        $config   = $this->container->get('config');
 
-        return $response;
+        Bootstrap::setupEnvironment($config);
+
+        return $this->engine->serve($dispatch, $config);
     }
 }

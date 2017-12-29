@@ -18,9 +18,10 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch;
+namespace PSX\Framework\Environment\WebServer;
 
 use PSX\Framework\Config\Config;
+use PSX\Framework\Dispatch\RequestFactoryInterface;
 use PSX\Http\Request;
 use PSX\Http\Stream\BufferedStream;
 use PSX\Http\Stream\TempStream;

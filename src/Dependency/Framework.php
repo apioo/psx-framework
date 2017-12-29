@@ -29,9 +29,6 @@ use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ApplicationStackFactory;
 use PSX\Framework\Dispatch\ControllerFactory;
 use PSX\Framework\Dispatch\Dispatch;
-use PSX\Framework\Dispatch\RequestFactory;
-use PSX\Framework\Dispatch\ResponseFactory;
-use PSX\Framework\Dispatch\Sender\Basic as BasicSender;
 use PSX\Framework\Exception;
 use PSX\Framework\Loader;
 use PSX\Framework\Session\Session;
@@ -118,14 +115,6 @@ trait Framework
     }
 
     /**
-     * @return \PSX\Framework\Dispatch\SenderInterface
-     */
-    public function getDispatchSender()
-    {
-        return new BasicSender();
-    }
-
-    /**
      * @return \PSX\Framework\Loader\LocationFinderInterface
      */
     public function getLoaderLocationFinder()
@@ -157,22 +146,6 @@ trait Framework
     }
 
     /**
-     * @return \PSX\Framework\Dispatch\RequestFactoryInterface
-     */
-    public function getRequestFactory()
-    {
-        return new RequestFactory($this->get('config'));
-    }
-
-    /**
-     * @return \PSX\Framework\Dispatch\ResponseFactoryInterface
-     */
-    public function getResponseFactory()
-    {
-        return new ResponseFactory();
-    }
-
-    /**
      * @return \PSX\Framework\Dispatch\Dispatch
      */
     public function getDispatch()
@@ -181,7 +154,6 @@ trait Framework
             $this->get('config'),
             $this->get('loader'),
             $this->get('application_stack_factory'),
-            $this->get('dispatch_sender'),
             $this->get('event_dispatcher'),
             $this->get('exception_converter')
         );

@@ -60,11 +60,6 @@ class Dispatch
     protected $loader;
 
     /**
-     * @var \PSX\Framework\Dispatch\SenderInterface
-     */
-    protected $sender;
-
-    /**
      * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
      */
     protected $factory;
@@ -88,15 +83,13 @@ class Dispatch
      * @param \PSX\Framework\Config\Config $config
      * @param \PSX\Framework\Loader\LoaderInterface $loader
      * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $factory
-     * @param \PSX\Framework\Dispatch\SenderInterface $sender
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \PSX\Framework\Exception\ConverterInterface $exceptionConverter
      */
-    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, SenderInterface $sender, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
+    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
     {
         $this->config             = $config;
         $this->loader             = $loader;
-        $this->sender             = $sender;
         $this->factory            = $factory;
         $this->eventDispatcher    = $eventDispatcher;
         $this->exceptionConverter = $exceptionConverter;
@@ -113,9 +106,9 @@ class Dispatch
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
      * @param \PSX\Framework\Loader\Context $context
-     * @param boolean $send
+     * @return \PSX\Http\ResponseInterface
      */
-    public function route(RequestInterface $request, ResponseInterface $response, Context $context = null, $send = true)
+    public function route(RequestInterface $request, ResponseInterface $response, Context $context = null)
     {
         $this->level++;
 
@@ -166,10 +159,7 @@ class Dispatch
 
         $this->level--;
 
-        // send the response only if we are not in a nested call
-        if ($this->level === 0 && $send === true) {
-            $this->sender->send($response);
-        }
+        return $response;
     }
 
     protected function handleException(\Throwable $e, ResponseInterface $response)

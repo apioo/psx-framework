@@ -18,21 +18,45 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch\Sender;
+namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Framework\Dispatch\SenderInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Framework\Dispatch\ResponseFactoryInterface;
+use PSX\Http\Response;
+use PSX\Http\Stream\TempStream;
 
 /**
- * Noop
+ * ResponseFactory
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Noop implements SenderInterface
+class ResponseFactory implements ResponseFactoryInterface
 {
-    public function send(ResponseInterface $response)
+    /**
+     * @var array
+     */
+    protected $server;
+
+    /**
+     * @param array|null $server
+     */
+    public function __construct(array $server = null)
     {
+        $this->server = $server === null ? $_SERVER : $server;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createResponse()
+    {
+        $protocol = isset($this->server['SERVER_PROTOCOL']) ? $this->server['SERVER_PROTOCOL'] : 'HTTP/1.1';
+        $response = new Response();
+        $response->setProtocolVersion($protocol);
+        $response->setHeader('X-Powered-By', 'psx');
+        $response->setBody(new TempStream(fopen('php://temp', 'r+')));
+
+        return $response;
     }
 }
