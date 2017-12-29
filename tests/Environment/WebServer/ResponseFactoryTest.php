@@ -18,9 +18,9 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Environment\WebServer;
 
-use PSX\Framework\Dispatch\ResponseFactory;
+use PSX\Framework\Environment\WebServer\ResponseFactory;
 
 /**
  * ResponseFactoryTest

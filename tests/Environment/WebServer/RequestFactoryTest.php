@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Environment\WebServer;
 
 use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\RequestFactory;
+use PSX\Framework\Environment\WebServer\RequestFactory;
 
 /**
  * The task of the request factory is to recreate the request from the server
@@ -128,6 +128,20 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase
             ['http://foo.com/?bar=test', ['REQUEST_URI' => '/sub/folder/index.php?bar=test', 'SERVER_NAME' => 'foo.com']],
             ['http://foo.com/bar', ['REQUEST_URI' => '/sub/folder/index.php/bar', 'SERVER_NAME' => 'foo.com']],
             ['http://foo.com/bar/', ['REQUEST_URI' => '/sub/folder/index.php/bar/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token', 'SERVER_NAME' => 'foo.com']],
+
+            // test paths without sub folder
+            ['http://foo.com/', ['REQUEST_URI' => null, 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/', ['REQUEST_URI' => '/', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar', ['REQUEST_URI' => '/index.php/bar', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/bar?bar=test', ['REQUEST_URI' => '/bar?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php/?bar=test', 'SERVER_NAME' => 'foo.com']],
+            ['http://foo.com/?bar=test', ['REQUEST_URI' => '/index.php?bar=test', 'SERVER_NAME' => 'foo.com']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/backend/token', 'SERVER_NAME' => 'foo.com']],
             ['http://foo.com/backend/token', ['REQUEST_URI' => '/index.php/backend/token', 'SERVER_NAME' => 'foo.com']],
         ];

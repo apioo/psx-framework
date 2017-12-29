@@ -18,29 +18,27 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch\Sender;
+namespace PSX\Framework\Tests\Environment\WebServer;
 
-use PSX\Framework\Dispatch\Sender\Basic;
+use PSX\Framework\Environment\WebServer\Sender;
 use PSX\Http\Response;
-use PSX\Http\Stream\FileStream;
 use PSX\Http\Stream\StringStream;
 
 /**
- * BasicTest
+ * SenderTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class BasicTest extends SenderTestCase
+class SenderTest extends SenderTestCase
 {
     public function testSend()
     {
         $response = new Response();
         $response->setBody(new StringStream('foobar'));
 
-        $sender = new Basic();
-
+        $sender = new Sender();
         $actual = $this->captureOutput($sender, $response);
 
         $this->assertEquals('foobar', $actual);
@@ -53,7 +51,7 @@ class BasicTest extends SenderTestCase
         $response->setHeader('X-Some-Header', 'foobar');
         $response->setBody(new StringStream('<foo />'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 
@@ -89,7 +87,7 @@ class BasicTest extends SenderTestCase
         $response->setHeader('Location', 'http://localhost.com');
         $response->setBody(new StringStream('<foo />'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 
@@ -120,7 +118,7 @@ class BasicTest extends SenderTestCase
         $response->setHeader('Transfer-Encoding', 'chunked');
         $response->setBody(new StringStream('foobarfoobarfoobarfoobar'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 
@@ -141,7 +139,7 @@ class BasicTest extends SenderTestCase
         $response->setHeader('Content-Encoding', 'deflate');
         $response->setBody(new StringStream('foobar'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 
@@ -160,7 +158,7 @@ class BasicTest extends SenderTestCase
         $response->setHeader('Content-Encoding', 'gzip');
         $response->setBody(new StringStream('foobar'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 
@@ -181,7 +179,7 @@ class BasicTest extends SenderTestCase
             $response = new Response($statusCode);
             $response->setBody(new StringStream('foobar'));
 
-            $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+            $sender = $this->getMockBuilder(Sender::class)
                 ->setMethods(array('shouldSendHeader', 'sendHeader'))
                 ->getMock();
 
@@ -200,7 +198,7 @@ class BasicTest extends SenderTestCase
         $response = new Response(404);
         $response->setBody(new StringStream('foobar'));
 
-        $sender = $this->getMockBuilder('PSX\Framework\Dispatch\Sender\Basic')
+        $sender = $this->getMockBuilder(Sender::class)
             ->setMethods(array('shouldSendHeader', 'sendHeader'))
             ->getMock();
 

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch\Sender;
+namespace PSX\Framework\Tests\Environment\WebServer;
 
 use PSX\Framework\Dispatch\SenderInterface;
 use PSX\Http\Response;
