@@ -18,43 +18,44 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Generator;
+namespace PSX\Framework\App\Test\Generator;
 
 use PSX\Framework\App\ApiTestCase;
 use PSX\Framework\Test\Environment;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * SwaggerTest
+ * RamlTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SwaggerTest extends ApiTestCase
+class RamlTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/generator/swagger/*/population/popo', 'GET');
+        $response = $this->sendRequest('/generator/raml/*/population/popo', 'GET');
         $baseUrl  = Environment::getBaseUrl();
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/swagger.json');
-        $expect = str_replace('127.0.0.1', parse_url($baseUrl, PHP_URL_HOST), $expect);
+        $expect = file_get_contents(__DIR__ . '/resource/raml.yaml');
+        $expect = str_replace('http://127.0.0.1/', $baseUrl, $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
     }
 
     public function testGetCollection()
     {
-        $response = $this->sendRequest('/generator/swagger/*/*', 'GET');
+        $response = $this->sendRequest('/generator/raml/*/*', 'GET');
         $baseUrl  = Environment::getBaseUrl();
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
-        $expect = str_replace('127.0.0.1', parse_url($baseUrl, PHP_URL_HOST), $expect);
+        $expect = file_get_contents(__DIR__ . '/resource/raml_collection.yaml');
+        $expect = str_replace('http://127.0.0.1/', $baseUrl, $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
     }
 }

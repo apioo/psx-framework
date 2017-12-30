@@ -18,41 +18,27 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Tool;
+namespace PSX\Framework\App\Test\Tool;
 
 use PSX\Framework\App\ApiTestCase;
-use PSX\Framework\Test\Environment;
 
 /**
- * DocumentationTest
+ * RoutingTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DocumentationTest extends ApiTestCase
+class RoutingTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/tool/doc', 'GET');
-        $baseUrl  = Environment::getBaseUrl();
+        $response = $this->sendRequest('/tool/routing', 'GET');
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/documentation.json');
-        $expect = str_replace('http:\/\/127.0.0.1\/', trim(json_encode($baseUrl), '"'), $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
-    public function testGetDetail()
-    {
-        $response = $this->sendRequest('/tool/doc/*/population/popo', 'GET');
-
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/documentation_detail.json');
-
-        $this->assertEquals(null, $response->getStatusCode(), $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

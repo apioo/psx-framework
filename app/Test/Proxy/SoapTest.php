@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Proxy;
+namespace PSX\Framework\App\Test\Proxy;
 
 use PSX\Framework\App\ApiTestCase;
 

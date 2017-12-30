@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Population;
+namespace PSX\Framework\App\Test\Api;
 
 use PSX\Framework\App\ApiTestCase;
 use PSX\Json\Parser;

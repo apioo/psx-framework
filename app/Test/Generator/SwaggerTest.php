@@ -18,25 +18,43 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Tool;
+namespace PSX\Framework\App\Test\Generator;
 
 use PSX\Framework\App\ApiTestCase;
+use PSX\Framework\Test\Environment;
 
 /**
- * RoutingTest
+ * SwaggerTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RoutingTest extends ApiTestCase
+class SwaggerTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/tool/routing', 'GET');
+        $response = $this->sendRequest('/generator/swagger/*/population/popo', 'GET');
+        $baseUrl  = Environment::getBaseUrl();
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/documentation.json');
+        $expect = file_get_contents(__DIR__ . '/resource/swagger.json');
+        $expect = str_replace('"127.0.0.1"', json_encode(parse_url($baseUrl, PHP_URL_HOST)), $expect);
+        $expect = str_replace('"\/"', json_encode(parse_url($baseUrl, PHP_URL_PATH)), $expect);
+
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
+    public function testGetCollection()
+    {
+        $response = $this->sendRequest('/generator/swagger/*/*', 'GET');
+        $baseUrl  = Environment::getBaseUrl();
+
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
+        $expect = str_replace('"127.0.0.1"', json_encode(parse_url($baseUrl, PHP_URL_HOST)), $expect);
+        $expect = str_replace('"\/"', json_encode(parse_url($baseUrl, PHP_URL_PATH)), $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);

@@ -18,44 +18,30 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Generator;
+namespace PSX\Framework\App\Test\Tool;
 
 use PSX\Framework\App\ApiTestCase;
 use PSX\Framework\Test\Environment;
-use Symfony\Component\Yaml\Yaml;
 
 /**
- * RamlTest
+ * DiscoveryTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RamlTest extends ApiTestCase
+class DiscoveryTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/generator/raml/*/population/popo', 'GET');
+        $response = $this->sendRequest('/tool/discovery', 'GET');
         $baseUrl  = Environment::getBaseUrl();
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/raml.yaml');
-        $expect = str_replace('http://127.0.0.1/', $baseUrl, $expect);
+        $expect = file_get_contents(__DIR__ . '/resource/discovery.json');
+        $expect = str_replace('http:\/\/127.0.0.1\/', trim(json_encode($baseUrl), '"'), $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
-    }
-
-    public function testGetCollection()
-    {
-        $response = $this->sendRequest('/generator/raml/*/*', 'GET');
-        $baseUrl  = Environment::getBaseUrl();
-
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/raml_collection.yaml');
-        $expect = str_replace('http://127.0.0.1/', $baseUrl, $expect);
-
-        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }
