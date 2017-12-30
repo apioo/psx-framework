@@ -35,11 +35,11 @@ class DiscoveryTest extends ApiTestCase
     public function testGet()
     {
         $response = $this->sendRequest('/tool/discovery', 'GET');
-        $baseUrl  = Environment::getConfig()->get('psx_url');
+        $baseUrl  = Environment::getBaseUrl();
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/discovery.json');
-        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
+        $expect = str_replace('http:\/\/127.0.0.1\/', trim(json_encode($baseUrl), '"'), $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
