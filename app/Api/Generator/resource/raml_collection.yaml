@@ -1,6 +1,6 @@
 #%RAML 1.0
 ---
-baseUri: '/'
+baseUri: 'http://127.0.0.1/'
 version: v1
 title: PSX
 /population/popo:
