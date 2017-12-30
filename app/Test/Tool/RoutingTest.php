@@ -36,7 +36,7 @@ class RoutingTest extends ApiTestCase
         $response = $this->sendRequest('/tool/routing', 'GET');
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/documentation.json');
+        $expect = file_get_contents(__DIR__ . '/resource/routing.json');
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
