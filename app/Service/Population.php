@@ -22,7 +22,7 @@ namespace PSX\Framework\App\Service;
 
 use PSX\Http\Exception as StatusCode;
 use PSX\Model\Common\ResultSet;
-use PSX\Project\Tests\Table\Population as TablePopulation;
+use PSX\Framework\App\Table\Population as TablePopulation;
 
 /**
  * Population
