@@ -23,10 +23,9 @@ namespace PSX\Framework\Environment\Swoole;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Environment\EngineInterface;
+use PSX\Framework\Environment\WebServer\ResponseFactory;
 use PSX\Http\Request;
-use PSX\Http\Response;
 use PSX\Http\Stream\StringStream;
-use PSX\Http\Stream\TempStream;
 use PSX\Uri\Uri;
 
 /**
@@ -87,7 +86,7 @@ class Engine implements EngineInterface
     private function process(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse, Dispatch $dispatch)
     {
         $request  = new Request(new Uri($swooleRequest->server['request_uri']), $swooleRequest->server['request_method'], $swooleRequest->header);
-        $response = new Response();
+        $response = (new ResponseFactory())->createResponse();
 
         // read body
         if (in_array($swooleRequest->server['request_method'], ['POST', 'PUT', 'DELETE', 'PATCH'])) {
