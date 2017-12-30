@@ -174,33 +174,13 @@ class Environment
     protected static function setupConnection(ContainerInterface $container, Closure $schemaSetup = null)
     {
         $params = null;
-        switch (getenv('DB')) {
-            case 'config':
-            case 'mysql':
-                $params = $container->get('config')->get('psx_connection');
-                if (empty($params)) {
-                    $params = array(
-                        'dbname'   => $container->get('config')->get('psx_sql_db'),
-                        'user'     => $container->get('config')->get('psx_sql_user'),
-                        'password' => $container->get('config')->get('psx_sql_pw'),
-                        'host'     => $container->get('config')->get('psx_sql_host'),
-                        'driver'   => 'pdo_mysql',
-                    );
-                }
-                break;
-
-            case 'none':
-                $params = null;
-                break;
-
-            default:
-            case 'memory':
-            case 'sqlite':
-                $params = array(
-                    'memory' => true,
-                    'driver' => 'pdo_sqlite',
-                );
-                break;
+        if (getenv('DB')) {
+            $params = $container->get('config')->get('psx_connection');
+        } else {
+            $params = [
+                'memory' => true,
+                'driver' => 'pdo_sqlite',
+            ];
         }
 
         if (!empty($params)) {
