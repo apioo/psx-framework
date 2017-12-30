@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Environment\WebServer;
 
-use PSX\Framework\Dispatch\SenderInterface;
+use PSX\Framework\Environment\WebServer\SenderInterface;
 use PSX\Http\Response;
 
 /**
