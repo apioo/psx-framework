@@ -37,7 +37,7 @@ class CollectionPopo extends SchemaApiAbstract
     /**
      * @QueryParam(name="startIndex", type="integer")
      * @QueryParam(name="count", type="integer")
-     * @Outgoing(code=200, schema="PSX\Project\Tests\Model\Collection")
+     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Collection")
      */
     protected function doGet()
     {
@@ -48,8 +48,8 @@ class CollectionPopo extends SchemaApiAbstract
     }
 
     /**
-     * @Incoming(schema="PSX\Project\Tests\Model\Entity")
-     * @Outgoing(code=201, schema="PSX\Project\Tests\Model\Message")
+     * @Incoming(schema="PSX\Framework\App\Model\Entity")
+     * @Outgoing(code=201, schema="PSX\Framework\App\Model\Message")
      */
     protected function doPost($record)
     {

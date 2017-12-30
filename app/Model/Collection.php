@@ -33,7 +33,7 @@ class Collection
 
     /**
      * @Type("array")
-     * @Items(@Ref("PSX\Project\Tests\Model\Entity"))
+     * @Items(@Ref("PSX\Framework\App\Model\Entity"))
      */
     protected $entry;
 

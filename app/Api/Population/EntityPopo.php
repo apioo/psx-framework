@@ -36,7 +36,7 @@ class EntityPopo extends SchemaApiAbstract
     protected $populationService;
 
     /**
-     * @Outgoing(code=200, schema="PSX\Project\Tests\Model\Entity")
+     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Entity")
      */
     protected function doGet()
     {
@@ -46,8 +46,8 @@ class EntityPopo extends SchemaApiAbstract
     }
 
     /**
-     * @Incoming(schema="PSX\Project\Tests\Model\Entity")
-     * @Outgoing(code=200, schema="PSX\Project\Tests\Model\Message")
+     * @Incoming(schema="PSX\Framework\App\Model\Entity")
+     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Message")
      */
     protected function doPut($record)
     {
@@ -67,7 +67,7 @@ class EntityPopo extends SchemaApiAbstract
     }
 
     /**
-     * @Outgoing(code=200, schema="PSX\Project\Tests\Model\Message")
+     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Message")
      */
     protected function doDelete($record)
     {
