@@ -25,8 +25,8 @@ use Aerys\Response as AerysResponse;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Environment\EngineInterface;
+use PSX\Framework\Environment\WebServer\ResponseFactory;
 use PSX\Http\Request;
-use PSX\Http\Response;
 use PSX\Http\Stream\StringStream;
 use PSX\Uri\Uri;
 
@@ -69,7 +69,7 @@ class Engine implements EngineInterface
             ->expose($this->ip, $this->port)
             ->use(function(AerysRequest $aerysRequest, AerysResponse $aerysResponse) use ($dispatch){
                 $request  = new Request(new Uri($aerysRequest->getUri()), $aerysRequest->getMethod(), $aerysRequest->getAllHeaders());
-                $response = new Response();
+                $response = (new ResponseFactory())->createResponse();
 
                 // read body
                 if (in_array($aerysRequest->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
