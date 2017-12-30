@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Framework\Dispatch\SenderInterface;
 use PSX\Http\Http;
 use PSX\Http\ResponseInterface;
 use PSX\Http\ResponseParser;

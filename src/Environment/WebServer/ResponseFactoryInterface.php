@@ -18,21 +18,21 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch;
+namespace PSX\Framework\Environment\WebServer;
 
 /**
- * RequestFactoryInterface
+ * ResponseFactoryInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-interface RequestFactoryInterface
+interface ResponseFactoryInterface
 {
     /**
-     * Returns the http request containing all values from the environment
+     * Returns the http response containing default values and the body stream
      *
-     * @return \PSX\Http\RequestInterface
+     * @return \PSX\Http\ResponseInterface
      */
-    public function createRequest();
+    public function createResponse();
 }

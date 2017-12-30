@@ -18,23 +18,21 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dispatch;
-
-use PSX\Http\ResponseInterface;
+namespace PSX\Framework\Environment\WebServer;
 
 /**
- * SenderInterface
+ * RequestFactoryInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-interface SenderInterface
+interface RequestFactoryInterface
 {
     /**
-     * Method to send the response which was created to the browser
+     * Returns the http request containing all values from the environment
      *
-     * @param \PSX\Http\ResponseInterface $response
+     * @return \PSX\Http\RequestInterface
      */
-    public function send(ResponseInterface $response);
+    public function createRequest();
 }

@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Framework\Dispatch\ResponseFactoryInterface;
 use PSX\Http\Response;
 use PSX\Http\Stream\TempStream;
 

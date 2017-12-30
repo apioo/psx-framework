@@ -98,10 +98,7 @@ class Dispatch
     }
 
     /**
-     * Routes the request to the fitting controller and writes the response to
-     * the client. The response is written only for the top most route call. 
-     * Nested calls from i.e. a controller will not send the response. It is 
-     * also possible to explicit ignore sending the content
+     * Routes the request to the fitting controller and returns the response
      *
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
