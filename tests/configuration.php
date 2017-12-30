@@ -7,31 +7,31 @@ on the DI container parameter "config.file". See the container.php if you want
 load a different configuration depending on the environment.
 */
 
-return array(
+return [
 
     // The url to the psx public folder (i.e. http://127.0.0.1/psx/public,
     // http://localhost.com or //localhost.com)
-    'psx_url'                 => 'http://127.0.0.1/projects/psx/public',
+    'psx_url'                 => 'http://127.0.0.1',
 
     // The input path 'index.php/' or '' if you use mod_rewrite
-    'psx_dispatch'            => 'index.php/',
+    'psx_dispatch'            => '',
 
     // The default timezone
     'psx_timezone'            => 'UTC',
 
     // Whether PSX runs in debug mode or not. If not error reporting is set to 0
+    // Also several caches are used if the debug mode is false
     'psx_debug'               => true,
 
-    // Log settings, the handler is one of: stream, logcaster, void, system
-    'psx_log_level'           => \Monolog\Logger::ERROR,
-    'psx_log_handler'         => 'system',
-    'psx_log_uri'             => null,
-
-    // Your SQL connections
-    'psx_sql_host'            => 'localhost',
-    'psx_sql_user'            => 'root',
-    'psx_sql_pw'              => '',
-    'psx_sql_db'              => 'psx',
+    // Database parameters which are used for the doctrine DBAL connection
+    // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+    'psx_connection'          => [
+        'dbname'   => 'psx',
+        'user'     => 'root',
+        'password' => '',
+        'host'     => 'localhost',
+        'driver'   => 'pdo_mysql',
+    ],
 
     // Path to the routing file
     'psx_routing'             => __DIR__ . '/routes',
