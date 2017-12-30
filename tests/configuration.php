@@ -52,4 +52,4 @@ return [
     //'psx_filter_pre'          => [],
     //'psx_filter_post'         => [],
 
-);
+];
