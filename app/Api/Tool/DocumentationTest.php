@@ -246,7 +246,7 @@ JSON;
                     "users",
                     "worldUsers"
                 ],
-                "class": "PSX\\Project\\Tests\\Model\\Entity"
+                "class": "PSX\\Framework\\App\\Model\\Entity"
             },
             "Collection": {
                 "type": "object",
@@ -263,7 +263,7 @@ JSON;
                         }
                     }
                 },
-                "class": "PSX\\Project\\Tests\\Model\\Collection"
+                "class": "PSX\\Framework\\App\\Model\\Collection"
             },
             "Message": {
                 "type": "object",
@@ -277,7 +277,7 @@ JSON;
                         "type": "string"
                     }
                 },
-                "class": "PSX\\Project\\Tests\\Model\\Message"
+                "class": "PSX\\Framework\\App\\Model\\Message"
             },
             "GET-200-response": {
                 "$ref": "#\/definitions\/Collection"

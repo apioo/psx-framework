@@ -69,7 +69,7 @@ title: PSX
                               "users",
                               "worldUsers"
                           ],
-                          "class": "PSX\\Project\\Tests\\Model\\Entity"
+                          "class": "PSX\\Framework\\App\\Model\\Entity"
                       }
                   },
                   "type": "object",
@@ -86,7 +86,7 @@ title: PSX
                           }
                       }
                   },
-                  "class": "PSX\\Project\\Tests\\Model\\Collection"
+                  "class": "PSX\\Framework\\App\\Model\\Collection"
               }
   post:
     body:
@@ -141,7 +141,7 @@ title: PSX
                   "users",
                   "worldUsers"
               ],
-              "class": "PSX\\Project\\Tests\\Model\\Entity"
+              "class": "PSX\\Framework\\App\\Model\\Entity"
           }
     responses:
       201:
@@ -162,5 +162,5 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Project\\Tests\\Model\\Message"
+                  "class": "PSX\\Framework\\App\\Model\\Message"
               }

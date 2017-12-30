@@ -109,7 +109,7 @@
         "users",
         "worldUsers"
       ],
-      "class": "PSX\\Project\\Tests\\Model\\Entity"
+      "class": "PSX\\Framework\\App\\Model\\Entity"
     },
     "Collection": {
       "type": "object",
@@ -126,7 +126,7 @@
           }
         }
       },
-      "class": "PSX\\Project\\Tests\\Model\\Collection"
+      "class": "PSX\\Framework\\App\\Model\\Collection"
     },
     "Message": {
       "type": "object",
@@ -140,7 +140,7 @@
           "type": "string"
         }
       },
-      "class": "PSX\\Project\\Tests\\Model\\Message"
+      "class": "PSX\\Framework\\App\\Model\\Message"
     }
   }
 }

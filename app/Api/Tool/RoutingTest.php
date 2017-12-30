@@ -44,70 +44,70 @@ class RoutingTest extends ApiTestCase
                 "ANY"
             ],
             "path": "\/population\/popo",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\CollectionPopo"
+            "source": "PSX\\Framework\\App\\Api\\Population\\CollectionPopo"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/popo\/:id",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\EntityPopo"
+            "source": "PSX\\Framework\\App\\Api\\Population\\EntityPopo"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/jsonschema",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\CollectionJsonSchema"
+            "source": "PSX\\Framework\\App\\Api\\Population\\CollectionJsonSchema"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/jsonschema\/:id",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\EntityJsonSchema"
+            "source": "PSX\\Framework\\App\\Api\\Population\\EntityJsonSchema"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/raml",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\CollectionRaml"
+            "source": "PSX\\Framework\\App\\Api\\Population\\CollectionRaml"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/raml\/:id",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\EntityRaml"
+            "source": "PSX\\Framework\\App\\Api\\Population\\EntityRaml"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/openapi",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\CollectionOpenAPI"
+            "source": "PSX\\Framework\\App\\Api\\Population\\CollectionOpenAPI"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/openapi\/:id",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\EntityOpenAPI"
+            "source": "PSX\\Framework\\App\\Api\\Population\\EntityOpenAPI"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\Collection"
+            "source": "PSX\\Framework\\App\\Api\\Population\\Collection"
         },
         {
             "methods": [
                 "ANY"
             ],
             "path": "\/population\/:id",
-            "source": "PSX\\Project\\Tests\\Api\\Population\\Entity"
+            "source": "PSX\\Framework\\App\\Api\\Population\\Entity"
         },
         {
             "methods": [
