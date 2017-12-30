@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Tool;
 
 use PSX\Framework\App\ApiTestCase;
+use PSX\Framework\Test\Environment;
 
 /**
  * DiscoveryTest
@@ -34,40 +35,13 @@ class DiscoveryTest extends ApiTestCase
     public function testGet()
     {
         $response = $this->sendRequest('/tool/discovery', 'GET');
+        $baseUrl  = Environment::getConfig()->get('psx_url');
 
-        $body   = (string) $response->getBody();
-        $expect = <<<JSON
-{
-    "links": [
-        {
-            "rel": "api",
-            "href": "http:\/\/127.0.0.1\/"
-        },
-        {
-            "rel": "routing",
-            "href": "http:\/\/127.0.0.1\/tool\/routing"
-        },
-        {
-            "rel": "documentation",
-            "href": "http:\/\/127.0.0.1\/tool\/doc"
-        },
-        {
-            "rel": "openapi",
-            "href": "http:\/\/127.0.0.1\/generator\/openapi\/{version}\/{path}"
-        },
-        {
-            "rel": "swagger",
-            "href": "http:\/\/127.0.0.1\/generator\/swagger\/{version}\/{path}"
-        },
-        {
-            "rel": "raml",
-            "href": "http:\/\/127.0.0.1\/generator\/raml\/{version}\/{path}"
-        }
-    ]
-}
-JSON;
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/discovery.json');
+        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

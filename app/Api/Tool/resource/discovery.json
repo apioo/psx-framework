@@ -1,0 +1,28 @@
+{
+  "links": [
+    {
+      "rel": "api",
+      "href": "http:\/\/127.0.0.1\/"
+    },
+    {
+      "rel": "routing",
+      "href": "http:\/\/127.0.0.1\/tool\/routing"
+    },
+    {
+      "rel": "documentation",
+      "href": "http:\/\/127.0.0.1\/tool\/doc"
+    },
+    {
+      "rel": "openapi",
+      "href": "http:\/\/127.0.0.1\/generator\/openapi\/{version}\/{path}"
+    },
+    {
+      "rel": "swagger",
+      "href": "http:\/\/127.0.0.1\/generator\/swagger\/{version}\/{path}"
+    },
+    {
+      "rel": "raml",
+      "href": "http:\/\/127.0.0.1\/generator\/raml\/{version}\/{path}"
+    }
+  ]
+}

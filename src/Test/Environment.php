@@ -233,7 +233,6 @@ class Environment
         self::$config = $container->get('config')->getArrayCopy();
 
         // set an fix url and no dispatch
-        self::$config['psx_url']      = 'http://127.0.0.1';
         self::$config['psx_dispatch'] = '';
         self::$config['psx_debug']    = true;
 

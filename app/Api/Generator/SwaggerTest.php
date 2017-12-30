@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Generator;
 
 use PSX\Framework\App\ApiTestCase;
+use PSX\Framework\Test\Environment;
 
 /**
  * SwaggerTest
@@ -34,22 +35,26 @@ class SwaggerTest extends ApiTestCase
     public function testGet()
     {
         $response = $this->sendRequest('/generator/swagger/*/population/popo', 'GET');
+        $baseUrl  = Environment::getConfig()->get('psx_url');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/swagger.json');
+        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testGetCollection()
     {
         $response = $this->sendRequest('/generator/swagger/*/*', 'GET');
+        $baseUrl  = Environment::getConfig()->get('psx_url');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
+        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

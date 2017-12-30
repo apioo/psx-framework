@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Generator;
 
 use PSX\Framework\App\ApiTestCase;
+use PSX\Framework\Test\Environment;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -35,22 +36,26 @@ class RamlTest extends ApiTestCase
     public function testGet()
     {
         $response = $this->sendRequest('/generator/raml/*/population/popo', 'GET');
+        $baseUrl  = Environment::getConfig()->get('psx_url');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/raml.yaml');
+        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertEquals(Yaml::parse($expect), Yaml::parse($body), $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
     }
 
     public function testGetCollection()
     {
         $response = $this->sendRequest('/generator/raml/*/*', 'GET');
+        $baseUrl  = Environment::getConfig()->get('psx_url');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/raml_collection.yaml');
+        $expect = str_replace('http:\/\/127.0.0.1', trim(json_encode($baseUrl), '"'), $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertEquals(Yaml::parse($expect), Yaml::parse($body), $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertEquals(Yaml::parse($expect), Yaml::parse($actual), $actual);
     }
 }

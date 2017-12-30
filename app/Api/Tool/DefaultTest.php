@@ -35,15 +35,10 @@ class DefaultTest extends ApiTestCase
     {
         $response = $this->sendRequest('/tool', 'GET');
 
-        $body   = (string) $response->getBody();
-        $expect = <<<JSON
-{
-    "message": "This is the default controller of PSX",
-    "url": "http:\/\/phpsx.org"
-}
-JSON;
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/default.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }
