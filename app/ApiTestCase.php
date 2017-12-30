@@ -20,11 +20,14 @@
 
 namespace PSX\Framework\App;
 
+use GuzzleHttp\Client;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\App\Api\Population;
 use PSX\Framework\Controller\Generator;
 use PSX\Framework\Controller\Proxy;
 use PSX\Framework\Controller\Tool;
+use PSX\Framework\Test\Environment;
+use PSX\Http\Factory\NativeFactory;
 
 /**
  * ApiTestCase
@@ -35,11 +38,22 @@ use PSX\Framework\Controller\Tool;
  */
 class ApiTestCase extends ControllerDbTestCase
 {
+    /**
+     * @var \GuzzleHttp\Client
+     */
+    private static $httpClient;
+
+    /**
+     * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
+     */
     public function getDataSet()
     {
         return $this->createFlatXMLDataSet(__DIR__ . '/api_fixture.xml');
     }
 
+    /**
+     * @return array
+     */
     protected function getPaths()
     {
         return [
@@ -66,5 +80,43 @@ class ApiTestCase extends ControllerDbTestCase
 
             [['ANY'], '/proxy/soap', Proxy\SoapController::class],
         ];
+    }
+
+    /**
+     * Send a request either internal or through an actual HTTP request
+     *
+     * @param string $uri
+     * @param string $method
+     * @param array $headers
+     * @param null $body
+     * @return \PSX\Http\ResponseInterface
+     */
+    protected function sendRequest($uri, $method, $headers = array(), $body = null)
+    {
+        if (getenv('SEND') == 'external') {
+            $response = self::getHttpClient()->request($method, $uri, [
+                'headers' => $headers,
+                'body'    => $body,
+            ]);
+
+            return NativeFactory::createResponse($response);
+        } else {
+            return parent::sendRequest($uri, $method, $headers, $body);
+        }
+    }
+
+    /**
+     * @return \GuzzleHttp\Client
+     */
+    private static function getHttpClient()
+    {
+        if (self::$httpClient) {
+            return self::$httpClient;
+        }
+
+        return self::$httpClient = new Client([
+            'base_uri'    => Environment::getConfig()->get('psx_url'),
+            'http_errors' => false,
+        ]);
     }
 }
