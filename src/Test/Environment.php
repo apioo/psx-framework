@@ -115,6 +115,14 @@ class Environment
     }
 
     /**
+     * @return string
+     */
+    public static function getBaseUrl()
+    {
+        return self::$config['psx_url'] . '/' . self::$config['psx_dispatch'];
+    }
+
+    /**
      * @return boolean
      */
     public static function hasConnection()
@@ -233,8 +241,7 @@ class Environment
         self::$config = $container->get('config')->getArrayCopy();
 
         // set an fix url and no dispatch
-        self::$config['psx_dispatch'] = '';
-        self::$config['psx_debug']    = true;
+        self::$config['psx_debug'] = true;
 
         return new Config(self::$config);
     }
