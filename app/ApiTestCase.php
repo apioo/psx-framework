@@ -93,10 +93,8 @@ class ApiTestCase extends ControllerDbTestCase
      */
     protected function sendRequest($uri, $method, $headers = array(), $body = null)
     {
-        $uri = ltrim($uri, '/');
-
         if (getenv('SEND') == 'external') {
-            $response = self::getHttpClient()->request($method, $uri, [
+            $response = self::getHttpClient()->request($method, ltrim($uri, '/'), [
                 'headers' => $headers,
                 'body'    => $body,
             ]);
