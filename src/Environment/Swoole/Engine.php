@@ -85,7 +85,12 @@ class Engine implements EngineInterface
 
     private function process(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse, Dispatch $dispatch)
     {
-        $request  = new Request(new Uri($swooleRequest->server['request_uri']), $swooleRequest->server['request_method'], $swooleRequest->header);
+        $uri = new Uri($swooleRequest->server['request_uri']);
+        if ($swooleRequest->get) {
+            $uri = $uri->withParameters($swooleRequest->get);
+        }
+
+        $request  = new Request($uri, $swooleRequest->server['request_method'], $swooleRequest->header);
         $response = (new ResponseFactory())->createResponse();
 
         // read body
