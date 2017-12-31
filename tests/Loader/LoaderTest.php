@@ -194,7 +194,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load($request, $response);
     }
 
-    public function testLoadRecursiveOff()
+    public function testLoadRecursive()
     {
         $locationFinder = new CallbackMethod(function ($request, $context) {
 
@@ -222,49 +222,6 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ))
             ->setMethods(array('executeController'))
             ->getMock();
-
-        $loader->setRecursiveLoading(false);
-
-        $loader->expects($this->once())
-            ->method('executeController');
-
-        $request  = new Request(new Url('http://127.0.0.1/foobar'), 'GET');
-        $response = new Response();
-
-        $this->assertEquals($controller, $loader->load($request, $response));
-        $this->assertEquals($controller, $loader->load($request, $response));
-    }
-
-    public function testLoadRecursiveOn()
-    {
-        $locationFinder = new CallbackMethod(function ($request, $context) {
-
-            $context->set(Context::KEY_SOURCE, 'stdClass');
-
-            return $request;
-
-        });
-
-        $controller = new \stdClass();
-        $resolver   = $this->createMock('PSX\Framework\Loader\CallbackResolverInterface');
-
-        $resolver
-            ->method('resolve')
-            ->will($this->returnValue($controller));
-
-        $loader = $this->getMockBuilder('PSX\Framework\Loader\Loader')
-            ->setConstructorArgs(array(
-                $locationFinder,
-                $resolver,
-                Environment::getService('event_dispatcher'),
-                new Logger('psx', [new NullHandler()]),
-                Environment::getService('object_builder'),
-                Environment::getService('config')
-            ))
-            ->setMethods(array('executeController'))
-            ->getMock();
-
-        $loader->setRecursiveLoading(true);
 
         $loader->expects($this->exactly(2))
             ->method('executeController');

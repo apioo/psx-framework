@@ -77,15 +77,13 @@ class Loader implements LoaderInterface
     protected $config;
 
     /**
-     * @var boolean
+     * @param \PSX\Framework\Loader\LocationFinderInterface $locationFinder
+     * @param \PSX\Framework\Loader\CallbackResolverInterface $callbackResolver
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \PSX\Framework\Dependency\ObjectBuilder $objectBuilder
+     * @param \PSX\Framework\Config\Config $config
      */
-    protected $recursiveLoading = false;
-
-    /**
-     * @var array
-     */
-    protected $loaded = array();
-
     public function __construct(LocationFinderInterface $locationFinder, CallbackResolverInterface $callbackResolver, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, ObjectBuilder $objectBuilder, Config $config)
     {
         $this->locationFinder   = $locationFinder;
@@ -94,11 +92,6 @@ class Loader implements LoaderInterface
         $this->logger           = $logger;
         $this->objectBuilder    = $objectBuilder;
         $this->config           = $config;
-    }
-
-    public function setRecursiveLoading($recursiveLoading)
-    {
-        $this->recursiveLoading = $recursiveLoading;
     }
 
     /**
@@ -120,13 +113,8 @@ class Loader implements LoaderInterface
             $this->eventDispatcher->dispatch(Event::ROUTE_MATCHED, new RouteMatchedEvent($result, $context));
 
             $controller = $this->callbackResolver->resolve($result, $response, $context);
-            $id         = spl_object_hash($controller);
 
-            if ($this->recursiveLoading || !in_array($id, $this->loaded)) {
-                $this->executeController($controller, $result, $response);
-
-                $this->loaded[] = $id;
-            }
+            $this->executeController($controller, $result, $response);
 
             return $controller;
         } else {
