@@ -36,7 +36,7 @@ class VersionTest extends ApiTestCase
     {
         $response = $this->sendRequest('/population/2', 'GET');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = <<<JSON
 {
     "id": 2,
@@ -49,15 +49,15 @@ class VersionTest extends ApiTestCase
 }
 JSON;
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testGetExplicitVersion()
     {
         $response = $this->sendRequest('/population/2', 'GET', ['Accept' => 'application/vnd.psx.v1+json']);
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = <<<JSON
 {
     "id": 2,
@@ -70,20 +70,20 @@ JSON;
 }
 JSON;
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testGetInvalidVersion()
     {
         $response = $this->sendRequest('/population/2', 'GET', ['Accept' => 'application/vnd.psx.v8+json']);
 
-        $body = (string) $response->getBody();
-        $body = Parser::decode($body);
+        $actual = (string) $response->getBody();
+        $actual = Parser::decode($actual);
 
-        $this->assertEquals(406, $response->getStatusCode(), $body);
-        $this->assertEquals(false, $body->success);
-        $this->assertEquals('PSX\\Http\\Exception\\NotAcceptableException', $body->title);
-        $this->assertEquals('Version is not available', substr($body->message, 0, 24));
+        $this->assertEquals(406, $response->getStatusCode(), $actual);
+        $this->assertEquals(false, $actual->success);
+        $this->assertEquals('PSX\\Http\\Exception\\NotAcceptableException', $actual->title);
+        $this->assertEquals('Version is not available', substr($actual->message, 0, 24));
     }
 }

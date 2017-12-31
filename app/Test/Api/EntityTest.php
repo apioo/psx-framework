@@ -39,21 +39,11 @@ class EntityTest extends ApiTestCase
     {
         $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'GET');
 
-        $body   = (string) $response->getBody();
-        $expect = <<<JSON
-{
-    "id": 1,
-    "place": 1,
-    "region": "China",
-    "population": 1338612968,
-    "users": 360000000,
-    "worldUsers": 20.8,
-    "datetime": "2009-11-29T15:21:49Z"
-}
-JSON;
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/entity.json');
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     /**
@@ -63,9 +53,9 @@ JSON;
     {
         $response = $this->sendRequest('/' . str_replace(':id', 16, $path), 'GET');
 
-        $body = (string) $response->getBody();
+        $actual = (string) $response->getBody();
 
-        $this->assertEquals(404, $response->getStatusCode(), $body);
+        $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
     /**
@@ -75,9 +65,9 @@ JSON;
     {
         $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'POST');
 
-        $body = (string) $response->getBody();
+        $actual = (string) $response->getBody();
 
-        $this->assertEquals(405, $response->getStatusCode(), $body);
+        $this->assertEquals(405, $response->getStatusCode(), $actual);
     }
 
     /**
@@ -96,7 +86,7 @@ JSON;
 
         $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'PUT', ['Content-Type' => 'application/json'], $payload);
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = <<<JSON
 {
     "success": true,
@@ -104,8 +94,8 @@ JSON;
 }
 JSON;
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
         $sql = Environment::getService('connection')->createQueryBuilder()
@@ -134,7 +124,7 @@ JSON;
     {
         $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'DELETE');
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = <<<JSON
 {
     "success": true,
@@ -142,8 +132,8 @@ JSON;
 }
 JSON;
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
         $sql = Environment::getService('connection')->createQueryBuilder()

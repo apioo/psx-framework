@@ -35,11 +35,11 @@ class SoapTest extends ApiTestCase
     {
         $response = $this->sendRequest('/proxy/soap', 'GET', ['SOAPAction' => '/population/popo/2#GET']);
 
-        $body = (string) $response->getBody();
-        $body = preg_replace('/<faultstring>(.*)<\/faultstring>/imsU', '<faultstring>[faultstring]</faultstring>', $body);
-        $body = preg_replace('/<message type="string">(.*)<\/message>/imsU', '<message type="string">[message]</message>', $body);
-        $body = preg_replace('/<trace type="string">(.*)<\/trace>/imsU', '<trace type="string">[trace]</trace>', $body);
-        $body = preg_replace('/<context type="string">(.*)<\/context>/imsU', '<context type="string">[context]</context>', $body);
+        $actual = (string) $response->getBody();
+        $actual = preg_replace('/<faultstring>(.*)<\/faultstring>/imsU', '<faultstring>[faultstring]</faultstring>', $actual);
+        $actual = preg_replace('/<message type="string">(.*)<\/message>/imsU', '<message type="string">[message]</message>', $actual);
+        $actual = preg_replace('/<trace type="string">(.*)<\/trace>/imsU', '<trace type="string">[trace]</trace>', $actual);
+        $actual = preg_replace('/<context type="string">(.*)<\/context>/imsU', '<context type="string">[context]</context>', $actual);
 
         $expect = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,15 +62,15 @@ class SoapTest extends ApiTestCase
 </soap:Envelope>
 XML;
 
-        $this->assertEquals(405, $response->getStatusCode(), $body);
-        $this->assertXmlStringEqualsXmlString($expect, $body, $body);
+        $this->assertEquals(405, $response->getStatusCode(), $actual);
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     public function testPost()
     {
         $response = $this->sendRequest('/proxy/soap', 'POST', ['SOAPAction' => '/population/popo/2#GET']);
 
-        $body   = (string) $response->getBody();
+        $actual = (string) $response->getBody();
         $expect = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -88,7 +88,7 @@ XML;
 </soap:Envelope>
 XML;
 
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertXmlStringEqualsXmlString($expect, $body, $body);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 }
