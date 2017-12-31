@@ -1,8 +1,11 @@
 
 ### 3.0.0
 
-* Added Aerys, CLI, Swoole and classical WebServer engine
 * Add abstract environment engine to use different webserver types
+* Added Aerys, CLI, Swoole and classical WebServer engine
+* Added example test app to framework which can be used by different engine 
+  implementations
+* Removed recursive loading flag from loader
 * Removed not needed services: console_reader, dispatch_sender, request_factory,
   response_factory
 
