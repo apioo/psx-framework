@@ -4,6 +4,9 @@
         <testsuite name="PSX Framework Test Suite">
             <directory>./tests</directory>
         </testsuite>
+        <testsuite name="PSX App Test Suite">
+            <directory>./app/Test</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>
