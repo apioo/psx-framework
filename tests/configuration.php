@@ -64,7 +64,7 @@ function getConnectionParams($db)
         case 'pgsql':
             return [
                 'dbname'   => 'psx',
-                'user'     => 'root',
+                'user'     => 'postgres',
                 'password' => '',
                 'host'     => 'localhost',
                 'driver'   => 'pdo_pgsql',
