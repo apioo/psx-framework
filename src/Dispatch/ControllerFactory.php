@@ -23,8 +23,6 @@ namespace PSX\Framework\Dispatch;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 
 /**
  * ControllerFactory
@@ -35,15 +33,26 @@ use PSX\Http\ResponseInterface;
  */
 class ControllerFactory implements ControllerFactoryInterface
 {
+    /**
+     * @var \PSX\Framework\Dependency\ObjectBuilderInterface
+     */
     protected $objectBuilder;
 
+    /**
+     * @param \PSX\Framework\Dependency\ObjectBuilderInterface $objectBuilder
+     */
     public function __construct(ObjectBuilderInterface $objectBuilder)
     {
         $this->objectBuilder = $objectBuilder;
     }
 
-    public function getController($className, RequestInterface $request, ResponseInterface $response, Context $context)
+    /**
+     * @param string $className
+     * @param \PSX\Framework\Loader\Context $context
+     * @return \PSX\Framework\Controller\ControllerInterface
+     */
+    public function getController($className, Context $context)
     {
-        return $this->objectBuilder->getObject($className, array($request, $response, $context), ControllerInterface::class);
+        return $this->objectBuilder->getObject($className, [$context], ControllerInterface::class);
     }
 }

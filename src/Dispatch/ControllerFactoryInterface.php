@@ -21,8 +21,6 @@
 namespace PSX\Framework\Dispatch;
 
 use PSX\Framework\Loader\Context;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 
 /**
  * ControllerFactoryInterface
@@ -37,10 +35,8 @@ interface ControllerFactoryInterface
      * Creates an instance of the given class name
      *
      * @param string $className
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
      * @param \PSX\Framework\Loader\Context $context
      * @return \PSX\Framework\Controller\ControllerInterface
      */
-    public function getController($className, RequestInterface $request, ResponseInterface $response, Context $context);
+    public function getController($className, Context $context);
 }

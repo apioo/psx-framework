@@ -62,7 +62,7 @@ class Dispatch
     /**
      * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
      */
-    protected $factory;
+    protected $controllerFactory;
 
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -82,15 +82,15 @@ class Dispatch
     /**
      * @param \PSX\Framework\Config\Config $config
      * @param \PSX\Framework\Loader\LoaderInterface $loader
-     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $factory
+     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \PSX\Framework\Exception\ConverterInterface $exceptionConverter
      */
-    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $factory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
+    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
     {
         $this->config             = $config;
         $this->loader             = $loader;
-        $this->factory            = $factory;
+        $this->controllerFactory  = $controllerFactory;
         $this->eventDispatcher    = $eventDispatcher;
         $this->exceptionConverter = $exceptionConverter;
 
@@ -114,7 +114,7 @@ class Dispatch
         // load controller
         if ($context === null) {
             $context = new Context();
-            $context->set(Context::KEY_SUPPORTED_WRITER, $this->config->get('psx_supported_writer'));
+            $context->setSupportedWriter($this->config->get('psx_supported_writer'));
         }
 
         try {
@@ -132,10 +132,10 @@ class Dispatch
             $this->handleException($e, $response);
 
             try {
-                $context->set(Context::KEY_EXCEPTION, $e);
+                $context->setException($e);
 
                 $class      = isset($this->config['psx_error_controller']) ? $this->config['psx_error_controller'] : ErrorController::class;
-                $controller = $this->factory->getController($class, $request, $response, $context);
+                $controller = $this->controllerFactory->getController($class, $context);
 
                 $this->loader->executeController($controller, $request, $response);
             } catch (\Throwable $e) {
