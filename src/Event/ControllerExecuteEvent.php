@@ -31,7 +31,6 @@ use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @see     http://www.ietf.org/rfc/rfc4287.txt
  */
 class ControllerExecuteEvent extends SymfonyEvent
 {
