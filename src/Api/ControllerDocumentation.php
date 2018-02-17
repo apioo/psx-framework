@@ -29,11 +29,6 @@ use PSX\Framework\Dispatch\ControllerFactoryInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\PathMatcher;
 use PSX\Framework\Loader\RoutingParserInterface;
-use PSX\Http\Request;
-use PSX\Http\RequestInterface;
-use PSX\Http\Response;
-use PSX\Http\ResponseInterface;
-use PSX\Uri\Uri;
 
 /**
  * The documentation how a request and response looks is provided in the
@@ -122,10 +117,8 @@ class ControllerDocumentation implements ListingInterface
             $className = isset($parts[0]) ? $parts[0] : null;
 
             if (class_exists($className) && $matcher->match($path)) {
-                $request    = new Request(new Uri('/'), 'GET');
-                $response   = new Response();
                 $context    = $this->newContext($route);
-                $controller = $this->newController($className, $request, $response, $context);
+                $controller = $this->newController($className, $context);
 
                 if ($controller instanceof DocumentedInterface) {
                     return $controller->getDocumentation($version);
@@ -153,15 +146,13 @@ class ControllerDocumentation implements ListingInterface
 
     /**
      * @param string $className
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
      * @param \PSX\Framework\Loader\Context $context
      * @return \PSX\Framework\Controller\ControllerInterface
      */
-    protected function newController($className, RequestInterface $request, ResponseInterface $response, Context $context)
+    protected function newController($className, Context $context)
     {
         try {
-            return $this->controllerFactory->getController($className, $request, $response, $context);
+            return $this->controllerFactory->getController($className, $context);
         } catch (\Throwable $e) {
             return null;
         }
@@ -174,7 +165,7 @@ class ControllerDocumentation implements ListingInterface
     protected function newContext(array $route)
     {
         $context = new Context();
-        $context->set(Context::KEY_PATH, $route[1]);
+        $context->setPath($route[1]);
 
         return $context;
     }
