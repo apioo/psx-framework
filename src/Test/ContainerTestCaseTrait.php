@@ -94,7 +94,7 @@ trait ContainerTestCaseTrait
     {
         $paths = $this->getPaths();
         if (!empty($paths)) {
-            Environment::getContainer()->set('routing_parser', new Loader\RoutingParser\ArrayCollection($this->getPaths()));
+            Environment::getContainer()->set('routing_parser', new Loader\RoutingParser\ArrayCollection($paths));
             Environment::getContainer()->set('loader_location_finder', new Loader\LocationFinder\RoutingParser(Environment::getContainer()->get('routing_parser')));
         }
     }
