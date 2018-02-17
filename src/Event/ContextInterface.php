@@ -21,7 +21,7 @@
 namespace PSX\Framework\Event;
 
 /**
- * This interface represents a value object which contains informations about
+ * This interface represents a value object which contains information about
  * the context where an event was dispatched
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
