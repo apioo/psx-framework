@@ -25,7 +25,6 @@ use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 use PSX\Api\Console as ApiConsole;
 use PSX\Framework\Base;
 use PSX\Framework\Console as FrameworkConsole;
-use PSX\Framework\Console\Reader;
 use PSX\Schema\Console as SchemaConsole;
 use PSX\Sql\Console as SqlConsole;
 use Symfony\Component\Console\Application;
