@@ -24,6 +24,8 @@ use PSX\Api\GeneratorCollectionInterface;
 use PSX\Api\Resource;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * GeneratorControllerAbstract
@@ -52,14 +54,14 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
      */
     protected $generatorFactory;
 
-    public function onGet()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $version   = (int) $this->getUriFragment('version');
-        $path      = $this->getUriFragment('path');
+        $version   = (int) $this->context->getParameter('version');
+        $path      = $this->context->getParameter('path');
         $generator = $this->generatorFactory->getGenerator($this->getType());
 
         if ($path == '*' && $generator instanceof GeneratorCollectionInterface) {
-            $filter     = $this->listingFilterFactory->getFilter($this->getParameter('filter'));
+            $filter     = $this->listingFilterFactory->getFilter($request->getUri()->getParameter('filter'));
             $collection = $this->resourceListing->getResourceCollection($version, $filter);
             $result     = $generator->generateAll($collection);
         } else {
@@ -72,8 +74,8 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
             $result = $generator->generate($resource);
         }
 
-        $this->setHeader('Content-Type', $this->generatorFactory->getMime($this->getType()));
-        $this->setBody($result);
+        $response->setHeader('Content-Type', $this->generatorFactory->getMime($this->getType()));
+        $this->responseWriter->setBody($response, $result, $this->getWriterOptions($request));
     }
 
     /**
