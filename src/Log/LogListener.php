@@ -62,7 +62,7 @@ class LogListener implements EventSubscriberInterface
     {
         $request    = $event->getRequest();
         $path       = $request->getUri()->getPath() ?: '/';
-        $controller = $event->getContext()->get(Context::KEY_SOURCE);
+        $controller = $event->getContext()->getSource();
 
         $this->logger->info('Route matched ' . $request->getMethod() . ' ' . $path . ' -> ' . $controller);
     }
