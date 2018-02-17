@@ -24,6 +24,8 @@ use PSX\Framework\Controller\ApiAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
 
 /**
@@ -41,10 +43,8 @@ class DiscoveryController extends ApiAbstract
      */
     protected $reverseRouter;
 
-    public function onGet()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onGet();
-
         $links = [];
 
         $apiPath = $this->reverseRouter->getDispatchUrl();
@@ -63,7 +63,7 @@ class DiscoveryController extends ApiAbstract
             ]);
         }
 
-        $documentationPath = $this->reverseRouter->getUrl(DocumentationController::class . '::doIndex');
+        $documentationPath = $this->reverseRouter->getUrl(Documentation\IndexController::class);
         if ($documentationPath !== null) {
             $links[] = Record::fromArray([
                 'rel'  => 'documentation',
@@ -87,8 +87,10 @@ class DiscoveryController extends ApiAbstract
             }
         }
 
-        $this->setBody([
+        $data = [
             'links' => $links,
-        ]);
+        ];
+
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 }

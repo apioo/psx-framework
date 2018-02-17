@@ -21,6 +21,8 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * DefaultController
@@ -31,13 +33,13 @@ use PSX\Framework\Controller\ApiAbstract;
  */
 class DefaultController extends ApiAbstract
 {
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
-        $this->setBody(array(
+        $result = [
             'message' => 'This is the default controller of PSX',
             'url'     => 'http://phpsx.org',
-        ));
+        ];
+
+        $this->responseWriter->setBody($response, $result, $this->getWriterOptions($request));
     }
 }

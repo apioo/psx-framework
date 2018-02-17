@@ -21,6 +21,8 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
 
 /**
@@ -38,13 +40,13 @@ class RoutingController extends ApiAbstract
      */
     protected $routingParser;
 
-    public function onGet()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onGet();
-
-        $this->setBody(array(
+        $data = [
             'routings' => $this->getRoutings(),
-        ));
+        ];
+
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 
     protected function getRoutings()
