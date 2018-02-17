@@ -1,5 +1,23 @@
 
-### 3.0.0
+### 4.0.0
+
+* ControllerAbstract
+  * `on*` methods have now a RequestInterface and ResponseInterface as 
+    argument
+  * The request and response object is now passed as argument and is not 
+    available at the constructor
+  * Most inside the controller which call the request or response object are
+    deprecated instead it is recommended to work directly on the http object
+* SchemaApiAbstract
+  * `do*` methods have now HttpContextInterface argument
+* Controller context object has no explicit methods instead of arbitrary key
+  value entries
+* Removed classes:
+  * `PSX\Framework\Controller\Tool\DocumentationController`
+  * `PSX\Framework\Filter\ControllerExecutor`
+  * `PSX\Framework\Loader\CallbackResolver\DependencyInjector`
+
+### 3.0.0 (2017-12-31)
 
 * Add abstract environment engine to use different webserver types
 * Added Aerys, CLI, Swoole and classical WebServer engine
