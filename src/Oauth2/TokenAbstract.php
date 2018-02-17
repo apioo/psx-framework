@@ -21,10 +21,9 @@
 namespace PSX\Framework\Oauth2;
 
 use PSX\Api\Resource;
-use PSX\Data\WriterInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Filter\FilterChainInterface;
-use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
@@ -50,7 +49,7 @@ abstract class TokenAbstract extends SchemaApiAbstract
      */
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
 
         $resource->addMethod(Resource\Factory::getMethod('POST')
             ->setRequest($this->schemaManager->getSchema(Schema\Request::class))
@@ -75,40 +74,36 @@ abstract class TokenAbstract extends SchemaApiAbstract
                 $error->setState(null);
 
                 if ($e->getType() == 'invalid_client') {
-                    $this->setResponseCode(401);
+                    $response->setStatus(401);
 
                     if ($request->hasHeader('Authorization')) {
-                        $this->setHeader('WWW-Authenticate', 'Bearer');
+                        $response->setHeader('WWW-Authenticate', 'Bearer');
                     }
                 } else {
-                    $this->setResponseCode(400);
+                    $response->setStatus(400);
                 }
 
-                $this->setBody($error, WriterInterface::JSON);
+                $this->responseWriter->setBody($response, $error, $this->getWriterOptions($request));
             } catch (\Throwable $e) {
                 $error = new Error();
                 $error->setError('server_error');
                 $error->setErrorDescription($e->getMessage());
                 $error->setState(null);
 
-                $this->setResponseCode(400);
-                $this->setBody($error, WriterInterface::JSON);
+                $response->setStatus(400);
+                $this->responseWriter->setBody($response, $error, $this->getWriterOptions($request));
             }
         }];
     }
 
-    public function doPost($record)
+    public function doPost($record, HttpContextInterface $context)
     {
-        return $this->doHandle($record->getProperties());
-    }
-
-    protected function doHandle(array $parameters)
-    {
+        $parameters  = $record->getProperties();
         $grantType   = isset($parameters['grant_type']) ? $parameters['grant_type'] : null;
         $scope       = isset($parameters['scope']) ? $parameters['scope'] : null;
         $credentials = null;
 
-        $auth  = $this->request->getHeader('Authorization');
+        $auth  = $context->getHeader('Authorization');
         $parts = explode(' ', $auth, 2);
         $type  = isset($parts[0]) ? $parts[0] : null;
         $data  = isset($parts[1]) ? $parts[1] : null;

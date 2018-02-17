@@ -22,6 +22,8 @@ namespace PSX\Framework\Oauth2;
 
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 use PSX\Oauth2\Authorization\Exception\ServerErrorException;
@@ -44,24 +46,17 @@ abstract class AuthorizationAbstract extends ApiAbstract
      */
     protected $grantTypeFactory;
 
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
-        if (!in_array($this->request->getMethod(), ['GET', 'POST'])) {
+        if (!in_array($request->getMethod(), ['GET', 'POST'])) {
             throw new StatusCode\MethodNotAllowedException('Invalid request method', ['GET', 'POST']);
         }
 
-        $this->doHandle();
-    }
-
-    protected function doHandle()
-    {
-        $responseType = $this->getParameter('response_type');
-        $clientId     = $this->getParameter('client_id');
-        $redirectUri  = $this->getParameter('redirect_uri');
-        $scope        = $this->getParameter('scope');
-        $state        = $this->getParameter('state');
+        $responseType = $request->getUri()->getParameter('response_type');
+        $clientId     = $request->getUri()->getParameter('client_id');
+        $redirectUri  = $request->getUri()->getParameter('redirect_uri');
+        $scope        = $request->getUri()->getParameter('scope');
+        $state        = $request->getUri()->getParameter('state');
 
         try {
             $request = new AccessRequest($clientId, $redirectUri, $scope, $state);
@@ -95,7 +90,9 @@ abstract class AuthorizationAbstract extends ApiAbstract
                 $parameters['error'] = $e->getType();
                 $parameters['error_description'] = $e->getMessage();
 
-                $this->redirect($redirectUri->withParameters($parameters)->toString());
+                $location = $redirectUri->withParameters($parameters)->toString();
+
+                throw new StatusCode\TemporaryRedirectException($location);
             } else {
                 throw $e;
             }
@@ -104,17 +101,19 @@ abstract class AuthorizationAbstract extends ApiAbstract
 
     protected function handleCode(AccessRequest $request)
     {
-        $url = $this->getRedirectUri($request);
+        $redirectUri = $this->getRedirectUri($request);
 
-        if ($url instanceof Url) {
-            $parameters = $url->getParameters();
+        if ($redirectUri instanceof Url) {
+            $parameters = $redirectUri->getParameters();
             $parameters['code'] = $this->generateCode($request);
 
             if ($request->hasState()) {
                 $parameters['state'] = $request->getState();
             }
 
-            $this->redirect($url->withParameters($parameters)->toString());
+            $location = $redirectUri->withParameters($parameters)->toString();
+
+            throw new StatusCode\TemporaryRedirectException($location);
         } else {
             throw new ServerErrorException('No redirect uri available');
         }
@@ -122,9 +121,9 @@ abstract class AuthorizationAbstract extends ApiAbstract
 
     protected function handleToken(AccessRequest $request)
     {
-        $url = $this->getRedirectUri($request);
+        $redirectUri = $this->getRedirectUri($request);
 
-        if ($url instanceof Url) {
+        if ($redirectUri instanceof Url) {
             // we must create an access token and append it to the redirect_uri
             // fragment or display an redirect form
             $accessToken = $this->grantTypeFactory->get(GrantTypeInterface::TYPE_IMPLICIT)->generateAccessToken(null, array(
@@ -140,7 +139,9 @@ abstract class AuthorizationAbstract extends ApiAbstract
                 $fields['state'] = $request->getState();
             }
 
-            $this->redirect($url->withFragment(http_build_query($fields, '', '&'))->toString());
+            $location = $redirectUri->withFragment(http_build_query($fields, '', '&'))->toString();
+
+            throw new StatusCode\TemporaryRedirectException($location);
         } else {
             throw new ServerErrorException('No redirect uri available');
         }

@@ -21,6 +21,8 @@
 namespace PSX\Framework\Oauth2\AuthorizationCode;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\AuthorizationAbstract;
@@ -35,20 +37,18 @@ use RuntimeException;
  */
 abstract class CallbackAbstract extends ApiAbstract
 {
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
         try {
-            $error = $this->getParameter('error');
+            $error = $request->getUri()->getParameter('error');
 
             // error detection
             if (!empty($error)) {
-                AuthorizationAbstract::throwErrorException($this->request->getUri()->getParameters());
+                AuthorizationAbstract::throwErrorException($request->getUri()->getParameters());
             }
 
-            $code  = $this->getParameter('code');
-            $state = $this->getParameter('state');
+            $code  = $request->getUri()->getParameter('code');
+            $state = $request->getUri()->getParameter('state');
 
             if (empty($code)) {
                 throw new RuntimeException('Code not available');
