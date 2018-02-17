@@ -22,7 +22,7 @@ namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Parser\OpenAPI;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * EntityOpenAPI
@@ -41,20 +41,20 @@ class EntityOpenAPI extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        return OpenAPI::fromFile(__DIR__ . '/../../Resource/population.json', $this->context->get(Context::KEY_PATH));
+        return OpenAPI::fromFile(__DIR__ . '/../../Resource/population.json', $this->context->getPath());
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->get(
-            $this->pathParameters['id']
+            $context->getUriFragment('id')
         );
     }
 
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
         $this->populationService->update(
-            $this->pathParameters['id'],
+            $context->getUriFragment('id'),
             $record['place'],
             $record['region'],
             $record['population'],
@@ -68,10 +68,10 @@ class EntityOpenAPI extends SchemaApiAbstract
         ];
     }
 
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
         $this->populationService->delete(
-            $this->pathParameters['id']
+            $context->getUriFragment('id')
         );
 
         return [

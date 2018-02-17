@@ -22,7 +22,7 @@ namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Parser\OpenAPI;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * CollectionOpenAPI
@@ -41,18 +41,18 @@ class CollectionOpenAPI extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        return OpenAPI::fromFile(__DIR__ . '/../../Resource/population.json', $this->context->get(Context::KEY_PATH));
+        return OpenAPI::fromFile(__DIR__ . '/../../Resource/population.json', $this->context->getPath());
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->getAll(
-            $this->queryParameters->getProperty('startIndex'),
-            $this->queryParameters->getProperty('count')
+            $context->getParameter('startIndex'),
+            $context->getParameter('count')
         );
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->populationService->create(
             $record['place'],

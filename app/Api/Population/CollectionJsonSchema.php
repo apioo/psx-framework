@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Population;
 
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * @Title("Population")
@@ -39,11 +40,11 @@ class CollectionJsonSchema extends SchemaApiAbstract
      * @QueryParam(name="count", type="integer")
      * @Outgoing(code=200, schema="../../Resource/schema/population/collection.json")
      */
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->getAll(
-            $this->queryParameters->getProperty('startIndex'),
-            $this->queryParameters->getProperty('count')
+            $context->getParameter('startIndex'),
+            $context->getParameter('count')
         );
     }
 
@@ -51,7 +52,7 @@ class CollectionJsonSchema extends SchemaApiAbstract
      * @Incoming(schema="../../Resource/schema/population/entity.json")
      * @Outgoing(code=201, schema="../../Resource/schema/population/message.json")
      */
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->populationService->create(
             $record['place'],

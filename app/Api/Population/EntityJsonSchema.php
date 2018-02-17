@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Population;
 
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * @Title("Population")
@@ -38,10 +39,10 @@ class EntityJsonSchema extends SchemaApiAbstract
     /**
      * @Outgoing(code=200, schema="../../Resource/schema/population/entity.json")
      */
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->get(
-            $this->pathParameters['id']
+            $context->getUriFragment('id')
         );
     }
 
@@ -49,10 +50,10 @@ class EntityJsonSchema extends SchemaApiAbstract
      * @Incoming(schema="../../Resource/schema/population/entity.json")
      * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
      */
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
         $this->populationService->update(
-            $this->pathParameters['id'],
+            $context->getUriFragment('id'),
             $record['place'],
             $record['region'],
             $record['population'],
@@ -69,10 +70,10 @@ class EntityJsonSchema extends SchemaApiAbstract
     /**
      * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
      */
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
         $this->populationService->delete(
-            $this->pathParameters['id']
+            $context->getUriFragment('id')
         );
 
         return [

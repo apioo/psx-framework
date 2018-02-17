@@ -22,7 +22,7 @@ namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Parser\Raml;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * CollectionRaml
@@ -41,18 +41,18 @@ class CollectionRaml extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        return Raml::fromFile(__DIR__ . '/../../Resource/population.raml', $this->context->get(Context::KEY_PATH));
+        return Raml::fromFile(__DIR__ . '/../../Resource/population.raml', $this->context->getPath());
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->getAll(
-            $this->queryParameters->getProperty('startIndex'),
-            $this->queryParameters->getProperty('count')
+            $context->getParameter('startIndex'),
+            $context->getParameter('count')
         );
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->populationService->create(
             $record['place'],
