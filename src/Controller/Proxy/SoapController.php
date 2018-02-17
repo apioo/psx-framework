@@ -24,6 +24,8 @@ use PSX\Data\WriterInterface;
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Request;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Uri\Uri;
 
 /**
@@ -41,18 +43,13 @@ class SoapController extends ApiAbstract
      */
     protected $dispatch;
 
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
-        if ($this->request->getMethod() != 'POST') {
+        if ($request->getMethod() != 'POST') {
             throw new StatusCode\MethodNotAllowedException('Only POST requests are allowed', ['POST']);
         }
-    }
 
-    public function onPost()
-    {
-        $soapAction = $this->getHeader('SOAPAction');
+        $soapAction = $request->getHeader('SOAPAction');
 
         if (empty($soapAction)) {
             throw new StatusCode\BadRequestException('No SOAPAction header was provided');
@@ -66,13 +63,13 @@ class SoapController extends ApiAbstract
             throw new StatusCode\BadRequestException('Invalid request method');
         }
 
-        $headers = $this->request->getHeaders();
+        $headers = $request->getHeaders();
         $headers['Content-Type'] = 'application/soap+xml';
         $headers['Accept']       = 'application/soap+xml';
 
-        $request = new Request($uri, $method, $headers, $this->request->getBody());
+        $request = new Request($uri, $method, $headers, $request->getBody());
 
-        $this->dispatch->route($request, $this->response, $this->context);
+        $this->dispatch->route($request, $response, $this->context);
     }
 
     protected function getSupportedWriter()

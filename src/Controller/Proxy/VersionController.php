@@ -24,6 +24,8 @@ use PSX\Api\DocumentedInterface;
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Framework\Loader\Context;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use RuntimeException;
 
 /**
@@ -47,6 +49,12 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
     protected $controllerFactory;
 
     /**
+     * @Inject
+     * @var \PSX\Framework\Loader\Loader
+     */
+    protected $loader;
+
+    /**
      * @var string
      */
     protected $acceptPattern = 'application\/vnd\.psx\.v(?<version>[\d]+)\+(json|xml)';
@@ -61,20 +69,18 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
      */
     protected $headerName = 'Api-Version';
 
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
         $type     = $this->getVersionType();
         $versions = $this->getVersions();
         $version  = null;
 
         if ($type === self::TYPE_ACCEPT) {
-            $version = (int) $this->getAcceptVersion();
+            $version = (int) $this->getAcceptVersion($request);
         } elseif ($type == self::TYPE_URI) {
             $version = (int) $this->getUriVersion();
         } elseif ($type == self::TYPE_HEADER) {
-            $version = (int) $this->getHeaderVersion();
+            $version = (int) $this->getHeaderVersion($request);
         } else {
             throw new RuntimeException('Invalid version type');
         }
@@ -85,14 +91,14 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
         } elseif (isset($versions[$version])) {
             $class = $versions[$version];
 
-            $this->context->set(Context::KEY_VERSION, $version);
+            $this->context->setVersion($version);
         } else {
             throw new StatusCode\NotAcceptableException('Version is not available');
         }
 
-        $controller = $this->controllerFactory->getController($class, $this->request, $this->response, $this->context);
+        $controller = $this->controllerFactory->getController($class, $this->context);
 
-        $this->loader->executeController($controller, $this->request, $this->response);
+        $this->loader->executeController($controller, $request, $response);
     }
 
     public function getDocumentation($version = null)
@@ -107,7 +113,7 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
         }
 
         if (!empty($class)) {
-            $controller = $this->controllerFactory->getController($class, $this->request, $this->response, $this->context);
+            $controller = $this->controllerFactory->getController($class, $this->context);
             if ($controller instanceof DocumentedInterface) {
                 return $controller->getDocumentation($version);
             }
@@ -116,9 +122,9 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
         return null;
     }
 
-    protected function getAcceptVersion()
+    protected function getAcceptVersion(RequestInterface $request)
     {
-        $accept  = $this->getHeader('Accept');
+        $accept  = $request->getHeader('Accept');
         $matches = array();
 
         preg_match('/^' . $this->acceptPattern . '$/', $accept, $matches);
@@ -128,12 +134,12 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
 
     protected function getUriVersion()
     {
-        return $this->getUriFragment($this->uriFragment);
+        return $this->context->getParameter($this->uriFragment);
     }
 
-    protected function getHeaderVersion()
+    protected function getHeaderVersion(RequestInterface $request)
     {
-        return $this->getHeader($this->headerName);
+        return $request->getHeader($this->headerName);
     }
 
     protected function getVersionType()
