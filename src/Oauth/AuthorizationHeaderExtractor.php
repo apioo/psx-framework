@@ -23,7 +23,7 @@ namespace PSX\Framework\Oauth;
 use PSX\Data\InvalidDataException;
 use PSX\Http\MessageInterface;
 use PSX\Oauth\Consumer;
-use PSX\Record\RecordInterface;
+use PSX\Oauth\Data\Request;
 
 /**
  * AuthorizationHeaderExtractor
@@ -34,7 +34,14 @@ use PSX\Record\RecordInterface;
  */
 class AuthorizationHeaderExtractor
 {
+    /**
+     * @var array
+     */
     protected $requiredFields;
+
+    /**
+     * @var array
+     */
     protected $map = array(
         'consumerKey'     => 'consumer_key',
         'token'           => 'token',
@@ -57,9 +64,15 @@ class AuthorizationHeaderExtractor
         $this->requiredFields = $requiredFields;
     }
 
-    public function extract(MessageInterface $message, RecordInterface $record)
+    /**
+     * @param \PSX\Http\MessageInterface $message
+     * @return \PSX\Oauth\Data\Request
+     * @throws \PSX\Data\InvalidDataException
+     */
+    public function extract(MessageInterface $message)
     {
-        $auth = (string) $message->getHeader('Authorization');
+        $request = new Request();
+        $auth    = (string) $message->getHeader('Authorization');
 
         if (!empty($auth)) {
             if (strpos($auth, 'OAuth') !== false) {
@@ -87,8 +100,8 @@ class AuthorizationHeaderExtractor
                     if (isset($data[$v])) {
                         $method = 'set' . ucfirst($k);
 
-                        if (method_exists($record, $method)) {
-                            $record->$method($data[$v]);
+                        if (method_exists($request, $method)) {
+                            $request->$method($data[$v]);
                         } else {
                             throw new InvalidDataException('Unknown parameter');
                         }
@@ -97,7 +110,7 @@ class AuthorizationHeaderExtractor
                     }
                 }
 
-                return $record;
+                return $request;
             } else {
                 throw new InvalidDataException('Unknown OAuth authentication');
             }

@@ -23,6 +23,8 @@ namespace PSX\Framework\Oauth;
 use PSX\Data\WriterInterface;
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth\Consumer;
 use PSX\Oauth\Data\Credentials;
 use PSX\Oauth\Data\Request;
@@ -37,22 +39,12 @@ use PSX\Oauth\Data\Response;
  */
 abstract class RequestAbstract extends ApiAbstract
 {
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onLoad();
-
-        if ($this->request->getMethod() != 'POST') {
+        if ($request->getMethod() != 'POST') {
             throw new StatusCode\MethodNotAllowedException('Only POST requests are allowed', ['POST']);
         }
-    }
 
-    public function onPost()
-    {
-        $this->doHandle();
-    }
-
-    protected function doHandle()
-    {
         $extractor = new AuthorizationHeaderExtractor(array(
             'consumerKey',
             'signatureMethod',
@@ -63,25 +55,25 @@ abstract class RequestAbstract extends ApiAbstract
             'callback',
         ));
 
-        $request  = $extractor->extract($this->request, new Request());
-        $consumer = $this->getConsumer($request->getConsumerKey());
+        $record   = $extractor->extract($request);
+        $consumer = $this->getConsumer($record->getConsumerKey());
 
         if ($consumer instanceof Credentials) {
-            $signature = Consumer::getSignature($request->getSignatureMethod());
+            $signature = Consumer::getSignature($record->getSignatureMethod());
 
-            $method = $this->request->getMethod();
-            $url    = $this->request->getUri();
-            $params = array_merge($request->getProperties(), $this->request->getUri()->getParameters());
+            $method = $request->getMethod();
+            $url    = $request->getUri();
+            $params = array_merge($record->getProperties(), $request->getUri()->getParameters());
 
             $baseString = Consumer::buildBasestring($method, $url, $params);
 
-            if ($signature->verify($baseString, $consumer->getConsumerSecret(), '', $request->getSignature()) !== false) {
-                $response = $this->getResponse($consumer, $request);
+            if ($signature->verify($baseString, $consumer->getConsumerSecret(), '', $record->getSignature()) !== false) {
+                $resp = $this->getResponse($consumer, $record);
 
-                if ($response instanceof Response) {
-                    $response->addParam('oauth_callback_confirmed', true);
+                if ($resp instanceof Response) {
+                    $resp->addParam('oauth_callback_confirmed', true);
 
-                    $this->setBody($response);
+                    $this->responseWriter->setBody($response, $resp, $this->getWriterOptions($request));
                 } else {
                     throw new StatusCode\BadRequestException('Invalid response');
                 }
@@ -102,16 +94,16 @@ abstract class RequestAbstract extends ApiAbstract
      * Returns the consumer object with the $consumerKey and $token
      *
      * @param string $consumerKey
-     * @return \PSX\Oauth\Provider\Data\Credentials
+     * @return \PSX\Oauth\Data\Credentials
      */
     abstract protected function getConsumer($consumerKey);
 
     /**
      * Returns the response depending on the $credentials and $request
      *
-     * @param \PSX\Oauth\Provider\Data\Credentials $credentials
-     * @param \PSX\Oauth\Provider\Data\Request $request
-     * @return \PSX\Oauth\Provider\Data\Response
+     * @param \PSX\Oauth\Data\Credentials $credentials
+     * @param \PSX\Oauth\Data\Request $request
+     * @return \PSX\Oauth\Data\Response
      */
     abstract protected function getResponse(Credentials $credentials, Request $request);
 }
