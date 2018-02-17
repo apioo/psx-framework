@@ -21,7 +21,8 @@
 namespace PSX\Framework\Loader;
 
 /**
- * Contains context values which are gathered around an controller
+ * Contains context parameters which are passed from the framework to the 
+ * controller
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -30,69 +31,137 @@ namespace PSX\Framework\Loader;
 class Context
 {
     /**
-     * This key holds the route which was used to resolve the controller
+     * @var string
      */
-    const KEY_PATH = 'psx.path';
-
-    /**
-     * This key holds the variable fragment values from the uri path. I.e. if
-     * we have an path /foo/:bar the array would look like ['bar' => 'test']
-     * where test is the value from the actual request uri
-     */
-    const KEY_FRAGMENT = 'psx.fragment';
-
-    /**
-     * This key contains the raw source like defined in the routing file i.e.
-     * Foo\Bar::doIndex
-     */
-    const KEY_SOURCE = 'psx.source';
-
-    /**
-     * This key contains the class name from the source
-     */
-    const KEY_CLASS = 'psx.class';
-
-    /**
-     * This key contains the method name from the source. This method gets then
-     * executed on the controller
-     */
-    const KEY_METHOD = 'psx.method';
-
-    /**
-     * This key contains an array with all supported writers from an controller.
-     * Gets used so that every controller has the same supported writers as the
-     * origin controller
-     */
-    const KEY_SUPPORTED_WRITER = 'psx.supported_writer';
-
-    /**
-     * This key contains an Exception if the error controller gets invoked
-     */
-    const KEY_EXCEPTION = 'psx.exception';
-
-    /**
-     * This key holds the version if the controller was requested through a
-     * version proxy controller
-     */
-    const KEY_VERSION = 'psx.version';
+    protected $path;
 
     /**
      * @var array
      */
-    protected $attributes = array();
+    protected $parameters = [];
 
-    public function set($key, $value)
+    /**
+     * @var string
+     */
+    protected $source;
+
+    /**
+     * @var array
+     */
+    protected $supportedWriter;
+
+    /**
+     * @var \Throwable
+     */
+    protected $exception;
+
+    /**
+     * @var string
+     */
+    protected $version;
+
+    /**
+     * @return string
+     */
+    public function getPath()
     {
-        $this->attributes[$key] = $value;
+        return $this->path;
     }
 
-    public function has($key)
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
     {
-        return isset($this->attributes[$key]);
+        $this->path = $path;
     }
 
-    public function get($key)
+    /**
+     * @return array
+     */
+    public function getParameters()
     {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        return $this->parameters;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
+    public function getParameter($name)
+    {
+        return $this->parameters[$name] ?? null;
+    }
+
+    /**
+     * @param array $parameters
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSupportedWriter()
+    {
+        return $this->supportedWriter;
+    }
+
+    /**
+     * @param array $supportedWriter
+     */
+    public function setSupportedWriter(array $supportedWriter)
+    {
+        $this->supportedWriter = $supportedWriter;
+    }
+
+    /**
+     * @return \Throwable
+     */
+    public function getException()
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param \Throwable $exception
+     */
+    public function setException(\Throwable $exception)
+    {
+        $this->exception = $exception;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param string $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
     }
 }

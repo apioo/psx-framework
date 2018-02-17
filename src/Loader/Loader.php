@@ -25,12 +25,13 @@ use Psr\Log\LoggerInterface;
 use PSX\Framework\ApplicationStackInterface;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dependency\ObjectBuilder;
+use PSX\Framework\Dispatch\ControllerFactoryInterface;
 use PSX\Framework\Event\ControllerExecuteEvent;
 use PSX\Framework\Event\ControllerProcessedEvent;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\RouteMatchedEvent;
-use PSX\Framework\Filter\FilterChain;
-use PSX\Framework\Filter\FilterInterface;
+use PSX\Http\Filter\FilterChain;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use RuntimeException;
@@ -52,9 +53,9 @@ class Loader implements LoaderInterface
     protected $locationFinder;
 
     /**
-     * @var \PSX\Framework\Loader\CallbackResolverInterface
+     * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
      */
-    protected $callbackResolver;
+    protected $controllerFactory;
 
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -78,20 +79,20 @@ class Loader implements LoaderInterface
 
     /**
      * @param \PSX\Framework\Loader\LocationFinderInterface $locationFinder
-     * @param \PSX\Framework\Loader\CallbackResolverInterface $callbackResolver
+     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Psr\Log\LoggerInterface $logger
      * @param \PSX\Framework\Dependency\ObjectBuilder $objectBuilder
      * @param \PSX\Framework\Config\Config $config
      */
-    public function __construct(LocationFinderInterface $locationFinder, CallbackResolverInterface $callbackResolver, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, ObjectBuilder $objectBuilder, Config $config)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, ObjectBuilder $objectBuilder, Config $config)
     {
-        $this->locationFinder   = $locationFinder;
-        $this->callbackResolver = $callbackResolver;
-        $this->eventDispatcher  = $eventDispatcher;
-        $this->logger           = $logger;
-        $this->objectBuilder    = $objectBuilder;
-        $this->config           = $config;
+        $this->locationFinder    = $locationFinder;
+        $this->controllerFactory = $controllerFactory;
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->logger            = $logger;
+        $this->objectBuilder     = $objectBuilder;
+        $this->config            = $config;
     }
 
     /**
@@ -102,7 +103,7 @@ class Loader implements LoaderInterface
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
      * @param \PSX\Framework\Loader\Context $context
-     * @return mixed
+     * @return \PSX\Framework\Controller\ControllerInterface
      */
     public function load(RequestInterface $request, ResponseInterface $response, Context $context = null)
     {
@@ -112,7 +113,7 @@ class Loader implements LoaderInterface
         if ($result instanceof RequestInterface) {
             $this->eventDispatcher->dispatch(Event::ROUTE_MATCHED, new RouteMatchedEvent($result, $context));
 
-            $controller = $this->callbackResolver->resolve($result, $response, $context);
+            $controller = $this->controllerFactory->getController($context->getSource(), $context);
 
             $this->executeController($controller, $result, $response);
 
