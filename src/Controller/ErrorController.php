@@ -20,7 +20,8 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Framework\Loader\Context;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * ErrorController
@@ -29,7 +30,7 @@ use PSX\Framework\Loader\Context;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ErrorController extends ViewAbstract
+class ErrorController extends ControllerAbstract
 {
     /**
      * @Inject
@@ -37,55 +38,15 @@ class ErrorController extends ViewAbstract
      */
     protected $exceptionConverter;
 
-    public function processResponse()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        $exception = $this->context->get(Context::KEY_EXCEPTION);
+        $exception = $this->context->getException();
 
-        if ($exception instanceof \Exception) {
-            $this->handleException($exception);
+        if ($exception instanceof \Throwable) {
+            // build message
+            $record = $this->exceptionConverter->convert($exception);
+
+            $this->responseWriter->setBody($response, $record, $this->getWriterOptions($request));
         }
-    }
-
-    protected function handleException(\Throwable $exception)
-    {
-        // set error template
-        $class = str_replace('\\', '/', get_class($this));
-
-        if (strpos($class, '/Application/') !== false) {
-            $path = PSX_PATH_LIBRARY . '/' . strstr($class, '/Application/', true) . '/Resource';
-            $file = substr(strstr($class, 'Application'), 12);
-            $file = $this->underscore($file) . '.html';
-
-            if (!is_file($path . '/' . $file)) {
-                $this->template->set($this->getFallbackTemplate());
-            }
-        } else {
-            $this->template->set($this->getFallbackTemplate());
-        }
-
-        // build message
-        $record = $this->exceptionConverter->convert($exception);
-
-        $this->setBody($record);
-    }
-
-    /**
-     * Returns the fallback template which is used if the template has no file
-     * and the controller is not in an application structure
-     *
-     * @return string|\Closure
-     */
-    protected function getFallbackTemplate()
-    {
-        if (isset($this->config['psx_error_template'])) {
-            return $this->config['psx_error_template'];
-        } else {
-            return __DIR__ . '/Resource/error_controller.html';
-        }
-    }
-
-    protected function underscore($word)
-    {
-        return strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $word));
     }
 }

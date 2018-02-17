@@ -26,13 +26,14 @@ use PSX\Api\Listing\CachedListing;
 use PSX\Api\Listing\FilterFactory;
 use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\ApplicationStackFactory;
 use PSX\Framework\Dispatch\ControllerFactory;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Exception;
+use PSX\Framework\Http\ParameterParser;
+use PSX\Framework\Http\RequestReader;
+use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader;
 use PSX\Framework\Session\Session;
-use PSX\Framework\Template;
 
 /**
  * Controller
@@ -52,14 +53,6 @@ trait Framework
         $config = $config->merge(Config::fromFile($this->getParameter('config.file')));
 
         return $config;
-    }
-
-    /**
-     * @return \PSX\Framework\Template\TemplateInterface
-     */
-    public function getTemplate()
-    {
-        return new Template\Engine\Php();
     }
 
     /**
@@ -101,14 +94,6 @@ trait Framework
     /**
      * @return \PSX\Framework\Dispatch\ControllerFactoryInterface
      */
-    public function getApplicationStackFactory()
-    {
-        return new ApplicationStackFactory($this->get('object_builder'));
-    }
-
-    /**
-     * @return \PSX\Framework\Dispatch\ControllerFactoryInterface
-     */
     public function getControllerFactory()
     {
         return new ControllerFactory($this->get('object_builder'));
@@ -123,21 +108,13 @@ trait Framework
     }
 
     /**
-     * @return \PSX\Framework\Loader\CallbackResolverInterface
-     */
-    public function getLoaderCallbackResolver()
-    {
-        return new Loader\CallbackResolver\DependencyInjector($this->get('application_stack_factory'));
-    }
-
-    /**
      * @return \PSX\Framework\Loader\Loader
      */
     public function getLoader()
     {
         return new Loader\Loader(
             $this->get('loader_location_finder'),
-            $this->get('loader_callback_resolver'),
+            $this->get('controller_factory'),
             $this->get('event_dispatcher'),
             $this->get('logger'),
             $this->get('object_builder'),
@@ -153,7 +130,7 @@ trait Framework
         return new Dispatch(
             $this->get('config'),
             $this->get('loader'),
-            $this->get('application_stack_factory'),
+            $this->get('controller_factory'),
             $this->get('event_dispatcher'),
             $this->get('exception_converter')
         );
@@ -231,5 +208,21 @@ trait Framework
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
+    }
+
+    /**
+     * @return \PSX\Framework\Http\RequestReader
+     */
+    public function getRequestReader()
+    {
+        return new RequestReader($this->get('io'));
+    }
+
+    /**
+     * @return \PSX\Framework\Http\ResponseWriter
+     */
+    public function getResponseWriter()
+    {
+        return new ResponseWriter($this->get('io'));
     }
 }

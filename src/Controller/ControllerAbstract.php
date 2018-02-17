@@ -20,25 +20,15 @@
 
 namespace PSX\Framework\Controller;
 
-use DOMDocument;
-use PSX\Data\Payload;
 use PSX\Data\Writer;
 use PSX\Data\WriterInterface;
 use PSX\Framework\ApplicationStackInterface;
-use PSX\Framework\Controller\Behaviour;
-use PSX\Framework\Data\Writer as FrameworkWriter;
-use PSX\Framework\Filter\ControllerExecutor;
-use PSX\Framework\Http\Body;
+use PSX\Framework\Http\WriterOptions;
 use PSX\Framework\Loader\Context;
+use PSX\Http\Exception as StatusCode;
+use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
-use PSX\Http\Stream\FileStream;
-use PSX\Http\StreamInterface;
-use PSX\Record\Record;
-use PSX\Schema\Validation\ValidatorInterface;
-use PSX\Schema\Visitor\TypeVisitor;
-use ReflectionClass;
-use SimpleXMLElement;
 
 /**
  * ControllerAbstract
@@ -54,11 +44,13 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     /**
      * @var \PSX\Http\RequestInterface
+     * @deprecated
      */
     protected $request;
 
     /**
      * @var \PSX\Http\ResponseInterface
+     * @deprecated
      */
     protected $response;
 
@@ -69,6 +61,7 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     /**
      * @var array
+     * @deprecated
      */
     protected $uriFragments;
 
@@ -80,232 +73,194 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
 
     /**
      * @Inject
-     * @var \PSX\Validate\Validate
+     * @var \PSX\Framework\Http\RequestReader
      */
-    protected $validate;
+    protected $requestReader;
 
     /**
      * @Inject
-     * @var \PSX\Data\Processor
+     * @var \PSX\Framework\Http\ResponseWriter
      */
-    protected $io;
+    protected $responseWriter;
 
     /**
-     * @var boolean
-     */
-    private $_responseWritten = false;
-
-    /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
      * @param \PSX\Framework\Loader\Context $context
      */
-    public function __construct(RequestInterface $request, ResponseInterface $response, Context $context = null)
+    public function __construct(Context $context = null)
     {
-        $this->request      = $request;
-        $this->response     = $response;
-        $this->context      = $context ?: new Context();
-        $this->uriFragments = $this->context->get(Context::KEY_FRAGMENT) ?: array();
+        $this->context      = $context ?? new Context();
+        $this->uriFragments = $context->getParameters();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getApplicationStack()
     {
+        $controller = function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
+            $this->setState($request, $response);
+
+            $this->onLoad();
+            $this->onRequest($request, $response);
+            $this->onFinish();
+
+            $filterChain->handle($request, $response);
+        };
+
         return array_merge(
             $this->getPreFilter(),
-            array(new ControllerExecutor($this, $this->context)),
+            [$controller],
             $this->getPostFilter()
         );
     }
 
+    /**
+     * @return array
+     */
     public function getPreFilter()
     {
-        return array();
+        return [];
     }
 
+    /**
+     * @return array
+     */
     public function getPostFilter()
     {
-        return array();
+        return [];
     }
 
+    /**
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
+     * @internal
+     */
+    public function setState(RequestInterface $request, ResponseInterface $response)
+    {
+        $this->request  = $request;
+        $this->response = $response;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function onLoad()
     {
         // we change the supported writer only if available
         $supportedWriter = $this->getSupportedWriter();
         if (!empty($supportedWriter)) {
-            $this->context->set(Context::KEY_SUPPORTED_WRITER, $supportedWriter);
+            $this->context->setSupportedWriter($supportedWriter);
         }
     }
 
     /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
+     * @inheritdoc
      */
-    public function onGet()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-    }
+        switch ($request->getMethod()) {
+            case 'GET':
+                $this->onGet($request, $response);
+                break;
 
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.2
-     */
-    public function onHead()
-    {
-    }
+            case 'HEAD':
+                $this->onHead($request, $response);
+                break;
 
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
-     */
-    public function onPost()
-    {
-    }
+            case 'POST':
+                $this->onPost($request, $response);
+                break;
 
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
-     */
-    public function onPut()
-    {
-    }
+            case 'PUT':
+                $this->onPut($request, $response);
+                break;
 
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
-     */
-    public function onDelete()
-    {
-    }
+            case 'DELETE':
+                $this->onDelete($request, $response);
+                break;
 
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.7
-     */
-    public function onOptions()
-    {
-    }
+            case 'OPTIONS':
+                $this->onOptions($request, $response);
+                break;
 
-    /**
-     * @see https://tools.ietf.org/html/rfc5789#section-2
-     */
-    public function onPatch()
-    {
-    }
+            case 'PATCH':
+                $this->onPatch($request, $response);
+                break;
 
-    public function processResponse()
-    {
-        if (!$this->hasResponseWritten()) {
-            // in case no response was set we set an empty record
-            $this->setBody(new Record());
+            default:
+                throw new StatusCode\NotImplementedException('Request method is not supported');
+                break;
         }
     }
 
     /**
-     * Returns an specific uri fragment
+     * @inheritdoc
+     */
+    public function onFinish()
+    {
+        $this->request  = null;
+        $this->response = null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onGet(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onHead(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onPost(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onPut(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onDelete(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onOptions(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onPatch(RequestInterface $request, ResponseInterface $response)
+    {
+    }
+
+    /**
+     * Returns a specific uri fragment
      *
      * @param string $key
      * @return string
+     * @deprecated
      */
     protected function getUriFragment($key)
     {
         return isset($this->uriFragments[$key]) ? $this->uriFragments[$key] : null;
-    }
-
-    /**
-     * Returns the result of the reader for the request
-     *
-     * @param string $readerType
-     * @return mixed
-     */
-    protected function getBody($readerType = null)
-    {
-        $data    = (string) $this->request->getBody();
-        $payload = Payload::create($data, $this->request->getHeader('Content-Type'))
-            ->setRwType($readerType);
-
-        return $this->io->parse($payload);
-    }
-
-    /**
-     * @param string $schema
-     * @param \PSX\Schema\Validation\ValidatorInterface $validator
-     * @param string $readerType
-     * @return mixed
-     */
-    protected function getBodyAs($schema, ValidatorInterface $validator = null, $readerType = null)
-    {
-        $data    = (string) $this->request->getBody();
-        $payload = Payload::create($data, $this->request->getHeader('Content-Type'))
-            ->setRwType($readerType);
-
-        return $this->io->read($schema, $payload, new TypeVisitor($validator));
-    }
-
-    /**
-     * Method to set a response body
-     *
-     * @param mixed $data
-     * @param string $writerType
-     */
-    protected function setBody($data, $writerType = null)
-    {
-        if ($this->_responseWritten) {
-            // we have already written a response
-            return;
-        }
-
-        if ($data instanceof DOMDocument) {
-            $data = new Body\Xml($data);
-        } elseif ($data instanceof SimpleXMLElement) {
-            $data = new Body\Xml($data);
-        } elseif ($data instanceof StreamInterface) {
-            if ($data instanceof FileStream) {
-                trigger_error('Use of the FileStream is deprecated please use the PSX\Framework\Http\Body\File wrapper', E_USER_DEPRECATED);
-
-                $this->response->setHeader('Content-Type', $data->getContentType());
-                $this->response->setHeader('Content-Disposition', 'attachment; filename="' . addcslashes($data->getFileName(), '"') . '"');
-
-                $data = new Body\Body($data->getContents());
-            } else {
-                $data = new Body\Stream($data);
-            }
-        } elseif (is_string($data)) {
-            $data = new Body\Body($data);
-        }
-
-        if ($data instanceof Body\BodyInterface) {
-            $data->writeTo($this->response);
-        } else {
-            $this->setResponse($data, $writerType);
-        }
-
-        $this->_responseWritten = true;
-    }
-
-    /**
-     * Configures the writer
-     *
-     * @param \PSX\Data\WriterInterface $writer
-     */
-    protected function configureWriter(WriterInterface $writer)
-    {
-        if ($writer instanceof FrameworkWriter\TemplateAbstract) {
-            if (!$writer->getControllerFile()) {
-                $class = new ReflectionClass($this);
-                $writer->setControllerFile($class->getFilename());
-            }
-        } elseif ($writer instanceof Writer\Soap) {
-            if (!$writer->getRequestMethod()) {
-                $writer->setRequestMethod($this->request->getMethod());
-            }
-        } elseif ($writer instanceof Writer\Jsonp) {
-            if (!$writer->getCallbackName()) {
-                $writer->setCallbackName($this->getParameter('callback'));
-            }
-        }
-    }
-
-    /**
-     * Returns whether the controller has written data to the response
-     * 
-     * @return boolean
-     */
-    protected function hasResponseWritten()
-    {
-        return $this->_responseWritten || $this->response->getBody()->tell() > 0;
     }
 
     /**
@@ -322,67 +277,32 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     }
 
     /**
-     * Writes the $record with the writer $writerType or depending on the get
-     * parameter format or of the mime type of the Accept header
-     *
-     * @param mixed $data
-     * @param string $writerType
-     * @return void
+     * Returns the writer options for the provided request and the current 
+     * context of the controller
+     * 
+     * @param \PSX\Http\RequestInterface $request
+     * @return \PSX\Framework\Http\WriterOptions
      */
-    private function setResponse($data, $writerType = null)
+    protected function getWriterOptions(RequestInterface $request, $writerType = null)
     {
-        $contentType = $this->getHeader('Accept');
-        $format      = $this->getParameter('format');
-
-        if (!empty($format) && $writerType === null) {
-            $writerType = $this->io->getConfiguration()->getWriterFactory()->getWriterClassNameByFormat($format);
-        }
-
-        $supported = $this->context->get(Context::KEY_SUPPORTED_WRITER);
-        $writer    = $this->io->getWriter($contentType, $writerType, $supported);
-
-        // set writer specific settings
-        $this->configureWriter($writer);
-
-        // write the response
-        $payload = Payload::create($data, $contentType)
-            ->setRwType($writerType);
-
-        if (!empty($supported)) {
-            $payload->setRwSupported($supported);
-        }
-
-        $response = $this->io->write($payload);
-
-        // the response may have multiple presentations based on the Accept
-        // header field
-        if (!$this->response->hasHeader('Vary')) {
-            $this->response->setHeader('Vary', 'Accept');
-        }
-
-        // set content type header if not available
-        if (!$this->response->hasHeader('Content-Type')) {
-            $contentType = $writer->getContentType();
-
-            if ($contentType !== null) {
-                $this->response->setHeader('Content-Type', $contentType);
+        $options = new WriterOptions();
+        $options->setWriterType($writerType);
+        $options->setContentType($request->getHeader('Accept'));
+        $options->setFormat($request->getUri()->getParameter('format'));
+        $options->setSupportedWriter($this->context->getSupportedWriter());
+        $options->setRequestMethod($request->getMethod());
+        $options->setWriterCallback(function(WriterInterface $writer) use ($request){
+            if ($writer instanceof Writer\Soap) {
+                if (!$writer->getRequestMethod()) {
+                    $writer->setRequestMethod($request->getMethod());
+                }
+            } elseif ($writer instanceof Writer\Jsonp) {
+                if (!$writer->getCallbackName()) {
+                    $writer->setCallbackName($request->getUri()->getParameter('callback'));
+                }
             }
-        }
+        });
 
-        // for head requests set content length and remove body
-        if ($this->request->getMethod() == 'HEAD') {
-            $this->response->setHeader('Content-Length', mb_strlen($response));
-            $response = '';
-        }
-
-        // for iframe file uploads we need a text/html content type header even
-        // if we want serve json content. If all browsers support the FormData
-        // api we can send file uploads per ajax but for now we use this hack.
-        // Note do not rely on this param it will be removed as soon as possible
-        if (isset($_GET['htmlMime'])) {
-            $this->response->setHeader('Content-Type', 'text/html');
-        }
-
-        $this->response->getBody()->write($response);
+        return $options;
     }
 }

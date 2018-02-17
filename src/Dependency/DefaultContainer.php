@@ -29,7 +29,6 @@ use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
-use PSX\Framework\Data\Writer as FrameworkWriter;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Http;
@@ -125,10 +124,7 @@ class DefaultContainer extends Container
             $this->get('config')->get('psx_soap_namespace')
         );
 
-        $processor = new Processor($config);
-        $processor->getConfiguration()->getWriterFactory()->addWriter(new FrameworkWriter\Html($this->get('template'), $this->get('reverse_router')), 40);
-
-        return $processor;
+        return new Processor($config);
     }
 
     /**
@@ -205,9 +201,6 @@ class DefaultContainer extends Container
                 WriterInterface::RSS,
                 WriterInterface::SOAP,
                 WriterInterface::XML,
-                FrameworkWriter\Html::class,
-                FrameworkWriter\Svg::class,
-                FrameworkWriter\Text::class,
             ],
         ];
     }

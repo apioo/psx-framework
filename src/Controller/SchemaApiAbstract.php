@@ -24,15 +24,16 @@ use PSX\Api\DocumentedInterface;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
 use PSX\Data\GraphTraverser;
-use PSX\Framework\Loader\Context;
 use PSX\Framework\Schema\Passthru;
+use PSX\Http\Environment\HttpContext;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
+use PSX\Http\Stream\StringStream;
 use PSX\Record\Record;
-use PSX\Schema\PropertyInterface;
-use PSX\Schema\PropertyType;
-use PSX\Schema\Schema;
 use PSX\Schema\SchemaInterface;
-use PSX\Schema\SchemaTraverser;
 
 /**
  * The schema api controller helps to build an API based on a API specification
@@ -62,16 +63,6 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
     protected $schemaManager;
 
     /**
-     * @var \PSX\Record\Record
-     */
-    protected $queryParameters;
-
-    /**
-     * @var \PSX\Record\Record
-     */
-    protected $pathParameters;
-
-    /**
      * @var \PSX\Api\Resource
      */
     protected $resource;
@@ -84,133 +75,81 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         $this->resource = $this->getResource();
     }
 
-    public function onHead()
+    public function onHead(RequestInterface $request, ResponseInterface $response)
     {
-        // we support HEAD only if the resource supports a GET request since a
-        // HEAD request is basically a GET without body
-        if (!$this->resource->hasMethod('GET')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('GET', $request, $response);
+        $context = $this->newContext($request);
+        $result  = $this->doGet($context);
 
-        $method = $this->resource->getMethod('GET');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $response = $this->doGet();
-
-        // the setResponse method removes the body so we behave like on a GET 
-        // request
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onGet()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->resource->hasMethod('GET')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('GET', $request, $response);
+        $context = $this->newContext($request);
+        $result  = $this->doGet($context);
 
-        $method = $this->resource->getMethod('GET');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $response = $this->doGet();
-
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onPost()
+    public function onPost(RequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->resource->hasMethod('POST')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('POST', $request, $response);
+        $context = $this->newContext($request);
+        $record  = $this->parseRequest($request, $method);
+        $result  = $this->doPost($record, $context);
 
-        $method = $this->resource->getMethod('POST');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $record   = $this->parseRequest($method);
-        $response = $this->doPost($record);
-
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onPut()
+    public function onPut(RequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->resource->hasMethod('PUT')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('PUT', $request, $response);
+        $context = $this->newContext($request);
+        $record  = $this->parseRequest($request, $method);
+        $result  = $this->doPut($record, $context);
 
-        $method = $this->resource->getMethod('PUT');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $record   = $this->parseRequest($method);
-        $response = $this->doPut($record);
-
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onDelete()
+    public function onDelete(RequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->resource->hasMethod('DELETE')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('DELETE', $request, $response);
+        $context = $this->newContext($request);
+        $record  = $this->parseRequest($request, $method);
+        $result  = $this->doDelete($record, $context);
 
-        $method = $this->resource->getMethod('DELETE');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $record   = $this->parseRequest($method);
-        $response = $this->doDelete($record);
-
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onPatch()
+    public function onPatch(RequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->resource->hasMethod('PATCH')) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
-        }
+        $method  = $this->getMethod('PATCH', $request, $response);
+        $context = $this->newContext($request);
+        $record  = $this->parseRequest($request, $method);
+        $result  = $this->doPatch($record, $context);
 
-        $method = $this->resource->getMethod('PATCH');
-
-        // validate and assign query and path parameters
-        $this->pathParameters  = $this->parseParameters($this->uriFragments, $this->resource->getPathParameters());
-        $this->queryParameters = $this->parseParameters($this->request->getUri()->getParameters(), $method->getQueryParameters());
-
-        $record   = $this->parseRequest($method);
-        $response = $this->doPatch($record);
-
-        $this->sendResponse($method, $response);
+        $this->sendResponse($method, $request, $response, $result);
     }
 
-    public function onOptions()
+    public function onOptions(RequestInterface $request, ResponseInterface $response)
     {
         $methods = $this->getAllowedMethods();
 
-        $corsMethod = $this->getHeader('Access-Control-Request-Method');
+        $corsMethod = $request->getHeader('Access-Control-Request-Method');
         if (!empty($corsMethod)) {
-            $this->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
+            $response->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
         }
 
-        $this->setHeader('Allow', implode(', ', $methods));
-        $this->setResponseCode(200);
-        $this->setBody('');
+        $response->setHeader('Allow', implode(', ', $methods));
+        $response->setStatus(200);
+        $response->setBody(new StringStream(''));
     }
 
     public function getDocumentation($version = null)
     {
-        return $this->apiManager->getApi(get_class($this), $this->context->get(Context::KEY_PATH));
+        return $this->apiManager->getApi(get_class($this), $this->context->getPath());
     }
 
     /**
@@ -218,9 +157,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
+     * @param \PSX\Http\Environment\HttpContextInterface $context
      * @return mixed
      */
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
     }
 
@@ -230,9 +170,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
      * @param mixed $record
+     * @param \PSX\Http\Environment\HttpContextInterface $context
      * @return mixed
      */
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
     }
 
@@ -242,9 +183,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
      * @param mixed $record
+     * @param \PSX\Http\Environment\HttpContextInterface $context
      * @return mixed
      */
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
     }
 
@@ -254,9 +196,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @Exclude
      * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
      * @param mixed $record
+     * @param \PSX\Http\Environment\HttpContextInterface $context
      * @return mixed
      */
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
     }
 
@@ -266,26 +209,28 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @Exclude
      * @see https://tools.ietf.org/html/rfc5789#section-2
      * @param mixed $record
+     * @param \PSX\Http\Environment\HttpContextInterface $context
      * @return mixed
      */
-    protected function doPatch($record)
+    protected function doPatch($record, HttpContextInterface $context)
     {
     }
 
     /**
      * Imports the request data based on the schema if available
      *
+     * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Api\Resource\MethodAbstract $method
      * @return \PSX\Record\RecordInterface
      */
-    protected function parseRequest(MethodAbstract $method)
+    protected function parseRequest(RequestInterface $request, MethodAbstract $method)
     {
         if ($method->hasRequest()) {
             $schema = $method->getRequest();
             if ($schema instanceof Passthru) {
-                $data = $this->getBody();
+                $data = $this->requestReader->getBody($request);
             } elseif ($schema instanceof SchemaInterface) {
-                $data = $this->getBodyAs($method->getRequest(), $this->getValidator($method));
+                $data = $this->requestReader->getBodyAs($request, $method->getRequest(), $this->getValidator($method));
             } else {
                 $data = new Record();
             }
@@ -313,11 +258,29 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * the API returns 204 no content
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
-     * @param mixed $response
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
+     * @param mixed $result
      */
-    protected function sendResponse(MethodAbstract $method, $response)
+    protected function sendResponse(MethodAbstract $method, RequestInterface $request, ResponseInterface $response, $result)
     {
-        $statusCode = $this->response->getStatusCode();
+        if ($result instanceof HttpResponseInterface) {
+            $statusCode = $result->getStatusCode();
+            if (!empty($statusCode)) {
+                $response->setStatus($statusCode);
+            }
+
+            $headers = $result->getHeaders();
+            if (!empty($headers)) {
+                $response->setHeaders($headers);
+            }
+
+            $body = $result->getBody();
+        } else {
+            $body = $result;
+        }
+
+        $statusCode = $response->getStatusCode();
         if (empty($statusCode)) {
             // in case we have only one defined response use this code
             $responses = $method->getResponses();
@@ -326,18 +289,15 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             } else {
                 $statusCode = 200;
             }
+
+            $response->setStatus($statusCode);
         }
 
-        if (!GraphTraverser::isEmpty($response)) {
-            $this->setResponseCode($statusCode);
-            $this->setBody($response);
-        } elseif ($this->hasResponseWritten()) {
-            // in case a controller has manually set the response i.e. through
-            // setBody we only set the status code
-            $this->setResponseCode($statusCode);
+        if (!GraphTraverser::isEmpty($body)) {
+            $this->responseWriter->setBody($response, $body, $this->getWriterOptions($request));
         } else {
-            $this->setResponseCode(204);
-            $this->setBody('');
+            $response->setStatus(204);
+            $response->setBody(new StringStream(''));
         }
     }
 
@@ -348,98 +308,37 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      */
     protected function getResource()
     {
-        $resource = $this->resourceListing->getResource($this->context->get(Context::KEY_PATH), $this->context->get(Context::KEY_VERSION));
+        $resource = $this->resourceListing->getResource($this->context->getPath(), $this->context->getVersion());
 
         if (!$resource instanceof Resource) {
             throw new StatusCode\InternalServerErrorException('Resource is not available');
-        }
-
-        if ($resource->isActive()) {
-        } elseif ($resource->isDeprecated()) {
-            $this->response->addHeader('Warning', '199 PSX "Resource is deprecated"');
-        } elseif ($resource->isClosed()) {
-            throw new StatusCode\GoneException('Resource is not longer supported');
-        } elseif ($resource->isDevelopment()) {
-            $this->response->addHeader('Warning', '199 PSX "Resource is in development"');
         }
 
         return $resource;
     }
 
     /**
-     * @param array $data
-     * @param \PSX\Schema\PropertyInterface $property
-     * @return mixed
+     * @param string $methodName
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
+     * @return \PSX\Api\Resource\MethodAbstract
      */
-    private function parseParameters(array $data, PropertyInterface $property)
+    private function getMethod($methodName, RequestInterface $request, ResponseInterface $response)
     {
-        $traverser = new SchemaTraverser();
-
-        $data = $traverser->traverse(
-            $this->convertParameterTypes($data, $property),
-            new Schema($property)
-        );
-
-        return Record::fromStdClass($data);
-    }
-
-    /**
-     * @param array $parameters
-     * @param \PSX\Schema\PropertyInterface $property
-     * @return \stdClass
-     */
-    private function convertParameterTypes(array $parameters, PropertyInterface $property)
-    {
-        $data = new \stdClass();
-        $keys = [];
-
-        $properties = $property->getProperties();
-        if (!empty($properties)) {
-            foreach ($properties as $name => $property) {
-                if (isset($parameters[$name])) {
-                    $data->{$name} = $this->convertPropertyType($parameters[$name], $property);
-
-                    $keys[] = $name;
-                }
-            }
+        if (!$this->resource->hasMethod($methodName)) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
         }
 
-        $additionalProperties = $property->getAdditionalProperties();
-        if ($additionalProperties === true) {
-            $diff = array_diff(array_keys($parameters), $keys);
-            foreach ($diff as $name) {
-                $data->{$name} = $parameters[$name];
-            }
-        } elseif ($additionalProperties instanceof PropertyInterface) {
-            $diff = array_diff(array_keys($parameters), $keys);
-            foreach ($diff as $name) {
-                $this->convertPropertyType($parameters[$name], $additionalProperties);
-            }
+        if ($this->resource->isActive()) {
+        } elseif ($this->resource->isDeprecated()) {
+            $response->addHeader('Warning', '199 PSX "Resource is deprecated"');
+        } elseif ($this->resource->isClosed()) {
+            throw new StatusCode\GoneException('Resource is not longer supported');
+        } elseif ($this->resource->isDevelopment()) {
+            $response->addHeader('Warning', '199 PSX "Resource is in development"');
         }
 
-        return $data;
-    }
-
-    /**
-     * @param mixed $data
-     * @param \PSX\Schema\PropertyInterface $property
-     * @return mixed
-     */
-    private function convertPropertyType($data, PropertyInterface $property)
-    {
-        if ($property->getType() === PropertyType::TYPE_INTEGER) {
-            return (int) $data;
-        } elseif ($property->getType() === PropertyType::TYPE_NUMBER) {
-            return (float) $data;
-        } elseif ($property->getType() === PropertyType::TYPE_BOOLEAN) {
-            return (bool) $data;
-        } elseif ($property->getType() === PropertyType::TYPE_STRING) {
-            return (string) $data;
-        } elseif ($property->getType() === PropertyType::TYPE_NULL) {
-            return null;
-        } else {
-            return $data;
-        }
+        return $this->resource->getMethod($methodName);
     }
 
     /**
@@ -456,6 +355,18 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         return array_merge(
             $allowed,
             $methods
+        );
+    }
+
+    /**
+     * @param \PSX\Http\RequestInterface $request
+     * @return \PSX\Http\Environment\HttpContextInterface
+     */
+    private function newContext(RequestInterface $request)
+    {
+        return new HttpContext(
+            $request,
+            $this->context->getParameters()
         );
     }
 }

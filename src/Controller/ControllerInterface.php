@@ -20,6 +20,9 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
+
 /**
  * ControllerInterface
  *
@@ -35,42 +38,13 @@ interface ControllerInterface
     public function onLoad();
 
     /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
+     * @param \PSX\Http\RequestInterface
+     * @param \PSX\Http\ResponseInterface
      */
-    public function onGet();
-
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.2
-     */
-    public function onHead();
-
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
-     */
-    public function onPost();
-
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
-     */
-    public function onPut();
-
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
-     */
-    public function onDelete();
-
-    /**
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.7
-     */
-    public function onOptions();
-
-    /**
-     * @see https://tools.ietf.org/html/rfc5789#section-2
-     */
-    public function onPatch();
+    public function onRequest(RequestInterface $request, ResponseInterface $response);
 
     /**
      * Is called after the controller action was called
      */
-    public function processResponse();
+    public function onFinish();
 }

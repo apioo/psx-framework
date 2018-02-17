@@ -20,9 +20,6 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Data\WriterInterface;
-use PSX\Framework\Loader\Context;
-
 /**
  * ApiAbstract
  *
@@ -32,15 +29,4 @@ use PSX\Framework\Loader\Context;
  */
 abstract class ApiAbstract extends ControllerAbstract
 {
-    protected function getSupportedWriter()
-    {
-        return array_intersect($this->context->get(Context::KEY_SUPPORTED_WRITER), [
-            WriterInterface::ATOM,
-            WriterInterface::JSON,
-            WriterInterface::JSONP,
-            WriterInterface::JSONX,
-            WriterInterface::SOAP,
-            WriterInterface::XML,
-        ]);
-    }
 }

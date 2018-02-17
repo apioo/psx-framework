@@ -20,6 +20,9 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Framework\Http\Body;
+use PSX\Http\ResponseInterface;
+
 /**
  * ViewAbstract
  *
@@ -31,7 +34,19 @@ abstract class ViewAbstract extends ControllerAbstract
 {
     /**
      * @Inject
-     * @var \PSX\Framework\Template\TemplateInterface
+     * @var \PSX\Framework\Loader\ReverseRouter
      */
-    protected $template;
+    protected $reverseRouter;
+
+    /**
+     * @param \PSX\Http\ResponseInterface $response
+     * @param string $templateFile
+     * @param mixed $data
+     */
+    public function render(ResponseInterface $response, $templateFile, $data)
+    {
+        $body = new Body\Template($data, $templateFile, $this->reverseRouter);
+
+        $this->responseWriter->setBody($response, $body);
+    }
 }
