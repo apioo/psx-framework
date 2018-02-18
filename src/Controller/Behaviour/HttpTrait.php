@@ -181,8 +181,8 @@ trait HttpTrait
      * @param mixed $data
      * @param string $writerType
      */
-    protected function setBody($data, $writerType = null)
+    protected function setBody($data)
     {
-        $this->responseWriter->setBody($this->response, $data, $this->getWriterOptions($this->request, $writerType));
+        $this->responseWriter->setBody($this->response, $data, $this->request);
     }
 }
