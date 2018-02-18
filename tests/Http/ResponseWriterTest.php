@@ -20,14 +20,9 @@
 
 namespace PSX\Framework\Tests\Http;
 
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
-use PSX\Data\Configuration;
-use PSX\Data\Processor;
-use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Response;
-use PSX\Schema\SchemaManager;
 
 /**
  * ResponseWriterTest
