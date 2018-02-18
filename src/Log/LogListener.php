@@ -60,25 +60,20 @@ class LogListener implements EventSubscriberInterface
 
     public function onRouteMatched(RouteMatchedEvent $event)
     {
-        $request    = $event->getRequest();
-        $path       = $request->getUri()->getPath() ?: '/';
-        $controller = $event->getContext()->getSource();
+        $request = $event->getRequest();
+        $path    = $request->getUri()->getPath() ?: '/';
 
-        $this->logger->info('Route matched ' . $request->getMethod() . ' ' . $path . ' -> ' . $controller);
+        $this->logger->info('Route matched ' . $request->getMethod() . ' ' . $path);
     }
 
     public function onControllerExecute(ControllerExecuteEvent $event)
     {
-        $controller = get_class($event->getController());
-
-        $this->logger->info('Controller execute ' . $controller);
+        $this->logger->info('Controller execute');
     }
 
     public function onControllerProcessed(ControllerProcessedEvent $event)
     {
-        $controller = get_class($event->getController());
-
-        $this->logger->info('Controller processed ' . $controller);
+        $this->logger->info('Controller processed');
     }
 
     public function onResponseSend(ResponseSendEvent $event)

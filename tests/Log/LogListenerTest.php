@@ -71,7 +71,7 @@ class LogListenerTest extends ControllerTestCase
         $logger = $this->getLogger();
         $logger->expects($this->once())
             ->method('info')
-            ->with($this->equalTo('Route matched GET /foo.htm -> stdClass'));
+            ->with($this->equalTo('Route matched GET /foo.htm'));
 
         $context = new Context();
         $context->setSource(\stdClass::class);
@@ -88,7 +88,7 @@ class LogListenerTest extends ControllerTestCase
         $logger = $this->getLogger();
         $logger->expects($this->once())
             ->method('info')
-            ->with($this->equalTo('Controller execute ' . IndexController::class));
+            ->with($this->equalTo('Controller execute'));
 
         $context    = new Context();
         $request    = new Request(new Uri('/foo.htm'), 'GET');
@@ -105,7 +105,7 @@ class LogListenerTest extends ControllerTestCase
         $logger = $this->getLogger();
         $logger->expects($this->once())
             ->method('info')
-            ->with($this->equalTo('Controller processed ' . IndexController::class));
+            ->with($this->equalTo('Controller processed'));
 
         $context    = new Context();
         $request    = new Request(new Uri('/foo.htm'), 'GET');
