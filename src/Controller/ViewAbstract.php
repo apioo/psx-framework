@@ -24,7 +24,8 @@ use PSX\Framework\Http\Body;
 use PSX\Http\ResponseInterface;
 
 /**
- * ViewAbstract
+ * Controller which has helper methods to render a HTML view using a template
+ * engine
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
