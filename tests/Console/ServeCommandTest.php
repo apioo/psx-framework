@@ -20,10 +20,9 @@
 
 namespace PSX\Framework\Tests\Console;
 
-use PSX\Framework\Console\Reader\Stdin;
-use PSX\Framework\Dispatch\Sender\Memory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -60,7 +59,7 @@ XML;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doIndex'],
+            [['GET'], '/api', TestApiController::class],
         );
     }
 }
