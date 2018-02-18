@@ -120,8 +120,10 @@ class ControllerDocumentation implements ListingInterface
                 $context    = $this->newContext($route);
                 $controller = $this->newController($className, $context);
 
-                if ($controller instanceof DocumentedInterface) {
-                    return $controller->getDocumentation($version);
+                foreach ($controller as $con) {
+                    if ($con instanceof DocumentedInterface) {
+                        return $con->getDocumentation($version);
+                    }
                 }
             }
         }
@@ -147,7 +149,7 @@ class ControllerDocumentation implements ListingInterface
     /**
      * @param string $className
      * @param \PSX\Framework\Loader\Context $context
-     * @return \PSX\Framework\Controller\ControllerInterface
+     * @return mixed
      */
     protected function newController($className, Context $context)
     {

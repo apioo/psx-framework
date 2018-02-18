@@ -21,8 +21,7 @@
 namespace PSX\Framework\Controller\Proxy;
 
 use PSX\Api\DocumentedInterface;
-use PSX\Framework\Controller\ApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -36,7 +35,7 @@ use RuntimeException;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class VersionController extends ApiAbstract implements DocumentedInterface
+abstract class VersionController extends ControllerAbstract implements DocumentedInterface
 {
     const TYPE_ACCEPT = 0x1;
     const TYPE_URI    = 0x2;
@@ -98,7 +97,7 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
 
         $controller = $this->controllerFactory->getController($class, $this->context);
 
-        $this->loader->executeController($controller, $request, $response);
+        $this->loader->execute($controller, $request, $response);
     }
 
     public function getDocumentation($version = null)
@@ -114,8 +113,10 @@ abstract class VersionController extends ApiAbstract implements DocumentedInterf
 
         if (!empty($class)) {
             $controller = $this->controllerFactory->getController($class, $this->context);
-            if ($controller instanceof DocumentedInterface) {
-                return $controller->getDocumentation($version);
+            foreach ($controller as $con) {
+                if ($con instanceof DocumentedInterface) {
+                    return $con->getDocumentation($version);
+                }
             }
         }
 
