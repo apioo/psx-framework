@@ -24,7 +24,7 @@ use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Framework\Controller\Tool\DiscoveryController;
-use PSX\Framework\Controller\Tool\DocumentationController;
+use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Controller\Tool\RoutingController;
 use PSX\Framework\Test\ControllerTestCase;
 
@@ -82,8 +82,8 @@ JSON;
         return array(
             [['GET'], '/discovery', DiscoveryController::class],
             [['GET'], '/routing', RoutingController::class],
-            [['GET'], '/doc', DocumentationController::class . '::doIndex'],
-            [['GET'], '/doc/:version/*path', DocumentationController::class . '::doDetail'],
+            [['GET'], '/doc', Documentation\IndexController::class],
+            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
             [['GET'], '/openapi', OpenAPIController::class],
             [['GET'], '/swagger', SwaggerController::class],
             [['GET'], '/raml', RamlController::class],

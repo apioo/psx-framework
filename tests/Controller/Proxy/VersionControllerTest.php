@@ -22,6 +22,9 @@ namespace PSX\Framework\Tests\Controller\Proxy;
 
 use PSX\Framework\Controller\Proxy\VersionController;
 use PSX\Framework\Test\ControllerDbTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\Proxy\TestVersionAcceptController;
+use PSX\Framework\Tests\Controller\Foo\Application\Proxy\TestVersionHeaderController;
+use PSX\Framework\Tests\Controller\Foo\Application\Proxy\TestVersionUriController;
 use PSX\Json\Parser;
 
 /**
@@ -38,9 +41,9 @@ class VersionControllerTest extends ControllerDbTestCase
         return $this->createFlatXMLDataSet(__DIR__ . '/../../table_fixture.xml');
     }
 
-    public function testNoVersion()
+    public function testAcceptNoVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api/accept', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -80,7 +83,7 @@ JSON;
 
     public function testAcceptExplicitVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET', ['Accept' => 'application/vnd.psx.v1+json']);
+        $response = $this->sendRequest('/api/accept', 'GET', ['Accept' => 'application/vnd.psx.v1+json']);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -120,7 +123,7 @@ JSON;
 
     public function testAcceptInvalidVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET', ['Accept' => 'application/vnd.psx.v4+json']);
+        $response = $this->sendRequest('/api/accept', 'GET', ['Accept' => 'application/vnd.psx.v4+json']);
         $body     = (string) $response->getBody();
         $data     = Parser::decode($body);
 
@@ -129,9 +132,49 @@ JSON;
         $this->assertEquals('Version is not available', substr($data->message, 0, 24), $body);
     }
 
+    public function testUriNoVersion()
+    {
+        $response = $this->sendRequest('/api/uri/0', 'GET');
+        $body     = (string) $response->getBody();
+
+        $expect = <<<JSON
+{
+    "entry": [
+        {
+            "id": 4,
+            "userId": 3,
+            "title": "blub",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 3,
+            "userId": 2,
+            "title": "test",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "title": "bar",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 1,
+            "userId": 1,
+            "title": "foo",
+            "date": "2013-04-29T16:56:32Z"
+        }
+    ]
+}
+JSON;
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+    }
+
     public function testUriExplicitVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/1/api?version_type=' . VersionController::TYPE_URI, 'GET');
+        $response = $this->sendRequest('/api/uri/1', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -171,7 +214,7 @@ JSON;
 
     public function testUriInvalidVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/4/api?version_type=' . VersionController::TYPE_URI, 'GET');
+        $response = $this->sendRequest('/api/uri/4', 'GET');
         $body     = (string) $response->getBody();
         $data     = Parser::decode($body);
 
@@ -180,9 +223,49 @@ JSON;
         $this->assertEquals('Version is not available', substr($data->message, 0, 24), $body);
     }
 
+    public function testHeaderNoVersion()
+    {
+        $response = $this->sendRequest('/api/header', 'GET');
+        $body     = (string) $response->getBody();
+
+        $expect = <<<JSON
+{
+    "entry": [
+        {
+            "id": 4,
+            "userId": 3,
+            "title": "blub",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 3,
+            "userId": 2,
+            "title": "test",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "title": "bar",
+            "date": "2013-04-29T16:56:32Z"
+        },
+        {
+            "id": 1,
+            "userId": 1,
+            "title": "foo",
+            "date": "2013-04-29T16:56:32Z"
+        }
+    ]
+}
+JSON;
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
+    }
+
     public function testHeaderExplicitVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/1/api?version_type=' . VersionController::TYPE_HEADER, 'GET', ['Api-Version' => 1]);
+        $response = $this->sendRequest('/api/header', 'GET', ['Api-Version' => 1]);
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -222,7 +305,7 @@ JSON;
 
     public function testHeaderInvalidVersion()
     {
-        $response = $this->sendRequest('http://127.0.0.1/4/api?version_type=' . VersionController::TYPE_HEADER, 'GET', ['Api-Version' => 4]);
+        $response = $this->sendRequest('/api/header', 'GET', ['Api-Version' => 4]);
         $body     = (string) $response->getBody();
         $data     = Parser::decode($body);
 
@@ -234,8 +317,9 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\Proxy\TestVersionController'],
-            [['GET'], '/:version/api', 'PSX\Framework\Tests\Controller\Foo\Application\Proxy\TestVersionController'],
+            [['GET'], '/api/accept', TestVersionAcceptController::class],
+            [['GET'], '/api/header', TestVersionHeaderController::class],
+            [['GET'], '/api/uri/:version', TestVersionUriController::class],
         );
     }
 }

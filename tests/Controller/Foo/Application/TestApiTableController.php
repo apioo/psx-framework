@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Tests\TestTable;
 
 /**
  * TestApiTableController
@@ -46,19 +47,19 @@ class TestApiTableController extends ApiAbstract
     public function doAll()
     {
         $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getAll()
+            'entry' => $this->tableManager->getTable(TestTable::class)->getAll()
         ));
     }
 
     public function doRow()
     {
-        $this->setBody($this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getOneById(1));
+        $this->setBody($this->tableManager->getTable(TestTable::class)->getOneById(1));
     }
 
     public function doNested()
     {
         $this->setBody(array(
-            'entry' => $this->tableManager->getTable('PSX\Framework\Tests\TestTable')->getNestedResult()
+            'entry' => $this->tableManager->getTable(TestTable::class)->getNestedResult()
         ));
     }
 }

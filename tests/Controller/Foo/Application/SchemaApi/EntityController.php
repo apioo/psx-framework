@@ -22,8 +22,10 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\TestTable;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Record\RecordInterface;
 use PSX\Schema\Property;
 
@@ -50,45 +52,45 @@ class EntityController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
         $resource->addPathParameter(Property::getInteger('fooId'));
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
             ->addQueryParameter(Property::getInteger('startIndex'))
             ->addQueryParameter(Property::getInteger('count'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Collection')));
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Collection::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('PUT')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Update'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Update::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('DELETE')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Delete'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Delete::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         return $resource;
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
-        $this->testCase->assertEquals(12, $this->queryParameters->getProperty('startIndex'));
-        $this->testCase->assertEmpty($this->queryParameters->getProperty('bar'));
-        $this->testCase->assertEquals(8, $this->pathParameters->getProperty('fooId'));
-        $this->testCase->assertEmpty($this->pathParameters->getProperty('bar'));
+        $this->testCase->assertEquals(12, $context->getParameter('startIndex'));
+        $this->testCase->assertEmpty($context->getParameter('bar'));
+        $this->testCase->assertEquals(8, $context->getParameter('fooId'));
+        $this->testCase->assertEmpty($context->getParameter('bar'));
 
         return array(
-            'entry' => Environment::getService('table_manager')->getTable('PSX\Sql\TestTable')->getAll()
+            'entry' => Environment::getService('table_manager')->getTable(TestTable::class)->getAll()
         );
     }
 
-    protected function doPost(RecordInterface $record)
+    protected function doPost(RecordInterface $record, HttpContextInterface $context)
     {
     }
 
-    protected function doPut(RecordInterface $record)
+    protected function doPut(RecordInterface $record, HttpContextInterface $context)
     {
-        $this->testCase->assertEquals(8, $this->pathParameters->getProperty('fooId'));
-        $this->testCase->assertEmpty($this->pathParameters->getProperty('bar'));
+        $this->testCase->assertEquals(8, $context->getUriFragment('fooId'));
+        $this->testCase->assertEmpty($context->getUriFragment('bar'));
 
         $this->testCase->assertEquals(1, $record->getId());
         $this->testCase->assertEquals(3, $record->getUserId());
@@ -100,10 +102,10 @@ class EntityController extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete(RecordInterface $record)
+    protected function doDelete(RecordInterface $record, HttpContextInterface $context)
     {
-        $this->testCase->assertEquals(8, $this->pathParameters->getProperty('fooId'));
-        $this->testCase->assertEmpty($this->pathParameters->getProperty('bar'));
+        $this->testCase->assertEquals(8, $context->getUriFragment('fooId'));
+        $this->testCase->assertEmpty($context->getUriFragment('bar'));
 
         $this->testCase->assertEquals(1, $record->getId());
 

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * PropertyControllerTrait
@@ -37,14 +38,14 @@ trait PropertyControllerTrait
      */
     protected $testCase;
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
-        $this->testCase->assertEquals(1, $this->pathParameters->getProperty('id'));
+        $this->testCase->assertEquals(1, $context->getUriFragment('id'));
 
-        return PropertyTestCase::getDataByType($this->queryParameters->getProperty('type'));
+        return PropertyTestCase::getDataByType($context->getParameter('type'));
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         PropertyTestCase::assertRecord($this->testCase, $record);
 

@@ -22,7 +22,8 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Framework\Tests\Controller\Foo\Schema;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * NoResponseController
@@ -47,44 +48,44 @@ class NoResponseController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
 
         $resource->addMethod(Resource\Factory::getMethod('GET'));
 
         $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Create')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Create::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('PUT')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Update')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Update::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('DELETE')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Delete')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Delete::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('PATCH')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Patch')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Patch::class)));
 
         return $resource;
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(3, $record->userId);
         $this->testCase->assertEquals('test', $record->title);
         $this->testCase->assertInstanceOf('DateTime', $record->date);
     }
 
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);
         $this->testCase->assertEquals('foobar', $record->title);
     }
 
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
     }

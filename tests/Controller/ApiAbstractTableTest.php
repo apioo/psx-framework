@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerDbTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApiTable;
 
 /**
  * Tests the API controller in combination with the sql table. We simply return
@@ -40,7 +41,7 @@ class ApiAbstractTableTest extends ControllerDbTestCase
 
     public function testAll()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -79,7 +80,7 @@ JSON;
 
     public function testRow()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/row', 'GET');
+        $response = $this->sendRequest('/api/row', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -96,7 +97,7 @@ JSON;
 
     public function testNested()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/nested', 'GET');
+        $response = $this->sendRequest('/api/nested', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -144,9 +145,9 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiTableController::doAll'],
-            [['GET'], '/api/row', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiTableController::doRow'],
-            [['GET'], '/api/nested', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiTableController::doNested'],
+            [['GET'], '/api', TestApiTable\AllController::class],
+            [['GET'], '/api/row', TestApiTable\RowController::class],
+            [['GET'], '/api/nested', TestApiTable\NestedController::class],
         );
     }
 }

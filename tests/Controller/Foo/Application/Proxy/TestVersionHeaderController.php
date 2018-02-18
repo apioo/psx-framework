@@ -18,41 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
+namespace PSX\Framework\Tests\Controller\Foo\Application\Proxy;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Controller\Proxy\VersionController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 
 /**
- * RestrictMethodController
+ * TestVersionHeaderController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RestrictMethodController extends SchemaApiAbstract
+class TestVersionHeaderController extends VersionController
 {
-    /**
-     * @Inject
-     * @var \PHPUnit_Framework_TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation($version = null)
+    public function getVersions()
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
-        $resource->addMethod(Resource\Factory::getMethod('DELETE'));
-
-        return $resource;
+        return [
+            1 => TestSchemaApiController::class,
+            2 => TestSchemaApiV2Controller::class,
+        ];
     }
 
-    protected function doGet(HttpContextInterface $context)
+    protected function getVersionType()
     {
-        return array(
-            'foo' => 'bar'
-        );
+        return self::TYPE_HEADER;
     }
 }
+

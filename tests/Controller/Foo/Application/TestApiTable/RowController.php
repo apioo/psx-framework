@@ -18,24 +18,21 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestApiTable;
 
-use PSX\Data\Validator\Property;
-use PSX\Data\Validator\Validator;
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Framework\Tests\Controller\Foo\Schema\NestedEntry;
-use PSX\Record\RecordInterface;
-use PSX\Validate\Filter;
-use PSX\Validate\Validate;
+use PSX\Framework\Tests\TestTable;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
- * TestApiValidateController
+ * RowController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiValidateController extends ApiAbstract
+class RowController extends ApiAbstract
 {
     /**
      * @Inject
@@ -45,31 +42,14 @@ class TestApiValidateController extends ApiAbstract
 
     /**
      * @Inject
-     * @var \PSX\Schema\SchemaManager
+     * @var \PSX\Sql\TableManager
      */
-    protected $schemaManager;
+    protected $tableManager;
 
-    public function doIndex()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $this->setBody([
-            'foo' => 'bar'
-        ]);
-    }
+        $data = $this->tableManager->getTable(TestTable::class)->getOneById(1);
 
-    public function doInsert()
-    {
-        $schema    = $this->schemaManager->getSchema(NestedEntry::class);
-        $validator = new Validator([
-            new Property('/title', Validate::TYPE_STRING, [new Filter\Length(3, 8)]),
-            new Property('/author/name', Validate::TYPE_STRING, [new Filter\Length(3, 8)]),
-        ]);
-
-        $data = $this->getBodyAs($schema, $validator);
-
-        $this->testCase->assertInstanceOf(RecordInterface::class, $data);
-
-        $this->setBody([
-            'success' => true,
-        ]);
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 }

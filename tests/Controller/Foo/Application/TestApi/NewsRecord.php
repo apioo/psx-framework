@@ -18,38 +18,46 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\Proxy;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
-use PSX\Framework\Controller\Proxy\VersionController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
+use PSX\Record\RecordObject;
 
 /**
- * TestVersionController
+ * NewsRecord
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestVersionController extends VersionController
+class NewsRecord extends RecordObject
 {
-    public function getVersions()
+    protected $title;
+    protected $user;
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
     {
-        return [
-            1 => TestSchemaApiController::class,
-            2 => TestSchemaApiV2Controller::class,
-        ];
+        $this->title = $title;
     }
 
-    protected function getVersionType()
+    public function getTitle()
     {
-        $type = (int) $this->getParameter("version_type");
+        return $this->title;
+    }
 
-        if (empty($type)) {
-            return parent::getVersionType();
-        } else {
-            return $type;
-        }
+    /**
+     * @param string $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 }
 

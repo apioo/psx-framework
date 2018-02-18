@@ -37,6 +37,6 @@ class PropertyRamlController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        return Parser\Raml::fromFile(__DIR__ . '/../../Resource/raml.yaml', $this->context->get(Context::KEY_PATH));
+        return Parser\Raml::fromFile(__DIR__ . '/../../Resource/raml.yaml', $this->context->getPath());
     }
 }

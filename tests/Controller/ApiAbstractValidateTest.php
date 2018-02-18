@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
 /**
  * ApiAbstractValidateTest
@@ -33,7 +34,7 @@ class ApiAbstractValidateTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -49,9 +50,8 @@ JSON;
     public function testInsert()
     {
         $body     = json_encode(['title' => 'foo', 'author' => ['name' => 'bar']]);
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $body);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $body);
         $body     = (string) $response->getBody();
-        $body     = self::normalizeExceptionResponse($body);
 
         $expect = <<<'JSON'
 {
@@ -66,7 +66,7 @@ JSON;
     public function testInsertInvalidTitle()
     {
         $body     = json_encode(['title' => 'foofoofoo']);
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $body);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $body);
         $body     = (string) $response->getBody();
         $body     = self::normalizeExceptionResponse($body);
 
@@ -87,7 +87,7 @@ JSON;
     public function testInsertInvalidAuthorName()
     {
         $body     = json_encode(['author' => ['name' => 'foofoofoo']]);
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], $body);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], $body);
         $body     = (string) $response->getBody();
         $body     = self::normalizeExceptionResponse($body);
 
@@ -108,8 +108,7 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiValidateController::doIndex'],
-            [['POST'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiValidateController::doInsert'],
+            [['GET', 'POST'], '/api', TestApi\ValidateController::class],
         );
     }
 }

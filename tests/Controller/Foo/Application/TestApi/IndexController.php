@@ -18,41 +18,26 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Controller\ApiAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
+use PSX\Record\Record;
 
 /**
- * RestrictMethodController
+ * IndexController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RestrictMethodController extends SchemaApiAbstract
+class IndexController extends ApiAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit_Framework_TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation($version = null)
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $data = new Record('foo', ['bar' => 'foo']);
 
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
-        $resource->addMethod(Resource\Factory::getMethod('DELETE'));
-
-        return $resource;
-    }
-
-    protected function doGet(HttpContextInterface $context)
-    {
-        return array(
-            'foo' => 'bar'
-        );
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 }

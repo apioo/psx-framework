@@ -21,6 +21,12 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\FilterController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\IndexController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\InspectController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\MethodsController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\SetBodyController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestController\SupportedWriterController;
 use PSX\Json\Parser;
 
 /**
@@ -34,7 +40,7 @@ class ControllerAbstractTest extends ControllerTestCase
 {
     public function testNormalRequest()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller', 'GET');
+        $response = $this->sendRequest('/controller', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -45,11 +51,11 @@ class ControllerAbstractTest extends ControllerTestCase
     {
         $data = json_encode(array(
             'foo' => 'bar',
-            'bar' => array('foo' => 'nested'),
-            'entries' => array(array('title' => 'bar'), array('title' => 'foo')),
+            'bar' => ['foo' => 'nested'],
+            'entries' => [['title' => 'bar'], ['title' => 'foo']],
         ));
 
-        $response = $this->sendRequest('http://127.0.0.1/controller/inspect?foo=bar', 'POST', [
+        $response = $this->sendRequest('/controller/inspect?foo=bar', 'POST', [
             'Content-Type' => 'application/json',
             'Accept'       => 'application/json'
         ], $data);
@@ -60,56 +66,9 @@ class ControllerAbstractTest extends ControllerTestCase
         $this->assertJsonStringEqualsJsonString('{"bar": "foo"}', $body, $body);
     }
 
-    public function testForward()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/forward', 'GET');
-        $body     = (string) $response->getBody();
-
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString('{"foo": "bar"}', $body, $body);
-    }
-
-    public function testForwardInvalid()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/forward_invalid', 'GET');
-        $body     = (string) $response->getBody();
-        $data     = Parser::decode($body, true);
-
-        $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertArrayHasKey('success', $data);
-        $this->assertArrayHasKey('title', $data);
-        $this->assertEquals(false, $data['success']);
-        $this->assertEquals('RuntimeException', $data['title']);
-        $this->assertEquals('Could not find route for source Foo\Bar', substr($data['message'], 0, 39));
-    }
-
-    public function testRedirect()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/redirect', 'GET');
-
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('/redirect/bar', substr($response->getHeader('Location'), -13));
-    }
-
-    public function testRedirectAbsoluteString()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/absolute/string', 'GET');
-
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('http://localhost.com/foobar', $response->getHeader('Location'));
-    }
-
-    public function testRedirectAbsoluteObject()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/absolute/object', 'GET');
-
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('http://localhost.com/foobar', $response->getHeader('Location'));
-    }
-
     public function testSetArrayBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/array', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=array', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -123,7 +82,7 @@ JSON;
 
     public function testSetStdClassBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/stdClass', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=stdclass', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -137,7 +96,7 @@ JSON;
 
     public function testSetRecordBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/record', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=record', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -151,7 +110,7 @@ JSON;
 
     public function testSetDomDocumentBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/dom', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=dom', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<XML
@@ -166,7 +125,7 @@ XML;
 
     public function testSetSimpleXmlBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/simplexml', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=simplexml', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<XML
@@ -181,7 +140,7 @@ XML;
 
     public function testSetStringBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/string', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=string', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<TEXT
@@ -194,7 +153,7 @@ TEXT;
 
     public function testSetStreamBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/file', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=stream', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -204,7 +163,7 @@ TEXT;
 
     public function testSetBodyBody()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/body', 'GET');
+        $response = $this->sendRequest('/controller/setbody?type=body', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -213,29 +172,15 @@ TEXT;
     }
 
     /**
-     * In case the controller calls the setBody method multiple times only the
-     * first call gets written as response since the response gets appendend
-     * which would probably produce an invalid output
-     */
-    public function testSetDoubleBody()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/controller/double_body', 'GET');
-        $body     = (string) $response->getBody();
-
-        $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertEquals('foo', $body, $body);
-    }
-
-    /**
      * @dataProvider requestMethodProvider
      */
     public function testAllRequestMethods($requestMethod)
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/methods', $requestMethod);
+        $response = $this->sendRequest('/controller/methods', $requestMethod);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertEquals('foobar', $body, $body);
+        $this->assertEquals($requestMethod, $body, $body);
     }
 
     public function requestMethodProvider()
@@ -252,9 +197,18 @@ TEXT;
         );
     }
 
+    public function testFilter()
+    {
+        $response = $this->sendRequest('/controller/filter', 'GET');
+        $body     = (string) $response->getBody();
+
+        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals('foobar', $body, $body);
+    }
+
     public function testUnknownLocation()
     {
-        $response = $this->sendRequest('http://127.0.0.1/controller/foobar', 'GET');
+        $response = $this->sendRequest('/controller/foobar', 'GET');
         $body     = (string) $response->getBody();
         $data     = Parser::decode($body, true);
 
@@ -265,30 +219,30 @@ TEXT;
         $this->assertEquals('PSX\Framework\Loader\InvalidPathException', $data['title']);
     }
 
+    public function testSupportedWriter()
+    {
+        $response = $this->sendRequest('/controller/supported_writer', 'GET');
+        $body     = (string) $response->getBody();
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<record type="object">
+ <foo type="string">bar</foo>
+</record>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $body, $body);
+    }
+
     protected function getPaths()
     {
         return array(
-            [['GET'], '/controller', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doIndex'],
-            [['POST'], '/controller/inspect', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doInspect'],
-            [['GET'], '/controller/forward', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doForward'],
-            [['GET'], '/controller/forward_invalid', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doForwardInvalidRoute'],
-            [['GET'], '/controller/redirect', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doRedirect'],
-            [['GET'], '/controller/absolute/string', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doRedirectAbsoluteString'],
-            [['GET'], '/controller/absolute/object', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doRedirectAbsoluteObject'],
-            [['GET'], '/controller/array', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetArrayBody'],
-            [['GET'], '/controller/stdClass', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetStdClassBody'],
-            [['GET'], '/controller/record', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetRecordBody'],
-            [['GET'], '/controller/dom', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetDomDocumentBody'],
-            [['GET'], '/controller/simplexml', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetSimpleXmlBody'],
-            [['GET'], '/controller/string', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetStringBody'],
-            [['GET'], '/controller/file', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetStreamBody'],
-            [['GET'], '/controller/body', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetBodyBody'],
-            [['GET'], '/controller/double_body', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doSetDoubleBody'],
-            [['GET'], '/redirect/:foo', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doRedirectDestiniation'],
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doIndex'],
-            [['GET'], '/api/insert', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doInsert'],
-            [['GET'], '/api/inspect', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doInspect'],
-            [['DELETE','GET','HEAD','OPTIONS','POST','PUT','TRACE','PROPFIND'], '/controller/methods', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doIndex'],
+            [['GET'], '/controller', IndexController::class],
+            [['POST'], '/controller/inspect', InspectController::class],
+            [['GET'], '/controller/setbody', SetBodyController::class],
+            [['ANY'], '/controller/methods', MethodsController::class],
+            [['GET'], '/controller/filter', FilterController::class],
+            [['GET'], '/controller/supported_writer', SupportedWriterController::class],
         );
     }
 }

@@ -18,47 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Tests\Controller\Foo\Application\Proxy;
 
-use PSX\Data\WriterInterface;
-use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Framework\Controller\Proxy\VersionController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 
 /**
- * TestSupportedWriterController
+ * TestVersionUriController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestSupportedWriterController extends ControllerAbstract
+class TestVersionUriController extends VersionController
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\Loader
-     */
-    protected $loader;
-
-    public function doIndex()
+    public function getVersions()
     {
-        $this->setBody([
-            'foo' => 'bar'
-        ]);
+        return [
+            1 => TestSchemaApiController::class,
+            2 => TestSchemaApiV2Controller::class,
+        ];
     }
 
-    public function doForward()
+    protected function getVersionType()
     {
-        // forwards the request to another controller which then must have the
-        // same supported writer as this controller
-        $this->forward('PSX\Framework\Tests\Controller\Foo\Application\TestController::doInheritSupportedWriter');
-    }
-
-    public function doError()
-    {
-        throw new \Exception('foo');
-    }
-
-    protected function getSupportedWriter()
-    {
-        return [WriterInterface::XML];
+        return self::TYPE_URI;
     }
 }
+

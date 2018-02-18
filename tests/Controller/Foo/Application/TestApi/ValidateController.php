@@ -18,24 +18,26 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
-use PSX\Data\Validator\Property;
-use PSX\Data\Validator\Validator;
 use PSX\Framework\Controller\ApiAbstract;
 use PSX\Framework\Tests\Controller\Foo\Schema\NestedEntry;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Record\RecordInterface;
+use PSX\Data\Validator\Property;
+use PSX\Data\Validator\Validator;
 use PSX\Validate\Filter;
 use PSX\Validate\Validate;
 
 /**
- * TestApiValidateController
+ * ValidateController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiValidateController extends ApiAbstract
+class ValidateController extends ApiAbstract
 {
     /**
      * @Inject
@@ -49,14 +51,16 @@ class TestApiValidateController extends ApiAbstract
      */
     protected $schemaManager;
 
-    public function doIndex()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $this->setBody([
+        $data = [
             'foo' => 'bar'
-        ]);
+        ];
+
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 
-    public function doInsert()
+    public function onPost(RequestInterface $request, ResponseInterface $response)
     {
         $schema    = $this->schemaManager->getSchema(NestedEntry::class);
         $validator = new Validator([
@@ -64,12 +68,14 @@ class TestApiValidateController extends ApiAbstract
             new Property('/author/name', Validate::TYPE_STRING, [new Filter\Length(3, 8)]),
         ]);
 
-        $data = $this->getBodyAs($schema, $validator);
+        $data = $this->requestReader->getBodyAs($request, $schema, $validator);
 
         $this->testCase->assertInstanceOf(RecordInterface::class, $data);
 
-        $this->setBody([
+        $data = [
             'success' => true,
-        ]);
+        ];
+
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 }

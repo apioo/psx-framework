@@ -24,7 +24,10 @@ use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\TestTable;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Schema\Property;
+use PSX\Framework\Tests\Controller\Foo\Schema;
 
 /**
  * TestSchemaApiController
@@ -49,7 +52,7 @@ class TestSchemaApiController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
         $resource->setTitle('foo');
         $resource->setDescription('lorem ipsum');
 
@@ -71,35 +74,35 @@ class TestSchemaApiController extends SchemaApiAbstract
             ->addQueryParameter('boolean', Property::getBoolean())
             ->addQueryParameter('date', Property::getDate())
             ->addQueryParameter('datetime', Property::getDateTime())
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Collection')));
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Collection::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Create'))
-            ->addResponse(201, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Create::class))
+            ->addResponse(201, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('PUT')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Update'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Update::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('DELETE')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Delete'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Delete::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         $resource->addMethod(Resource\Factory::getMethod('PATCH')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Patch'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\SuccessMessage')));
+            ->setRequest($this->schemaManager->getSchema(Schema\Patch::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
 
         return $resource;
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return array(
-            'entry' => Environment::getService('table_manager')->getTable('PSX\Framework\Tests\TestTable')->getAll()
+            'entry' => Environment::getService('table_manager')->getTable(TestTable::class)->getAll()
         );
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(3, $record->userId);
         $this->testCase->assertEquals('test', $record->title);
@@ -111,7 +114,7 @@ class TestSchemaApiController extends SchemaApiAbstract
         );
     }
 
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);
@@ -123,7 +126,7 @@ class TestSchemaApiController extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
 
@@ -133,7 +136,7 @@ class TestSchemaApiController extends SchemaApiAbstract
         );
     }
 
-    protected function doPatch($record)
+    protected function doPatch($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);

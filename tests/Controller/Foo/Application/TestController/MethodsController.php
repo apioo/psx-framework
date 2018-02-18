@@ -18,20 +18,20 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
- * RestrictMethodController
+ * MethodsController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RestrictMethodController extends SchemaApiAbstract
+class MethodsController extends ControllerAbstract
 {
     /**
      * @Inject
@@ -39,20 +39,8 @@ class RestrictMethodController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
-        $resource->addMethod(Resource\Factory::getMethod('DELETE'));
-
-        return $resource;
-    }
-
-    protected function doGet(HttpContextInterface $context)
-    {
-        return array(
-            'foo' => 'bar'
-        );
+        $response->getBody()->write($request->getMethod());
     }
 }

@@ -18,41 +18,33 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
+namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Data\WriterInterface;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
- * RestrictMethodController
+ * SupportedWriterController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RestrictMethodController extends SchemaApiAbstract
+class SupportedWriterController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit_Framework_TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation($version = null)
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $data = [
+            'foo' => 'bar'
+        ];
 
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
-        $resource->addMethod(Resource\Factory::getMethod('DELETE'));
-
-        return $resource;
+        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
     }
 
-    protected function doGet(HttpContextInterface $context)
+    public function getSupportedWriter()
     {
-        return array(
-            'foo' => 'bar'
-        );
+        return [WriterInterface::XML];
     }
 }

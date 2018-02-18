@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
 /**
  * ApiAbstractTest
@@ -33,7 +34,7 @@ class ApiAbstractTest extends ControllerTestCase
 {
     public function testSetResponse()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -42,7 +43,7 @@ class ApiAbstractTest extends ControllerTestCase
 
     public function testImport()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/insert', 'POST', ['Content-Type' => 'application/json'], json_encode(['title' => 'foo', 'user' => 'bar']));
+        $response = $this->sendRequest('/api/insert', 'POST', ['Content-Type' => 'application/json'], json_encode(['title' => 'foo', 'user' => 'bar']));
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -51,7 +52,7 @@ class ApiAbstractTest extends ControllerTestCase
 
     public function testInnerApi()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/inspect?format=json&fields=foo,bar&updatedSince=2014-01-26&count=8&filterBy=id&filterOp=equals&filterValue=12&sortBy=id&sortOrder=desc&startIndex=4', 'GET');
+        $response = $this->sendRequest('/api/inspect?format=json&fields=foo,bar&updatedSince=2014-01-26&count=8&filterBy=id&filterOp=equals&filterValue=12&sortBy=id&sortOrder=desc&startIndex=4', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
@@ -60,9 +61,9 @@ class ApiAbstractTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
-            [['GET'], '/api', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doIndex'],
-            [['POST'], '/api/insert', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doInsert'],
-            [['GET'], '/api/inspect', 'PSX\Framework\Tests\Controller\Foo\Application\TestApiController::doInspect'],
+            [['GET'], '/api', TestApi\IndexController::class],
+            [['POST'], '/api/insert', TestApi\InspectController::class],
+            [['GET'], '/api/inspect', TestApi\InspectController::class],
         );
     }
 }

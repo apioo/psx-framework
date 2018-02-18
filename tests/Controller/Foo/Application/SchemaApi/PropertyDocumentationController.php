@@ -22,7 +22,7 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Schema\Property;
 
 /**
@@ -44,18 +44,18 @@ class PropertyDocumentationController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
 
         $resource->addPathParameter('id', Property::getInteger());
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
             ->addQueryParameter('type', Property::getInteger())
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Property'))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Property::class))
         );
 
         $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Property'))
-            ->addResponse(200, $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Property'))
+            ->setRequest($this->schemaManager->getSchema(Schema\Property::class))
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Property::class))
         );
 
         return $resource;

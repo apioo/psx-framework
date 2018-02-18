@@ -25,6 +25,7 @@ use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * PassthruController
@@ -44,7 +45,7 @@ class PassthruController extends SchemaApiAbstract
     /**
      * @Outgoing(code=200, schema="PSX\Framework\Schema\Passthru")
      */
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return [
             'any' => [
@@ -84,7 +85,7 @@ class PassthruController extends SchemaApiAbstract
      * @Incoming(schema="PSX\Framework\Schema\Passthru")
      * @Outgoing(code=200, schema="PSX\Framework\Schema\Passthru")
      */
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->testCase->assertInstanceOf('stdClass', $record->any);
         $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->any);

@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestView\IndexController;
 
 /**
  * ViewAbstractTest
@@ -32,9 +33,9 @@ use PSX\Framework\Test\Environment;
  */
 class ViewAbstractTest extends ControllerTestCase
 {
-    public function testAutomaticTemplateDetection()
+    public function testView()
     {
-        $response = $this->sendRequest('http://127.0.0.1/view', 'GET', ['Accept' => 'text/html']);
+        $response = $this->sendRequest('/view', 'GET', ['Accept' => 'text/html']);
         $body     = (string) $response->getBody();
         $data     = simplexml_load_string($body);
 
@@ -47,49 +48,13 @@ class ViewAbstractTest extends ControllerTestCase
         $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
         $this->assertEquals($base, $data->base);
         $this->assertTrue($render > 0);
-        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
-    }
-
-    public function testImplicitTemplate()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/view/detail', 'GET', ['Accept' => 'text/html']);
-        $data     = simplexml_load_string((string) $response->getBody());
-
-        $render = (float) $data->render;
-        $config = Environment::getService('config');
-        $base   = (string) parse_url($config['psx_url'], PHP_URL_PATH);
-
-        $this->assertEquals('bar', $data->foo);
-        $this->assertTrue(!empty($data->self));
-        $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
-        $this->assertEquals($base, $data->base);
-        $this->assertTrue($render > 0);
-        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
-    }
-
-    public function testExplicitTemplate()
-    {
-        $response = $this->sendRequest('http://127.0.0.1/view/explicit', 'GET', ['Accept' => 'text/html']);
-        $data     = simplexml_load_string((string) $response->getBody());
-
-        $render = (float) $data->render;
-        $config = Environment::getService('config');
-        $base   = (string) parse_url($config['psx_url'], PHP_URL_PATH);
-
-        $this->assertEquals('bar', $data->foo);
-        $this->assertTrue(!empty($data->self));
-        $this->assertEquals($config['psx_url'] . '/' . $config['psx_dispatch'], $data->url);
-        $this->assertEquals($base, $data->base);
-        $this->assertTrue($render > 0);
-        $this->assertEquals('tests/Controller/Foo/Resource', substr($data->location, -29));
+        $this->assertEquals('TestView/../../Resource/test_view', substr($data->location, -33));
     }
 
     protected function getPaths()
     {
         return array(
-            [['GET'], '/view', 'PSX\Framework\Tests\Controller\Foo\Application\TestViewController::doIndex'],
-            [['GET'], '/view/detail', 'PSX\Framework\Tests\Controller\Foo\Application\TestViewController::doDetail'],
-            [['GET'], '/view/explicit', 'PSX\Framework\Tests\Controller\Foo\Application\TestViewController::doExplicit'],
+            [['GET'], '/view', IndexController::class],
         );
     }
 }

@@ -18,36 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application;
+namespace PSX\Framework\Tests\Controller\Foo\Application\Proxy;
 
-use PSX\Framework\Controller\ErrorController;
-use PSX\Framework\DisplayException;
-use PSX\Framework\Loader\Context;
+use PSX\Framework\Controller\Proxy\VersionController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 
 /**
- * TestErrorController
+ * TestVersionAcceptController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestErrorController extends ErrorController
+class TestVersionAcceptController extends VersionController
 {
-    public function doError()
+    public function getVersions()
     {
-        try {
-            throw new \Exception('foo');
-        } catch (\Exception $e) {
-            $this->context->set(Context::KEY_EXCEPTION, $e);
-        }
+        return [
+            1 => TestSchemaApiController::class,
+            2 => TestSchemaApiV2Controller::class,
+        ];
     }
 
-    public function doDisplayError()
+    protected function getVersionType()
     {
-        try {
-            throw new DisplayException('foo');
-        } catch (\Exception $e) {
-            $this->context->set(Context::KEY_EXCEPTION, $e);
-        }
+        return self::TYPE_ACCEPT;
     }
 }
+

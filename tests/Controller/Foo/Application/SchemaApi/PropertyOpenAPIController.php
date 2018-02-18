@@ -37,6 +37,6 @@ class PropertyOpenAPIController extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        return Parser\OpenAPI::fromFile(__DIR__ . '/../../Resource/openapi.json', $this->context->get(Context::KEY_PATH));
+        return Parser\OpenAPI::fromFile(__DIR__ . '/../../Resource/openapi.json', $this->context->getPath());
     }
 }

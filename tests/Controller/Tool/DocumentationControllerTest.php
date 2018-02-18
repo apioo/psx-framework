@@ -23,7 +23,7 @@ namespace PSX\Framework\Tests\Controller\Tool;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Framework\Controller\Tool\DocumentationController;
+use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
 
@@ -274,8 +274,8 @@ JSON;
     protected function getPaths()
     {
         return array(
-            [['GET'], '/doc', DocumentationController::class . '::doIndex'],
-            [['GET'], '/doc/:version/*path', DocumentationController::class . '::doDetail'],
+            [['GET'], '/doc', Documentation\IndexController::class],
+            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
             [['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/api', TestSchemaApiController::class],
             [['GET'], '/openapi', OpenAPIController::class],
             [['GET'], '/swagger', SwaggerController::class],

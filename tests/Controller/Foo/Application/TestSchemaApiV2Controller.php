@@ -22,8 +22,10 @@ namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Resource;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo;
+use PSX\Framework\Tests\TestTable;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Schema\Schema;
 
 /**
@@ -49,9 +51,9 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
 
     public function getDocumentation($version = null)
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->get(Context::KEY_PATH));
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $schema = $this->schemaManager->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Collection');
+        $schema = $this->schemaManager->getSchema(Foo\Schema\Collection::class);
 
         // remove userId property so we have a different output
         $property = $schema->getDefinition();
@@ -63,14 +65,14 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         return $resource;
     }
 
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
         return array(
-            'entry' => Environment::getService('table_manager')->getTable('PSX\Framework\Tests\TestTable')->getAll()
+            'entry' => Environment::getService('table_manager')->getTable(TestTable::class)->getAll()
         );
     }
 
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(3, $record->userId);
         $this->testCase->assertEquals('test', $record->title);
@@ -82,7 +84,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doPut($record)
+    protected function doPut($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);
@@ -94,7 +96,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete($record)
+    protected function doDelete($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
 
@@ -104,7 +106,7 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
         );
     }
 
-    protected function doPatch($record)
+    protected function doPatch($record, HttpContextInterface $context)
     {
         $this->testCase->assertEquals(1, $record->id);
         $this->testCase->assertEquals(3, $record->userId);

@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * PropertyAnnotationController
@@ -39,18 +40,18 @@ class PropertyAnnotationController extends SchemaApiAbstract
      * @QueryParam(name="type", type="integer")
      * @Outgoing(code=200, schema="../../Resource/property.json")
      */
-    protected function doGet()
+    protected function doGet(HttpContextInterface $context)
     {
-        $this->testCase->assertEquals(1, $this->pathParameters->getProperty('id'));
+        $this->testCase->assertEquals(1, $context->getUriFragment('id'));
 
-        return PropertyTestCase::getDataByType($this->queryParameters->getProperty('type'));
+        return PropertyTestCase::getDataByType($context->getParameter('type'));
     }
 
     /**
      * @Incoming(schema="../../Resource/property.json")
      * @Outgoing(code=200, schema="../../Resource/property.json")
      */
-    protected function doPost($record)
+    protected function doPost($record, HttpContextInterface $context)
     {
         PropertyTestCase::assertRecord($this->testCase, $record);
 
