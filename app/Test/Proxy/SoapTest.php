@@ -33,7 +33,7 @@ class SoapTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/proxy/soap', 'GET', ['SOAPAction' => '/population/popo/2#GET']);
+        $response = $this->sendRequest('/proxy/soap', 'GET', ['SOAPAction' => '/population/popo/2#GET', 'Accept' => 'application/soap+xml']);
 
         $actual = (string) $response->getBody();
         $actual = preg_replace('/<faultstring>(.*)<\/faultstring>/imsU', '<faultstring>[faultstring]</faultstring>', $actual);
