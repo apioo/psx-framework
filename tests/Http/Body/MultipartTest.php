@@ -20,9 +20,6 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
-use PSX\Framework\Http\Body\Body;
-use PSX\Framework\Http\Body\File;
-use PSX\Framework\Http\Body\Json;
 use PSX\Framework\Http\Body\Multipart;
 use PSX\Http\Response;
 

@@ -21,8 +21,8 @@
 namespace PSX\Framework\Http\Body;
 
 use PSX\Http\Http;
+use PSX\Http\Parser\ResponseParser;
 use PSX\Http\ResponseInterface;
-use PSX\Http\ResponseParser;
 
 /**
  * Multipart
