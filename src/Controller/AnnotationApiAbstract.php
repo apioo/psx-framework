@@ -24,6 +24,9 @@ namespace PSX\Framework\Controller;
  * Controller which reads the schema specifications based on the method 
  * annotations.
  *
+ * This class is deprecated it is recommended to extend directly from the
+ * SchemaApiAbstract class. This class may be removed in future releases
+ * 
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org

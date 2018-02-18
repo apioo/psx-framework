@@ -23,9 +23,13 @@ namespace PSX\Framework\Controller;
 /**
  * ApiAbstract
  *
+ * This class is deprecated it is recommended to extend directly from the
+ * ControllerAbstract class. This class may be removed in future releases
+
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
 abstract class ApiAbstract extends ControllerAbstract
 {
