@@ -89,14 +89,14 @@
         "GET"
       ],
       "path": "\/tool\/doc",
-      "source": "PSX\\Framework\\Controller\\Tool\\DocumentationController::doIndex"
+      "source": "PSX\\Framework\\Controller\\Tool\\Documentation\\IndexController"
     },
     {
       "methods": [
         "GET"
       ],
       "path": "\/tool\/doc\/:version\/*path",
-      "source": "PSX\\Framework\\Controller\\Tool\\DocumentationController::doDetail"
+      "source": "PSX\\Framework\\Controller\\Tool\\Documentation\\DetailController"
     },
     {
       "methods": [
