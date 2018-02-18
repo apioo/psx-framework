@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
-use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Event\ContextInterface;
 use PSX\Framework\Event\ControllerExecuteEvent;
 use PSX\Framework\Event\ControllerProcessedEvent;
