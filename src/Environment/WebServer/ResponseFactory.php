@@ -20,9 +20,6 @@
 
 namespace PSX\Framework\Environment\WebServer;
 
-use PSX\Http\Response;
-use PSX\Http\Stream\TempStream;
-
 /**
  * ResponseFactory
  *
@@ -30,32 +27,6 @@ use PSX\Http\Stream\TempStream;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ResponseFactory implements ResponseFactoryInterface
+class ResponseFactory extends \PSX\Http\Server\ResponseFactory
 {
-    /**
-     * @var array
-     */
-    protected $server;
-
-    /**
-     * @param array|null $server
-     */
-    public function __construct(array $server = null)
-    {
-        $this->server = $server === null ? $_SERVER : $server;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function createResponse()
-    {
-        $protocol = isset($this->server['SERVER_PROTOCOL']) ? $this->server['SERVER_PROTOCOL'] : 'HTTP/1.1';
-        $response = new Response();
-        $response->setProtocolVersion($protocol);
-        $response->setHeader('X-Powered-By', 'psx');
-        $response->setBody(new TempStream(fopen('php://temp', 'r+')));
-
-        return $response;
-    }
 }
