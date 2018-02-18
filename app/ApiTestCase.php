@@ -70,8 +70,8 @@ class ApiTestCase extends ControllerDbTestCase
 
             [['GET'], '/tool', Tool\DefaultController::class],
             [['GET'], '/tool/discovery', Tool\DiscoveryController::class],
-            [['GET'], '/tool/doc', Tool\DocumentationController::class . '::doIndex'],
-            [['GET'], '/tool/doc/:version/*path', Tool\DocumentationController::class . '::doDetail'],
+            [['GET'], '/tool/doc', Tool\Documentation\IndexController::class . '::doIndex'],
+            [['GET'], '/tool/doc/:version/*path', Tool\Documentation\DetailController::class . '::doDetail'],
             [['GET'], '/tool/routing', Tool\RoutingController::class],
 
             [['GET'], '/generator/raml/:version/*path', Generator\RamlController::class],
