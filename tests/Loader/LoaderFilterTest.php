@@ -20,39 +20,24 @@
 
 namespace PSX\Framework\Tests\Loader;
 
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\FilterChainInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
 /**
- * FilterController
+ * LoaderFilterTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FilterController extends ControllerAbstract
+class LoaderFilterTest implements FilterInterface
 {
-    public function getPreFilter()
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
     {
-        return [
-            function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-                $request->setAttribute('pre_filter', true);
+        $response->addHeader('X-Middleware', __CLASS__);
 
-                $filterChain->handle($request, $response);
-            },
-        ];
-    }
-
-    public function getPostFilter()
-    {
-        return [
-            function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-                $request->setAttribute('post_filter', true);
-
-                $filterChain->handle($request, $response);
-            },
-        ];
+        $filterChain->handle($request, $response);
     }
 }

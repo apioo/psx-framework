@@ -22,8 +22,8 @@ namespace PSX\Framework\Tests\Loader;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
-use PSX\Http\Request;
-use PSX\Http\Response;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * ProbeController
@@ -36,18 +36,21 @@ class ProbeController extends ControllerAbstract
 {
     protected $methodsCalled = array();
 
-    public function __construct(Request $request, Response $response, Context $context)
+    public function __construct(Context $context)
     {
-        parent::__construct($request, $response, $context);
+        parent::__construct($context);
 
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function getStage()
+    /**
+     * @inheritdoc
+     */
+    public function getApplicationStack()
     {
         $this->methodsCalled[] = __METHOD__;
 
-        return parent::getStage();
+        return parent::getApplicationStack();
     }
 
     public function getPreFilter()
@@ -69,69 +72,49 @@ class ProbeController extends ControllerAbstract
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onGet()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    {
+        $this->methodsCalled[] = __METHOD__;
+
+        parent::onRequest($request, $response);
+    }
+
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onPost()
+    public function onHead(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onPut()
+    public function onPost(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onDelete()
+    public function onPut(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function processResponse()
-    {
-        $this->methodsCalled[] = __METHOD__;
-
-        return parent::processResponse();
-    }
-
-    public function doIndex()
+    public function onDelete(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function doShowDetails()
+    public function onOptions(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function doInsert()
+    public function onPatch(RequestInterface $request, ResponseInterface $response)
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function doInsertNested()
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function doUpdate()
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function doUpdateNested()
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function doDelete()
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function doDeleteNested()
+    public function onFinish()
     {
         $this->methodsCalled[] = __METHOD__;
     }

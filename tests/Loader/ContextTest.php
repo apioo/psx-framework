@@ -35,12 +35,19 @@ class ContextTest extends \PHPUnit_Framework_TestCase
     {
         $context = new Context();
 
-        $this->assertEquals(null, $context->get('foo'));
-        $this->assertFalse($context->has('foo'));
-
-        $context->set('foo', 'bar');
-
-        $this->assertEquals('bar', $context->get('foo'));
-        $this->assertTrue($context->has('foo'));
+        $context->setPath('/foo');
+        $context->setParameters(['foo' => 'bar']);
+        $context->setSource('foo');
+        $context->setSupportedWriter(['foo']);
+        $context->setException(new \InvalidArgumentException('foo'));
+        $context->setVersion('1');
+        
+        $this->assertEquals('/foo', $context->getPath());
+        $this->assertEquals(['foo' => 'bar'], $context->getParameters());
+        $this->assertEquals('bar', $context->getParameter('foo'));
+        $this->assertEquals('foo', $context->getSource());
+        $this->assertEquals(['foo'], $context->getSupportedWriter());
+        $this->assertInstanceOf(\InvalidArgumentException::class, $context->getException());
+        $this->assertEquals('1', $context->getVersion());
     }
 }
