@@ -40,11 +40,6 @@ class SupportedWriterController extends ControllerAbstract
             'foo' => 'bar'
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
-    }
-
-    public function getSupportedWriter()
-    {
-        return [WriterInterface::XML];
+        $this->responseWriter->setBody($response, $data, WriterInterface::XML);
     }
 }

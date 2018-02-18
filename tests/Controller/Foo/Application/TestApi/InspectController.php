@@ -65,6 +65,6 @@ class InspectController extends ApiAbstract
     {
         $record = $this->requestReader->getBodyAs($request, NewsRecord::class);
 
-        $this->responseWriter->setBody($response, $record, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $record, $request);
     }
 }

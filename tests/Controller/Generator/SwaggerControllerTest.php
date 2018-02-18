@@ -36,7 +36,7 @@ class SwaggerControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/swagger/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/swagger/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/swagger.json');
 
@@ -47,7 +47,7 @@ class SwaggerControllerTest extends ControllerTestCase
 
     public function testCollection()
     {
-        $response = $this->sendRequest('http://127.0.0.1/swagger/1/*', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/swagger/1/*', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
 

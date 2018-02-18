@@ -52,6 +52,6 @@ class NestedController extends ApiAbstract
             'entry' => $this->tableManager->getTable(TestTable::class)->getNestedResult()
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

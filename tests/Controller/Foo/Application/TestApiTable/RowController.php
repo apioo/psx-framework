@@ -50,6 +50,6 @@ class RowController extends ApiAbstract
     {
         $data = $this->tableManager->getTable(TestTable::class)->getOneById(1);
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

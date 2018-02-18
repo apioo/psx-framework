@@ -36,7 +36,7 @@ class RamlControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/raml/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/raml/1/api', 'GET', ['Accept' => 'application/json']);
         $raml     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/raml.yaml');
 
@@ -47,7 +47,7 @@ class RamlControllerTest extends ControllerTestCase
 
     public function testCollection()
     {
-        $response = $this->sendRequest('http://127.0.0.1/raml/1/*', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/raml/1/*', 'GET', ['Accept' => 'application/json']);
         $raml     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/raml_collection.yaml');
 

@@ -57,7 +57,7 @@ class ValidateController extends ApiAbstract
             'foo' => 'bar'
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 
     public function onPost(RequestInterface $request, ResponseInterface $response)
@@ -76,6 +76,6 @@ class ValidateController extends ApiAbstract
             'success' => true,
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

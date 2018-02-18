@@ -52,6 +52,6 @@ class AllController extends ApiAbstract
             'entry' => $this->tableManager->getTable(TestTable::class)->getAll()
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

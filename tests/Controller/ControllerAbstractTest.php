@@ -180,7 +180,12 @@ TEXT;
         $body     = (string) $response->getBody();
 
         $this->assertEquals(null, $response->getStatusCode(), $body);
-        $this->assertEquals($requestMethod, $body, $body);
+
+        if ($requestMethod == 'HEAD') {
+            $this->assertEmpty($body);
+        } else {
+            $this->assertEquals($requestMethod, $body, $body);
+        }
     }
 
     public function requestMethodProvider()

@@ -124,7 +124,7 @@ XML;
     {
         Environment::getService('config')->set('psx_debug', false);
 
-        $headers  = ['SOAPAction' => '/api#GET'];
+        $headers  = ['SOAPAction' => '/api#GET', 'Accept' => 'application/soap+xml'];
         $response = $this->sendRequest('http://127.0.0.1/soap', 'GET', $headers);
         $xml      = (string) $response->getBody();
 
@@ -149,7 +149,7 @@ XML;
     {
         Environment::getService('config')->set('psx_debug', false);
 
-        $headers  = ['SOAPAction' => '/api#FOO'];
+        $headers  = ['SOAPAction' => '/api#FOO', 'Accept' => 'application/soap+xml'];
         $response = $this->sendRequest('http://127.0.0.1/soap', 'POST', $headers);
         $xml      = (string) $response->getBody();
 

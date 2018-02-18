@@ -87,6 +87,6 @@ class SetBodyController extends ControllerAbstract
                 break;
         }
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

@@ -38,6 +38,6 @@ class IndexController extends ApiAbstract
     {
         $data = new Record('foo', ['bar' => 'foo']);
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 }

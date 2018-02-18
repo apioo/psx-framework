@@ -112,10 +112,7 @@ class InspectController extends ControllerAbstract
         // set response
         $record = new Record('foo', array('bar' => 'foo'));
 
-        $this->responseWriter->setBody($response, $record, $this->getWriterOptions($request));
-
-        // get supported writer
-        $this->testCase->assertEquals(null, $this->getSupportedWriter());
+        $this->responseWriter->setBody($response, $record, $request);
 
         // test properties
         $this->testCase->assertInstanceOf(Context::class, $this->context);
