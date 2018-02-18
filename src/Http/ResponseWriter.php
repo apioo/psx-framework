@@ -23,7 +23,7 @@ namespace PSX\Framework\Http;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Http\ResponseInterface;
-use PSX\Http\Stream\FileStream;
+use PSX\Http\Stream\StringStream;
 use PSX\Http\StreamInterface;
 
 /**
@@ -62,19 +62,14 @@ class ResponseWriter
         } elseif ($data instanceof \SimpleXMLElement) {
             $data = new Body\Xml($data);
         } elseif ($data instanceof StreamInterface) {
-            if ($data instanceof FileStream) {
-                trigger_error('Use of the FileStream is deprecated please use the PSX\Framework\Http\Body\File wrapper', E_USER_DEPRECATED);
-
-                $response->setHeader('Content-Type', $data->getContentType());
-                $response->setHeader('Content-Disposition', 'attachment; filename="' . addcslashes($data->getFileName(), '"') . '"');
-
-                $data = new Body\Body($data->getContents());
-            } else {
-                $data = new Body\Stream($data);
-            }
+            $data = new Body\Stream($data);
         } elseif (is_string($data)) {
             $data = new Body\Body($data);
         }
+
+        // set new response body since we want to discard every data which was
+        // written before because this could corrupt our output format
+        $response->setBody(new StringStream());
 
         if ($data instanceof Body\BodyInterface) {
             $data->writeTo($response);
