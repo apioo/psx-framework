@@ -20,13 +20,12 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Data\Writer;
-use PSX\Data\WriterInterface;
-use PSX\Framework\ApplicationStackInterface;
-use PSX\Framework\Http\WriterOptions;
 use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContext;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\FilterChainInterface;
+use PSX\Http\FilterCollectionInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -37,7 +36,7 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ControllerAbstract implements ControllerInterface, ApplicationStackInterface
+abstract class ControllerAbstract implements FilterInterface, FilterCollectionInterface
 {
     use Behaviour\HttpTrait;
     use Behaviour\RedirectTrait;
@@ -89,29 +88,19 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     public function __construct(Context $context = null)
     {
         $this->context      = $context ?? new Context();
-        $this->uriFragments = $context->getParameters();
+        $this->uriFragments = $this->context->getParameters();
     }
 
     /**
      * @inheritdoc
      */
-    public function getApplicationStack()
+    public function getIterator()
     {
-        $controller = function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-            $this->setState($request, $response);
-
-            $this->onLoad();
-            $this->onRequest($request, $response);
-            $this->onFinish();
-
-            $filterChain->handle($request, $response);
-        };
-
-        return array_merge(
+        return new \ArrayIterator(array_merge(
             $this->getPreFilter(),
-            [$controller],
+            [$this],
             $this->getPostFilter()
-        );
+        ));
     }
 
     /**
@@ -133,6 +122,22 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     /**
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
+     * @param \PSX\Http\FilterChainInterface $filterChain
+     */
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    {
+        $this->setState($request, $response);
+
+        $this->onLoad();
+        $this->onRequest($request, $response);
+        $this->onFinish();
+
+        $filterChain->handle($request, $response);
+    }
+
+    /**
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      * @internal
      */
     public function setState(RequestInterface $request, ResponseInterface $response)
@@ -146,11 +151,6 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
      */
     public function onLoad()
     {
-        // we change the supported writer only if available
-        $supportedWriter = $this->getSupportedWriter();
-        if (!empty($supportedWriter)) {
-            $this->context->setSupportedWriter($supportedWriter);
-        }
     }
 
     /**
@@ -264,45 +264,16 @@ abstract class ControllerAbstract implements ControllerInterface, ApplicationSta
     }
 
     /**
-     * Can be overridden by a controller to return the formats which are
-     * supported. All following controllers will have the same supported writers
-     * as the origin controller. If null gets returned every available format is
-     * supported otherwise it must return an array containing writer class names
-     *
-     * @return array
-     */
-    protected function getSupportedWriter()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the writer options for the provided request and the current 
-     * context of the controller
+     * Returns a http context object for the provided request
      * 
      * @param \PSX\Http\RequestInterface $request
-     * @return \PSX\Framework\Http\WriterOptions
+     * @return \PSX\Http\Environment\HttpContextInterface
      */
-    protected function getWriterOptions(RequestInterface $request, $writerType = null)
+    protected function newContext(RequestInterface $request)
     {
-        $options = new WriterOptions();
-        $options->setWriterType($writerType);
-        $options->setContentType($request->getHeader('Accept'));
-        $options->setFormat($request->getUri()->getParameter('format'));
-        $options->setSupportedWriter($this->context->getSupportedWriter());
-        $options->setRequestMethod($request->getMethod());
-        $options->setWriterCallback(function(WriterInterface $writer) use ($request){
-            if ($writer instanceof Writer\Soap) {
-                if (!$writer->getRequestMethod()) {
-                    $writer->setRequestMethod($request->getMethod());
-                }
-            } elseif ($writer instanceof Writer\Jsonp) {
-                if (!$writer->getCallbackName()) {
-                    $writer->setCallbackName($request->getUri()->getParameter('callback'));
-                }
-            }
-        });
-
-        return $options;
+        return new HttpContext(
+            $request,
+            $this->context->getParameters()
+        );
     }
 }
