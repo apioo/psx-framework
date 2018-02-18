@@ -71,7 +71,7 @@ abstract class AccessAbstract extends ApiAbstract
                 $resp = $this->getResponse($consumer, $record);
 
                 if ($resp instanceof Response) {
-                    $this->responseWriter->setBody($response, $resp, $this->getWriterOptions($request));
+                    $this->responseWriter->setBody($response, $resp, WriterInterface::FORM);
                 } else {
                     throw new StatusCode\BadRequestException('Invalid response');
                 }
@@ -81,11 +81,6 @@ abstract class AccessAbstract extends ApiAbstract
         } else {
             throw new StatusCode\BadRequestException('Invalid Consumer Key');
         }
-    }
-
-    protected function getSupportedWriter()
-    {
-        return [WriterInterface::FORM];
     }
 
     /**

@@ -20,8 +20,13 @@
 
 namespace PSX\Framework\Http;
 
+use PSX\Data\GraphTraverser;
 use PSX\Data\Payload;
+use PSX\Data\Writer;
 use PSX\Data\Processor;
+use PSX\Data\WriterInterface;
+use PSX\Http\Environment\HttpResponseInterface;
+use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Http\StreamInterface;
@@ -41,40 +46,85 @@ class ResponseWriter
     protected $processor;
 
     /**
-     * @param \PSX\Data\Processor $processor
+     * @var array
      */
-    public function __construct(Processor $processor)
+    protected $supportedWriter;
+
+    /**
+     * @param \PSX\Data\Processor $processor
+     * @param array $supportedWriter
+     */
+    public function __construct(Processor $processor, array $supportedWriter = [])
     {
-        $this->processor = $processor;
+        $this->processor       = $processor;
+        $this->supportedWriter = $supportedWriter;
     }
 
     /**
-     * Method to set a response body
+     * Uses the internal response writer to serialize arbitrary PHP data to
+     * string representation. If writer type is a HTTP request object the write
+     * will look at the provided header to send the fitting data format which
+     * the client has requested. If writer type is a writer class name the
+     * specified writer will be used. Otherwise we use JSON as default data
+     * format
      *
      * @param \PSX\Http\ResponseInterface $response
      * @param mixed $data
-     * @param \PSX\Framework\Http\WriterOptions $options
+     * @param \PSX\Framework\Http\WriterOptions|\PSX\Http\RequestInterface|string|null $writerType
      */
-    public function setBody(ResponseInterface $response, $data, WriterOptions $options = null)
+    public function setBody(ResponseInterface $response, $data, $writerType = null)
     {
-        if ($data instanceof \DOMDocument) {
-            $data = new Body\Xml($data);
-        } elseif ($data instanceof \SimpleXMLElement) {
-            $data = new Body\Xml($data);
-        } elseif ($data instanceof StreamInterface) {
-            $data = new Body\Stream($data);
-        } elseif (is_string($data)) {
-            $data = new Body\Body($data);
+        if ($data instanceof HttpResponseInterface) {
+            $statusCode = $data->getStatusCode();
+            if (!empty($statusCode)) {
+                $response->setStatus($statusCode);
+            }
+
+            $headers = $data->getHeaders();
+            if (!empty($headers)) {
+                $response->setHeaders($headers);
+            }
+
+            $body = $data->getBody();
+        } else {
+            $body = $data;
         }
 
-        // set new response body since we want to discard every data which was
-        // written before because this could corrupt our output format
-        $response->setBody(new StringStream());
+        if (!GraphTraverser::isEmpty($body)) {
+            if ($writerType instanceof WriterOptions) {
+                $options = $writerType;
+            } elseif ($writerType instanceof RequestInterface) {
+                $options = $this->getWriterOptions($writerType);
+            } elseif (is_string($writerType)) {
+                $options = new WriterOptions();
+                $options->setWriterType($writerType);
+            } else {
+                $options = new WriterOptions();
+                $options->setWriterType(WriterInterface::JSON);
+            }
 
-        if ($data instanceof Body\BodyInterface) {
-            $data->writeTo($response);
+            if ($body instanceof \DOMDocument) {
+                $body = new Body\Xml($body);
+            } elseif ($body instanceof \SimpleXMLElement) {
+                $body = new Body\Xml($body);
+            } elseif ($body instanceof StreamInterface) {
+                $body = new Body\Stream($body);
+            } elseif (is_string($body)) {
+                $body = new Body\Body($body);
+            }
+
+            // set new response body since we want to discard every data which was
+            // written before because this could corrupt our output format
+            $response->setBody(new StringStream());
+
+            if ($body instanceof Body\BodyInterface) {
+                $body->writeTo($response);
+            } else {
+                $this->setResponse($response, $body, $options ?? new WriterOptions());
+            }
         } else {
-            $this->setResponse($response, $data, $options ?? new WriterOptions());
+            $response->setStatus(204);
+            $response->setBody(new StringStream(''));
         }
     }
 
@@ -116,8 +166,8 @@ class ResponseWriter
         $result = $this->processor->write($payload);
 
         // the response may have multiple presentations based on the Accept
-        // header field
-        if (!$response->hasHeader('Vary')) {
+        // header field but only in case we have no fix writer type
+        if ($writerType === null && !$response->hasHeader('Vary')) {
             $response->setHeader('Vary', 'Accept');
         }
 
@@ -130,12 +180,30 @@ class ResponseWriter
             }
         }
 
-        // for head requests set content length and remove body
-        if ($options->getRequestMethod() == 'HEAD') {
-            $response->setHeader('Content-Length', mb_strlen($result));
-            $result = '';
-        }
-
         $response->getBody()->write($result);
+    }
+
+    /**
+     * Returns the writer options for the provided request and the current
+     * context of the controller
+     *
+     * @param \PSX\Http\RequestInterface $request
+     * @return \PSX\Framework\Http\WriterOptions
+     */
+    protected function getWriterOptions(RequestInterface $request)
+    {
+        $options = new WriterOptions();
+        $options->setContentType($request->getHeader('Accept'));
+        $options->setFormat($request->getUri()->getParameter('format'));
+        $options->setSupportedWriter($this->supportedWriter);
+        $options->setWriterCallback(function(WriterInterface $writer) use ($request){
+            if ($writer instanceof Writer\Jsonp) {
+                if (!$writer->getCallbackName()) {
+                    $writer->setCallbackName($request->getUri()->getParameter('callback'));
+                }
+            }
+        });
+
+        return $options;
     }
 }

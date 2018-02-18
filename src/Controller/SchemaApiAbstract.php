@@ -36,13 +36,14 @@ use PSX\Record\Record;
 use PSX\Schema\SchemaInterface;
 
 /**
- * The schema api controller helps to build an API based on a API specification
+ * The schema api controller helps to build an API based on a API specification.
+ * The controller knows the schema of the resource
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterface
+abstract class SchemaApiAbstract extends ControllerAbstract implements DocumentedInterface
 {
     /**
      * @Inject
@@ -260,26 +261,10 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @param \PSX\Api\Resource\MethodAbstract $method
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
-     * @param mixed $result
+     * @param mixed $data
      */
-    protected function sendResponse(MethodAbstract $method, RequestInterface $request, ResponseInterface $response, $result)
+    private function sendResponse(MethodAbstract $method, RequestInterface $request, ResponseInterface $response, $data)
     {
-        if ($result instanceof HttpResponseInterface) {
-            $statusCode = $result->getStatusCode();
-            if (!empty($statusCode)) {
-                $response->setStatus($statusCode);
-            }
-
-            $headers = $result->getHeaders();
-            if (!empty($headers)) {
-                $response->setHeaders($headers);
-            }
-
-            $body = $result->getBody();
-        } else {
-            $body = $result;
-        }
-
         $statusCode = $response->getStatusCode();
         if (empty($statusCode)) {
             // in case we have only one defined response use this code
@@ -293,12 +278,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
             $response->setStatus($statusCode);
         }
 
-        if (!GraphTraverser::isEmpty($body)) {
-            $this->responseWriter->setBody($response, $body, $this->getWriterOptions($request));
-        } else {
-            $response->setStatus(204);
-            $response->setBody(new StringStream(''));
-        }
+        $this->responseWriter->setBody($response, $data, $request);
     }
 
     /**
@@ -306,7 +286,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      *
      * @return \PSX\Api\Resource
      */
-    protected function getResource()
+    private function getResource()
     {
         $resource = $this->resourceListing->getResource($this->context->getPath(), $this->context->getVersion());
 
@@ -355,18 +335,6 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
         return array_merge(
             $allowed,
             $methods
-        );
-    }
-
-    /**
-     * @param \PSX\Http\RequestInterface $request
-     * @return \PSX\Http\Environment\HttpContextInterface
-     */
-    private function newContext(RequestInterface $request)
-    {
-        return new HttpContext(
-            $request,
-            $this->context->getParameters()
         );
     }
 }

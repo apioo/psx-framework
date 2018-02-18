@@ -71,11 +71,4 @@ class SoapController extends ApiAbstract
 
         $this->dispatch->route($request, $response, $this->context);
     }
-
-    protected function getSupportedWriter()
-    {
-        return array(
-            WriterInterface::SOAP,
-        );
-    }
 }

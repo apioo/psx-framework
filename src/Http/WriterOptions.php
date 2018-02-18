@@ -50,11 +50,6 @@ class WriterOptions
     protected $supportedWriter;
 
     /**
-     * @var string
-     */
-    protected $requestMethod;
-
-    /**
      * @var \Closure
      */
     protected $writerCallback;
@@ -123,21 +118,6 @@ class WriterOptions
         $this->supportedWriter = $supportedWriter;
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestMethod()
-    {
-        return $this->requestMethod;
-    }
-
-    /**
-     * @param string $requestMethod
-     */
-    public function setRequestMethod($requestMethod)
-    {
-        $this->requestMethod = $requestMethod;
-    }
     /**
      * @return \Closure
      */

@@ -46,7 +46,7 @@ class ErrorController extends ControllerAbstract
             // build message
             $record = $this->exceptionConverter->convert($exception);
 
-            $this->responseWriter->setBody($response, $record, $this->getWriterOptions($request));
+            $this->responseWriter->setBody($response, $record, $request);
         }
     }
 }

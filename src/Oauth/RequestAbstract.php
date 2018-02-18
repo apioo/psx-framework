@@ -73,7 +73,7 @@ abstract class RequestAbstract extends ApiAbstract
                 if ($resp instanceof Response) {
                     $resp->addParam('oauth_callback_confirmed', true);
 
-                    $this->responseWriter->setBody($response, $resp, $this->getWriterOptions($request));
+                    $this->responseWriter->setBody($response, $resp, WriterInterface::FORM);
                 } else {
                     throw new StatusCode\BadRequestException('Invalid response');
                 }
@@ -83,11 +83,6 @@ abstract class RequestAbstract extends ApiAbstract
         } else {
             throw new StatusCode\BadRequestException('Invalid Consumer Key');
         }
-    }
-
-    protected function getSupportedWriter()
-    {
-        return [WriterInterface::FORM];
     }
 
     /**

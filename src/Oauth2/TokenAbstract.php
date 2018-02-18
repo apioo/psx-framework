@@ -83,7 +83,7 @@ abstract class TokenAbstract extends SchemaApiAbstract
                     $response->setStatus(400);
                 }
 
-                $this->responseWriter->setBody($response, $error, $this->getWriterOptions($request));
+                $this->responseWriter->setBody($response, $error);
             } catch (\Throwable $e) {
                 $error = new Error();
                 $error->setError('server_error');
@@ -91,7 +91,7 @@ abstract class TokenAbstract extends SchemaApiAbstract
                 $error->setState(null);
 
                 $response->setStatus(400);
-                $this->responseWriter->setBody($response, $error, $this->getWriterOptions($request));
+                $this->responseWriter->setBody($response, $error);
             }
         }];
     }

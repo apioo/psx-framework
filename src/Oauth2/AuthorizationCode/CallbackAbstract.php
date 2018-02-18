@@ -20,7 +20,8 @@
 
 namespace PSX\Framework\Oauth2\AuthorizationCode;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
@@ -35,10 +36,12 @@ use RuntimeException;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class CallbackAbstract extends ApiAbstract
+abstract class CallbackAbstract extends ControllerAbstract
 {
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
+        $context = $this->newContext($request);
+        
         try {
             $error = $request->getUri()->getParameter('error');
 
@@ -59,10 +62,12 @@ abstract class CallbackAbstract extends ApiAbstract
             // get access token
             $accessToken = $this->getAuthorizationCode($code, $state)->getAccessToken($code, $redirectUri);
 
-            $this->onAccessToken($accessToken);
+            $data = $this->onAccessToken($accessToken, $context);
         } catch (ErrorExceptionAbstract $e) {
-            $this->onError($e);
+            $data = $this->onError($e, $context);
         }
+
+        $this->responseWriter->setBody($response, $data);
     }
 
     /**
@@ -80,13 +85,17 @@ abstract class CallbackAbstract extends ApiAbstract
      * server
      *
      * @param \PSX\Oauth2\AccessToken $accessToken
+     * @param \PSX\Http\Environment\HttpContextInterface $context
+     * @return mixed
      */
-    abstract protected function onAccessToken(AccessToken $accessToken);
+    abstract protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context);
 
     /**
      * Is called if the client was redirected with an GET error parameter
      *
      * @param \Throwable $e
+     * @param \PSX\Http\Environment\HttpContextInterface $context
+     * @return mixed
      */
-    abstract protected function onError(\Throwable $e);
+    abstract protected function onError(\Throwable $e, HttpContextInterface $context);
 }
