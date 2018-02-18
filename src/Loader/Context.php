@@ -46,11 +46,6 @@ class Context
     protected $source;
 
     /**
-     * @var array
-     */
-    protected $supportedWriter;
-
-    /**
      * @var \Throwable
      */
     protected $exception;
@@ -115,22 +110,6 @@ class Context
     public function setSource($source)
     {
         $this->source = $source;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSupportedWriter()
-    {
-        return $this->supportedWriter;
-    }
-
-    /**
-     * @param array $supportedWriter
-     */
-    public function setSupportedWriter(array $supportedWriter)
-    {
-        $this->supportedWriter = $supportedWriter;
     }
 
     /**
