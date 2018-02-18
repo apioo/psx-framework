@@ -143,7 +143,7 @@ trait ContainerTestCaseTrait
      *
      * @param \PSX\Http\Request $request
      * @param \PSX\Http\Response $response
-     * @return \PSX\Framework\Controller\ControllerInterface
+     * @return \PSX\Http\ResponseInterface
      */
     protected function loadController(Request $request, Response $response)
     {
