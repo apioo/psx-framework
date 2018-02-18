@@ -23,7 +23,8 @@ namespace PSX\Framework\Dispatch;
 use PSX\Framework\Loader\Context;
 
 /**
- * ControllerFactoryInterface
+ * Resolves a controller from a source. A key concept in PSX is that in the end
+ * a controller is only an array of middleware instances 
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -32,11 +33,11 @@ use PSX\Framework\Loader\Context;
 interface ControllerFactoryInterface
 {
     /**
-     * Creates an instance of the given class name
+     * Returns an array of middleware instances based on the provided source
      *
-     * @param string $className
+     * @param string $source
      * @param \PSX\Framework\Loader\Context $context
-     * @return \PSX\Framework\Controller\ControllerInterface
+     * @return array
      */
-    public function getController($className, Context $context);
+    public function getController($source, Context $context = null);
 }

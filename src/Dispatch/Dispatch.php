@@ -114,7 +114,6 @@ class Dispatch
         // load controller
         if ($context === null) {
             $context = new Context();
-            $context->setSupportedWriter($this->config->get('psx_supported_writer'));
         }
 
         try {
@@ -137,7 +136,7 @@ class Dispatch
                 $class      = isset($this->config['psx_error_controller']) ? $this->config['psx_error_controller'] : ErrorController::class;
                 $controller = $this->controllerFactory->getController($class, $context);
 
-                $this->loader->executeController($controller, $request, $response);
+                $this->loader->execute($controller, $request, $response);
             } catch (\Throwable $e) {
                 // in this case the error controller has thrown an exception.
                 // This can happen i.e. if we can not represent the error in an
@@ -150,6 +149,12 @@ class Dispatch
                 $response->setHeader('Content-Type', 'application/json');
                 $response->setBody(new StringStream(Parser::encode($record, JSON_PRETTY_PRINT)));
             }
+        }
+
+        // for HEAD requests we never return a response body
+        if ($request->getMethod() == 'HEAD') {
+            $response->setHeader('Content-Length', $response->getBody()->getSize());
+            $response->setBody(new StringStream(''));
         }
 
         $this->eventDispatcher->dispatch(Event::RESPONSE_SEND, new ResponseSendEvent($response));

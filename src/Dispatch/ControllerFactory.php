@@ -20,9 +20,10 @@
 
 namespace PSX\Framework\Dispatch;
 
-use PSX\Framework\Controller\ControllerInterface;
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
+use PSX\Http\FilterInterface;
 
 /**
  * ControllerFactory
@@ -39,20 +40,60 @@ class ControllerFactory implements ControllerFactoryInterface
     protected $objectBuilder;
 
     /**
-     * @param \PSX\Framework\Dependency\ObjectBuilderInterface $objectBuilder
+     * @var \Psr\Container\ContainerInterface
      */
-    public function __construct(ObjectBuilderInterface $objectBuilder)
+    protected $container;
+
+    /**
+     * @param \PSX\Framework\Dependency\ObjectBuilderInterface $objectBuilder
+     * @param \Psr\Container\ContainerInterface $container
+     */
+    public function __construct(ObjectBuilderInterface $objectBuilder, ContainerInterface $container)
     {
         $this->objectBuilder = $objectBuilder;
+        $this->container     = $container;
     }
 
     /**
-     * @param string $className
+     * @param string $source
      * @param \PSX\Framework\Loader\Context $context
-     * @return \PSX\Framework\Controller\ControllerInterface
+     * @return array
      */
-    public function getController($className, Context $context)
+    public function getController($source, Context $context = null)
     {
-        return $this->objectBuilder->getObject($className, [$context], ControllerInterface::class);
+        if (is_string($source)) {
+            // through the object builder the class can access all services
+            // with the @Inject annotation
+            $controller = $this->objectBuilder->getObject($source, [$context]);
+        } elseif ($source instanceof \Closure) {
+            // bind the container to the closure so that it is possible to
+            // access services from the DIC
+            $source->bindTo($this->container);
+
+            $controller = $source;
+        } elseif (is_array($source)) {
+            // we have as source an array of middleware. Its important that we
+            // resolve those only in case of an actual array
+            $controller = [];
+            foreach ($source as $value) {
+                $controller = array_merge($controller, $this->getController($value, $context));
+            }
+
+            return $controller;
+        } else {
+            $controller = $source;
+        }
+
+        if ($controller instanceof \Traversable) {
+            return iterator_to_array($controller);
+        } elseif ($controller instanceof FilterInterface) {
+            return [$controller];
+        } elseif ($controller instanceof \Closure) {
+            return [$controller];
+        } elseif (is_callable($controller)) {
+            return [$controller];
+        } else {
+            return [];
+        }
     }
 }
