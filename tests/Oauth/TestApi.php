@@ -22,33 +22,33 @@ namespace PSX\Framework\Tests\Oauth;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Filter\OauthAuthentication;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth\Data\Credentials;
 
 /**
- * TestOauth
+ * TestApi
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestOauth extends ControllerAbstract
+class TestApi extends ControllerAbstract
 {
-    public function getRequestFilter()
+    public function getPreFilter()
     {
-        $handle = new OauthAuthentication(function ($consumerKey, $token) {
-
-            if ($consumerKey == FlowAbstractTest::CONSUMER_KEY && $token == FlowAbstractTest::TOKEN) {
-                return new Credentials(FlowAbstractTest::CONSUMER_KEY, FlowAbstractTest::CONSUMER_SECRET, FlowAbstractTest::TOKEN, FlowAbstractTest::TOKEN_SECRET);
+        $oauth = new OauthAuthentication(function ($consumerKey, $token) {
+            if ($consumerKey == FlowTest::CONSUMER_KEY && $token == FlowTest::TOKEN) {
+                return new Credentials(FlowTest::CONSUMER_KEY, FlowTest::CONSUMER_SECRET, FlowTest::TOKEN, FlowTest::TOKEN_SECRET);
             }
-
         });
 
-        return array($handle);
+        return [$oauth];
     }
 
-    public function doIndex()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $this->response->setStatus(200);
-        $this->response->getBody()->write('SUCCESS');
+        $response->setStatus(200);
+        $response->getBody()->write('SUCCESS');
     }
 }

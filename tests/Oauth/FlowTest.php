@@ -20,13 +20,14 @@
 
 namespace PSX\Framework\Tests\Oauth;
 
+use Psr\Http\Message\RequestInterface;
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Http\Client as HttpClient;
-use PSX\Http\GetRequest;
-use PSX\Http\Handler\Callback;
+use PSX\Http\Client\Client;
+use PSX\Http\Client\GetRequest;
+use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Http\Stream\TempStream;
 use PSX\Oauth\Consumer;
+use PSX\Oauth\Data;
 use PSX\Uri\Url;
 
 /**
@@ -36,7 +37,7 @@ use PSX\Uri\Url;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FlowAbstractTest extends ControllerTestCase
+class FlowTest extends ControllerTestCase
 {
     const CONSUMER_KEY      = 'dpf43f3p2l4k3l03';
     const CONSUMER_SECRET   = 'kd94hf93k423kf44';
@@ -49,25 +50,22 @@ class FlowAbstractTest extends ControllerTestCase
 
     public function testFlow()
     {
-        $testCase = $this;
-        $httpClient = new HttpClient(new Callback(function ($request) use ($testCase) {
-
-            $body     = new TempStream(fopen('php://memory', 'r+'));
+        $proxy = function(RequestInterface $request, array $options){
+            $request  = new Request($request->getUri(), $request->getMethod(), $request->getHeaders(), $request->getBody());
             $response = new Response();
-            $response->setBody($body);
 
-            $testCase->loadController($request, $response);
+            $this->loadController($request, $response);
 
             return $response;
+        };
 
-        }));
-
-        $oauth = new Consumer($httpClient);
+        $client = new Client(['handler' => $proxy]);
+        $oauth  = new Consumer($client);
 
         // request token
         $response = $oauth->requestToken(new Url('http://127.0.0.1/request'), self::CONSUMER_KEY, self::CONSUMER_SECRET);
 
-        $this->assertInstanceOf('PSX\Oauth\Data\Response', $response);
+        $this->assertInstanceOf(Data\Response::class, $response);
         $this->assertEquals(self::TMP_TOKEN, $response->getToken());
         $this->assertEquals(self::TMP_TOKEN_SECRET, $response->getTokenSecret());
 
@@ -76,7 +74,7 @@ class FlowAbstractTest extends ControllerTestCase
         // access token
         $response = $oauth->accessToken(new Url('http://127.0.0.1/access'), self::CONSUMER_KEY, self::CONSUMER_SECRET, self::TMP_TOKEN, self::TMP_TOKEN_SECRET, self::VERIFIER);
 
-        $this->assertInstanceOf('PSX\Oauth\Data\Response', $response);
+        $this->assertInstanceOf(Data\Response::class, $response);
         $this->assertEquals(self::TOKEN, $response->getToken());
         $this->assertEquals(self::TOKEN_SECRET, $response->getTokenSecret());
 
@@ -84,18 +82,58 @@ class FlowAbstractTest extends ControllerTestCase
         $url      = new Url('http://127.0.0.1/api');
         $auth     = $oauth->getAuthorizationHeader($url, self::CONSUMER_KEY, self::CONSUMER_SECRET, self::TOKEN, self::TOKEN_SECRET, 'HMAC-SHA1', 'GET');
         $request  = new GetRequest($url, array('Authorization' => $auth));
-        $response = $httpClient->request($request);
+        $response = $client->request($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('SUCCESS', (string) $response->getBody());
     }
 
+    public function testFlowInvalid()
+    {
+        $proxy = function(RequestInterface $request, array $options){
+            $request  = new Request($request->getUri(), $request->getMethod(), $request->getHeaders(), $request->getBody());
+            $response = new Response();
+
+            $this->loadController($request, $response);
+
+            return $response;
+        };
+
+        $client = new Client(['handler' => $proxy]);
+        $oauth  = new Consumer($client);
+
+        // request token
+        $response = $oauth->requestToken(new Url('http://127.0.0.1/request'), self::CONSUMER_KEY, self::CONSUMER_SECRET);
+
+        $this->assertInstanceOf(Data\Response::class, $response);
+        $this->assertEquals(self::TMP_TOKEN, $response->getToken());
+        $this->assertEquals(self::TMP_TOKEN_SECRET, $response->getTokenSecret());
+
+        // authorize the user gets redirected and approves the application
+
+        // access token
+        $response = $oauth->accessToken(new Url('http://127.0.0.1/access'), self::CONSUMER_KEY, self::CONSUMER_SECRET, self::TMP_TOKEN, self::TMP_TOKEN_SECRET, self::VERIFIER);
+
+        $this->assertInstanceOf(Data\Response::class, $response);
+        $this->assertEquals(self::TOKEN, $response->getToken());
+        $this->assertEquals(self::TOKEN_SECRET, $response->getTokenSecret());
+
+        // api request
+        $url      = new Url('http://127.0.0.1/api');
+        $auth     = $oauth->getAuthorizationHeader($url, self::CONSUMER_KEY, self::CONSUMER_SECRET, self::TOKEN, 'foobar', 'HMAC-SHA1', 'GET');
+        $request  = new GetRequest($url, array('Authorization' => $auth));
+        $response = $client->request($request);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertContains('Invalid consumer key or signature', (string) $response->getBody());
+    }
+
     protected function getPaths()
     {
         return array(
-            [['POST'], '/request', 'PSX\Framework\Tests\Oauth\TestRequestAbstract'],
-            [['POST'], '/access', 'PSX\Framework\Tests\Oauth\TestAccessAbstract'],
-            [['GET'], '/api', 'PSX\Framework\Tests\Oauth\TestOauth::doIndex'],
+            [['POST'], '/request', TestRequestAbstract::class],
+            [['POST'], '/access', TestAccessAbstract::class],
+            [['GET'], '/api', TestApi::class],
         );
     }
 }

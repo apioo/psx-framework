@@ -36,14 +36,14 @@ class TestAccessAbstract extends AccessAbstract
 {
     protected function getConsumer($consumerKey, $token)
     {
-        return new Credentials(FlowAbstractTest::CONSUMER_KEY, FlowAbstractTest::CONSUMER_SECRET, FlowAbstractTest::TMP_TOKEN, FlowAbstractTest::TMP_TOKEN_SECRET);
+        return new Credentials(FlowTest::CONSUMER_KEY, FlowTest::CONSUMER_SECRET, FlowTest::TMP_TOKEN, FlowTest::TMP_TOKEN_SECRET);
     }
 
     protected function getResponse(Credentials $consumer, Request $request)
     {
         $response = new Response();
-        $response->setToken(FlowAbstractTest::TOKEN);
-        $response->setTokenSecret(FlowAbstractTest::TOKEN_SECRET);
+        $response->setToken(FlowTest::TOKEN);
+        $response->setTokenSecret(FlowTest::TOKEN_SECRET);
 
         return $response;
     }
