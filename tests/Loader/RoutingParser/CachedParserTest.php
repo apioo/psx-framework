@@ -32,8 +32,17 @@ use PSX\Framework\Loader\RoutingParser\RoutingFile;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class CachedParserTest extends \PHPUnit_Framework_TestCase
+class CachedParserTest extends RoutingParserTestCase
 {
+    public function getRoutingCollection()
+    {
+        $cache   = new Pool(new ArrayCache());
+        $routing = new RoutingFile(__DIR__ . '/../routes');
+        $cached  = new CachedParser($routing, $cache);
+
+        return $cached->getCollection();
+    }
+
     public function testGetCollection()
     {
         $cache         = new Pool(new ArrayCache());

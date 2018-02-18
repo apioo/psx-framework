@@ -21,22 +21,23 @@
 namespace PSX\Framework\Tests\Loader\RoutingParser;
 
 use PSX\Framework\Loader\RoutingCollection;
+use PSX\Framework\Loader\RoutingParser\PhpFile;
 use PSX\Framework\Loader\RoutingParser\RoutingFile;
 
 /**
- * RoutingFileTest
+ * PhpFileTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RoutingFileTest extends RoutingParserTestCase
+class PhpFileTest extends RoutingParserTestCase
 {
     public function getRoutingCollection()
     {
-        $routingFile = new RoutingFile(__DIR__ . '/../routes');
+        $routingFile = new PhpFile(__DIR__ . '/../routes.php');
         $collection  = $routingFile->getCollection();
-
+        
         return $collection;
     }
 }
