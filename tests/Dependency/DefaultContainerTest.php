@@ -48,14 +48,11 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 
         // framework
         $this->assertInstanceOf(Framework\Config\Config::class, $container->get('config'));
-        $this->assertInstanceOf(Framework\Template\TemplateInterface::class, $container->get('template'));
         $this->assertInstanceOf(Framework\Dependency\ObjectBuilderInterface::class, $container->get('object_builder'));
         $this->assertInstanceOf(Framework\Exception\ConverterInterface::class, $container->get('exception_converter'));
         $this->assertInstanceOf(Framework\Session\Session::class, $container->get('session'));
-        $this->assertInstanceOf(Framework\Dispatch\ControllerFactoryInterface::class, $container->get('application_stack_factory'));
         $this->assertInstanceOf(Framework\Dispatch\ControllerFactoryInterface::class, $container->get('controller_factory'));
         $this->assertInstanceOf(Framework\Loader\LocationFinderInterface::class, $container->get('loader_location_finder'));
-        $this->assertInstanceOf(Framework\Loader\CallbackResolverInterface::class, $container->get('loader_callback_resolver'));
         $this->assertInstanceOf(Framework\Loader\LoaderInterface::class, $container->get('loader'));
         $this->assertInstanceOf(Framework\Dispatch\Dispatch::class, $container->get('dispatch'));
         $this->assertInstanceOf(Framework\Loader\RoutingParserInterface::class, $container->get('routing_parser'));
@@ -68,7 +65,7 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Doctrine\Common\Annotations\Reader::class, $container->get('annotation_reader_controller'));
         $this->assertInstanceOf(\Psr\Cache\CacheItemPoolInterface::class, $container->get('cache'));
         $this->assertInstanceOf(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class, $container->get('event_dispatcher'));
-        $this->assertInstanceOf(\PSX\Http\Client::class, $container->get('http_client'));
+        $this->assertInstanceOf(\PSX\Http\Client\ClientInterface::class, $container->get('http_client'));
         $this->assertInstanceOf(\PSX\Data\Processor::class, $container->get('io'));
         $this->assertInstanceOf(\Psr\Log\LoggerInterface::class, $container->get('logger'));
         $this->assertInstanceOf(\PSX\Schema\SchemaManagerInterface::class, $container->get('schema_manager'));
