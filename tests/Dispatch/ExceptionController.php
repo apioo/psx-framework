@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * ExceptionController
@@ -31,18 +33,8 @@ use PSX\Framework\Controller\ControllerAbstract;
  */
 class ExceptionController extends ControllerAbstract
 {
-    public function doException()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
         throw new \Exception('foo');
-    }
-
-    public function doStatusCodeException()
-    {
-        throw new \Exception('foo', 501);
-    }
-
-    public function doWrongStatusCodeException()
-    {
-        throw new \Exception('foo', 1024);
     }
 }

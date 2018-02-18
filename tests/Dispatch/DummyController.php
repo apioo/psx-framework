@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * DummyController
@@ -31,8 +33,8 @@ use PSX\Framework\Controller\ControllerAbstract;
  */
 class DummyController extends ControllerAbstract
 {
-    public function onLoad()
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        $this->response->getBody()->write('foo');
+        $response->getBody()->write('foo');
     }
 }

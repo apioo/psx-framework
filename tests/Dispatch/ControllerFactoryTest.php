@@ -24,7 +24,7 @@ use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Uri\Url;
+use PSX\Uri\Uri;
 
 /**
  * ControllerFactoryTest
@@ -37,9 +37,9 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetController()
     {
-        $controller = $this->getController('PSX\Framework\Tests\Dispatch\DummyController');
+        $controller = $this->getController(DummyController::class);
 
-        $this->assertInstanceOf('PSX\Framework\Tests\Dispatch\DummyController', $controller);
+        $this->assertInstanceOf(DummyController::class, $controller);
     }
 
     /**
@@ -54,6 +54,6 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = Environment::getService('controller_factory');
 
-        return $factory->getController($className, new Request(new Url('http://127.0.0.1'), 'GET'), new Response(), new Context());
+        return $factory->getController($className, new Context());
     }
 }

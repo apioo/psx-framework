@@ -22,6 +22,8 @@ namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
 
 /**
  * StatusCodeExceptionController
@@ -32,93 +34,43 @@ use PSX\Http\Exception as StatusCode;
  */
 class StatusCodeExceptionController extends ControllerAbstract
 {
-    public function throwBadRequestException()
+    public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        throw new StatusCode\BadRequestException('foobar');
-    }
-
-    public function throwConflictException()
-    {
-        throw new StatusCode\ConflictException('foobar');
-    }
-
-    public function throwForbiddenException()
-    {
-        throw new StatusCode\ForbiddenException('foobar');
-    }
-
-    public function throwFoundException()
-    {
-        throw new StatusCode\FoundException('http://google.com');
-    }
-
-    public function throwGoneException()
-    {
-        throw new StatusCode\GoneException('foobar');
-    }
-
-    public function throwInternalServerErrorException()
-    {
-        throw new StatusCode\InternalServerErrorException('foobar');
-    }
-
-    public function throwMethodNotAllowedException()
-    {
-        throw new StatusCode\MethodNotAllowedException('foobar', array('GET', 'POST'));
-    }
-
-    public function throwMovedPermanentlyException()
-    {
-        throw new StatusCode\MovedPermanentlyException('http://google.com');
-    }
-
-    public function throwNotAcceptableException()
-    {
-        throw new StatusCode\NotAcceptableException('foobar');
-    }
-
-    public function throwNotFoundException()
-    {
-        throw new StatusCode\NotFoundException('foobar');
-    }
-
-    public function throwNotImplementedException()
-    {
-        throw new StatusCode\NotImplementedException('foobar');
-    }
-
-    public function throwNotModifiedException()
-    {
-        throw new StatusCode\NotModifiedException();
-    }
-
-    public function throwSeeOtherException()
-    {
-        throw new StatusCode\SeeOtherException('http://google.com');
-    }
-
-    public function throwServiceUnavailableException()
-    {
-        throw new StatusCode\ServiceUnavailableException('foobar');
-    }
-
-    public function throwTemporaryRedirectException()
-    {
-        throw new StatusCode\TemporaryRedirectException('http://google.com');
-    }
-
-    public function throwUnauthorizedException()
-    {
-        throw new StatusCode\UnauthorizedException('foobar', 'Basic', array('realm' => 'foo'));
-    }
-
-    public function throwUnauthorizedNoParameterException()
-    {
-        throw new StatusCode\UnauthorizedException('foobar', 'Foo');
-    }
-
-    public function throwUnsupportedMediaTypeException()
-    {
-        throw new StatusCode\UnsupportedMediaTypeException('foobar');
+        switch ($request->getUri()->getParameter('code')) {
+            case 301:
+                throw new StatusCode\MovedPermanentlyException('http://google.com');
+            case 302:
+                throw new StatusCode\FoundException('http://google.com');
+            case 303:
+                throw new StatusCode\SeeOtherException('http://google.com');
+            case 304:
+                throw new StatusCode\NotModifiedException();
+            case 307:
+                throw new StatusCode\TemporaryRedirectException('http://google.com');
+            case 400:
+                throw new StatusCode\BadRequestException('foobar');
+            case 401:
+                throw new StatusCode\UnauthorizedException('foobar', 'Basic', array('realm' => 'foo'));
+            case 403:
+                throw new StatusCode\ForbiddenException('foobar');
+            case 404:
+                throw new StatusCode\NotFoundException('foobar');
+            case 405:
+                throw new StatusCode\MethodNotAllowedException('foobar', ['GET', 'POST']);
+            case 406:
+                throw new StatusCode\NotAcceptableException('foobar');
+            case 409:
+                throw new StatusCode\ConflictException('foobar');
+            case 410:
+                throw new StatusCode\GoneException('foobar');
+            case 415:
+                throw new StatusCode\UnsupportedMediaTypeException('foobar');
+            case 500:
+                throw new StatusCode\InternalServerErrorException('foobar');
+            case 501:
+                throw new StatusCode\NotImplementedException('foobar');
+            case 503:
+                throw new StatusCode\ServiceUnavailableException('foobar');
+        }
     }
 }

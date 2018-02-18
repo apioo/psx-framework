@@ -20,6 +20,20 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
+use PSX\Framework\Controller\ControllerInterface;
+use PSX\Framework\Event\ContextInterface;
+use PSX\Framework\Event\ControllerExecuteEvent;
+use PSX\Framework\Event\ControllerProcessedEvent;
+use PSX\Framework\Event\Event;
+use PSX\Framework\Event\ExceptionThrownEvent;
+use PSX\Framework\Event\RequestIncomingEvent;
+use PSX\Framework\Event\ResponseSendEvent;
+use PSX\Framework\Event\RouteMatchedEvent;
+use PSX\Framework\Loader\Context;
+use PSX\Http\RequestInterface;
+use PSX\Http\ResponseInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
  * TestListener
  *
@@ -27,15 +41,103 @@ namespace PSX\Framework\Tests\Dispatch;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestListener
+class TestListener implements EventSubscriberInterface
 {
     /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @param \PSX\Framework\Filter\FilterChainInterface $filterChain
+     * @var array
      */
-    public function on($request, $response, $filterChain)
+    private $called = [];
+
+    /**
+     * @var \PHPUnit_Framework_TestCase
+     */
+    private $testCase;
+
+    public function __construct(\PHPUnit_Framework_TestCase $testCase)
     {
-        $filterChain->handle($request, $response);
+        $this->testCase = $testCase;
+    }
+
+    /**
+     * @param \PSX\Framework\Event\ControllerExecuteEvent $event
+     */
+    public function onControllerExecute(ControllerExecuteEvent $event)
+    {
+        $this->testCase->assertInstanceOf(ControllerInterface::class, $event->getController());
+        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
+        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+
+        $this->called[] = 'onControllerExecute';
+    }
+
+    /**
+     * @param \PSX\Framework\Event\ControllerProcessedEvent $event
+     */
+    public function onControllerProcessed(ControllerProcessedEvent $event)
+    {
+        $this->testCase->assertInstanceOf(ControllerInterface::class, $event->getController());
+        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
+        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+
+        $this->called[] = 'onControllerProcessed';
+    }
+
+    /**
+     * @param \PSX\Framework\Event\ExceptionThrownEvent $event
+     */
+    public function onExceptionThrown(ExceptionThrownEvent $event)
+    {
+        $this->testCase->assertInstanceOf(\Throwable::class, $event->getException());
+        $this->testCase->assertInstanceOf(ContextInterface::class, $event->getContext());
+
+        $this->called[] = 'onExceptionThrown';
+    }
+
+    /**
+     * @param \PSX\Framework\Event\RequestIncomingEvent $event
+     */
+    public function onRequestIncoming(RequestIncomingEvent $event)
+    {
+        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
+
+        $this->called[] = 'onRequestIncoming';
+    }
+
+    /**
+     * @param \PSX\Framework\Event\ResponseSendEvent $event
+     */
+    public function onResponseSend(ResponseSendEvent $event)
+    {
+        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+
+        $this->called[] = 'onResponseSend';
+    }
+
+    /**
+     * @param \PSX\Framework\Event\RouteMatchedEvent $event
+     */
+    public function onRouteMatched(RouteMatchedEvent $event)
+    {
+        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
+        $this->testCase->assertInstanceOf(Context::class, $event->getContext());
+
+        $this->called[] = 'onRouteMatched';
+    }
+
+    public function getCalled()
+    {
+        return $this->called;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            Event::CONTROLLER_EXECUTE   => 'onControllerExecute',
+            Event::CONTROLLER_PROCESSED => 'onControllerProcessed',
+            Event::EXCEPTION_THROWN     => 'onExceptionThrown',
+            Event::REQUEST_INCOMING     => 'onRequestIncoming',
+            Event::RESPONSE_SEND        => 'onResponseSend',
+            Event::ROUTE_MATCHED        => 'onRouteMatched',
+        ];
     }
 }
