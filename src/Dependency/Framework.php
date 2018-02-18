@@ -29,7 +29,6 @@ use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ControllerFactory;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Exception;
-use PSX\Framework\Http\ParameterParser;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader;
@@ -96,7 +95,10 @@ trait Framework
      */
     public function getControllerFactory()
     {
-        return new ControllerFactory($this->get('object_builder'));
+        return new ControllerFactory(
+            $this->get('object_builder'),
+            $this
+        );
     }
 
     /**
@@ -117,7 +119,6 @@ trait Framework
             $this->get('controller_factory'),
             $this->get('event_dispatcher'),
             $this->get('logger'),
-            $this->get('object_builder'),
             $this->get('config')
         );
     }
@@ -223,6 +224,9 @@ trait Framework
      */
     public function getResponseWriter()
     {
-        return new ResponseWriter($this->get('io'));
+        return new ResponseWriter(
+            $this->get('io'),
+            $this->get('config')->get('psx_supported_writer')
+        );
     }
 }
