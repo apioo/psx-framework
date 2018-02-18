@@ -77,7 +77,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onHead(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('GET', $request, $response);
+        $method  = $this->getResourceMethod('GET', $request, $response);
         $context = $this->newContext($request);
         $result  = $this->doGet($context);
 
@@ -86,7 +86,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('GET', $request, $response);
+        $method  = $this->getResourceMethod('GET', $request, $response);
         $context = $this->newContext($request);
         $result  = $this->doGet($context);
 
@@ -95,7 +95,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPost(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('POST', $request, $response);
+        $method  = $this->getResourceMethod('POST', $request, $response);
         $context = $this->newContext($request);
         $record  = $this->parseRequest($request, $method);
         $result  = $this->doPost($record, $context);
@@ -105,7 +105,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPut(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('PUT', $request, $response);
+        $method  = $this->getResourceMethod('PUT', $request, $response);
         $context = $this->newContext($request);
         $record  = $this->parseRequest($request, $method);
         $result  = $this->doPut($record, $context);
@@ -115,7 +115,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onDelete(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('DELETE', $request, $response);
+        $method  = $this->getResourceMethod('DELETE', $request, $response);
         $context = $this->newContext($request);
         $record  = $this->parseRequest($request, $method);
         $result  = $this->doDelete($record, $context);
@@ -125,7 +125,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
 
     public function onPatch(RequestInterface $request, ResponseInterface $response)
     {
-        $method  = $this->getMethod('PATCH', $request, $response);
+        $method  = $this->getResourceMethod('PATCH', $request, $response);
         $context = $this->newContext($request);
         $record  = $this->parseRequest($request, $method);
         $result  = $this->doPatch($record, $context);
@@ -323,7 +323,7 @@ abstract class SchemaApiAbstract extends ApiAbstract implements DocumentedInterf
      * @param \PSX\Http\ResponseInterface $response
      * @return \PSX\Api\Resource\MethodAbstract
      */
-    private function getMethod($methodName, RequestInterface $request, ResponseInterface $response)
+    private function getResourceMethod($methodName, RequestInterface $request, ResponseInterface $response)
     {
         if (!$this->resource->hasMethod($methodName)) {
             throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
