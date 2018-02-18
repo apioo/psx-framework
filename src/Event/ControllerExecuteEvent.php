@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Event;
 
-use PSX\Framework\Controller\ControllerInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
@@ -38,7 +37,7 @@ class ControllerExecuteEvent extends SymfonyEvent
     protected $request;
     protected $response;
 
-    public function __construct(ControllerInterface $controller, RequestInterface $request, ResponseInterface $response)
+    public function __construct($controller, RequestInterface $request, ResponseInterface $response)
     {
         $this->controller = $controller;
         $this->request    = $request;
