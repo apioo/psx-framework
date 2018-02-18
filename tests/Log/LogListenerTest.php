@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Log;
 
+use Psr\Log\LoggerInterface;
 use PSX\Framework\DisplayException;
 use PSX\Framework\Event\Context\ControllerContext;
 use PSX\Framework\Event\ControllerExecuteEvent;
@@ -33,6 +34,7 @@ use PSX\Framework\Loader\Context;
 use PSX\Framework\Log\LogListener;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApi\IndexController;
 use PSX\Http\Exception\InternalServerErrorException;
 use PSX\Http\Exception\NotFoundException;
 use PSX\Http\Exception\SeeOtherException;
@@ -72,7 +74,7 @@ class LogListenerTest extends ControllerTestCase
             ->with($this->equalTo('Route matched GET /foo.htm -> stdClass'));
 
         $context = new Context();
-        $context->set(Context::KEY_SOURCE, 'stdClass');
+        $context->setSource(\stdClass::class);
 
         $request = new Request(new Uri('/foo.htm'), 'GET');
 
@@ -86,12 +88,12 @@ class LogListenerTest extends ControllerTestCase
         $logger = $this->getLogger();
         $logger->expects($this->once())
             ->method('info')
-            ->with($this->equalTo('Controller execute PSX\Framework\Tests\Controller\Foo\Application\TestController'));
+            ->with($this->equalTo('Controller execute ' . IndexController::class));
 
         $context    = new Context();
         $request    = new Request(new Uri('/foo.htm'), 'GET');
         $response   = new Response();
-        $controller = Environment::getService('controller_factory')->getController('PSX\Framework\Tests\Controller\Foo\Application\TestController', $request, $response, $context);
+        $controller = Environment::getService('controller_factory')->getController(IndexController::class, $context);
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
@@ -103,12 +105,12 @@ class LogListenerTest extends ControllerTestCase
         $logger = $this->getLogger();
         $logger->expects($this->once())
             ->method('info')
-            ->with($this->equalTo('Controller processed PSX\Framework\Tests\Controller\Foo\Application\TestController'));
+            ->with($this->equalTo('Controller processed ' . IndexController::class));
 
         $context    = new Context();
         $request    = new Request(new Uri('/foo.htm'), 'GET');
         $response   = new Response();
-        $controller = Environment::getService('controller_factory')->getController('PSX\Framework\Tests\Controller\Foo\Application\TestController', $request, $response, $context);
+        $controller = Environment::getService('controller_factory')->getController(IndexController::class, $context);
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
@@ -259,7 +261,7 @@ class LogListenerTest extends ControllerTestCase
 
     protected function getLogger()
     {
-        return $this->createMock('Psr\Log\LoggerInterface', array('emergency', 'alert', 'critical', 'warning', 'debug', 'log', 'info', 'notice', 'error'));
+        return $this->createMock(LoggerInterface::class, ['emergency', 'alert', 'critical', 'warning', 'debug', 'log', 'info', 'notice', 'error']);
     }
 
     protected function getPaths()
