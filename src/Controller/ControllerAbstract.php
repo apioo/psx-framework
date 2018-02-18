@@ -136,17 +136,6 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @internal
-     */
-    public function setState(RequestInterface $request, ResponseInterface $response)
-    {
-        $this->request  = $request;
-        $this->response = $response;
-    }
-
-    /**
      * @inheritdoc
      */
     public function onLoad()
@@ -275,5 +264,16 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
             $request,
             $this->context->getParameters()
         );
+    }
+
+    /**
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
+     * @internal
+     */
+    private function setState(RequestInterface $request, ResponseInterface $response)
+    {
+        $this->request  = $request;
+        $this->response = $response;
     }
 }
