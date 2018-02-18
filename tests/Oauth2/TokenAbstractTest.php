@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Oauth2;
 
-use PSX\Framework\Controller\Tool\DocumentationController;
+use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Oauth2\GrantTypeFactory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
@@ -361,7 +361,7 @@ JSON;
     {
         return array(
             [['ANY'], '/token', TestTokenAbstract::class],
-            [['ANY'], '/doc/:version/:path', DocumentationController::class . '::doDetail'],
+            [['ANY'], '/doc/:version/:path', Documentation\DetailController::class],
         );
     }
 }

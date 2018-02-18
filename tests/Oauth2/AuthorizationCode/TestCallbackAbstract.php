@@ -20,12 +20,17 @@
 
 namespace PSX\Framework\Tests\Oauth2\AuthorizationCode;
 
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
 use PSX\Framework\Oauth2\AuthorizationCode\CallbackAbstract;
 use PSX\Framework\Tests\Oauth2\AuthorizationAbstractTest;
-use PSX\Http;
-use PSX\Http\Handler\Callback;
+use PSX\Http\Client\Client;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\Environment\HttpResponse;
 use PSX\Http\RequestInterface;
-use PSX\Http\ResponseParser;
+use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\AuthorizationCode;
 use PSX\Uri\Url;
@@ -47,20 +52,7 @@ class TestCallbackAbstract extends CallbackAbstract
 
     protected function getAuthorizationCode($code, $state)
     {
-        $testCase = $this->testCase;
-        $httpClient = new Http\Client(new Callback(function (RequestInterface $request) use ($testCase) {
-
-            // api request
-            if ($request->getUri()->getPath() == '/api') {
-                $testCase->assertEquals('Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW', (string) $request->getHeader('Authorization'));
-                $testCase->assertEquals('application/x-www-form-urlencoded', (string) $request->getHeader('Content-Type'));
-
-                $response = <<<TEXT
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Cache-Control: no-store
-Pragma: no-cache
-
+        $payload = <<<JSON
 {
   "access_token":"2YotnFZFEjr1zCsicMWpAA",
   "token_type":"example",
@@ -68,34 +60,37 @@ Pragma: no-cache
   "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
   "example_parameter":"example_value"
 }
-TEXT;
-            } else {
-                throw new \RuntimeException('Invalid path');
-            }
+JSON;
 
-            return ResponseParser::convert($response, ResponseParser::MODE_LOOSE)->toString();
+        $mock = new MockHandler([
+            new Response(200, ['Content-Type' => 'application/json'], $payload),
+        ]);
 
-        }));
-        $oauth = new AuthorizationCode($httpClient, new Url('http://127.0.0.1/api'));
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create($mock);
+        $stack->push($history);
+
+        $client = new Client(['handler' => $stack]);
+        $oauth  = new AuthorizationCode($client, new Url('http://127.0.0.1/api'));
         $oauth->setClientPassword(AuthorizationAbstractTest::CLIENT_ID, AuthorizationAbstractTest::CLIENT_SECRET);
 
         return $oauth;
     }
 
-    protected function onAccessToken(AccessToken $accessToken)
+    protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context)
     {
         $this->testCase->assertEquals('2YotnFZFEjr1zCsicMWpAA', $accessToken->getAccessToken());
         $this->testCase->assertEquals('example', $accessToken->getTokenType());
         $this->testCase->assertEquals(3600, $accessToken->getExpiresIn());
         $this->testCase->assertEquals('tGzv3JOkF0XG5Qx2TlKWIA', $accessToken->getRefreshToken());
 
-        $this->response->setStatus(200);
-        $this->response->getBody()->write('SUCCESS');
+        return new HttpResponse(200, [], 'SUCCESS');
     }
 
-    protected function onError(\Throwable $e)
+    protected function onError(\Throwable $e, HttpContextInterface $context)
     {
-        $this->response->setStatus(500);
-        $this->response->getBody()->write(get_class($e));
+        return new HttpResponse(500, [], get_class($e));
     }
 }

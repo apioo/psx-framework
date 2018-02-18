@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Oauth2\AuthorizationCode;
 
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Oauth2\Authorization\Exception;
 
 /**
  * CallbackAbstractTest
@@ -33,7 +34,7 @@ class CallbackAbstractTest extends ControllerTestCase
 {
     public function testCallback()
     {
-        $response = $this->sendRequest('http://foo.com/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz', 'GET');
+        $response = $this->sendRequest('/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz', 'GET');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('SUCCESS', (string) $response->getBody());
@@ -42,17 +43,17 @@ class CallbackAbstractTest extends ControllerTestCase
     public function testErrorCallback()
     {
         $errors = array(
-            'invalid_request'           => 'PSX\Oauth2\Authorization\Exception\InvalidRequestException',
-            'unauthorized_client'       => 'PSX\Oauth2\Authorization\Exception\UnauthorizedClientException',
-            'access_denied'             => 'PSX\Oauth2\Authorization\Exception\AccessDeniedException',
-            'unsupported_response_type' => 'PSX\Oauth2\Authorization\Exception\UnsupportedResponseTypeException',
-            'invalid_scope'             => 'PSX\Oauth2\Authorization\Exception\InvalidScopeException',
-            'server_error'              => 'PSX\Oauth2\Authorization\Exception\ServerErrorException',
-            'temporarily_unavailable'   => 'PSX\Oauth2\Authorization\Exception\TemporarilyUnavailableException',
+            'invalid_request'           => Exception\InvalidRequestException::class,
+            'unauthorized_client'       => Exception\UnauthorizedClientException::class,
+            'access_denied'             => Exception\AccessDeniedException::class,
+            'unsupported_response_type' => Exception\UnsupportedResponseTypeException::class,
+            'invalid_scope'             => Exception\InvalidScopeException::class,
+            'server_error'              => Exception\ServerErrorException::class,
+            'temporarily_unavailable'   => Exception\TemporarilyUnavailableException::class,
         );
 
         foreach ($errors as $error => $exceptionType) {
-            $response = $this->sendRequest('http://foo.com/cb?error=' . $error . '&error_description=foobar', 'GET');
+            $response = $this->sendRequest('/cb?error=' . $error . '&error_description=foobar', 'GET');
 
             $this->assertEquals(500, $response->getStatusCode());
             $this->assertEquals($exceptionType, (string) $response->getBody());
@@ -62,7 +63,7 @@ class CallbackAbstractTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
-            [['GET'], '/cb', 'PSX\Framework\Tests\Oauth2\AuthorizationCode\TestCallbackAbstract'],
+            [['GET'], '/cb', TestCallbackAbstract::class],
         );
     }
 }
