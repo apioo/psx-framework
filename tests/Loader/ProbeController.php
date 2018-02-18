@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Loader;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
+use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -36,7 +37,7 @@ class ProbeController extends ControllerAbstract
 {
     protected $methodsCalled = array();
 
-    public function __construct(Context $context)
+    public function __construct(Context $context = null)
     {
         parent::__construct($context);
 
@@ -46,11 +47,21 @@ class ProbeController extends ControllerAbstract
     /**
      * @inheritdoc
      */
-    public function getApplicationStack()
+    public function getIterator()
     {
         $this->methodsCalled[] = __METHOD__;
 
-        return parent::getApplicationStack();
+        return parent::getIterator();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    {
+        $this->methodsCalled[] = __METHOD__;
+
+        parent::handle($request, $response, $filterChain);
     }
 
     public function getPreFilter()

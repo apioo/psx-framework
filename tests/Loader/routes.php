@@ -18,4 +18,11 @@ return [
     [['GET'], '/files/*path', 'PSX\Framework\Loader\Foo12Controller'],
     [['GET'], 'http://cdn.foo.com/serve/*path', 'PSX\Framework\Loader\Foo13Controller'],
     [['ANY'], '/baz', 'PSX\Framework\Loader\Foo14Controller'],
+    
+    [['ANY'], '/baz', [
+        
+        'foo_bar'
+        
+        
+    ]],
 ];

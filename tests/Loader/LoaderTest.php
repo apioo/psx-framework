@@ -49,10 +49,12 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadIndexCall()
     {
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
+        $controller = new ProbeController();
+
+        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
             $this->assertEquals('/foobar', $request->getUri()->getPath());
 
-            $context->setSource(ProbeController::class);
+            $context->setSource($controller);
 
             return $request;
         });
@@ -62,18 +64,18 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $testListener = new TestListener($this);
         $eventDispatcher->addSubscriber($testListener);
 
-        $loader   = $this->newLoader($locationFinder, $eventDispatcher);
-        $request    = new Request(new Uri('/foobar'), 'GET');
-        $response   = new Response();
-        $controller = $loader->load($request, $response);
+        $request  = new Request(new Uri('/foobar'), 'GET');
+        $response = new Response();
 
-        $this->assertInstanceOf(ProbeController::class, $controller);
+        $loader = $this->newLoader($locationFinder, $eventDispatcher);
+        $loader->load($request, $response);
 
         $expect = array(
             'PSX\Framework\Tests\Loader\ProbeController::__construct',
-            'PSX\Framework\Tests\Loader\ProbeController::getApplicationStack',
+            'PSX\Framework\Tests\Loader\ProbeController::getIterator',
             'PSX\Framework\Tests\Loader\ProbeController::getPreFilter',
             'PSX\Framework\Tests\Loader\ProbeController::getPostFilter',
+            'PSX\Framework\Tests\Loader\ProbeController::handle',
             'PSX\Framework\Tests\Loader\ProbeController::onLoad',
             'PSX\Framework\Tests\Loader\ProbeController::onRequest',
             'PSX\Framework\Tests\Loader\ProbeController::onGet',
@@ -93,10 +95,12 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadDetailCall()
     {
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
+        $controller = new ProbeController();
+
+        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
             $this->assertEquals('/foobar/detail/12', $request->getUri()->getPath());
 
-            $context->setSource(ProbeController::class);
+            $context->setSource($controller);
             $context->setParameters(['id' => 12]);
 
             return $request;
@@ -107,18 +111,18 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $testListener = new TestListener($this);
         $eventDispatcher->addSubscriber($testListener);
 
-        $loader     = $this->newLoader($locationFinder, $eventDispatcher);
-        $request    = new Request(new Uri('/foobar/detail/12'), 'GET');
-        $response   = new Response();
-        $controller = $loader->load($request, $response);
+        $request  = new Request(new Uri('/foobar/detail/12'), 'GET');
+        $response = new Response();
 
-        $this->assertInstanceOf(ProbeController::class, $controller);
+        $loader = $this->newLoader($locationFinder, $eventDispatcher);
+        $loader->load($request, $response);
 
         $expect = array(
             'PSX\Framework\Tests\Loader\ProbeController::__construct',
-            'PSX\Framework\Tests\Loader\ProbeController::getApplicationStack',
+            'PSX\Framework\Tests\Loader\ProbeController::getIterator',
             'PSX\Framework\Tests\Loader\ProbeController::getPreFilter',
             'PSX\Framework\Tests\Loader\ProbeController::getPostFilter',
+            'PSX\Framework\Tests\Loader\ProbeController::handle',
             'PSX\Framework\Tests\Loader\ProbeController::onLoad',
             'PSX\Framework\Tests\Loader\ProbeController::onRequest',
             'PSX\Framework\Tests\Loader\ProbeController::onGet',
@@ -126,7 +130,6 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($expect, $controller->getMethodsCalled());
-        $this->assertEquals(['id' => 12], $controller->getFragments());
 
         $expect = array(
             'onRouteMatched',
@@ -172,10 +175,9 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
         $eventDispatcher = new EventDispatcher();
 
-        $loader     = $this->newLoader($locationFinder, $eventDispatcher);
-        $controller = $loader->load($request, $response, $context);
+        $loader = $this->newLoader($locationFinder, $eventDispatcher);
+        $loader->load($request, $response, $context);
 
-        $this->assertInstanceOf(FilterController::class, $controller);
         $this->assertSame(true, $request->getAttribute('pre_filter'));
         $this->assertSame(true, $request->getAttribute('post_filter'));
     }
@@ -206,10 +208,9 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
         $eventDispatcher = new EventDispatcher();
 
-        $loader     = $this->newLoader($locationFinder, $eventDispatcher);
-        $controller = $loader->load($request, $response, $context);
+        $loader = $this->newLoader($locationFinder, $eventDispatcher);
+        $loader->load($request, $response, $context);
 
-        $this->assertInstanceOf(FilterController::class, $controller);
         $this->assertSame(true, $request->getAttribute('global_pre_filter'));
         $this->assertSame(true, $request->getAttribute('global_post_filter'));
         $this->assertSame(true, $request->getAttribute('pre_filter'));
@@ -228,7 +229,6 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             Environment::getService('controller_factory'),
             $eventDispatcher,
             new Logger('psx', [new NullHandler()]),
-            Environment::getService('object_builder'),
             Environment::getService('config')
         );
     }
