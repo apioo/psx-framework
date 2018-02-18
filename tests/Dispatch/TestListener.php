@@ -63,7 +63,7 @@ class TestListener implements EventSubscriberInterface
      */
     public function onControllerExecute(ControllerExecuteEvent $event)
     {
-        $this->testCase->assertInstanceOf(ControllerInterface::class, $event->getController());
+        $this->testCase->assertTrue(is_array($event->getController()));
         $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
         $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
 
@@ -75,7 +75,7 @@ class TestListener implements EventSubscriberInterface
      */
     public function onControllerProcessed(ControllerProcessedEvent $event)
     {
-        $this->testCase->assertInstanceOf(ControllerInterface::class, $event->getController());
+        $this->testCase->assertTrue(is_array($event->getController()));
         $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
         $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
 

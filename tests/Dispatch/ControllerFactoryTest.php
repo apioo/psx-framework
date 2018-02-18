@@ -39,7 +39,8 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $controller = $this->getController(DummyController::class);
 
-        $this->assertInstanceOf(DummyController::class, $controller);
+        $this->assertTrue(is_array($controller));
+        $this->assertInstanceOf(DummyController::class, $controller[0]);
     }
 
     /**
