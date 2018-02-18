@@ -72,7 +72,7 @@ class IndexController extends ApiAbstract
             ]
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 
     protected function getRoutings($filter)

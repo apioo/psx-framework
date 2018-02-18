@@ -75,7 +75,7 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
         }
 
         $response->setHeader('Content-Type', $this->generatorFactory->getMime($this->getType()));
-        $this->responseWriter->setBody($response, $result, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $result, $request);
     }
 
     /**

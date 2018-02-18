@@ -131,7 +131,7 @@ class DetailController extends ApiAbstract
             $api->links = $links;
         }
 
-        $this->responseWriter->setBody($response, $api, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $api, $request);
     }
 
     protected function getLinks($version, $path)

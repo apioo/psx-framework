@@ -40,6 +40,6 @@ class DefaultController extends ApiAbstract
             'url'     => 'http://phpsx.org',
         ];
 
-        $this->responseWriter->setBody($response, $result, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $result, $request);
     }
 }

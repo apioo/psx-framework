@@ -46,7 +46,7 @@ class RoutingController extends ApiAbstract
             'routings' => $this->getRoutings(),
         ];
 
-        $this->responseWriter->setBody($response, $data, $this->getWriterOptions($request));
+        $this->responseWriter->setBody($response, $data, $request);
     }
 
     protected function getRoutings()
