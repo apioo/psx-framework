@@ -64,7 +64,6 @@ class ValueObjectTest extends \PHPUnit_Framework_TestCase
             new Urn('urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6'),
             new Url('http://benutzername:passwort@hostname:8080/pfad?argument=wert#textanker'),
             new MediaType('text/plain; q=0.5'),
-            new Cookie('DNR=deleted; expires=Tue, 24-Dec-2013 11:39:14 GMT; path=/; domain=.www.yahoo.com'),
             new Date('2015-04-25'),
             new Time('19:35:20.1234+01:00'),
             new DateTime('2015-04-25T19:35:20.1234+01:00'),
