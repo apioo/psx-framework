@@ -24,6 +24,8 @@ use Closure;
 use PSX\Http\Authentication;
 use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
+use PSX\Http\FilterChainInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth\Consumer;

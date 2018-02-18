@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Filter;
 
 use PSX\Framework\Filter\Oauth2Authentication;
 use PSX\Http\Exception\UnauthorizedException;
+use PSX\Http\Filter\FilterChain;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Oauth2\AccessToken;
@@ -182,9 +183,12 @@ class Oauth2AuthenticationTest extends \PHPUnit_Framework_TestCase
         return $accessToken;
     }
 
+    /**
+     * @return \PSX\Http\FilterChainInterface
+     */
     protected function getMockFilterChain()
     {
-        return $this->getMockBuilder('PSX\Framework\Filter\FilterChain')
+        return $this->getMockBuilder(FilterChain::class)
             ->setConstructorArgs(array(array()))
             ->setMethods(array('handle'))
             ->getMock();

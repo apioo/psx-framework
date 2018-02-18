@@ -22,6 +22,8 @@ namespace PSX\Framework\Filter;
 
 use Closure;
 use PSX\Http\Exception\UnauthorizedException;
+use PSX\Http\FilterChainInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
