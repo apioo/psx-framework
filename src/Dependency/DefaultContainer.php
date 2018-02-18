@@ -106,11 +106,11 @@ class DefaultContainer extends Container
     }
 
     /**
-     * @return \PSX\Http\ClientInterface
+     * @return \PSX\Http\Client\ClientInterface
      */
     public function getHttpClient()
     {
-        return new Http\Client();
+        return new Http\Client\Client();
     }
 
     /**
