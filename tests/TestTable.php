@@ -51,11 +51,11 @@ class TestTable extends TableAbstract
     public function getNestedResult()
     {
         $sql = '  SELECT id,
-				         userId,
-				         title,
-				         date
-				    FROM psx_handler_comment
-				ORDER BY id DESC';
+                         userId,
+                         title,
+                         date
+                    FROM psx_handler_comment
+                ORDER BY id DESC';
 
         $definition = $this->doCollection($sql, [], [
             'id' => $this->type('id', TableInterface::TYPE_INT),
