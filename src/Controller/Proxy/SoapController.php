@@ -45,6 +45,11 @@ class SoapController extends ApiAbstract
 
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
+        // set correct accept header so that we always return a soap xml
+        // response
+        $request->setHeader('Content-Type', 'application/soap+xml');
+        $request->setHeader('Accept', 'application/soap+xml');
+
         if ($request->getMethod() != 'POST') {
             throw new StatusCode\MethodNotAllowedException('Only POST requests are allowed', ['POST']);
         }
@@ -67,7 +72,8 @@ class SoapController extends ApiAbstract
         $headers['Content-Type'] = 'application/soap+xml';
         $headers['Accept']       = 'application/soap+xml';
 
-        $request = new Request($uri, $method, $headers, $request->getBody());
+        $request->setMethod($method);
+        $request->setUri($uri);
 
         $this->dispatch->route($request, $response, $this->context);
     }
