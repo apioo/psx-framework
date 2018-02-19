@@ -25,24 +25,28 @@ use PSX\Uri\Url;
 use RuntimeException;
 
 /**
- * Provides methods to forward an request to another controller or redirect the
- * client by sending an Location header
+ * All methods in this trait are deprecated please work either directly on the
+ * request/response object or use a fitting service. This class may be removed
+ * in future releases
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
 trait RedirectTrait
 {
     /**
      * @Inject
      * @var \PSX\Framework\Loader\Loader
+     * @deprecated
      */
     protected $loader;
 
     /**
      * @Inject
      * @var \PSX\Framework\Loader\ReverseRouter
+     * @deprecated
      */
     protected $reverseRouter;
 
@@ -51,6 +55,7 @@ trait RedirectTrait
      *
      * @param string $source
      * @param array $parameters
+     * @deprecated
      */
     protected function forward($source, array $parameters = array())
     {
@@ -72,6 +77,7 @@ trait RedirectTrait
      * @param string $source
      * @param array $parameters
      * @param integer $code
+     * @deprecated
      */
     protected function redirect($source, array $parameters = array(), $code = 307)
     {
