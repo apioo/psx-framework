@@ -24,12 +24,14 @@ use PSX\Schema\Validation\ValidatorInterface;
 use PSX\Validate\Validate;
 
 /**
- * Provides methods to read and set values from the request/response. It is 
- * recommended to use theses methods inside the controller
+ * All methods in this trait are deprecated please work either directly on the
+ * request/response object or use a fitting service. This class may be removed 
+ * in future releases
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
 trait HttpTrait
 {
@@ -51,8 +53,8 @@ trait HttpTrait
      * Returns the request method. Note the X-HTTP-Method-Override header
      * replaces the actually request method if available
      *
-     * @deprecated
      * @return string
+     * @deprecated
      */
     protected function getMethod()
     {
@@ -62,8 +64,8 @@ trait HttpTrait
     /**
      * Returns the request uri
      *
-     * @deprecated
      * @return \PSX\Uri\Uri
+     * @deprecated
      */
     protected function getUri()
     {
@@ -73,8 +75,8 @@ trait HttpTrait
     /**
      * Sets the response status code
      *
-     * @deprecated
      * @param integer $code
+     * @deprecated
      */
     protected function setResponseCode($code)
     {
@@ -84,9 +86,9 @@ trait HttpTrait
     /**
      * Sets a response header
      *
-     * @deprecated
      * @param string $name
      * @param string $value
+     * @deprecated
      */
     protected function setHeader($name, $value)
     {
@@ -96,9 +98,9 @@ trait HttpTrait
     /**
      * Returns a specific request header
      *
-     * @deprecated
      * @param string $key
      * @return string
+     * @deprecated
      */
     protected function getHeader($key)
     {
@@ -108,9 +110,9 @@ trait HttpTrait
     /**
      * Returns whether a header is available
      *
-     * @deprecated
      * @param string $key
      * @return boolean
+     * @deprecated
      */
     protected function hasHeader($key)
     {
@@ -120,13 +122,13 @@ trait HttpTrait
     /**
      * Returns a parameter from the query fragment of the request url
      *
-     * @deprecated
      * @param string $key
      * @param string $type
      * @param array $filter
      * @param string $title
      * @param boolean $required
      * @return mixed
+     * @deprecated
      */
     protected function getParameter($key, $type = Validate::TYPE_STRING, array $filter = array(), $title = null, $required = true)
     {
@@ -142,8 +144,8 @@ trait HttpTrait
     /**
      * Returns all available request parameters
      *
-     * @deprecated
      * @return array
+     * @deprecated
      */
     protected function getParameters()
     {
@@ -153,9 +155,9 @@ trait HttpTrait
     /**
      * Returns the result of the reader for the request
      *
-     * @deprecated
      * @param string $readerType
      * @return mixed
+     * @deprecated
      */
     protected function getBody($readerType = null)
     {
@@ -163,11 +165,11 @@ trait HttpTrait
     }
 
     /**
-     * @deprecated
      * @param string $schema
      * @param \PSX\Schema\Validation\ValidatorInterface $validator
      * @param string $readerType
      * @return mixed
+     * @deprecated
      */
     protected function getBodyAs($schema, ValidatorInterface $validator = null, $readerType = null)
     {
@@ -177,9 +179,9 @@ trait HttpTrait
     /**
      * Method to set a response body
      *
-     * @deprecated
      * @param mixed $data
      * @param string $writerType
+     * @deprecated
      */
     protected function setBody($data)
     {
