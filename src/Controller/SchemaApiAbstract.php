@@ -72,10 +72,13 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     {
         parent::onLoad();
 
-        // get the current resource and check everything is valid
+        // get the current resource based on the context
         $this->resource = $this->getResource();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onHead(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('GET', $request, $response);
@@ -85,6 +88,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onGet(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('GET', $request, $response);
@@ -94,6 +100,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onPost(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('POST', $request, $response);
@@ -104,6 +113,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onPut(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('PUT', $request, $response);
@@ -114,6 +126,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onDelete(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('DELETE', $request, $response);
@@ -124,6 +139,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onPatch(RequestInterface $request, ResponseInterface $response)
     {
         $method  = $this->getResourceMethod('PATCH', $request, $response);
@@ -134,6 +152,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $this->sendResponse($method, $request, $response, $result);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onOptions(RequestInterface $request, ResponseInterface $response)
     {
         $methods = $this->getAllowedMethods();
@@ -148,6 +169,9 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         $response->setBody(new StringStream(''));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getDocumentation($version = null)
     {
         return $this->apiManager->getApi(get_class($this), $this->context->getPath());

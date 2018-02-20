@@ -54,15 +54,15 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     protected $response;
 
     /**
-     * @var \PSX\Framework\Loader\Context
-     */
-    protected $context;
-
-    /**
      * @var array
      * @deprecated
      */
     protected $uriFragments;
+
+    /**
+     * @var \PSX\Framework\Loader\Context
+     */
+    protected $context;
 
     /**
      * @Inject
@@ -92,7 +92,9 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @inheritdoc
+     * Returns a traversable of callable or FilterInterface objects
+     * 
+     * @return \Traversable
      */
     public function getIterator()
     {
@@ -120,9 +122,7 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @param \PSX\Http\FilterChainInterface $filterChain
+     * @inheritdoc
      */
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
     {
@@ -136,14 +136,20 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @inheritdoc
+     * Is called on load to initialize state which does not depend on the 
+     * request and response context. It is recommended to use this method 
+     * instead of the constructor
      */
     public function onLoad()
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if a request arrives at our controller. The controller can read
+     * data from the request object and write data to the response body
+     * 
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
@@ -183,7 +189,7 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @inheritdoc
+     * Is called after the request to potentially clean up state
      */
     public function onFinish()
     {
@@ -192,56 +198,86 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a GET request 
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onGet(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a HEAD request. Note the framework 
+     * automatically removes the response body
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.2
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onHead(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a POST request
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onPost(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a PUT request
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onPut(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a DELETE request
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onDelete(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a OPTIONS request
+     * 
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.7
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onOptions(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * @inheritdoc
+     * Is called if the client has send a PATCH request
+     * 
+     * @see https://tools.ietf.org/html/rfc5789#section-2
+     * @param \PSX\Http\RequestInterface $request
+     * @param \PSX\Http\ResponseInterface $response
      */
     public function onPatch(RequestInterface $request, ResponseInterface $response)
     {
     }
 
     /**
-     * Returns a specific uri fragment
+     * Returns a specific uri fragment. This method is deprecated please access
+     * the uri fragment directly through $this->context->getParameter()
      *
      * @param string $key
      * @return string
@@ -269,7 +305,6 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     /**
      * @param \PSX\Http\RequestInterface $request
      * @param \PSX\Http\ResponseInterface $response
-     * @internal
      */
     private function setState(RequestInterface $request, ResponseInterface $response)
     {
