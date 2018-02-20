@@ -1,21 +1,28 @@
 
 ### 4.0.0
 
-* ControllerAbstract
-  * `on*` methods have now a RequestInterface and ResponseInterface as 
-    argument
-  * The request and response object is now passed as argument and is not 
-    available at the constructor
-  * Most inside the controller which call the request or response object are
-    deprecated instead it is recommended to work directly on the http object
-* SchemaApiAbstract
-  * `do*` methods have now HttpContextInterface argument
-* Controller context object has no explicit methods instead of arbitrary key
-  value entries
-* Removed classes:
-  * `PSX\Framework\Controller\Tool\DocumentationController`
-  * `PSX\Framework\Filter\ControllerExecutor`
-  * `PSX\Framework\Loader\CallbackResolver\DependencyInjector`
+* It is not longer possible to define a specific method in a route i.e. 
+  `MyController::doFoo`. Each resource has now one specific controller
+* Added a php routing parser which can read all routes from a simple PHP file
+  which returns an array. Through this it is now also possible to use a Closure
+  as controller (a la micro framework)
+* ControllerAbstract `on*` methods have now a `RequestInterface` and 
+  `ResponseInterface` as argument
+* The request and response object is now passed as argument and is not 
+  available at the constructor
+* Most methods inside the controller which call the request or response 
+  property are deprecated instead it is recommended to work directly on the 
+  http object
+* SchemaApiAbstract `do*` methods have now a `HttpContextInterface` argument
+* Framework context object has now explicit getter and setter methods instead 
+  of arbitrary key value entries
+* The html data writer was removed. To render a template you now need to call 
+  the `render` method from the `ViewAbstract` method with an explicit template
+  file
+* Optimized loading logic and removed some services
+* Moved all HTTP related components to the psx/http package
+* Marked several properties and classes as deprecated which will be removed at
+  the next major release
 
 ### 3.0.0 (2017-12-31)
 
