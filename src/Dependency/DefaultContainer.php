@@ -29,6 +29,8 @@ use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
+use PSX\Dependency\Container;
+use PSX\Dependency\ObjectBuilder;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Http;
@@ -69,7 +71,7 @@ class DefaultContainer extends Container
     {
         return $this->newDoctrineAnnotationImpl([
             'PSX\Api\Annotation',
-            'PSX\Framework\Annotation',
+            'PSX\Dependency\Annotation',
         ]);
     }
 
@@ -166,6 +168,19 @@ class DefaultContainer extends Container
         return new Validate();
     }
 
+    /**
+     * @return \PSX\Dependency\ObjectBuilderInterface
+     */
+    public function getObjectBuilder()
+    {
+        return new ObjectBuilder(
+            $this,
+            $this->get('annotation_reader_controller'),
+            $this->get('cache'),
+            $this->get('config')->get('psx_debug')
+        );
+    }
+
     protected function appendDefaultConfig()
     {
         return [
@@ -180,7 +195,7 @@ class DefaultContainer extends Container
             'psx_annotation_autoload' => [
                 'PSX\Api\Annotation',
                 'PSX\Schema\Parser\Popo\Annotation',
-                'PSX\Framework\Annotation',
+                'PSX\Dependency\Annotation',
                 'JMS\Serializer\Annotation',
                 'Doctrine\ORM\Mapping'
             ],

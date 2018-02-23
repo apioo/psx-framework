@@ -55,19 +55,6 @@ trait Framework
     }
 
     /**
-     * @return \PSX\Framework\Dependency\ObjectBuilderInterface
-     */
-    public function getObjectBuilder()
-    {
-        return new ObjectBuilder(
-            $this,
-            $this->get('annotation_reader_controller'),
-            $this->get('cache'),
-            $this->get('config')->get('psx_debug')
-        );
-    }
-
-    /**
      * @return \PSX\Framework\Exception\ConverterInterface
      */
     public function getExceptionConverter()

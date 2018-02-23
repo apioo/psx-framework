@@ -48,7 +48,6 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 
         // framework
         $this->assertInstanceOf(Framework\Config\Config::class, $container->get('config'));
-        $this->assertInstanceOf(Framework\Dependency\ObjectBuilderInterface::class, $container->get('object_builder'));
         $this->assertInstanceOf(Framework\Exception\ConverterInterface::class, $container->get('exception_converter'));
         $this->assertInstanceOf(Framework\Session\Session::class, $container->get('session'));
         $this->assertInstanceOf(Framework\Dispatch\ControllerFactoryInterface::class, $container->get('controller_factory'));
@@ -57,6 +56,7 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Framework\Dispatch\Dispatch::class, $container->get('dispatch'));
         $this->assertInstanceOf(Framework\Loader\RoutingParserInterface::class, $container->get('routing_parser'));
         $this->assertInstanceOf(Framework\Loader\ReverseRouter::class, $container->get('reverse_router'));
+        $this->assertInstanceOf(\PSX\Dependency\ObjectBuilderInterface::class, $container->get('object_builder'));
         $this->assertInstanceOf(\PSX\Api\ListingInterface::class, $container->get('resource_listing'));
         $this->assertInstanceOf(\PSX\Api\ApiManager::class, $container->get('api_manager'));
 
