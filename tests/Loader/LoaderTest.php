@@ -154,8 +154,8 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $testListener = new TestListener($this);
         $eventDispatcher->addSubscriber($testListener);
 
-        $loader     = $this->newLoader($locationFinder, $eventDispatcher);
-        $request  = new Request(new Url('http://127.0.0.1/foobar'), 'GET');
+        $loader   = $this->newLoader($locationFinder, $eventDispatcher);
+        $request  = new Request(new Uri('/foobar'), 'GET');
         $response = new Response();
 
         $loader->load($request, $response);

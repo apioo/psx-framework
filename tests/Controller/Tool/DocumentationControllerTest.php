@@ -38,7 +38,7 @@ class DocumentationControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/doc', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/doc', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'
@@ -79,7 +79,7 @@ JSON;
 
     public function testDetail()
     {
-        $response = $this->sendRequest('http://127.0.0.1/doc/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/doc/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'

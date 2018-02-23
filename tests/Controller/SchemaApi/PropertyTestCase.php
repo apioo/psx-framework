@@ -46,7 +46,7 @@ abstract class PropertyTestCase extends ControllerTestCase
      */
     public function testGet($type)
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/1?type=' . $type, 'GET');
+        $response = $this->sendRequest('/api/1?type=' . $type, 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
@@ -55,7 +55,7 @@ abstract class PropertyTestCase extends ControllerTestCase
 
     public function testPost()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], self::getExpected());
+        $response = $this->sendRequest('/api/1', 'POST', [], self::getExpected());
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
@@ -73,7 +73,7 @@ abstract class PropertyTestCase extends ControllerTestCase
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -89,7 +89,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -105,7 +105,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -127,7 +127,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -143,7 +143,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -161,7 +161,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -179,7 +179,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -195,7 +195,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -211,7 +211,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -227,7 +227,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -243,7 +243,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -259,7 +259,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -275,7 +275,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
@@ -291,7 +291,7 @@ JSON;
 }
 JSON;
 
-        $response = $this->sendRequest('http://127.0.0.1/api/1', 'POST', [], $data);
+        $response = $this->sendRequest('/api/1', 'POST', [], $data);
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 

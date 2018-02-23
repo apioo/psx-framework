@@ -33,7 +33,7 @@ class RoutingControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/routing', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/routing', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'

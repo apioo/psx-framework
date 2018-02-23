@@ -40,7 +40,7 @@ class SoapControllerTest extends ControllerDbTestCase
     public function testIndex()
     {
         $headers  = ['SOAPAction' => '/api#GET'];
-        $response = $this->sendRequest('http://127.0.0.1/soap', 'POST', $headers);
+        $response = $this->sendRequest('/soap', 'POST', $headers);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'
@@ -100,7 +100,7 @@ XML;
 </soap:Envelope>
 XML;
 
-        $response = $this->sendRequest('http://127.0.0.1/soap', 'POST', $header, $body);
+        $response = $this->sendRequest('/soap', 'POST', $header, $body);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'
@@ -125,7 +125,7 @@ XML;
         Environment::getService('config')->set('psx_debug', false);
 
         $headers  = ['SOAPAction' => '/api#GET'];
-        $response = $this->sendRequest('http://127.0.0.1/soap', 'GET', $headers);
+        $response = $this->sendRequest('/soap', 'GET', $headers);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'
@@ -150,7 +150,7 @@ XML;
         Environment::getService('config')->set('psx_debug', false);
 
         $headers  = ['SOAPAction' => '/api#FOO'];
-        $response = $this->sendRequest('http://127.0.0.1/soap', 'POST', $headers);
+        $response = $this->sendRequest('/soap', 'POST', $headers);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'
@@ -175,7 +175,7 @@ XML;
         Environment::getService('config')->set('psx_debug', false);
 
         $headers  = ['SOAPAction' => '/api#GET'];
-        $response = $this->sendRequest('http://127.0.0.1/soap', 'POST', $headers);
+        $response = $this->sendRequest('/soap', 'POST', $headers);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'
@@ -224,7 +224,7 @@ XML;
         Environment::getService('config')->set('psx_debug', false);
 
         $headers  = ['SOAPAction' => '/api#GET'];
-        $response = $this->sendRequest('http://127.0.0.1/soap?format=json', 'POST', $headers);
+        $response = $this->sendRequest('/soap?format=json', 'POST', $headers);
         $xml      = (string) $response->getBody();
 
         $expect = <<<'XML'

@@ -39,7 +39,7 @@ class DiscoveryControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/discovery', 'GET');
+        $response = $this->sendRequest('/discovery', 'GET');
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'

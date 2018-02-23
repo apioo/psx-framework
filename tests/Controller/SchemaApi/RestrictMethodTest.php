@@ -34,7 +34,7 @@ class RestrictMethodTest extends ControllerTestCase
 {
     public function testHead()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'HEAD');
+        $response = $this->sendRequest('/api', 'HEAD');
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -43,7 +43,7 @@ class RestrictMethodTest extends ControllerTestCase
 
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $expect = <<<JSON
@@ -58,7 +58,7 @@ JSON;
 
     public function testPost()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(405, $response->getStatusCode(), $body);
@@ -67,7 +67,7 @@ JSON;
 
     public function testPut()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PUT', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('/api', 'PUT', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(405, $response->getStatusCode());
@@ -76,7 +76,7 @@ JSON;
 
     public function testDelete()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'DELETE', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('/api', 'DELETE', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -84,7 +84,7 @@ JSON;
 
     public function testPatch()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'PATCH', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('/api', 'PATCH', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(405, $response->getStatusCode());
@@ -93,7 +93,7 @@ JSON;
 
     public function testOptions()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'OPTIONS', ['Content-Type' => 'application/json']);
+        $response = $this->sendRequest('/api', 'OPTIONS', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode());

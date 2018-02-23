@@ -33,7 +33,7 @@ class DefaultControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('http://127.0.0.1/', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'

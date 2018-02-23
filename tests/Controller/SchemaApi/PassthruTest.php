@@ -74,7 +74,7 @@ class PassthruTest extends ControllerTestCase
 
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'GET');
+        $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertJsonStringEqualsJsonString(json_encode($this->payload), $body, $body);
@@ -82,7 +82,7 @@ class PassthruTest extends ControllerTestCase
     
     public function testPost()
     {
-        $response = $this->sendRequest('http://127.0.0.1/api', 'POST', ['Content-Type' => 'application/json'], json_encode($this->payload));
+        $response = $this->sendRequest('/api', 'POST', ['Content-Type' => 'application/json'], json_encode($this->payload));
         $body     = (string) $response->getBody();
 
         $this->assertJsonStringEqualsJsonString(json_encode($this->payload), $body, $body);
