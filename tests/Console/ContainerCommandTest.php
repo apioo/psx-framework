@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Console;
 
+use PSX\Framework\Test\Assert;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -41,11 +42,41 @@ class ContainerCommandTest extends ControllerTestCase
         $commandTester->execute(array(
         ));
 
-        $serviceIds = Environment::getContainer()->getServiceIds();
-        $response   = $commandTester->getDisplay();
+        $actual = $commandTester->getDisplay();
+        $expect = <<<TEXT
 
-        foreach ($serviceIds as $serviceId) {
-            $this->assertTrue(strpos($response, $serviceId) !== false, $serviceId);
-        }
+annotation_reader            \Doctrine\Common\Annotations\Reader
+annotation_reader_controller \Doctrine\Common\Annotations\Reader
+api_manager                  \PSX\Api\ApiManager
+cache                        \Psr\Cache\CacheItemPoolInterface
+config                       \PSX\Framework\Config\Config
+connection                   \Doctrine\DBAL\Connection
+console                      \Symfony\Component\Console\Application
+controller_factory           \PSX\Framework\Dispatch\ControllerFactoryInterface
+dispatch                     \PSX\Framework\Dispatch\Dispatch
+event_dispatcher             \Symfony\Component\EventDispatcher\EventDispatcherInterface 
+exception_converter          \PSX\Framework\Exception\ConverterInterface
+generator_factory            \PSX\Api\GeneratorFactoryInterface
+http_client                  \PSX\Http\Client\ClientInterface
+io                           \PSX\Data\Processor
+listing_filter_factory       \PSX\Api\Listing\FilterFactoryInterface
+loader                       \PSX\Framework\Loader\Loader
+loader_location_finder       \PSX\Framework\Loader\LocationFinderInterface
+logger                       \Psr\Log\LoggerInterface
+object_builder               \PSX\Dependency\ObjectBuilderInterface
+population_service           \PSX\Framework\App\Service\Population
+request_reader               \PSX\Framework\Http\RequestReader
+resource_listing             \PSX\Api\ListingInterface
+response_writer              \PSX\Framework\Http\ResponseWriter
+reverse_router               \PSX\Framework\Loader\ReverseRouter
+routing_parser               \PSX\Framework\Loader\RoutingParserInterface
+schema_manager               \PSX\Schema\SchemaManagerInterface
+session                      \PSX\Framework\Session\Session
+table_manager                \PSX\Sql\TableManagerInterface
+validate                     \PSX\Validate\Validate
+
+TEXT;
+
+        Assert::assertStringMatchIgnoreWhitespace($expect, $actual);
     }
 }

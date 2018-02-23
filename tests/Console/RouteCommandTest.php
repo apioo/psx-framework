@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Console;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -41,22 +42,15 @@ class RouteCommandTest extends ControllerTestCase
         $commandTester->execute(array(
         ));
 
-        $collection = Environment::getService('routing_parser')->getCollection();
-        $response   = $commandTester->getDisplay();
+        $response = $commandTester->getDisplay();
 
-        foreach ($collection as $route) {
-            $methods = implode('|', $route[0]);
-
-            $this->assertTrue(strpos($response, $methods) !== false, $methods);
-            $this->assertTrue(strpos($response, $route[1]) !== false, $route[1]);
-            $this->assertTrue(strpos($response, $route[2]) !== false, $route[2]);
-        }
+        $this->assertEquals('GET /controller ' . TestApiController::class, trim($response));
     }
 
     protected function getPaths()
     {
         return array(
-            [['GET'], '/controller', 'PSX\Framework\Tests\Controller\Foo\Application\TestController::doIndex'],
+            [['GET'], '/controller', TestApiController::class],
         );
     }
 }

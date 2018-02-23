@@ -21,10 +21,7 @@
 namespace PSX\Framework\Console;
 
 use Psr\Container\ContainerInterface;
-use PSX\Framework\Dependency\Container;
-use PSX\Framework\Util\Annotation;
-use ReflectionClass;
-use ReflectionException;
+use PSX\Dependency\Container;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,28 +55,25 @@ class ContainerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->container instanceof Container) {
+            throw new \RuntimeException('It is not possible to introspect the container');
+        }
+
         $services  = $this->container->getServiceIds();
-        $container = new ReflectionClass($this->container);
         $rows      = array();
 
         sort($services);
 
         foreach ($services as $serviceId) {
-            try {
-                $method = $container->getMethod('get' . Container::normalizeName($serviceId));
-                $doc    = Annotation::parse($method->getDocComment());
-                $return = $doc->getFirstAnnotation('return');
+            $return = $this->container->getReturnType($serviceId);
 
-                if (!empty($return)) {
-                    $definition = $return;
-                } else {
-                    $definition = 'void';
-                }
-
-                $rows[] = array($serviceId, $definition);
-            } catch (ReflectionException $e) {
-                // method does not exist
+            if (!empty($return)) {
+                $definition = $return;
+            } else {
+                $definition = 'void';
             }
+
+            $rows[] = array($serviceId, $definition);
         }
 
         $table = new Table($output);
