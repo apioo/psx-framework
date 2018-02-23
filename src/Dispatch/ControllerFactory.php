@@ -21,7 +21,7 @@
 namespace PSX\Framework\Dispatch;
 
 use Psr\Container\ContainerInterface;
-use PSX\Framework\Dependency\ObjectBuilderInterface;
+use PSX\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Http\FilterInterface;
 
@@ -35,7 +35,7 @@ use PSX\Http\FilterInterface;
 class ControllerFactory implements ControllerFactoryInterface
 {
     /**
-     * @var \PSX\Framework\Dependency\ObjectBuilderInterface
+     * @var \PSX\Dependency\ObjectBuilderInterface
      */
     protected $objectBuilder;
 
@@ -45,7 +45,7 @@ class ControllerFactory implements ControllerFactoryInterface
     protected $container;
 
     /**
-     * @param \PSX\Framework\Dependency\ObjectBuilderInterface $objectBuilder
+     * @param \PSX\Dependency\ObjectBuilderInterface $objectBuilder
      * @param \Psr\Container\ContainerInterface $container
      */
     public function __construct(ObjectBuilderInterface $objectBuilder, ContainerInterface $container)
