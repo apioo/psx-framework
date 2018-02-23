@@ -21,6 +21,7 @@
     "psx/api": "^2.0",
     "psx/cache": "^1.0",
     "psx/data": "^2.0",
+    "psx/dependency": "^0.1",
     "psx/http": "^2.0",
     "psx/json": "^1.0",
     "psx/oauth": "^2.0",
