@@ -113,7 +113,12 @@ class Dispatch
 
         // load controller
         if ($context === null) {
-            $context = new Context();
+            $factory = $this->config->get('psx_context_factory');
+            if ($factory instanceof \Closure) {
+                $context = $factory();
+            } else {
+                $context = new Context();
+            }
         }
 
         try {
