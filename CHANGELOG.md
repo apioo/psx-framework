@@ -1,5 +1,10 @@
 
-### 4.0.0
+### 4.0.1
+
+* Use php routing file parser
+* Moved http body classes to http package and rename to writer
+
+### 4.0.0 (2018-02-25)
 
 * It is not longer possible to define a specific method in a route i.e. 
   `MyController::doFoo`. Each resource has now one specific controller
