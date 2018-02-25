@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use PSX\Http\ResponseInterface;
+use PSX\Http\Writer;
 
 /**
  * Body
@@ -28,41 +28,8 @@ use PSX\Http\ResponseInterface;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class Body implements BodyInterface
+class Body extends Writer\Writer
 {
-    /**
-     * @var mixed
-     */
-    protected $data;
-
-    /**
-     * @var string
-     */
-    protected $contentType;
-
-    public function __construct($data, $contentType = null)
-    {
-        $this->data        = $data;
-        $this->contentType = $contentType;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function getContentType()
-    {
-        return $this->contentType;
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        if ($this->contentType !== null) {
-            $response->setHeader('Content-Type', $this->contentType);
-        }
-
-        $response->getBody()->write((string) $this->data);
-    }
 }

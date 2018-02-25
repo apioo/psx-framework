@@ -20,10 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use DOMDocument;
-use InvalidArgumentException;
-use PSX\Http\ResponseInterface;
-use SimpleXMLElement;
+use PSX\Http\Writer;
 
 /**
  * Xml
@@ -31,43 +28,8 @@ use SimpleXMLElement;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class Xml extends Body
+class Xml extends Writer\Xml
 {
-    /**
-     * @var DOMDocument|SimpleXMLElement
-     */
-    protected $data;
-
-    public function __construct($data, $contentType = 'application/xml')
-    {
-        if ($data instanceof DOMDocument) {
-        } elseif ($data instanceof SimpleXMLElement) {
-        } elseif (is_string($data)) {
-        } else {
-            throw new InvalidArgumentException('Document must be either a string, DOMDocument or SimpleXMLElement');
-        }
-
-        parent::__construct($data, $contentType);
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        $response->setHeader('Content-Type', $this->contentType);
-        $response->getBody()->write($this->toString());
-    }
-
-    /**
-     * @return string
-     */
-    private function toString()
-    {
-        if ($this->data instanceof DOMDocument) {
-            return $this->data->saveXML();
-        } elseif ($this->data instanceof SimpleXMLElement) {
-            return $this->data->asXML();
-        } else {
-            return $this->data;
-        }
-    }
 }

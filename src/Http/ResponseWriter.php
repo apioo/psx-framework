@@ -30,6 +30,7 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Http\StreamInterface;
+use PSX\Http\Writer as HttpWriter;
 
 /**
  * ResponseWriter
@@ -103,22 +104,25 @@ class ResponseWriter
                 $options->setWriterType(WriterInterface::JSON);
             }
 
-            if ($body instanceof \DOMDocument) {
-                $body = new Body\Xml($body);
+            $writer = null;
+            if ($body instanceof HttpWriter\WriterInterface) {
+                $writer = $body;
+            } elseif ($body instanceof \DOMDocument) {
+                $writer = new HttpWriter\Xml($body);
             } elseif ($body instanceof \SimpleXMLElement) {
-                $body = new Body\Xml($body);
+                $writer = new HttpWriter\Xml($body);
             } elseif ($body instanceof StreamInterface) {
-                $body = new Body\Stream($body);
+                $writer = new HttpWriter\Stream($body);
             } elseif (is_string($body)) {
-                $body = new Body\Body($body);
+                $writer = new HttpWriter\Writer($body);
             }
 
-            // set new response body since we want to discard every data which was
-            // written before because this could corrupt our output format
+            // set new response body since we want to discard every data which
+            // was written before because this could corrupt our output format
             $response->setBody(new StringStream());
 
-            if ($body instanceof Body\BodyInterface) {
-                $body->writeTo($response);
+            if ($writer instanceof HttpWriter\WriterInterface) {
+                $writer->writeTo($response);
             } else {
                 $this->setResponse($response, $body, $options ?? new WriterOptions());
             }

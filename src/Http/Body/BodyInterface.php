@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use PSX\Http\ResponseInterface;
+use PSX\Http\Writer\WriterInterface;
 
 /**
  * Represents a HTTP request body with an assigned content type
@@ -28,22 +28,8 @@ use PSX\Http\ResponseInterface;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-interface BodyInterface
+interface BodyInterface extends WriterInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getData();
-
-    /**
-     * @return string|null
-     */
-    public function getContentType();
-
-    /**
-     * @param \PSX\Http\ResponseInterface $response
-     * @return void
-     */
-    public function writeTo(ResponseInterface $response);
 }

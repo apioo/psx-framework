@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use PSX\Http\ResponseInterface;
+use PSX\Http\Writer;
 
 /**
  * File
@@ -28,42 +28,8 @@ use PSX\Http\ResponseInterface;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class File extends Body
+class File extends Writer\File
 {
-    /**
-     * @var string
-     */
-    protected $fileName;
-
-    public function __construct($file, $fileName = null, $contentType = null)
-    {
-        parent::__construct($file, $contentType);
-
-        $this->fileName = $fileName;
-    }
-
-    public function getFileName()
-    {
-        return $this->fileName;
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        $file = $this->data;
-
-        $fileName = $this->fileName;
-        if (empty($fileName)) {
-            $fileName = pathinfo($file, PATHINFO_FILENAME);
-        }
-
-        $contentType = $this->contentType;
-        if ($contentType === null) {
-            $contentType = mime_content_type($file);
-        }
-
-        $response->setHeader('Content-Type', $contentType);
-        $response->setHeader('Content-Disposition', 'attachment; filename="' . addcslashes($fileName, '"') . '"');
-        $response->getBody()->write(file_get_contents($file));
-    }
 }

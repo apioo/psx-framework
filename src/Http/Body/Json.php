@@ -20,8 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use PSX\Http\ResponseInterface;
-use PSX\Json\Parser;
+use PSX\Http\Writer;
 
 /**
  * Json
@@ -29,17 +28,8 @@ use PSX\Json\Parser;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class Json extends Body
+class Json extends Writer\Json
 {
-    public function __construct($data, $contentType = 'application/json')
-    {
-        parent::__construct($data, $contentType);
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        $response->setHeader('Content-Type', $this->contentType);
-        $response->getBody()->write(Parser::encode($this->data));
-    }
 }

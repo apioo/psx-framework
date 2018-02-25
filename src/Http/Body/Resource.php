@@ -20,8 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use InvalidArgumentException;
-use PSX\Http\ResponseInterface;
+use PSX\Http\Writer;
 
 /**
  * Resource
@@ -29,26 +28,8 @@ use PSX\Http\ResponseInterface;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class Resource extends Body
+class Resource extends Writer\Resource
 {
-    /**
-     * @var resource
-     */
-    protected $data;
-
-    public function __construct($data, $contentType = 'application/octet-stream')
-    {
-        if (!is_resource($data)) {
-            throw new InvalidArgumentException('data must be a resource');
-        }
-
-        parent::__construct($data, $contentType);
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        $response->setHeader('Content-Type', $this->contentType);
-        $response->getBody()->write(stream_get_contents($this->data, -1, 0));
-    }
 }

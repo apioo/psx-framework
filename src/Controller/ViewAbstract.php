@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Framework\Http\Body;
+use PSX\Framework\Http\Writer;
 use PSX\Http\ResponseInterface;
 
 /**
@@ -46,7 +46,7 @@ abstract class ViewAbstract extends ControllerAbstract
      */
     public function render(ResponseInterface $response, $templateFile, $data)
     {
-        $body = new Body\Template($data, $templateFile, $this->reverseRouter);
+        $body = new Writer\Template($data, $templateFile, $this->reverseRouter);
 
         $this->responseWriter->setBody($response, $body);
     }

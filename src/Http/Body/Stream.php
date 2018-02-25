@@ -20,8 +20,7 @@
 
 namespace PSX\Framework\Http\Body;
 
-use PSX\Http\ResponseInterface;
-use PSX\Http\StreamInterface;
+use PSX\Http\Writer;
 
 /**
  * Stream
@@ -29,22 +28,8 @@ use PSX\Http\StreamInterface;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated
  */
-class Stream extends Body
+class Stream extends Writer\Stream
 {
-    /**
-     * @var \PSX\Http\StreamInterface
-     */
-    protected $data;
-
-    public function __construct(StreamInterface $stream, $contentType = 'application/octet-stream')
-    {
-        parent::__construct($stream, $contentType);
-    }
-
-    public function writeTo(ResponseInterface $response)
-    {
-        $response->setHeader('Content-Type', $this->contentType);
-        $response->getBody()->write($this->data->__toString());
-    }
 }
