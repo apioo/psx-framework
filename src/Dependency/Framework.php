@@ -129,7 +129,15 @@ trait Framework
      */
     public function getRoutingParser()
     {
-        $routingParser = new Loader\RoutingParser\RoutingFile($this->get('config')->get('psx_routing'));
+        $routingFile = $this->get('config')->get('psx_routing');
+
+        if (substr($routingFile, -4) == '.php') {
+            // for php routing files we dont need a cached parser since PHP can
+            // use its internal opcache
+            return new Loader\RoutingParser\PhpFile($routingFile);
+        } else {
+            $routingParser = new Loader\RoutingParser\RoutingFile($routingFile);
+        }
 
         if ($this->get('config')->get('psx_debug')) {
             return $routingParser;
