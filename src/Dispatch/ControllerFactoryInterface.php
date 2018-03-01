@@ -40,4 +40,14 @@ interface ControllerFactoryInterface
      * @return array
      */
     public function getController($source, Context $context = null);
+
+    /**
+     * Returns a documentation resource for the provided controller
+     * 
+     * @param string $className
+     * @param Context|null $context
+     * @param string|null $version
+     * @return \PSX\Api\Resource|null
+     */
+    public function getDocumentation($className, Context $context = null, $version = null);
 }

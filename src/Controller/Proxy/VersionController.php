@@ -112,12 +112,7 @@ abstract class VersionController extends ControllerAbstract implements Documente
         }
 
         if (!empty($class)) {
-            $controller = $this->controllerFactory->getController($class, $this->context);
-            foreach ($controller as $con) {
-                if ($con instanceof DocumentedInterface) {
-                    return $con->getDocumentation($version);
-                }
-            }
+            return $this->controllerFactory->getDocumentation($class, $this->context, $version);
         }
 
         return null;

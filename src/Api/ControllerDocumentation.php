@@ -118,13 +118,9 @@ class ControllerDocumentation implements ListingInterface
 
             if (class_exists($className) && $matcher->match($path)) {
                 $context    = $this->newContext($route);
-                $controller = $this->newController($className, $context);
+                $controller = $this->controllerFactory->getDocumentation($className, $context, $version);
 
-                foreach ($controller as $con) {
-                    if ($con instanceof DocumentedInterface) {
-                        return $con->getDocumentation($version);
-                    }
-                }
+                return $controller;
             }
         }
 
@@ -144,20 +140,6 @@ class ControllerDocumentation implements ListingInterface
         }
 
         return $collection;
-    }
-
-    /**
-     * @param string $className
-     * @param \PSX\Framework\Loader\Context $context
-     * @return mixed
-     */
-    protected function newController($className, Context $context)
-    {
-        try {
-            return $this->controllerFactory->getController($className, $context);
-        } catch (\Throwable $e) {
-            return null;
-        }
     }
 
     /**
