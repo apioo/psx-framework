@@ -45,7 +45,7 @@ class Environment
     protected static $basePath;
 
     /**
-     * @var \PSX\Framework\Dependency\Container
+     * @var \PSX\Dependency\Container
      */
     protected static $container;
 
@@ -85,7 +85,7 @@ class Environment
     }
 
     /**
-     * @return \PSX\Framework\Dependency\Container
+     * @return \PSX\Dependency\Container
      */
     public static function getContainer()
     {
