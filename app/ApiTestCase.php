@@ -24,10 +24,9 @@ use GuzzleHttp\Client;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\App\Api\Population;
 use PSX\Framework\Controller\Generator;
-use PSX\Framework\Controller\Proxy;
 use PSX\Framework\Controller\Tool;
 use PSX\Framework\Test\Environment;
-use PSX\Http\Factory\NativeFactory;
+use PSX\Http\Response;
 
 /**
  * ApiTestCase
@@ -77,8 +76,6 @@ class ApiTestCase extends ControllerDbTestCase
             [['GET'], '/generator/raml/:version/*path', Generator\RamlController::class],
             [['GET'], '/generator/swagger/:version/*path', Generator\SwaggerController::class],
             [['GET'], '/generator/openapi/:version/*path', Generator\OpenAPIController::class],
-
-            [['ANY'], '/proxy/soap', Proxy\SoapController::class],
         ];
     }
 
@@ -99,7 +96,7 @@ class ApiTestCase extends ControllerDbTestCase
                 'body'    => $body,
             ]);
 
-            return NativeFactory::createResponse($response);
+            return new Response($response->getStatusCode(), $response->getHeaders(), $response->getBody());
         } else {
             return parent::sendRequest($uri, $method, $headers, $body);
         }
