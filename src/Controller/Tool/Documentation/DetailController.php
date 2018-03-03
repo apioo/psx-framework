@@ -22,7 +22,7 @@ namespace PSX\Framework\Controller\Tool\Documentation;
 
 use PSX\Api\Generator;
 use PSX\Api\Resource;
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
@@ -37,7 +37,7 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DetailController extends ApiAbstract
+class DetailController extends ControllerAbstract
 {
     /**
      * @Inject

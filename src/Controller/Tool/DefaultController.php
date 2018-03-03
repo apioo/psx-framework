@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -31,7 +31,7 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DefaultController extends ApiAbstract
+class DefaultController extends ControllerAbstract
 {
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {

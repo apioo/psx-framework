@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
@@ -35,7 +35,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DiscoveryController extends ApiAbstract
+class DiscoveryController extends ControllerAbstract
 {
     /**
      * @Inject

@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Controller\Tool\Documentation;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
@@ -32,7 +32,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class IndexController extends ApiAbstract
+class IndexController extends ControllerAbstract
 {
     /**
      * @Inject
