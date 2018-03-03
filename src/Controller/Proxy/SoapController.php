@@ -20,10 +20,8 @@
 
 namespace PSX\Framework\Controller\Proxy;
 
-use PSX\Data\WriterInterface;
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
-use PSX\Http\Request;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Uri\Uri;
@@ -35,7 +33,7 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SoapController extends ApiAbstract
+class SoapController extends ControllerAbstract
 {
     /**
      * @Inject
@@ -60,17 +58,13 @@ class SoapController extends ApiAbstract
             throw new StatusCode\BadRequestException('No SOAPAction header was provided');
         }
 
-        $actionUri = trim(strstr($soapAction . ';', ';', true), '" ');
-        $uri       = new Uri($actionUri);
-        $method    = $uri->getFragment();
+        $action = trim(strstr($soapAction . ';', ';', true), '" ');
+        $uri    = new Uri($action);
+        $method = $uri->getFragment();
 
         if (!in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'])) {
             throw new StatusCode\BadRequestException('Invalid request method');
         }
-
-        $headers = $request->getHeaders();
-        $headers['Content-Type'] = 'application/soap+xml';
-        $headers['Accept']       = 'application/soap+xml';
 
         $request->setMethod($method);
         $request->setUri($uri);
