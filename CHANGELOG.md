@@ -1,5 +1,12 @@
 
-### 4.0.1
+### 4.0.2 (2018-03-03)
+
+* Update controller to extend directly from controller abstract instead of 
+  deprecated api abstract
+* Removed SoapTest from test app
+* Improved php docs
+
+### 4.0.1 (2018-03-01)
 
 * Use php routing file parser
 * Moved http body classes to http package and rename to writer
