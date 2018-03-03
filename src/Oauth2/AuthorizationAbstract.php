@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Oauth2;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -38,7 +38,7 @@ use PSX\Uri\Url;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class AuthorizationAbstract extends ApiAbstract
+abstract class AuthorizationAbstract extends ControllerAbstract
 {
     /**
      * @Inject("oauth2_grant_type_factory")

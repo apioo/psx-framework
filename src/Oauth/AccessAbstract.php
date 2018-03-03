@@ -21,7 +21,7 @@
 namespace PSX\Framework\Oauth;
 
 use PSX\Data\WriterInterface;
-use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -37,7 +37,7 @@ use PSX\Oauth\Data\Response;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class AccessAbstract extends ApiAbstract
+abstract class AccessAbstract extends ControllerAbstract
 {
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
