@@ -125,13 +125,6 @@
       ],
       "path": "\/generator\/openapi\/:version\/*path",
       "source": "PSX\\Framework\\Controller\\Generator\\OpenAPIController"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/proxy\/soap",
-      "source": "PSX\\Framework\\Controller\\Proxy\\SoapController"
     }
   ]
 }
