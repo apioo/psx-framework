@@ -1,4 +1,14 @@
 
+### 4.0.4
+
+* Deprecated PSX_PATH_LIBRARY constant and add PSX_PATH_SRC and PSX_PATH_PUBLIC
+  constant
+
+### 4.0.3 (2018-03-03)
+
+* Remove soap controller route
+* Fix api test case transform psr7 response
+
 ### 4.0.2 (2018-03-03)
 
 * Update controller to extend directly from controller abstract instead of 
