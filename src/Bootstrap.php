@@ -43,8 +43,12 @@ class Bootstrap
     {
         if (!defined('PSX')) {
             // define paths
-            define('PSX_PATH_CACHE', $config['psx_path_cache']);
-            define('PSX_PATH_LIBRARY', $config['psx_path_library']);
+            define('PSX_PATH_CACHE', $config->get('psx_path_cache'));
+            define('PSX_PATH_PUBLIC', $config->get('psx_path_public'));
+            define('PSX_PATH_SRC', $config->get('psx_path_src') ?: $config->get('psx_path_library'));
+
+            /** @deprecated */
+            define('PSX_PATH_LIBRARY', $config->get('psx_path_library'));
 
             // error handling
             if ($config['psx_debug'] === true) {
