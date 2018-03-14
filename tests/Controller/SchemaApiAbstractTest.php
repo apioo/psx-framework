@@ -200,7 +200,11 @@ JSON;
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertEquals(['access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'], 'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']], $response->getHeaders());
+        $this->assertEquals([
+            'access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
+            'access-control-allow-headers' => ['Authorization'],
+            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']
+        ], $response->getHeaders());
         $this->assertEmpty($body);
     }
 
