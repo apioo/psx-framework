@@ -196,13 +196,13 @@ JSON;
 
     public function testOptionsCors()
     {
-        $response = $this->sendRequest('/api', 'OPTIONS', ['Content-Type' => 'application/json', 'Access-Control-Request-Method' => 'DELETE', 'Access-Control-Request-Headers' => 'origin, x-requested-with', 'Origin' => 'https://foo.bar.org']);
+        $response = $this->sendRequest('/api', 'OPTIONS', ['Content-Type' => 'application/json', 'Access-Control-Request-Method' => 'DELETE', 'Access-Control-Request-Headers' => 'origin, authorization, Content-Type', 'Origin' => 'https://foo.bar.org']);
         $body     = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals([
             'access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
-            'access-control-allow-headers' => ['Authorization'],
+            'access-control-allow-headers' => ['authorization, Content-Type'],
             'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']
         ], $response->getHeaders());
         $this->assertEmpty($body);
