@@ -1,5 +1,5 @@
 
-### 4.0.4
+### 4.0.4 (2018-03-15)
 
 * CORS send allowed headers
 * Deprecated PSX_PATH_LIBRARY constant and add PSX_PATH_SRC and PSX_PATH_PUBLIC
