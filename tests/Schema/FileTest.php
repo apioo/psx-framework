@@ -21,9 +21,7 @@
 namespace PSX\Framework\Tests\Schema;
 
 use PSX\Framework\Schema\File;
-use PSX\Schema\Generator;
-use PSX\Schema\SchemaInterface;
-use PSX\Schema\SchemaManager;
+use PSX\Framework\Test\SchemaTestCase;
 
 /**
  * FileTest
@@ -32,18 +30,16 @@ use PSX\Schema\SchemaManager;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends SchemaTestCase
 {
-    public function testSchema()
+    protected function getSchema()
     {
-        $generator = new Generator\JsonSchema();
-        $manage = new SchemaManager();
-        $schema = $manage->getSchema(File::class);
+        return File::class;
+    }
 
-        $this->assertInstanceOf(SchemaInterface::class, $schema);
-
-        $actual = $generator->generate($schema);
-        $expect = <<<'JSON'
+    protected function getExpect()
+    {
+        return <<<'JSON'
 {
     "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
     "id": "urn:schema.phpsx.org#",
@@ -69,7 +65,5 @@ class FileTest extends \PHPUnit_Framework_TestCase
     }
 }
 JSON;
-
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

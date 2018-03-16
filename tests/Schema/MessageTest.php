@@ -20,21 +20,21 @@
 
 namespace PSX\Framework\Tests\Schema;
 
-use PSX\Framework\Schema\Passthru;
+use PSX\Framework\Schema\Message;
 use PSX\Framework\Test\SchemaTestCase;
 
 /**
- * PassthruTest
+ * MessageTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PassthruTest extends SchemaTestCase
+class MessageTest extends SchemaTestCase
 {
     protected function getSchema()
     {
-        return Passthru::class;
+        return Message::class;
     }
 
     protected function getExpect()
@@ -44,8 +44,15 @@ class PassthruTest extends SchemaTestCase
     "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
     "id": "urn:schema.phpsx.org#",
     "type": "object",
-    "title": "passthru",
-    "description": "No schema information available"
+    "title": "message",
+    "properties": {
+        "success": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": "string"
+        }
+    }
 }
 JSON;
     }

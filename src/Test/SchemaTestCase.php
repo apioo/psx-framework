@@ -18,35 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Schema;
+namespace PSX\Framework\Test;
 
-use PSX\Framework\Schema\Passthru;
-use PSX\Framework\Test\SchemaTestCase;
+use PSX\Schema\Generator;
+use PSX\Schema\SchemaInterface;
+use PSX\Schema\SchemaManager;
 
 /**
- * PassthruTest
+ * SchemaTestCase
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PassthruTest extends SchemaTestCase
+abstract class SchemaTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function getSchema()
+    public function testSchema()
     {
-        return Passthru::class;
+        $generator = new Generator\JsonSchema();
+        $manage = new SchemaManager();
+        $schema = $manage->getSchema($this->getSchema());
+
+        $this->assertInstanceOf(SchemaInterface::class, $schema);
+
+        $actual = $generator->generate($schema);
+        $expect = $this->getExpect();
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    protected function getExpect()
-    {
-        return <<<'JSON'
-{
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "type": "object",
-    "title": "passthru",
-    "description": "No schema information available"
-}
-JSON;
-    }
+    /**
+     * @return string
+     */
+    abstract protected function getSchema();
+
+    /**
+     * @return string
+     */
+    abstract protected function getExpect();
 }
