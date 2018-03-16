@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Controller\Tool\Documentation;
 
-use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
-use PSX\Record\Record;
+use PSX\Api\Resource;
+use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Schema;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * IndexController
@@ -32,7 +32,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class IndexController extends ControllerAbstract
+class IndexController extends SchemaApiAbstract
 {
     /**
      * @Inject
@@ -52,10 +52,24 @@ class IndexController extends ControllerAbstract
      */
     protected $reverseRouter;
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    /**
+     * @inheritdoc
+     */
+    public function getDocumentation($version = null)
     {
-        $data = [
-            'routings' => $this->getRoutings($request->getUri()->getParameter('filter')),
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+
+        $resource->addMethod(Resource\Factory::getMethod('GET')
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Documentation\Index::class))
+        );
+
+        return $resource;
+    }
+
+    public function doGet(HttpContextInterface $httpContext)
+    {
+        return [
+            'routings' => $this->getRoutings($httpContext->getParameter('filter')),
             'links'    => [
                 [
                     'rel'  => 'self',
@@ -71,8 +85,6 @@ class IndexController extends ControllerAbstract
                 ],
             ]
         ];
-
-        $this->responseWriter->setBody($response, $data, $request);
     }
 
     protected function getRoutings($filter)
@@ -82,11 +94,11 @@ class IndexController extends ControllerAbstract
         $resources = $this->resourceListing->getResourceIndex($filter);
 
         foreach ($resources as $resource) {
-            $routings[] = new Record('routing', [
+            $routings[] = [
                 'path'    => $resource->getPath(),
                 'methods' => $resource->getAllowedMethods(),
                 'version' => '*',
-            ]);
+            ];
         }
 
         return $routings;

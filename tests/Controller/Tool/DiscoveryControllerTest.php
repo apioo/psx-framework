@@ -37,6 +37,77 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class DiscoveryControllerTest extends ControllerTestCase
 {
+    public function testDocumentation()
+    {
+        $response = $this->sendRequest('/doc/*/discovery', 'GET');
+
+        $actual = (string) $response->getBody();
+        $expect = <<<'JSON'
+{
+    "path": "\/discovery",
+    "version": "*",
+    "status": 1,
+    "description": null,
+    "schema": {
+        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+        "id": "urn:schema.phpsx.org#",
+        "definitions": {
+            "Link": {
+                "type": "object",
+                "title": "link",
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Collection": {
+                "type": "object",
+                "title": "collection",
+                "properties": {
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/definitions\/Link"
+                        }
+                    }
+                }
+            },
+            "GET-200-response": {
+                "$ref": "#\/definitions\/Collection"
+            }
+        }
+    },
+    "methods": {
+        "GET": {
+            "responses": {
+                "200": "#\/definitions\/GET-200-response"
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "openapi",
+            "href": "\/openapi"
+        },
+        {
+            "rel": "swagger",
+            "href": "\/swagger"
+        },
+        {
+            "rel": "raml",
+            "href": "\/raml"
+        }
+    ]
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     public function testIndex()
     {
         $response = $this->sendRequest('/discovery', 'GET');
@@ -73,7 +144,7 @@ class DiscoveryControllerTest extends ControllerTestCase
 }
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 

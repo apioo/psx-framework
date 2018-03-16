@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
+use PSX\Framework\Controller\Tool\DefaultController;
+use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**
@@ -31,6 +33,51 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class DefaultControllerTest extends ControllerTestCase
 {
+    public function testDocumentation()
+    {
+        $response = $this->sendRequest('/doc/*/', 'GET');
+
+        $actual = (string) $response->getBody();
+        $expect = <<<'JSON'
+{
+    "path": "\/",
+    "version": "*",
+    "status": 1,
+    "description": null,
+    "schema": {
+        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+        "id": "urn:schema.phpsx.org#",
+        "definitions": {
+            "Message": {
+                "type": "object",
+                "title": "message",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GET-200-response": {
+                "$ref": "#\/definitions\/Message"
+            }
+        }
+    },
+    "methods": {
+        "GET": {
+            "responses": {
+                "200": "#\/definitions\/GET-200-response"
+            }
+        }
+    }
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     public function testIndex()
     {
         $response = $this->sendRequest('/', 'GET', ['Accept' => 'application/json']);
@@ -43,14 +90,15 @@ class DefaultControllerTest extends ControllerTestCase
 }
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 
     protected function getPaths()
     {
         return array(
-            [['GET'], '/', 'PSX\Framework\Controller\Tool\DefaultController'],
+            [['GET'], '/', DefaultController::class],
+            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
         );
     }
 }

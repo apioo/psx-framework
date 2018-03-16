@@ -36,6 +36,226 @@ use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
  */
 class DocumentationControllerTest extends ControllerTestCase
 {
+    public function testDocumentationIndex()
+    {
+        $response = $this->sendRequest('/doc/*/doc', 'GET');
+
+        $actual = (string) $response->getBody();
+        $expect = <<<'JSON'
+{
+    "path": "\/doc",
+    "version": "*",
+    "status": 1,
+    "description": null,
+    "schema": {
+        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+        "id": "urn:schema.phpsx.org#",
+        "definitions": {
+            "Route": {
+                "type": "object",
+                "title": "route",
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "methods": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Link": {
+                "type": "object",
+                "title": "link",
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Index": {
+                "type": "object",
+                "title": "index",
+                "properties": {
+                    "routings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/definitions\/Route"
+                        }
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/definitions\/Link"
+                        }
+                    }
+                }
+            },
+            "GET-200-response": {
+                "$ref": "#\/definitions\/Index"
+            }
+        }
+    },
+    "methods": {
+        "GET": {
+            "responses": {
+                "200": "#\/definitions\/GET-200-response"
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "openapi",
+            "href": "\/openapi"
+        },
+        {
+            "rel": "swagger",
+            "href": "\/swagger"
+        },
+        {
+            "rel": "raml",
+            "href": "\/raml"
+        }
+    ]
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
+    public function testDocumentationDetail()
+    {
+        $response = $this->sendRequest('/doc/*/doc/*', 'GET');
+
+        $actual = (string) $response->getBody();
+        $expect = <<<'JSON'
+{
+    "path": "\/doc\/:version\/*path",
+    "version": "*",
+    "status": 1,
+    "description": null,
+    "schema": {
+        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+        "id": "urn:schema.phpsx.org#",
+        "definitions": {
+            "Schema": {
+                "type": "object",
+                "title": "schema",
+                "description": "Contains the JSON Schema object"
+            },
+            "Methods": {
+                "type": "object",
+                "title": "methods",
+                "additionalProperties": {
+                    "$ref": "#\/definitions\/Method"
+                }
+            },
+            "Method": {
+                "type": "object",
+                "title": "method",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "queryParameters": {
+                        "type": "string"
+                    },
+                    "request": {
+                        "type": "string"
+                    },
+                    "responses": {
+                        "type": "array",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Link": {
+                "type": "object",
+                "title": "link",
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Detail": {
+                "type": "object",
+                "title": "detail",
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "schema": {
+                        "$ref": "#\/definitions\/Schema"
+                    },
+                    "pathParameters": {
+                        "type": "string"
+                    },
+                    "methods": {
+                        "$ref": "#\/definitions\/Methods"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#\/definitions\/Link"
+                        }
+                    }
+                }
+            },
+            "GET-200-response": {
+                "$ref": "#\/definitions\/Detail"
+            }
+        }
+    },
+    "methods": {
+        "GET": {
+            "responses": {
+                "200": "#\/definitions\/GET-200-response"
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "openapi",
+            "href": "\/openapi"
+        },
+        {
+            "rel": "swagger",
+            "href": "\/swagger"
+        },
+        {
+            "rel": "raml",
+            "href": "\/raml"
+        }
+    ]
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     public function testIndex()
     {
         $response = $this->sendRequest('/doc', 'GET', ['Accept' => 'application/json']);
@@ -44,6 +264,20 @@ class DocumentationControllerTest extends ControllerTestCase
         $expect = <<<'JSON'
 {
     "routings": [
+        {
+            "path": "\/doc",
+            "methods": [
+                "GET"
+            ],
+            "version": "*"
+        },
+        {
+            "path": "\/doc\/:version\/*path",
+            "methods": [
+                "GET"
+            ],
+            "version": "*"
+        },
         {
             "path": "\/api",
             "methods": [
@@ -73,7 +307,7 @@ class DocumentationControllerTest extends ControllerTestCase
 }
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 
@@ -267,7 +501,7 @@ JSON;
 }
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 

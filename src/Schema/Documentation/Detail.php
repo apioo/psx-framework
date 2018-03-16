@@ -18,41 +18,37 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Controller\Tool;
+namespace PSX\Framework\Schema\Documentation;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Schema;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Schema\Discovery\Link;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * DefaultController
+ * Detail
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DefaultController extends SchemaApiAbstract
+class Detail extends SchemaAbstract
 {
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation($version = null)
+    public function getDefinition()
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $sb = $this->getSchemaBuilder('detail');
+        $sb->string('path');
+        $sb->string('version');
+        $sb->integer('status');
+        $sb->string('description');
+        $sb->objectType('schema')
+            ->setTitle('schema')
+            ->setDescription('Contains the JSON Schema object');
+        $sb->string('pathParameters');
+        $sb->objectType('methods')
+            ->setTitle('methods')
+            ->setAdditionalProperties($this->getSchema(Method::class));
+        $sb->arrayType('links')
+            ->setItems($this->getSchema(Link::class));
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Welcome::class))
-        );
-
-        return $resource;
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
-    {
-        return [
-            'message' => 'This is the default controller of PSX',
-            'url'     => 'http://phpsx.org',
-        ];
+        return $sb->getProperty();
     }
 }

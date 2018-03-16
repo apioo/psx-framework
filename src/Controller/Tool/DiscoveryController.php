@@ -20,13 +20,13 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Api\Resource;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
-use PSX\Record\Record;
+use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Schema;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * DiscoveryController
@@ -35,7 +35,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DiscoveryController extends ControllerAbstract
+class DiscoveryController extends SchemaApiAbstract
 {
     /**
      * @Inject
@@ -43,32 +43,46 @@ class DiscoveryController extends ControllerAbstract
      */
     protected $reverseRouter;
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    /**
+     * @inheritdoc
+     */
+    public function getDocumentation($version = null)
+    {
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+
+        $resource->addMethod(Resource\Factory::getMethod('GET')
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Discovery\Collection::class))
+        );
+
+        return $resource;
+    }
+
+    public function doGet(HttpContextInterface $httpContext)
     {
         $links = [];
 
         $apiPath = $this->reverseRouter->getDispatchUrl();
         if ($apiPath !== null) {
-            $links[] = Record::fromArray([
+            $links[] = [
                 'rel'  => 'api',
                 'href' => $apiPath,
-            ]);
+            ];
         }
 
         $routingPath = $this->reverseRouter->getUrl(RoutingController::class);
         if ($routingPath !== null) {
-            $links[] = Record::fromArray([
+            $links[] = [
                 'rel'  => 'routing',
                 'href' => $routingPath,
-            ]);
+            ];
         }
 
         $documentationPath = $this->reverseRouter->getUrl(Documentation\IndexController::class);
         if ($documentationPath !== null) {
-            $links[] = Record::fromArray([
+            $links[] = [
                 'rel'  => 'documentation',
                 'href' => $documentationPath,
-            ]);
+            ];
         }
 
         $generators = [
@@ -80,17 +94,15 @@ class DiscoveryController extends ControllerAbstract
         foreach ($generators as $rel => $class) {
             $generatorPath = $this->reverseRouter->getUrl($class, ['{version}', '{path}']);
             if ($generatorPath !== null) {
-                $links[] = Record::fromArray([
+                $links[] = [
                     'rel'  => $rel,
                     'href' => $generatorPath,
-                ]);
+                ];
             }
         }
 
-        $data = [
+        return [
             'links' => $links,
         ];
-
-        $this->responseWriter->setBody($response, $data, $request);
     }
 }

@@ -18,41 +18,25 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Controller\Tool;
+namespace PSX\Framework\Schema\Routing;
 
-use PSX\Api\Resource;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Schema;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * DefaultController
+ * Collection
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DefaultController extends SchemaApiAbstract
+class Collection extends SchemaAbstract
 {
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation($version = null)
+    public function getDefinition()
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $sb = $this->getSchemaBuilder('collection');
+        $sb->arrayType('routings')
+            ->setItems($this->getSchema(Route::class));
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Welcome::class))
-        );
-
-        return $resource;
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
-    {
-        return [
-            'message' => 'This is the default controller of PSX',
-            'url'     => 'http://phpsx.org',
-        ];
+        return $sb->getProperty();
     }
 }

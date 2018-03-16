@@ -22,13 +22,13 @@ namespace PSX\Framework\Controller\Tool\Documentation;
 
 use PSX\Api\Generator;
 use PSX\Api\Resource;
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
+use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Schema;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 
 /**
  * DetailController
@@ -37,7 +37,7 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DetailController extends ControllerAbstract
+class DetailController extends SchemaApiAbstract
 {
     /**
      * @Inject
@@ -57,7 +57,21 @@ class DetailController extends ControllerAbstract
      */
     protected $reverseRouter;
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    /**
+     * @inheritdoc
+     */
+    public function getDocumentation($version = null)
+    {
+        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+
+        $resource->addMethod(Resource\Factory::getMethod('GET')
+            ->addResponse(200, $this->schemaManager->getSchema(Schema\Documentation\Detail::class))
+        );
+
+        return $resource;
+    }
+
+    public function doGet(HttpContextInterface $httpContext)
     {
         $version = $this->context->getParameter('version');
         $path    = $this->context->getParameter('path') ?: '/';
@@ -131,7 +145,7 @@ class DetailController extends ControllerAbstract
             $api->links = $links;
         }
 
-        $this->responseWriter->setBody($response, $api, $request);
+        return $api;
     }
 
     protected function getLinks($version, $path)
