@@ -1,8 +1,8 @@
 
-### 4.0.5
+### 4.0.5 (2018-03-16)
 
 * Tool controller extend schema api
-* Add cors policy service which handels cors header on preflight requests
+* Add cors policy service which handles preflight requests
 
 ### 4.0.4 (2018-03-15)
 
