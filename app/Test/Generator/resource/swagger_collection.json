@@ -552,6 +552,81 @@
           "type": "integer"
         }
       ]
+    },
+    "\/tool": {
+      "get": {
+        "operationId": "toolGetMessage",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "GET 200 response",
+            "schema": {
+              "$ref": "#\/definitions\/Message"
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "\/tool\/discovery": {
+      "get": {
+        "operationId": "toolDiscoveryGetCollection",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "GET 200 response",
+            "schema": {
+              "$ref": "#\/definitions\/Collection"
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "\/tool\/doc": {
+      "get": {
+        "operationId": "toolDocGetIndex",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "GET 200 response",
+            "schema": {
+              "$ref": "#\/definitions\/Index"
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "\/tool\/doc\/{version}\/{path}": {
+      "get": {
+        "operationId": "toolDocVersionPathGetDetail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "GET 200 response",
+            "schema": {
+              "$ref": "#\/definitions\/Detail"
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "\/tool\/routing": {
+      "get": {
+        "operationId": "toolRoutingGetCollection",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "GET 200 response",
+            "schema": {
+              "$ref": "#\/definitions\/Collection"
+            }
+          }
+        }
+      },
+      "parameters": []
     }
   },
   "definitions": {
@@ -607,33 +682,140 @@
     "Collection": {
       "type": "object",
       "title": "collection",
-      "description": "Collection result",
       "properties": {
-        "totalResults": {
-          "type": "integer"
-        },
-        "entry": {
+        "routings": {
           "type": "array",
           "items": {
-            "$ref": "#\/definitions\/Entity"
+            "$ref": "#\/definitions\/Route"
           }
         }
-      },
-      "class": "PSX\\Framework\\App\\Model\\Collection"
+      }
     },
     "Message": {
       "type": "object",
       "title": "message",
-      "description": "Operation message",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "message": {
           "type": "string"
+        },
+        "url": {
+          "type": "string"
         }
-      },
-      "class": "PSX\\Framework\\App\\Model\\Message"
+      }
+    },
+    "Link": {
+      "type": "object",
+      "title": "link",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Route": {
+      "type": "object",
+      "title": "route",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "Index": {
+      "type": "object",
+      "title": "index",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "#\/definitions\/Route"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#\/definitions\/Link"
+          }
+        }
+      }
+    },
+    "Schema": {
+      "type": "object",
+      "title": "schema",
+      "description": "Contains the JSON Schema object"
+    },
+    "Methods": {
+      "type": "object",
+      "title": "methods",
+      "additionalProperties": {
+        "$ref": "#\/definitions\/Method"
+      }
+    },
+    "Method": {
+      "type": "object",
+      "title": "method",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "queryParameters": {
+          "type": "string"
+        },
+        "request": {
+          "type": "string"
+        },
+        "responses": {
+          "type": "array",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Detail": {
+      "type": "object",
+      "title": "detail",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "#\/definitions\/Schema"
+        },
+        "pathParameters": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "#\/definitions\/Methods"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#\/definitions\/Link"
+          }
+        }
+      }
     }
   }
 }

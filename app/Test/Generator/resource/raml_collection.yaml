@@ -1588,3 +1588,248 @@ title: PSX
                   },
                   "class": "PSX\\Framework\\App\\Model\\Message"
               }
+/tool:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: |
+              {
+                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+                  "id": "urn:schema.phpsx.org#",
+                  "type": "object",
+                  "title": "message",
+                  "properties": {
+                      "message": {
+                          "type": "string"
+                      },
+                      "url": {
+                          "type": "string"
+                      }
+                  }
+              }
+/tool/discovery:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: |
+              {
+                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+                  "id": "urn:schema.phpsx.org#",
+                  "definitions": {
+                      "Link": {
+                          "type": "object",
+                          "title": "link",
+                          "properties": {
+                              "rel": {
+                                  "type": "string"
+                              },
+                              "href": {
+                                  "type": "string"
+                              }
+                          }
+                      }
+                  },
+                  "type": "object",
+                  "title": "collection",
+                  "properties": {
+                      "links": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#\/definitions\/Link"
+                          }
+                      }
+                  }
+              }
+/tool/doc:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: |
+              {
+                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+                  "id": "urn:schema.phpsx.org#",
+                  "definitions": {
+                      "Route": {
+                          "type": "object",
+                          "title": "route",
+                          "properties": {
+                              "path": {
+                                  "type": "string"
+                              },
+                              "methods": {
+                                  "type": "array",
+                                  "items": {
+                                      "type": "string"
+                                  }
+                              },
+                              "version": {
+                                  "type": "string"
+                              }
+                          }
+                      },
+                      "Link": {
+                          "type": "object",
+                          "title": "link",
+                          "properties": {
+                              "rel": {
+                                  "type": "string"
+                              },
+                              "href": {
+                                  "type": "string"
+                              }
+                          }
+                      }
+                  },
+                  "type": "object",
+                  "title": "index",
+                  "properties": {
+                      "routings": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#\/definitions\/Route"
+                          }
+                      },
+                      "links": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#\/definitions\/Link"
+                          }
+                      }
+                  }
+              }
+/tool/doc/{version}/{path}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: |
+              {
+                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+                  "id": "urn:schema.phpsx.org#",
+                  "definitions": {
+                      "Schema": {
+                          "type": "object",
+                          "title": "schema",
+                          "description": "Contains the JSON Schema object"
+                      },
+                      "Methods": {
+                          "type": "object",
+                          "title": "methods",
+                          "additionalProperties": {
+                              "$ref": "#\/definitions\/Method"
+                          }
+                      },
+                      "Method": {
+                          "type": "object",
+                          "title": "method",
+                          "properties": {
+                              "description": {
+                                  "type": "string"
+                              },
+                              "queryParameters": {
+                                  "type": "string"
+                              },
+                              "request": {
+                                  "type": "string"
+                              },
+                              "responses": {
+                                  "type": "array",
+                                  "additionalProperties": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      },
+                      "Link": {
+                          "type": "object",
+                          "title": "link",
+                          "properties": {
+                              "rel": {
+                                  "type": "string"
+                              },
+                              "href": {
+                                  "type": "string"
+                              }
+                          }
+                      }
+                  },
+                  "type": "object",
+                  "title": "detail",
+                  "properties": {
+                      "path": {
+                          "type": "string"
+                      },
+                      "version": {
+                          "type": "string"
+                      },
+                      "status": {
+                          "type": "integer"
+                      },
+                      "description": {
+                          "type": "string"
+                      },
+                      "schema": {
+                          "$ref": "#\/definitions\/Schema"
+                      },
+                      "pathParameters": {
+                          "type": "string"
+                      },
+                      "methods": {
+                          "$ref": "#\/definitions\/Methods"
+                      },
+                      "links": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#\/definitions\/Link"
+                          }
+                      }
+                  }
+              }
+/tool/routing:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: |
+              {
+                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+                  "id": "urn:schema.phpsx.org#",
+                  "definitions": {
+                      "Route": {
+                          "type": "object",
+                          "title": "route",
+                          "properties": {
+                              "methods": {
+                                  "type": "array",
+                                  "items": {
+                                      "type": "string"
+                                  }
+                              },
+                              "path": {
+                                  "type": "string"
+                              },
+                              "source": {
+                                  "type": "string"
+                              }
+                          }
+                      }
+                  },
+                  "type": "object",
+                  "title": "collection",
+                  "properties": {
+                      "routings": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#\/definitions\/Route"
+                          }
+                      }
+                  }
+              }

@@ -109,6 +109,41 @@
         "PATCH"
       ],
       "version": "*"
+    },
+    {
+      "path": "\/tool",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/tool\/discovery",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/tool\/doc",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/tool\/doc\/:version\/*path",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/tool\/routing",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
     }
   ],
   "links": [
