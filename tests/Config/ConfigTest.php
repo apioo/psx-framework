@@ -143,4 +143,16 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($config['bar']);
         $this->assertNull($config->get('bar'));
     }
+
+    public function testConfigMerge()
+    {
+        $config = new Config(['foo' => 'bar']);
+        $config['foo'] = 'bar';
+
+        $configA = new Config(['bar' => 'foo']);
+        $configB = $configA->merge($config);
+
+        $this->assertEquals('foo', $configB->get('bar'));
+        $this->assertEquals('bar', $configB->get('foo'));
+    }
 }
