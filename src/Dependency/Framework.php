@@ -29,6 +29,7 @@ use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ControllerFactory;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Exception;
+use PSX\Framework\Http\CorsPolicy;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader;
@@ -203,6 +204,16 @@ trait Framework
             $this->get('schema_manager'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
+        );
+    }
+
+    /**
+     * @return \PSX\Framework\Http\CorsPolicy
+     */
+    public function getCorsPolicy()
+    {
+        return new CorsPolicy(
+            $this->get('config')
         );
     }
 

@@ -53,6 +53,7 @@ config                       \PSX\Framework\Config\Config
 connection                   \Doctrine\DBAL\Connection
 console                      \Symfony\Component\Console\Application
 controller_factory           \PSX\Framework\Dispatch\ControllerFactoryInterface
+cors_policy                  \PSX\Framework\Http\CorsPolicy
 dispatch                     \PSX\Framework\Dispatch\Dispatch
 event_dispatcher             \Symfony\Component\EventDispatcher\EventDispatcherInterface 
 exception_converter          \PSX\Framework\Exception\ConverterInterface

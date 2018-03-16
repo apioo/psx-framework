@@ -1,4 +1,8 @@
 
+### 4.0.5
+
+* Add cors policy service which handels cors header on preflight requests
+
 ### 4.0.4 (2018-03-15)
 
 * CORS send allowed headers

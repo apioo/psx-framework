@@ -156,21 +156,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     {
         $methods = $this->getAllowedMethods();
 
-        $corsMethod = $request->getHeader('Access-Control-Request-Method');
-        if (!empty($corsMethod)) {
-            $response->setHeader('Access-Control-Allow-Methods', implode(', ', $methods));
-        }
-
-        $corsHeaders = $request->getHeader('Access-Control-Request-Headers');
-        if (!empty($corsHeaders)) {
-            $corsHeaders    = array_map('trim', explode(',', $corsHeaders));
-            $allowedHeaders = $this->config->get('psx_cors_headers');
-
-            $headers = array_uintersect($corsHeaders, $allowedHeaders, 'strcasecmp');
-            if (!empty($headers)) {
-                $response->setHeader('Access-Control-Allow-Headers', implode(', ', $headers));
-            }
-        }
+        $this->corsPolicy->handle($request, $response, $methods);
 
         $response->setHeader('Allow', implode(', ', $methods));
         $response->setStatus(200);

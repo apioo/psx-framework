@@ -202,6 +202,7 @@ class DefaultContainer extends Container
             'psx_entity_paths'        => [],
             'psx_soap_namespace'      => 'http://phpsx.org/2014/data',
             'psx_json_namespace'      => 'urn:schema.phpsx.org#',
+            'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],
             'psx_context_factory'     => null,
             'psx_cache_factory'       => null,

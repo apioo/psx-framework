@@ -201,6 +201,7 @@ JSON;
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals([
+            'access-control-allow-origin' => ['*'],
             'access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
             'access-control-allow-headers' => ['authorization, Content-Type'],
             'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']

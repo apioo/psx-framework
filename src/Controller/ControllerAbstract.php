@@ -72,6 +72,12 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
 
     /**
      * @Inject
+     * @var \PSX\Framework\Http\CorsPolicy
+     */
+    protected $corsPolicy;
+
+    /**
+     * @Inject
      * @var \PSX\Framework\Http\RequestReader
      */
     protected $requestReader;
