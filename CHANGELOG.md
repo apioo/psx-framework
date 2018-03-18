@@ -1,4 +1,8 @@
 
+### 4.0.6 (2018-03-18)
+
+* Improve cors policy handling
+
 ### 4.0.5 (2018-03-16)
 
 * Tool controller extend schema api
