@@ -65,12 +65,39 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
      */
     protected $resource;
 
+    /**
+     * @var array
+     */
+    protected $allowedMethods;
+
+    /**
+     * @inheritdoc
+     */
     public function onLoad()
     {
         parent::onLoad();
 
         // get the current resource based on the context
         $this->resource = $this->getResource();
+
+        // get the allowed methods
+        $methods = $this->resource->getAllowedMethods();
+        $allowed = ['OPTIONS'];
+        if (in_array('GET', $methods)) {
+            $allowed[] = 'HEAD';
+        }
+
+        $this->allowedMethods = array_merge($allowed, $methods);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    {
+        parent::onRequest($request, $response);
+
+        $this->corsPolicy->handle($request, $response, $this->allowedMethods);
     }
 
     /**
@@ -154,12 +181,8 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
      */
     public function onOptions(RequestInterface $request, ResponseInterface $response)
     {
-        $methods = $this->getAllowedMethods();
-
-        $this->corsPolicy->handle($request, $response, $methods);
-
-        $response->setHeader('Allow', implode(', ', $methods));
         $response->setStatus(200);
+        $response->setHeader('Allow', implode(', ', $this->allowedMethods));
         $response->setBody(new StringStream(''));
     }
 
@@ -323,7 +346,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     private function getResourceMethod($methodName, ResponseInterface $response)
     {
         if (!$this->resource->hasMethod($methodName)) {
-            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->getAllowedMethods());
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->allowedMethods);
         }
 
         if ($this->resource->isActive()) {
@@ -336,22 +359,5 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         }
 
         return $this->resource->getMethod($methodName);
-    }
-
-    /**
-     * @return array
-     */
-    private function getAllowedMethods()
-    {
-        $methods = $this->resource->getAllowedMethods();
-        $allowed = ['OPTIONS'];
-        if (in_array('GET', $methods)) {
-            $allowed[] = 'HEAD';
-        }
-
-        return array_merge(
-            $allowed,
-            $methods
-        );
     }
 }
