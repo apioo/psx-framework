@@ -171,8 +171,8 @@ class ResponseWriter
 
         // the response may have multiple presentations based on the Accept
         // header field but only in case we have no fix writer type
-        if ($writerType === null && !$response->hasHeader('Vary')) {
-            $response->setHeader('Vary', 'Accept');
+        if ($writerType === null) {
+            $response->addHeader('Vary', 'Accept');
         }
 
         // set content type header if not available
