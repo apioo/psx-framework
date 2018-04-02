@@ -33,7 +33,7 @@ class Collection extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('collection');
+        $sb = $this->getSchemaBuilder('Routing Collection');
         $sb->arrayType('routings')
             ->setItems($this->getSchema(Route::class));
 

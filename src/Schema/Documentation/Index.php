@@ -34,7 +34,7 @@ class Index extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('index');
+        $sb = $this->getSchemaBuilder('Documentation Index');
         $sb->arrayType('routings')
             ->setItems($this->getSchema(Route::class));
         $sb->arrayType('links')

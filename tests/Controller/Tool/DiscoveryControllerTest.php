@@ -52,9 +52,9 @@ class DiscoveryControllerTest extends ControllerTestCase
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
-            "Link": {
+            "Discovery_Link": {
                 "type": "object",
-                "title": "link",
+                "title": "Discovery Link",
                 "properties": {
                     "rel": {
                         "type": "string"
@@ -64,20 +64,20 @@ class DiscoveryControllerTest extends ControllerTestCase
                     }
                 }
             },
-            "Collection": {
+            "Discovery_Collection": {
                 "type": "object",
-                "title": "collection",
+                "title": "Discovery Collection",
                 "properties": {
                     "links": {
                         "type": "array",
                         "items": {
-                            "$ref": "#\/definitions\/Link"
+                            "$ref": "#\/definitions\/Discovery_Link"
                         }
                     }
                 }
             },
             "GET-200-response": {
-                "$ref": "#\/definitions\/Collection"
+                "$ref": "#\/definitions\/Discovery_Collection"
             }
         }
     },

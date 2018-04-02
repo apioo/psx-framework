@@ -34,7 +34,7 @@ class Link extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('link');
+        $sb = $this->getSchemaBuilder('Discovery Link');
         $sb->string('rel');
         $sb->string('href');
 

@@ -51,9 +51,9 @@ class DocumentationControllerTest extends ControllerTestCase
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
-            "Route": {
+            "Documentation_Route": {
                 "type": "object",
-                "title": "route",
+                "title": "Documentation Route",
                 "properties": {
                     "path": {
                         "type": "string"
@@ -69,9 +69,9 @@ class DocumentationControllerTest extends ControllerTestCase
                     }
                 }
             },
-            "Link": {
+            "Discovery_Link": {
                 "type": "object",
-                "title": "link",
+                "title": "Discovery Link",
                 "properties": {
                     "rel": {
                         "type": "string"
@@ -81,26 +81,26 @@ class DocumentationControllerTest extends ControllerTestCase
                     }
                 }
             },
-            "Index": {
+            "Documentation_Index": {
                 "type": "object",
-                "title": "index",
+                "title": "Documentation Index",
                 "properties": {
                     "routings": {
                         "type": "array",
                         "items": {
-                            "$ref": "#\/definitions\/Route"
+                            "$ref": "#\/definitions\/Documentation_Route"
                         }
                     },
                     "links": {
                         "type": "array",
                         "items": {
-                            "$ref": "#\/definitions\/Link"
+                            "$ref": "#\/definitions\/Discovery_Link"
                         }
                     }
                 }
             },
             "GET-200-response": {
-                "$ref": "#\/definitions\/Index"
+                "$ref": "#\/definitions\/Documentation_Index"
             }
         }
     },
@@ -146,21 +146,21 @@ JSON;
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
-            "Schema": {
+            "Documentation_Schema": {
                 "type": "object",
-                "title": "schema",
+                "title": "Documentation Schema",
                 "description": "Contains the JSON Schema object"
             },
-            "Methods": {
+            "Documentation_Methods": {
                 "type": "object",
-                "title": "methods",
+                "title": "Documentation Methods",
                 "additionalProperties": {
-                    "$ref": "#\/definitions\/Method"
+                    "$ref": "#\/definitions\/Documentation_Method"
                 }
             },
-            "Method": {
+            "Documentation_Method": {
                 "type": "object",
-                "title": "method",
+                "title": "Documentation Method",
                 "properties": {
                     "description": {
                         "type": "string"
@@ -179,9 +179,9 @@ JSON;
                     }
                 }
             },
-            "Link": {
+            "Discovery_Link": {
                 "type": "object",
-                "title": "link",
+                "title": "Discovery Link",
                 "properties": {
                     "rel": {
                         "type": "string"
@@ -191,9 +191,9 @@ JSON;
                     }
                 }
             },
-            "Detail": {
+            "Documentation_Detail": {
                 "type": "object",
-                "title": "detail",
+                "title": "Documentation Detail",
                 "properties": {
                     "path": {
                         "type": "string"
@@ -208,24 +208,24 @@ JSON;
                         "type": "string"
                     },
                     "schema": {
-                        "$ref": "#\/definitions\/Schema"
+                        "$ref": "#\/definitions\/Documentation_Schema"
                     },
                     "pathParameters": {
                         "type": "string"
                     },
                     "methods": {
-                        "$ref": "#\/definitions\/Methods"
+                        "$ref": "#\/definitions\/Documentation_Methods"
                     },
-                    "links": {
+                    "Documentation Links": {
                         "type": "array",
                         "items": {
-                            "$ref": "#\/definitions\/Link"
+                            "$ref": "#\/definitions\/Discovery_Link"
                         }
                     }
                 }
             },
             "GET-200-response": {
-                "$ref": "#\/definitions\/Detail"
+                "$ref": "#\/definitions\/Documentation_Detail"
             }
         }
     },

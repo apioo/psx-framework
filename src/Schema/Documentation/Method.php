@@ -34,7 +34,7 @@ class Method extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('method');
+        $sb = $this->getSchemaBuilder('Documentation Method');
         $sb->string('description');
         $sb->string('queryParameters');
         $sb->string('request');

@@ -34,7 +34,7 @@ class Route extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('route');
+        $sb = $this->getSchemaBuilder('Routing Route');
         $sb->arrayType('methods')
             ->setItems(Property::getString());
         $sb->string('path');

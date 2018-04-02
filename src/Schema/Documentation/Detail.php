@@ -34,19 +34,19 @@ class Detail extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('detail');
+        $sb = $this->getSchemaBuilder('Documentation Detail');
         $sb->string('path');
         $sb->string('version');
         $sb->integer('status');
         $sb->string('description');
         $sb->objectType('schema')
-            ->setTitle('schema')
+            ->setTitle('Documentation Schema')
             ->setDescription('Contains the JSON Schema object');
         $sb->string('pathParameters');
         $sb->objectType('methods')
-            ->setTitle('methods')
+            ->setTitle('Documentation Methods')
             ->setAdditionalProperties($this->getSchema(Method::class));
-        $sb->arrayType('links')
+        $sb->arrayType('Documentation Links')
             ->setItems($this->getSchema(Link::class));
 
         return $sb->getProperty();

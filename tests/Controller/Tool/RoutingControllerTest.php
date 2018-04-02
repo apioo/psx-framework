@@ -48,9 +48,9 @@ class RoutingControllerTest extends ControllerTestCase
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
-            "Route": {
+            "Routing_Route": {
                 "type": "object",
-                "title": "route",
+                "title": "Routing Route",
                 "properties": {
                     "methods": {
                         "type": "array",
@@ -66,20 +66,20 @@ class RoutingControllerTest extends ControllerTestCase
                     }
                 }
             },
-            "Collection": {
+            "Routing_Collection": {
                 "type": "object",
-                "title": "collection",
+                "title": "Routing Collection",
                 "properties": {
                     "routings": {
                         "type": "array",
                         "items": {
-                            "$ref": "#\/definitions\/Route"
+                            "$ref": "#\/definitions\/Routing_Route"
                         }
                     }
                 }
             },
             "GET-200-response": {
-                "$ref": "#\/definitions\/Collection"
+                "$ref": "#\/definitions\/Routing_Collection"
             }
         }
     },

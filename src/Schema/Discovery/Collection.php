@@ -33,7 +33,7 @@ class Collection extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = $this->getSchemaBuilder('collection');
+        $sb = $this->getSchemaBuilder('Discovery Collection');
         $sb->arrayType('links')
             ->setItems($this->getSchema(Link::class));
 
