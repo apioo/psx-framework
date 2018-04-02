@@ -678,14 +678,14 @@
     },
     "\/tool\/discovery": {
       "get": {
-        "operationId": "toolDiscoveryGetCollection",
+        "operationId": "toolDiscoveryGetDiscovery_Collection",
         "responses": {
           "200": {
             "description": "GET 200 response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/Discovery_Collection"
                 }
               }
             }
@@ -696,14 +696,14 @@
     },
     "\/tool\/doc": {
       "get": {
-        "operationId": "toolDocGetIndex",
+        "operationId": "toolDocGetDocumentation_Index",
         "responses": {
           "200": {
             "description": "GET 200 response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Index"
+                  "$ref": "#\/components\/schemas\/Documentation_Index"
                 }
               }
             }
@@ -714,14 +714,14 @@
     },
     "\/tool\/doc\/{version}\/{path}": {
       "get": {
-        "operationId": "toolDocVersionPathGetDetail",
+        "operationId": "toolDocVersionPathGetDocumentation_Detail",
         "responses": {
           "200": {
             "description": "GET 200 response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Detail"
+                  "$ref": "#\/components\/schemas\/Documentation_Detail"
                 }
               }
             }
@@ -732,14 +732,14 @@
     },
     "\/tool\/routing": {
       "get": {
-        "operationId": "toolRoutingGetCollection",
+        "operationId": "toolRoutingGetRouting_Collection",
         "responses": {
           "200": {
             "description": "GET 200 response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/Routing_Collection"
                 }
               }
             }
@@ -803,14 +803,19 @@
       "Collection": {
         "type": "object",
         "title": "collection",
+        "description": "Collection result",
         "properties": {
-          "routings": {
+          "totalResults": {
+            "type": "integer"
+          },
+          "entry": {
             "type": "array",
             "items": {
-              "$ref": "#\/components\/schemas\/Route"
+              "$ref": "#\/components\/schemas\/Entity"
             }
           }
-        }
+        },
+        "class": "PSX\\Framework\\App\\Model\\Collection"
       },
       "Message": {
         "type": "object",
@@ -824,9 +829,9 @@
           }
         }
       },
-      "Link": {
+      "Discovery_Link": {
         "type": "object",
-        "title": "link",
+        "title": "Discovery Link",
         "properties": {
           "rel": {
             "type": "string"
@@ -836,57 +841,69 @@
           }
         }
       },
-      "Route": {
+      "Discovery_Collection": {
         "type": "object",
-        "title": "route",
+        "title": "Discovery Collection",
         "properties": {
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Discovery_Link"
+            }
+          }
+        }
+      },
+      "Documentation_Route": {
+        "type": "object",
+        "title": "Documentation Route",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
           "methods": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "path": {
-            "type": "string"
-          },
-          "source": {
+          "version": {
             "type": "string"
           }
         }
       },
-      "Index": {
+      "Documentation_Index": {
         "type": "object",
-        "title": "index",
+        "title": "Documentation Index",
         "properties": {
           "routings": {
             "type": "array",
             "items": {
-              "$ref": "#\/components\/schemas\/Route"
+              "$ref": "#\/components\/schemas\/Documentation_Route"
             }
           },
           "links": {
             "type": "array",
             "items": {
-              "$ref": "#\/components\/schemas\/Link"
+              "$ref": "#\/components\/schemas\/Discovery_Link"
             }
           }
         }
       },
-      "Schema": {
+      "Documentation_Schema": {
         "type": "object",
-        "title": "schema",
+        "title": "Documentation Schema",
         "description": "Contains the JSON Schema object"
       },
-      "Methods": {
+      "Documentation_Methods": {
         "type": "object",
-        "title": "methods",
+        "title": "Documentation Methods",
         "additionalProperties": {
-          "$ref": "#\/components\/schemas\/Method"
+          "$ref": "#\/components\/schemas\/Documentation_Method"
         }
       },
-      "Method": {
+      "Documentation_Method": {
         "type": "object",
-        "title": "method",
+        "title": "Documentation Method",
         "properties": {
           "description": {
             "type": "string"
@@ -905,9 +922,9 @@
           }
         }
       },
-      "Detail": {
+      "Documentation_Detail": {
         "type": "object",
-        "title": "detail",
+        "title": "Documentation Detail",
         "properties": {
           "path": {
             "type": "string"
@@ -922,18 +939,48 @@
             "type": "string"
           },
           "schema": {
-            "$ref": "#\/components\/schemas\/Schema"
+            "$ref": "#\/components\/schemas\/Documentation_Schema"
           },
           "pathParameters": {
             "type": "string"
           },
           "methods": {
-            "$ref": "#\/components\/schemas\/Methods"
+            "$ref": "#\/components\/schemas\/Documentation_Methods"
           },
-          "links": {
+          "Documentation Links": {
             "type": "array",
             "items": {
-              "$ref": "#\/components\/schemas\/Link"
+              "$ref": "#\/components\/schemas\/Discovery_Link"
+            }
+          }
+        }
+      },
+      "Routing_Route": {
+        "type": "object",
+        "title": "Routing Route",
+        "properties": {
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "path": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      },
+      "Routing_Collection": {
+        "type": "object",
+        "title": "Routing Collection",
+        "properties": {
+          "routings": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Routing_Route"
             }
           }
         }
