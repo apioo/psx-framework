@@ -1,6 +1,7 @@
 
 ### 4.0.7 (2018-04-02)
 
+* Throw exception in case generator does not support collections
 * Schema add prefix to title
 
 ### 4.0.6 (2018-03-18)
