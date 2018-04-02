@@ -216,7 +216,7 @@ JSON;
                     "methods": {
                         "$ref": "#\/definitions\/Documentation_Methods"
                     },
-                    "Documentation Links": {
+                    "links": {
                         "type": "array",
                         "items": {
                             "$ref": "#\/definitions\/Discovery_Link"
