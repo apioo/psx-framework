@@ -46,7 +46,7 @@ class Detail extends SchemaAbstract
         $sb->objectType('methods')
             ->setTitle('Documentation Methods')
             ->setAdditionalProperties($this->getSchema(Method::class));
-        $sb->arrayType('Documentation Links')
+        $sb->arrayType('links')
             ->setItems($this->getSchema(Link::class));
 
         return $sb->getProperty();
