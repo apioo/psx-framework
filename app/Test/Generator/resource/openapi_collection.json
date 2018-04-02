@@ -947,7 +947,7 @@
           "methods": {
             "$ref": "#\/components\/schemas\/Documentation_Methods"
           },
-          "Documentation Links": {
+          "links": {
             "type": "array",
             "items": {
               "$ref": "#\/components\/schemas\/Discovery_Link"
