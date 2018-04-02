@@ -60,7 +60,11 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
         $path      = $this->context->getParameter('path');
         $generator = $this->generatorFactory->getGenerator($this->getType());
 
-        if ($path == '*' && $generator instanceof GeneratorCollectionInterface) {
+        if ($path == '*') {
+            if (!$generator instanceof GeneratorCollectionInterface) {
+                throw new StatusCode\InternalServerErrorException('Generator does not support resource collections');
+            }
+
             $filter     = $this->listingFilterFactory->getFilter($request->getUri()->getParameter('filter'));
             $collection = $this->resourceListing->getResourceCollection($version, $filter);
             $result     = $generator->generateAll($collection);
