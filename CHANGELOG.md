@@ -1,4 +1,8 @@
 
+### 4.0.8 (2018-04-02)
+
+* Fix documentation schema link key
+
 ### 4.0.7 (2018-04-02)
 
 * Throw exception in case generator does not support collections
