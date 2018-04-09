@@ -1,4 +1,8 @@
 
+### 4.0.9 (2018-04-09)
+
+* Add symfony 4.0 support
+
 ### 4.0.8 (2018-04-02)
 
 * Fix documentation schema link key
