@@ -136,7 +136,10 @@ class ControllerDocumentation implements ListingInterface
         $index      = $this->getResourceIndex($filter);
 
         foreach ($index as $resource) {
-            $collection->set($this->getResource($resource->getPath(), $version));
+            $result = $this->getResource($resource->getPath(), $version);
+            if ($result instanceof Resource) {
+                $collection->set($result);
+            }
         }
 
         return $collection;
