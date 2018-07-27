@@ -27,34 +27,7 @@ namespace PSX\Framework\Test;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ControllerDbTestCase extends \PHPUnit_Extensions_Database_TestCase
+abstract class ControllerDbTestCase extends DbTestCase
 {
     use ContainerTestCaseTrait;
-
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected static $con;
-
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $connection;
-
-    public function getConnection()
-    {
-        if (!Environment::hasConnection()) {
-            $this->markTestSkipped('No database connection available');
-        }
-
-        if (self::$con === null) {
-            self::$con = Environment::getService('connection');
-        }
-
-        if ($this->connection === null) {
-            $this->connection = self::$con;
-        }
-
-        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), $this->connection->getDatabase());
-    }
 }

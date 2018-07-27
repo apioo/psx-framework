@@ -21,7 +21,11 @@
 namespace PSX\Framework\Test;
 
 /**
- * DbTestCase
+ * Base test class for database test cases. In the future we might implement our
+ * own database test case which does not depend on the PHPUnit database
+ * extension and is completely based on the doctrine DBAL connection. So in your
+ * test case please implement only the getDataSet method and return a DataSet
+ * instance
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -29,10 +33,20 @@ namespace PSX\Framework\Test;
  */
 abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     protected static $con;
 
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     protected $connection;
 
+    /**
+     * @internal
+     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     */
     public function getConnection()
     {
         if (!Environment::hasConnection()) {
@@ -48,5 +62,17 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
         }
 
         return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), Environment::getService('config')->get('psx_sql_db'));
+    }
+
+    /**
+     * @internal
+     * @return \PHPUnit_Extensions_Database_Operation_IDatabaseOperation
+     */
+    protected function getSetUpOperation()
+    {
+        return new \PHPUnit_Extensions_Database_Operation_Composite([
+            new Operation\Truncate(),
+            new Operation\Insert()
+        ]);
     }
 }
