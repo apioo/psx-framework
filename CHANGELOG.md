@@ -1,6 +1,9 @@
 
-### 4.0.9 (2018-04-09)
+### 4.0.9 (2018-07-29)
 
+* Test case use custom insert and truncate operation for better postgres support
+* Controller documentation set resource only to collection in case an instance
+  of resource is available
 * Add symfony 4.0 support
 
 ### 4.0.8 (2018-04-02)
