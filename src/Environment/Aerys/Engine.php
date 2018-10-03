@@ -20,8 +20,16 @@
 
 namespace PSX\Framework\Environment\Aerys;
 
-use Aerys\Request as AerysRequest;
-use Aerys\Response as AerysResponse;
+use Amp\ByteStream\ResourceOutputStream;
+use Amp\Http\Server\Request as AerysRequest;
+use Amp\Http\Server\RequestHandler\CallableRequestHandler;
+use Amp\Http\Server\Response as AerysResponse;
+use Amp\Http\Server\Server;
+use Amp\Log\ConsoleFormatter;
+use Amp\Log\StreamHandler;
+use Amp\Loop;
+use Amp\Socket;
+use Monolog\Logger;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Environment\EngineInterface;
@@ -33,7 +41,7 @@ use PSX\Uri\Uri;
 /**
  * Uses the Aerys HTTP server
  *
- * @see     https://github.com/amphp/aerys/
+ * @see     https://github.com/amphp/http-server
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
@@ -54,7 +62,7 @@ class Engine implements EngineInterface
      * @param string $ip
      * @param integer $port
      */
-    public function __construct($ip = '*', $port = 8080)
+    public function __construct($ip = '0.0.0.0', $port = 8080)
     {
         $this->ip   = $ip;
         $this->port = $port;
@@ -65,31 +73,37 @@ class Engine implements EngineInterface
      */
     public function serve(Dispatch $dispatch, Config $config)
     {
-        return (new \Aerys\Host())
-            ->expose($this->ip, $this->port)
-            ->use(function(AerysRequest $aerysRequest, AerysResponse $aerysResponse) use ($dispatch){
-                $request  = new Request(new Uri($aerysRequest->getUri()), $aerysRequest->getMethod(), $aerysRequest->getAllHeaders());
+        Loop::run(function () use ($dispatch) {
+            $servers = [
+                Socket\listen("{$this->ip}:{$this->port}"),
+            ];
+
+            // logger
+            $logHandler = new StreamHandler(new ResourceOutputStream(\STDOUT));
+            $logHandler->setFormatter(new ConsoleFormatter());
+            $logger = new Logger('server');
+            $logger->pushHandler($logHandler);
+
+            // server
+            $callable = function (AerysRequest $aerysRequest) use ($dispatch) {
+                $request  = new Request(new Uri($aerysRequest->getUri()->__toString()), $aerysRequest->getMethod(), $aerysRequest->getHeaders());
                 $response = (new ResponseFactory())->createResponse();
 
                 // read body
                 if (in_array($aerysRequest->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
-                    $body = yield $aerysRequest->getBody();
+                    $body = yield $aerysRequest->getBody()->buffer();
                     $request->setBody(new StringStream($body));
                 }
 
                 $response = $dispatch->route($request, $response);
 
                 // send response
-                $aerysResponse->setStatus($response->getStatusCode() ?: 200);
+                return new AerysResponse($response->getStatusCode() ?: 200, $response->getHeaders(), $response->getBody()->__toString());
+            };
 
-                $headers = $response->getHeaders();
-                foreach ($headers as $name => $value) {
-                    foreach ($value as $val) {
-                        $aerysResponse->addHeader($name, $val);
-                    }
-                }
+            $server = new Server($servers, new CallableRequestHandler($callable), $logger);
 
-                $aerysResponse->end($response->getBody()->__toString());
-            });
+            yield $server->start();
+        });
     }
 }
