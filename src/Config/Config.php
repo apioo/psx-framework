@@ -59,7 +59,7 @@ class Config extends ArrayIterator
 
     public function merge(Config $config)
     {
-        return new Config(array_merge($this->getArrayCopy(), $config->getArrayCopy()));
+        return new static(array_merge($this->getArrayCopy(), $config->getArrayCopy()));
     }
 
     public function offsetGet($key)
@@ -72,7 +72,7 @@ class Config extends ArrayIterator
         $config = include($file);
 
         if (is_array($config)) {
-            return new self($config);
+            return new static($config);
         } else {
             throw new NotFoundException('Config file must return an array');
         }
