@@ -95,9 +95,11 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
      */
     public function onRequest(RequestInterface $request, ResponseInterface $response)
     {
-        parent::onRequest($request, $response);
-
-        $this->corsPolicy->handle($request, $response, $this->allowedMethods);
+        try {
+            parent::onRequest($request, $response);
+        } finally {
+            $this->corsPolicy->handle($request, $response, $this->allowedMethods ?: []);
+        }
     }
 
     /**
