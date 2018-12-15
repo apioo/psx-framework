@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\PathMatcher;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Loader\PathMatcher;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PathMatcherTest extends \PHPUnit_Framework_TestCase
+class PathMatcherTest extends TestCase
 {
     public function testMatch()
     {

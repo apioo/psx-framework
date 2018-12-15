@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Framework\Tests\Upload;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Upload\File;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Upload\File;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     public function testFile()
     {

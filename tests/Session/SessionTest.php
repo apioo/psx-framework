@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Session;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Session\Session;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Session\Session;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SessionTest extends \PHPUnit_Framework_TestCase
+class SessionTest extends TestCase
 {
     /**
      * @var \PSX\Framework\Session\Session

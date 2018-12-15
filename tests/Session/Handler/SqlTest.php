@@ -37,17 +37,21 @@ class SqlTest extends DbTestCase
 
     public function getDataSet()
     {
-        return $this->createFlatXMLDataSet(__DIR__ . '/../../table_fixture.xml');
+        return $this->createFromFile(__DIR__ . '/../../table_fixture.php');
     }
 
     public function testOpen()
     {
-        $this->getHandler()->open('/', 'file');
+        $result = $this->getHandler()->open('/', 'file');
+
+        $this->assertEquals(true, $result);
     }
 
     public function testClose()
     {
-        $this->getHandler()->close();
+        $result = $this->getHandler()->close();
+
+        $this->assertEquals(true, $result);
     }
 
     public function testRead()

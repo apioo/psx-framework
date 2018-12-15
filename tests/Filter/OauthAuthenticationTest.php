@@ -20,11 +20,11 @@
 
 namespace PSX\Framework\Tests\Filter;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Filter\OauthAuthentication;
 use PSX\Http\Client\Client;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
-use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Oauth\Consumer;
@@ -38,7 +38,7 @@ use PSX\Uri\Url;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class OauthAuthenticationTest extends \PHPUnit_Framework_TestCase
+class OauthAuthenticationTest extends TestCase
 {
     const CONSUMER_KEY    = 'dpf43f3p2l4k3l03';
     const CONSUMER_SECRET = 'kd94hf93k423kf44';

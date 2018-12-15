@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Template\Engine;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Template\Engine\Php;
 use PSX\Framework\Template\ErrorException;
 
@@ -30,7 +31,7 @@ use PSX\Framework\Template\ErrorException;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PhpTest extends \PHPUnit_Framework_TestCase
+class PhpTest extends TestCase
 {
     public function testTransform()
     {

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Util\Api;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Util\Api\FilterParameter;
 use PSX\Sql\Sql;
 
@@ -31,7 +32,7 @@ use PSX\Sql\Sql;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FilterParameterTest extends \PHPUnit_Framework_TestCase
+class FilterParameterTest extends TestCase
 {
     public function testExtract()
     {

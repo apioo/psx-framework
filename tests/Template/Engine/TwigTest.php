@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Template\Engine;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Template\Engine\Twig;
 use PSX\Framework\Test\Environment;
 
@@ -30,7 +31,7 @@ use PSX\Framework\Test\Environment;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TwigTest extends \PHPUnit_Framework_TestCase
+class TwigTest extends TestCase
 {
     protected function setUp()
     {

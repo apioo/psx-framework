@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Log;
 
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 
 /**
  * LogCasterHandlerTest
@@ -29,7 +30,7 @@ use Monolog\Logger;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class LogCasterHandlerTest extends \PHPUnit_Framework_TestCase
+class LogCasterHandlerTest extends TestCase
 {
     public function testHandle()
     {

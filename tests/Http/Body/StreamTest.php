@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Http\Body\Stream;
 use PSX\Http\Response;
 use PSX\Http\Stream\StringStream;
@@ -31,7 +32,7 @@ use PSX\Http\Stream\StringStream;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class StreamTest extends \PHPUnit_Framework_TestCase
+class StreamTest extends TestCase
 {
     public function testWriteTo()
     {

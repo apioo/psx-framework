@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * BootstrapTest
  *
@@ -27,7 +29,7 @@ namespace PSX\Framework\Tests;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class BootstrapTest extends \PHPUnit_Framework_TestCase
+class BootstrapTest extends TestCase
 {
     public function testSettings()
     {

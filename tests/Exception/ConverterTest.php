@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\DisplayException;
 use PSX\Framework\Exception\Converter;
 use PSX\Framework\Template\ErrorException;
@@ -32,7 +33,7 @@ use RuntimeException;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConverterTest extends \PHPUnit_Framework_TestCase
+class ConverterTest extends TestCase
 {
     public function testConvertDebug()
     {

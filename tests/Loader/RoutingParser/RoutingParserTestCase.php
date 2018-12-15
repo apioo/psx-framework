@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader\RoutingParser;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\RoutingCollection;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Loader\RoutingCollection;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class RoutingParserTestCase extends \PHPUnit_Framework_TestCase
+abstract class RoutingParserTestCase extends TestCase
 {
     public function testGetCollection()
     {

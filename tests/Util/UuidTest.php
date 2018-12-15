@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Util\Uuid;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Util\Uuid;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class UuidTest extends \PHPUnit_Framework_TestCase
+class UuidTest extends TestCase
 {
     public function testTimeBase()
     {

@@ -20,10 +20,10 @@
 
 namespace PSX\Framework\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Time;
-use PSX\Http\Cookie;
 use PSX\Http\MediaType;
 use PSX\Uri\Uri;
 use PSX\Uri\Url;
@@ -36,7 +36,7 @@ use PSX\Uri\Urn;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ValueObjectTest extends \PHPUnit_Framework_TestCase
+class ValueObjectTest extends TestCase
 {
     /**
      * This test ensures that the toString method of an value object creates an

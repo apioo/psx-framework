@@ -20,10 +20,9 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
-use PSX\Framework\Http\Body\Resource;
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Http\Body\Xml;
 use PSX\Http\Response;
-use PSX\Http\Stream\StringStream;
 
 /**
  * XmlTest
@@ -32,7 +31,7 @@ use PSX\Http\Stream\StringStream;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends TestCase
 {
     public function testWriteTo()
     {

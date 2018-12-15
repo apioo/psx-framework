@@ -21,12 +21,9 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Framework\Controller\ApiAbstract;
-use PSX\Framework\Util\Api\FilterParameter;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
-use PSX\Record\RecordObject;
-use PSX\Sql\Sql;
 
 /**
  * TestApiController
@@ -39,7 +36,7 @@ class TestApiController extends ApiAbstract
 {
     /**
      * @Inject
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $testCase;
 

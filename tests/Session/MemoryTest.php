@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Session;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Session\Memory;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Session\Memory;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class MemoryTest extends \PHPUnit_Framework_TestCase
+class MemoryTest extends TestCase
 {
     public function testGetSet()
     {

@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Http;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Response;
@@ -31,7 +32,7 @@ use PSX\Http\Response;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ResponseWriterTest extends \PHPUnit_Framework_TestCase
+class ResponseWriterTest extends TestCase
 {
     public function testSetBody()
     {

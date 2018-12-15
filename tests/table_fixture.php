@@ -1,0 +1,13 @@
+<?php
+
+return [
+    'psx_handler_comment' => [
+        ['id' => 1, 'userId' => 1, 'title' => 'foo', 'date' => '2013-04-29 16:56:32'],
+        ['id' => 2, 'userId' => 1, 'title' => 'bar', 'date' => '2013-04-29 16:56:32'],
+        ['id' => 3, 'userId' => 2, 'title' => 'test', 'date' => '2013-04-29 16:56:32'],
+        ['id' => 4, 'userId' => 3, 'title' => 'blub', 'date' => '2013-04-29 16:56:32'],
+    ],
+    'psx_session_handler_sql_test' => [
+        ['id' => '0bb3df120bff3c64e9ef553b61ffcd06', 'content' => 'foobar', 'date' => '2013-06-15 22:07:26']
+    ],
+];

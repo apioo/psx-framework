@@ -63,7 +63,7 @@ class TokenAbstractTest extends ControllerTestCase
     "path": "\/token",
     "version": "*",
     "status": 1,
-    "description": "",
+    "description": null,
     "schema": {
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",

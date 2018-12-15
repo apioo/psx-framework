@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Filter;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Filter\Oauth2Authentication;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
@@ -36,7 +37,7 @@ use PSX\Uri\Url;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Oauth2AuthenticationTest extends \PHPUnit_Framework_TestCase
+class Oauth2AuthenticationTest extends TestCase
 {
     const ACCESS_TOKEN = '2YotnFZFEjr1zCsicMWpAA';
 

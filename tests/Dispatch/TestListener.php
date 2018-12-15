@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Event\ContextInterface;
 use PSX\Framework\Event\ControllerExecuteEvent;
 use PSX\Framework\Event\ControllerProcessedEvent;
@@ -48,11 +49,11 @@ class TestListener implements EventSubscriberInterface
     private $called = [];
 
     /**
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     private $testCase;
 
-    public function __construct(\PHPUnit_Framework_TestCase $testCase)
+    public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;
     }

@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Base;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Base;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class BaseTest extends \PHPUnit_Framework_TestCase
+class BaseTest extends TestCase
 {
     public function testGetVersion()
     {

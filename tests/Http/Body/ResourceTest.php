@@ -20,10 +20,7 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
-use PSX\Framework\Http\Body\Body;
-use PSX\Framework\Http\Body\File;
-use PSX\Framework\Http\Body\Json;
-use PSX\Framework\Http\Body\Multipart;
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Http\Body\Resource;
 use PSX\Http\Response;
 
@@ -34,7 +31,7 @@ use PSX\Http\Response;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ResourceTest extends \PHPUnit_Framework_TestCase
+class ResourceTest extends TestCase
 {
     public function testWriteTo()
     {

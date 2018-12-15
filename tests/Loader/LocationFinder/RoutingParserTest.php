@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader\LocationFinder;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\LocationFinder\RoutingParser;
 use PSX\Framework\Loader\RoutingParser\RoutingFile;
@@ -33,7 +34,7 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RoutingParserTest extends \PHPUnit_Framework_TestCase
+class RoutingParserTest extends TestCase
 {
     public function testNormalRoute()
     {

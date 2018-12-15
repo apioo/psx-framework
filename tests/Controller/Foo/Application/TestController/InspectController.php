@@ -43,7 +43,7 @@ class InspectController extends ControllerAbstract
 {
     /**
      * @Inject
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $testCase;
 

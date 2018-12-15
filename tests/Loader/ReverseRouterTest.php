@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\RoutingFile;
 
@@ -30,7 +31,7 @@ use PSX\Framework\Loader\RoutingParser\RoutingFile;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ReverseRouterTest extends \PHPUnit_Framework_TestCase
+class ReverseRouterTest extends TestCase
 {
     public function testGetPathRoutes()
     {

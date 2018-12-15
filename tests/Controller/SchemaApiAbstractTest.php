@@ -35,7 +35,7 @@ class SchemaApiAbstractTest extends ControllerDbTestCase
 {
     public function getDataSet()
     {
-        return $this->createFlatXMLDataSet(__DIR__ . '/../table_fixture.xml');
+        return $this->createFromFile(__DIR__ . '/../table_fixture.php');
     }
 
     public function testGet()

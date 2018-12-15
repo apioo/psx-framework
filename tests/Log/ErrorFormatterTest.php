@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Log;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Log\ErrorFormatter;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Log\ErrorFormatter;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ErrorFormatterTest extends \PHPUnit_Framework_TestCase
+class ErrorFormatterTest extends TestCase
 {
     /**
      * @var \PSX\Framework\Log\ErrorFormatter

@@ -46,7 +46,7 @@ class EntityController extends SchemaApiAbstract
 
     /**
      * @Inject
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $testCase;
 

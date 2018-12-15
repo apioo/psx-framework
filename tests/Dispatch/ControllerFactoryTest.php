@@ -20,11 +20,9 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
-use PSX\Http\Request;
-use PSX\Http\Response;
-use PSX\Uri\Uri;
 
 /**
  * ControllerFactoryTest
@@ -33,7 +31,7 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
+class ControllerFactoryTest extends TestCase
 {
     public function testGetController()
     {

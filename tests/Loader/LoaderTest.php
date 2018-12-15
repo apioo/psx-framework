@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Loader;
 
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\Loader;
 use PSX\Framework\Loader\LocationFinder\CallbackMethod;
@@ -34,7 +35,6 @@ use PSX\Http\RequestInterface;
 use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
 use PSX\Uri\Uri;
-use PSX\Uri\Url;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -45,7 +45,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class LoaderTest extends \PHPUnit_Framework_TestCase
+class LoaderTest extends TestCase
 {
     public function testLoadIndexCall()
     {

@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Http\Body;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Http\Body\Body;
 use PSX\Http\Response;
 
@@ -30,7 +31,7 @@ use PSX\Http\Response;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class BodyTest extends \PHPUnit_Framework_TestCase
+class BodyTest extends TestCase
 {
     public function testWriteTo()
     {

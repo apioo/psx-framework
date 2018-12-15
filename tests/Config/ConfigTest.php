@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Config;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Config\Config;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Framework\Config\Config;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
     public function testConstructorArray()
     {

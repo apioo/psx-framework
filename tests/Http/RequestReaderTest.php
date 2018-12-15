@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Http;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Request;
@@ -33,7 +34,7 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RequestReaderTest extends \PHPUnit_Framework_TestCase
+class RequestReaderTest extends TestCase
 {
     public function testGetBodyJson()
     {

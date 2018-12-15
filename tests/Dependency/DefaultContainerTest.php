@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Dependency;
 use Doctrine\Common\Cache\ArrayCache;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
+use PHPUnit\Framework\TestCase;
 use PSX\Framework;
 use PSX\Framework\Test\ContainerTestCaseTrait;
 use PSX\Framework\Test\Environment;
@@ -35,7 +36,7 @@ use PSX\Framework\Test\Environment;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DefaultContainerTest extends \PHPUnit_Framework_TestCase
+class DefaultContainerTest extends TestCase
 {
     use ContainerTestCaseTrait;
 

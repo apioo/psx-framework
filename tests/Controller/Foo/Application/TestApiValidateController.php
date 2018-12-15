@@ -39,7 +39,7 @@ class TestApiValidateController extends ApiAbstract
 {
     /**
      * @Inject
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $testCase;
 

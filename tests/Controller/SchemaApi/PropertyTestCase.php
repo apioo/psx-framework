@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PHPUnit\Framework\TestCase;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
@@ -303,10 +304,10 @@ JSON;
      * Checks whether the data we received as post is converted to the right
      * types
      *
-     * @param \PHPUnit_Framework_TestCase $testCase
+     * @param \PHPUnit\Framework\TestCase $testCase
      * @param \PSX\Record\RecordInterface $record
      */
-    public static function assertRecord(\PHPUnit_Framework_TestCase $testCase, RecordInterface $record)
+    public static function assertRecord(TestCase $testCase, RecordInterface $record)
     {
         $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->any);
         $testCase->assertEquals(['foo' => 'bar'], $record->any->getProperties());
