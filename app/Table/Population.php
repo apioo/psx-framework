@@ -53,7 +53,7 @@ class Population extends TableAbstract
 
     public function getEntity(int $id)
     {
-        return $this->doEntity([$this, 'get'], [$id], [
+        $definition = $this->doEntity([$this, 'get'], [$id], [
             'id' => $this->fieldInteger('id'),
             'place' => $this->fieldInteger('place'),
             'region' => 'region',
@@ -62,6 +62,8 @@ class Population extends TableAbstract
             'worldUsers' => $this->fieldNumber('world_users'),
             'datetime' => $this->fieldDateTime('insert_date'),
         ]);
+
+        return $this->build($definition);
     }
 
     public function getCollection(int $startIndex = null, int $count = null)
