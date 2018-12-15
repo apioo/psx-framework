@@ -42,12 +42,7 @@ class Population
 
     public function getAll($startIndex = 0, $count = 16)
     {
-        return new ResultSet(
-            $this->populationTable->getCount(),
-            $startIndex,
-            $count,
-            $this->populationTable->getAll($startIndex, $count)
-        );
+        return $this->populationTable->getPopulations((int) $startIndex, (int) $count);
     }
 
     public function get($id)

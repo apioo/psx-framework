@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\App\Table;
 
+use PSX\Sql\Condition;
+use PSX\Sql\Sql;
 use PSX\Sql\TableAbstract;
 
 /**
@@ -47,5 +49,35 @@ class Population extends TableAbstract
             'worldUsers' => self::TYPE_FLOAT,
             'datetime'   => self::TYPE_DATETIME,
         );
+    }
+
+    public function getPopulations(int $startIndex = null, int $count = null)
+    {
+        if (empty($startIndex) || $startIndex < 0) {
+            $startIndex = 0;
+        }
+
+        if (empty($count) || $count < 1 || $count > 1024) {
+            $count = 16;
+        }
+
+        $condition = new Condition();
+
+        $definition = [
+            'totalResults' => $this->getCount($condition),
+            'startIndex' => $startIndex,
+            'itemsPerPage' => $count,
+            'entry' => $this->doCollection([$this, 'getAll'], [$startIndex, $count, 'priority', Sql::SORT_DESC, $condition], [
+                'id' => $this->fieldInteger('id'),
+                'place' => $this->fieldInteger('place'),
+                'region' => 'region',
+                'population' => $this->fieldInteger('population'),
+                'users' => $this->fieldInteger('users'),
+                'worldUsers' => $this->fieldInteger('world_users'),
+                'datetime' => $this->fieldDateTime('insert_date'),
+            ]),
+        ];
+
+        return $this->build($definition);
     }
 }
