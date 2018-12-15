@@ -72,10 +72,6 @@ class Population
     {
         $population = $this->get($id);
 
-        if (!$population) {
-            throw new StatusCode\NotFoundException('Entry does not exist');
-        }
-
         $this->populationTable->update([
             'id'          => $population['id'],
             'place'       => $place,
@@ -89,10 +85,6 @@ class Population
     public function delete($id)
     {
         $population = $this->get($id);
-
-        if (!$population) {
-            throw new StatusCode\NotFoundException('Entry does not exist');
-        }
 
         $this->populationTable->delete([
             'id' => $population['id']
