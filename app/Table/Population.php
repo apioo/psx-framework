@@ -73,7 +73,7 @@ class Population extends TableAbstract
                 'region' => 'region',
                 'population' => $this->fieldInteger('population'),
                 'users' => $this->fieldInteger('users'),
-                'worldUsers' => $this->fieldInteger('world_users'),
+                'worldUsers' => $this->fieldNumber('world_users'),
                 'datetime' => $this->fieldDateTime('insert_date'),
             ]),
         ];
