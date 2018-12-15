@@ -43,11 +43,11 @@ class ApiTestCase extends ControllerDbTestCase
     private static $httpClient;
 
     /**
-     * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
+     * @inheritdoc
      */
     public function getDataSet()
     {
-        return $this->createFlatXMLDataSet(__DIR__ . '/api_fixture.xml');
+        return $this->createFromFile(__DIR__ . '/api_fixture.php');
     }
 
     /**
