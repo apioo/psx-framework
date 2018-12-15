@@ -51,7 +51,20 @@ class Population extends TableAbstract
         );
     }
 
-    public function getPopulations(int $startIndex = null, int $count = null)
+    public function getEntity(int $id)
+    {
+        return $this->doEntity([$this, 'get'], [$id], [
+            'id' => $this->fieldInteger('id'),
+            'place' => $this->fieldInteger('place'),
+            'region' => 'region',
+            'population' => $this->fieldInteger('population'),
+            'users' => $this->fieldInteger('users'),
+            'worldUsers' => $this->fieldNumber('world_users'),
+            'datetime' => $this->fieldDateTime('insert_date'),
+        ]);
+    }
+
+    public function getCollection(int $startIndex = null, int $count = null)
     {
         if (empty($startIndex) || $startIndex < 0) {
             $startIndex = 0;

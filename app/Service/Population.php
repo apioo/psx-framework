@@ -42,12 +42,12 @@ class Population
 
     public function getAll($startIndex = 0, $count = 16)
     {
-        return $this->populationTable->getPopulations((int) $startIndex, (int) $count);
+        return $this->populationTable->getCollection((int) $startIndex, (int) $count);
     }
 
     public function get($id)
     {
-        $population = $this->populationTable->get($id);
+        $population = $this->populationTable->getEntity($id);
 
         if (empty($population)) {
             throw new StatusCode\NotFoundException('Internet population not found');
