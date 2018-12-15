@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Test;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Schema\Generator;
 use PSX\Schema\SchemaInterface;
 use PSX\Schema\SchemaManager;
@@ -31,7 +32,7 @@ use PSX\Schema\SchemaManager;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class SchemaTestCase extends \PHPUnit_Framework_TestCase
+abstract class SchemaTestCase extends TestCase
 {
     public function testSchema()
     {

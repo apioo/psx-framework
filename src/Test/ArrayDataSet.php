@@ -20,31 +20,13 @@
 
 namespace PSX\Framework\Test;
 
-use PHPUnit\Framework\TestCase;
-
 /**
- * ControllerTestCase
+ * ArrayDataSet
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ControllerTestCase extends TestCase
+class ArrayDataSet extends \ArrayObject
 {
-    use ContainerTestCaseTrait;
-
-    /**
-     * Removes any system specific parts of an exception response
-     *
-     * @param string $body
-     * @return string
-     */
-    public static function normalizeExceptionResponse($body)
-    {
-        $body = preg_replace('/ in (.*) on line (\d+)/', '', $body);
-        $body = preg_replace('/"trace": "(.*)"/', '"trace": ""', $body);
-        $body = preg_replace('/"context": "(.*)"/', '"context": ""', $body);
-
-        return $body;
-    }
 }

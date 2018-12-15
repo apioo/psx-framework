@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Test;
 
-use SebastianBergmann\Comparator\ComparisonFailure;
-
 /**
  * Assert
  *
@@ -36,8 +34,6 @@ class Assert
         $expectString = wordwrap(preg_replace('/\s+/', ' ', $expect), 75, "\n", true);
         $actualString = wordwrap(preg_replace('/\s+/', ' ', $actual), 75, "\n", true);
 
-        if ($expectString != $actualString) {
-            throw new \PHPUnit_Framework_ExpectationFailedException('Failed asserting that', new ComparisonFailure($expect, $actual, $expectString, $actualString, false, $actualString));
-        }
+        \PHPUnit\Framework\Assert::assertEquals($expectString, $actualString);
     }
 }

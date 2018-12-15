@@ -20,18 +20,18 @@
 
 namespace PSX\Framework\Test;
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use PHPUnit\Framework\TestCase;
+
 /**
- * Base test class for database test cases. In the future we might implement our
- * own database test case which does not depend on the PHPUnit database
- * extension and is completely based on the doctrine DBAL connection. So in your
- * test case please implement only the getDataSet method and return a DataSet
- * instance
+ * Base test class for database test cases
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
+abstract class DbTestCase extends TestCase
 {
     /**
      * @var \Doctrine\DBAL\Connection
@@ -45,7 +45,7 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 
     /**
      * @internal
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
     {
@@ -61,18 +61,73 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
             $this->connection = self::$con;
         }
 
-        return $this->createDefaultDBConnection($this->connection->getWrappedConnection(), Environment::getService('config')->get('psx_sql_db'));
+        return $this->connection;
+    }
+
+    protected function setUp()
+    {
+        parent::setup();
+
+        $this->truncate();
+        $this->insert();
     }
 
     /**
-     * @internal
-     * @return \PHPUnit_Extensions_Database_Operation_IDatabaseOperation
+     * @param string $file
+     * @return array
      */
-    protected function getSetUpOperation()
+    protected function createFromFile($file)
     {
-        return new \PHPUnit_Extensions_Database_Operation_Composite([
-            new Operation\Truncate(),
-            new Operation\Insert()
-        ]);
+        return include $file;
+    }
+
+    /**
+     * @return \ArrayObject|array
+     */
+    abstract protected function getDataSet();
+
+    private function truncate()
+    {
+        $connection = $this->getConnection();
+        $tables     = $connection->getSchemaManager()->listTableNames();
+        $platform   = $connection->getDatabasePlatform();
+        
+        if ($platform instanceof MySqlPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
+
+            foreach ($tables as $table) {
+                $this->connection->executeQuery('TRUNCATE ' . $table);
+            }
+
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
+        } elseif ($platform instanceof PostgreSqlPlatform) {
+            foreach ($tables as $table) {
+                $this->connection->executeQuery('TRUNCATE ' . $table . ' RESTART IDENTITY CASCADE');
+            }
+        } else {
+            // for all other platforms we simply try to delete all data using
+            // standard SQL ignoring potential foreign key problems
+            foreach ($tables as $table) {
+                $this->connection->executeQuery('DELETE FROM ' . $table . ' WHERE 1=1');
+            }
+        }
+    }
+
+    private function insert()
+    {
+        // since we have moved away from DbUnit this allows old packages to
+        // still use this class which now maps to our own implementation
+        if (!class_exists('PHPUnit_Extensions_Database_DataSet_ArrayDataSet')) {
+            class_alias(ArrayDataSet::class, 'PHPUnit_Extensions_Database_DataSet_ArrayDataSet');
+        }
+
+        $connection = $this->getConnection();
+        $data       = $this->getDataSet();
+
+        foreach ($data as $tableName => $rows) {
+            foreach ($rows as $row) {
+                $connection->insert($tableName, $row);
+            }
+        }
     }
 }
