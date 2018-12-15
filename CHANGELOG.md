@@ -1,4 +1,8 @@
 
+### 4.1.0 (2018-12-15)
+
+* Upgrade PHPUnit to 6.0 and remove DbUnit from dependencies
+
 ### 4.0.9 (2018-07-29)
 
 * Test case use custom insert and truncate operation for better postgres support
