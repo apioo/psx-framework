@@ -47,7 +47,7 @@ class Population
 
     public function get($id)
     {
-        $population = $this->populationTable->getEntity($id);
+        $population = $this->populationTable->getEntity((int) $id);
 
         if (empty($population)) {
             throw new StatusCode\NotFoundException('Internet population not found');
