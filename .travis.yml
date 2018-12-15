@@ -8,7 +8,7 @@ services:
   - mysql
   - memcached
 before_install:
-  - phpenv config-rm xdebug.ini
+  - if [ $TRAVIS_PHP_VERSION != '7.3' ]; then phpenv config-rm xdebug.ini; fi;
 install:
   - composer install
 before_script:
