@@ -89,7 +89,7 @@ JSON;
 
         // check database
         $sql = Environment::getService('connection')->createQueryBuilder()
-            ->select('id', 'place', 'region', 'population', 'users', 'worldUsers')
+            ->select('id', 'place', 'region', 'population', 'users', 'world_users')
             ->from('population')
             ->orderBy('id', 'DESC')
             ->setFirstResult(0)
