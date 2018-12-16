@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Test;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use PHPUnit\Framework\TestCase;
+use PSX\Sql\Test\DatabaseTestCaseTrait;
 
 /**
  * Base test class for database test cases
@@ -33,18 +32,9 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class DbTestCase extends TestCase
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected static $con;
+    use DatabaseTestCaseTrait;
 
     /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $connection;
-
-    /**
-     * @internal
      * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
@@ -53,23 +43,20 @@ abstract class DbTestCase extends TestCase
             $this->markTestSkipped('Database connection not available');
         }
 
-        if (self::$con === null) {
-            self::$con = Environment::getService('connection');
-        }
-
-        if ($this->connection === null) {
-            $this->connection = self::$con;
-        }
-
-        return $this->connection;
+        return Environment::getService('connection');
     }
 
     protected function setUp()
     {
         parent::setup();
 
-        $this->truncate();
-        $this->insert();
+        // since we have moved away from DbUnit this allows old packages to
+        // still use this class which now maps to our own implementation
+        if (!class_exists('PHPUnit_Extensions_Database_DataSet_ArrayDataSet')) {
+            class_alias(ArrayDataSet::class, 'PHPUnit_Extensions_Database_DataSet_ArrayDataSet');
+        }
+
+        $this->setUpFixture();
     }
 
     /**
@@ -79,55 +66,5 @@ abstract class DbTestCase extends TestCase
     protected function createFromFile($file)
     {
         return include $file;
-    }
-
-    /**
-     * @return \ArrayObject|array
-     */
-    abstract protected function getDataSet();
-
-    private function truncate()
-    {
-        $connection = $this->getConnection();
-        $tables     = $connection->getSchemaManager()->listTableNames();
-        $platform   = $connection->getDatabasePlatform();
-        
-        if ($platform instanceof MySqlPlatform) {
-            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
-
-            foreach ($tables as $table) {
-                $this->connection->executeQuery('TRUNCATE ' . $table);
-            }
-
-            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
-        } elseif ($platform instanceof PostgreSqlPlatform) {
-            foreach ($tables as $table) {
-                $this->connection->executeQuery('TRUNCATE ' . $table . ' RESTART IDENTITY CASCADE');
-            }
-        } else {
-            // for all other platforms we simply try to delete all data using
-            // standard SQL ignoring potential foreign key problems
-            foreach ($tables as $table) {
-                $this->connection->executeQuery('DELETE FROM ' . $table . ' WHERE 1=1');
-            }
-        }
-    }
-
-    private function insert()
-    {
-        // since we have moved away from DbUnit this allows old packages to
-        // still use this class which now maps to our own implementation
-        if (!class_exists('PHPUnit_Extensions_Database_DataSet_ArrayDataSet')) {
-            class_alias(ArrayDataSet::class, 'PHPUnit_Extensions_Database_DataSet_ArrayDataSet');
-        }
-
-        $connection = $this->getConnection();
-        $data       = $this->getDataSet();
-
-        foreach ($data as $tableName => $rows) {
-            foreach ($rows as $row) {
-                $connection->insert($tableName, $row);
-            }
-        }
     }
 }
