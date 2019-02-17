@@ -348,7 +348,7 @@ JSON;
             },
             "GET-query": {
                 "type": "object",
-                "title": "query",
+                "title": "GetQuery",
                 "properties": {
                     "startIndex": {
                         "type": "integer",
