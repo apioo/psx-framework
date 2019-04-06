@@ -67,7 +67,7 @@
           "users",
           "worldUsers"
         ],
-        "class": "PSX\\Framework\\App\\Model\\Entity"
+        "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
       },
       "Collection": {
         "type": "object",
@@ -84,7 +84,7 @@
             }
           }
         },
-        "class": "PSX\\Framework\\App\\Model\\Collection"
+        "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
       },
       "Message": {
         "type": "object",
@@ -98,7 +98,7 @@
             "type": "string"
           }
         },
-        "class": "PSX\\Framework\\App\\Model\\Message"
+        "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
       },
       "GET-200-response": {
         "$ref": "#\/definitions\/Collection"

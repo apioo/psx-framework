@@ -69,7 +69,7 @@ title: PSX
                               "users",
                               "worldUsers"
                           ],
-                          "class": "PSX\\Framework\\App\\Model\\Entity"
+                          "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
                       }
                   },
                   "type": "object",
@@ -86,7 +86,7 @@ title: PSX
                           }
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Collection"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
               }
   post:
     body:
@@ -141,7 +141,7 @@ title: PSX
                   "users",
                   "worldUsers"
               ],
-              "class": "PSX\\Framework\\App\\Model\\Entity"
+              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
           }
     responses:
       201:
@@ -162,7 +162,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
 /population/popo/{id}:
   description: 'Entity endpoint'
@@ -225,7 +225,7 @@ title: PSX
                       "users",
                       "worldUsers"
                   ],
-                  "class": "PSX\\Framework\\App\\Model\\Entity"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
               }
   put:
     body:
@@ -280,7 +280,7 @@ title: PSX
                   "users",
                   "worldUsers"
               ],
-              "class": "PSX\\Framework\\App\\Model\\Entity"
+              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
           }
     responses:
       200:
@@ -301,7 +301,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
   delete:
     responses:
@@ -323,7 +323,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
 /population/jsonschema:
   description: 'Collection endpoint'
@@ -1332,7 +1332,7 @@ title: PSX
                               "users",
                               "worldUsers"
                           ],
-                          "class": "PSX\\Framework\\App\\Model\\Entity"
+                          "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
                       }
                   },
                   "type": "object",
@@ -1349,7 +1349,7 @@ title: PSX
                           }
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Collection"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
               }
   post:
     body:
@@ -1404,7 +1404,7 @@ title: PSX
                   "users",
                   "worldUsers"
               ],
-              "class": "PSX\\Framework\\App\\Model\\Entity"
+              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
           }
     responses:
       201:
@@ -1425,7 +1425,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
 /population/{id}:
   description: 'Entity endpoint'
@@ -1488,7 +1488,7 @@ title: PSX
                       "users",
                       "worldUsers"
                   ],
-                  "class": "PSX\\Framework\\App\\Model\\Entity"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
               }
   put:
     body:
@@ -1543,7 +1543,7 @@ title: PSX
                   "users",
                   "worldUsers"
               ],
-              "class": "PSX\\Framework\\App\\Model\\Entity"
+              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
           }
     responses:
       200:
@@ -1564,7 +1564,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
   delete:
     responses:
@@ -1586,7 +1586,7 @@ title: PSX
                           "type": "string"
                       }
                   },
-                  "class": "PSX\\Framework\\App\\Model\\Message"
+                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
               }
 /tool:
   get:
