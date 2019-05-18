@@ -38,7 +38,7 @@ class Method extends SchemaAbstract
         $sb->string('description');
         $sb->string('queryParameters');
         $sb->string('request');
-        $sb->arrayType('responses')
+        $sb->objectType('responses')
             ->setAdditionalProperties(Property::getString());
 
         return $sb->getProperty();
