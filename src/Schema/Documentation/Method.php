@@ -39,6 +39,7 @@ class Method extends SchemaAbstract
         $sb->string('queryParameters');
         $sb->string('request');
         $sb->objectType('responses')
+            ->setTitle('Documentation Method Responses')
             ->setAdditionalProperties(Property::getString());
 
         return $sb->getProperty();
