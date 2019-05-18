@@ -1704,6 +1704,13 @@ title: PSX
                   }
               }
 /tool/doc/{version}/{path}:
+  uriParameters:
+    version:
+      type: string
+      required: false
+    path:
+      type: string
+      required: false
   get:
     responses:
       200:
@@ -1740,11 +1747,15 @@ title: PSX
                                   "type": "string"
                               },
                               "responses": {
-                                  "type": "array",
-                                  "additionalProperties": {
-                                      "type": "string"
-                                  }
+                                  "$ref": "#\/definitions\/Documentation_Method_Responses"
                               }
+                          }
+                      },
+                      "Documentation_Method_Responses": {
+                          "type": "object",
+                          "title": "Documentation Method Responses",
+                          "additionalProperties": {
+                              "type": "string"
                           }
                       },
                       "Discovery_Link": {

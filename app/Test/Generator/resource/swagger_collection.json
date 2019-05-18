@@ -611,7 +611,20 @@
           }
         }
       },
-      "parameters": []
+      "parameters": [
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "path",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
     },
     "\/tool\/routing": {
       "get": {
@@ -794,11 +807,15 @@
           "type": "string"
         },
         "responses": {
-          "type": "array",
-          "additionalProperties": {
-            "type": "string"
-          }
+          "$ref": "#\/definitions\/Documentation_Method_Responses"
         }
+      }
+    },
+    "Documentation_Method_Responses": {
+      "type": "object",
+      "title": "Documentation Method Responses",
+      "additionalProperties": {
+        "type": "string"
       }
     },
     "Documentation_Detail": {
