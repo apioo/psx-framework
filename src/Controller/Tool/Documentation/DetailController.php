@@ -29,6 +29,7 @@ use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
+use PSX\Schema\Property;
 
 /**
  * DetailController
@@ -63,6 +64,8 @@ class DetailController extends SchemaApiAbstract
     public function getDocumentation($version = null)
     {
         $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $resource->addPathParameter('version', Property::getString());
+        $resource->addPathParameter('path', Property::getString());
 
         $resource->addMethod(Resource\Factory::getMethod('GET')
             ->addResponse(200, $this->schemaManager->getSchema(Schema\Documentation\Detail::class))
