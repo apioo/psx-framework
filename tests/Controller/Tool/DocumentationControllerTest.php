@@ -146,6 +146,18 @@ JSON;
         "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
         "id": "urn:schema.phpsx.org#",
         "definitions": {
+            "path-template": {
+                "type": "object",
+                "title": "path",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    }
+                }
+            },
             "Documentation_Schema": {
                 "type": "object",
                 "title": "Documentation Schema",
@@ -172,11 +184,15 @@ JSON;
                         "type": "string"
                     },
                     "responses": {
-                        "type": "array",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
+                        "$ref": "#\/definitions\/Documentation_Method_Responses"
                     }
+                }
+            },
+            "Documentation_Method_Responses": {
+                "type": "object",
+                "title": "Documentation Method Responses",
+                "additionalProperties": {
+                    "type": "string"
                 }
             },
             "Discovery_Link": {
@@ -229,6 +245,7 @@ JSON;
             }
         }
     },
+    "pathParameters": "#\/definitions\/path-template",
     "methods": {
         "GET": {
             "responses": {
