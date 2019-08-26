@@ -13,8 +13,8 @@
   ],
   "require": {
     "php": ">=7.0",
-    "doctrine/annotations": "^1.3",
-    "doctrine/dbal": "~2.5.0",
+    "doctrine/annotations": "^1.5",
+    "doctrine/dbal": "~2.9.0",
     "monolog/monolog": "^1.17",
     "psr/log": "^1.0",
     "psr/container": "^1.0",
