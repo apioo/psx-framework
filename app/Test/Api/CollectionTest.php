@@ -89,7 +89,7 @@ JSON;
 
         // check database
         $sql = Environment::getService('connection')->createQueryBuilder()
-            ->select('id', 'place', 'region', 'population', 'users', 'world_users')
+            ->select('place', 'region', 'population', 'users', 'world_users')
             ->from('population')
             ->orderBy('id', 'DESC')
             ->setFirstResult(0)
@@ -98,8 +98,8 @@ JSON;
 
         $result = Environment::getService('connection')->fetchAll($sql);
         $expect = [
-            ['id' => 11, 'place' => 11, 'region' => 'Foo', 'population' => 1024, 'users' => 512, 'world_users' => 0.6],
-            ['id' => 10, 'place' => 10, 'region' => 'Korea South', 'population' => 48508972, 'users' => 37475800, 'world_users' => 2.2],
+            ['place' => 11, 'region' => 'Foo', 'population' => 1024, 'users' => 512, 'world_users' => 0.6],
+            ['place' => 10, 'region' => 'Korea South', 'population' => 48508972, 'users' => 37475800, 'world_users' => 2.2],
         ];
 
         $this->assertEquals($expect, $result);
