@@ -39,10 +39,11 @@ class RamlControllerTest extends ControllerTestCase
         $response = $this->sendRequest('/raml/1/api', 'GET', ['Accept' => 'application/json']);
         $raml     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/raml.yaml');
+        $expect   = str_replace(array("\r\n", "\r"), "\n", $expect);
 
         $this->assertEquals(null, $response->getStatusCode(), $raml);
         $this->assertEquals('application/raml+yaml', $response->getHeader('Content-Type'), $raml);
-        $this->assertEquals(str_replace(array("\r\n", "\r"), "\n", $expect), $raml, $raml);
+        $this->assertEquals($expect, $raml, $raml);
     }
 
     public function testCollection()

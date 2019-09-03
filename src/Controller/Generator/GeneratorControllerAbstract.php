@@ -58,7 +58,9 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
     {
         $version   = (int) $this->context->getParameter('version');
         $path      = $this->context->getParameter('path');
-        $generator = $this->generatorFactory->getGenerator($this->getType());
+        
+        $type      = $this->getType();
+        $generator = $this->generatorFactory->getGenerator($type);
 
         if ($path == '*') {
             if (!$generator instanceof GeneratorCollectionInterface) {
@@ -78,7 +80,7 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
             $result = $generator->generate($resource);
         }
 
-        $response->setHeader('Content-Type', $this->generatorFactory->getMime($this->getType()));
+        $response->setHeader('Content-Type', $this->generatorFactory->getMime($type));
         $this->responseWriter->setBody($response, $result, $request);
     }
 
