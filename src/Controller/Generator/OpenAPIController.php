@@ -33,6 +33,6 @@ class OpenAPIController extends GeneratorControllerAbstract
 {
     protected function getType()
     {
-        return GeneratorFactoryInterface::TYPE_OPENAPI;
+        return GeneratorFactoryInterface::SPEC_OPENAPI;
     }
 }

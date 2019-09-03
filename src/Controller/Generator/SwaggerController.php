@@ -33,6 +33,6 @@ class SwaggerController extends GeneratorControllerAbstract
 {
     protected function getType()
     {
-        return GeneratorFactoryInterface::TYPE_SWAGGER;
+        return GeneratorFactoryInterface::SPEC_SWAGGER;
     }
 }

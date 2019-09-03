@@ -33,6 +33,6 @@ class RamlController extends GeneratorControllerAbstract
 {
     protected function getType()
     {
-        return GeneratorFactoryInterface::TYPE_RAML;
+        return GeneratorFactoryInterface::SPEC_RAML;
     }
 }
