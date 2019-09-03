@@ -89,7 +89,7 @@ class DetailController extends SchemaApiAbstract
             throw new StatusCode\BadRequestException('Invalid api version');
         }
 
-        $generator = new Generator\JsonSchema($this->config['psx_json_namespace']);
+        $generator = new Generator\Spec\JsonSchema($this->config['psx_json_namespace']);
 
         $api = new \stdClass();
         $api->path = $resource->getPath();
