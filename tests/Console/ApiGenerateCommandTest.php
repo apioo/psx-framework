@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Console;
 
+use PSX\Api\GeneratorFactoryInterface;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
@@ -42,7 +43,7 @@ class ApiGenerateCommandTest extends ControllerTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'dir'      => __DIR__ . '/output',
-            '--format' => 'markdown',
+            '--format' => GeneratorFactoryInterface::MARKUP_MARKDOWN,
         ]);
 
         $response = $commandTester->getDisplay();
