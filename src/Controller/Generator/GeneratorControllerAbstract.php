@@ -56,10 +56,10 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
 
     public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $version   = (int) $this->context->getParameter('version');
-        $path      = $this->context->getParameter('path');
-        
-        $type      = $this->getType();
+        $version = (int) $this->context->getParameter('version');
+        $path    = $this->context->getParameter('path');
+        $type    = $this->getType();
+
         $generator = $this->generatorFactory->getGenerator($type);
 
         if ($path == '*') {
