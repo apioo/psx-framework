@@ -21,7 +21,9 @@
 namespace PSX\Framework\Controller\Tool\Documentation;
 
 use PSX\Api\Generator;
+use PSX\Api\GeneratorFactory;
 use PSX\Api\Resource;
+use PSX\Framework\Controller\Generator\GeneratorController;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
@@ -45,12 +47,6 @@ class DetailController extends SchemaApiAbstract
      * @var \PSX\Api\ListingInterface
      */
     protected $resourceListing;
-
-    /**
-     * @Inject
-     * @var \PSX\Api\Listing\FilterFactoryInterface
-     */
-    protected $listingFilterFactory;
 
     /**
      * @Inject
@@ -116,6 +112,12 @@ class DetailController extends SchemaApiAbstract
                 $data->description = $description;
             }
 
+            // operation id
+            $operationId = $method->getOperationId();
+            if (!empty($operationId)) {
+                $data->operationId = $operationId;
+            }
+
             // query parameters
             if ($method->hasQueryParameters()) {
                 $data->queryParameters = '#/definitions/' . $method->getName() . '-query';
@@ -156,28 +158,39 @@ class DetailController extends SchemaApiAbstract
         $path   = ltrim($path, '/');
         $result = [];
 
-        $openAPIPath = $this->reverseRouter->getAbsolutePath(OpenAPIController::class, array('version' => $version, 'path' => $path));
-        if ($openAPIPath !== null) {
-            $result[] = [
-                'rel'  => 'openapi',
-                'href' => $openAPIPath,
-            ];
-        }
+        $generatorPath = $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => '*', 'version' => $version, 'path' => $path]);
+        if ($generatorPath !== null) {
+            $types = GeneratorFactory::getPossibleTypes();
+            foreach ($types as $type) {
+                $result[] = [
+                    'rel'  => $type,
+                    'href' => $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => $type, 'version' => $version, 'path' => $path]),
+                ];
+            }
+        } else {
+            $openAPIPath = $this->reverseRouter->getAbsolutePath(OpenAPIController::class, array('version' => $version, 'path' => $path));
+            if ($openAPIPath !== null) {
+                $result[] = [
+                    'rel'  => 'openapi',
+                    'href' => $openAPIPath,
+                ];
+            }
 
-        $swaggerPath = $this->reverseRouter->getAbsolutePath(SwaggerController::class, array('version' => $version, 'path' => $path));
-        if ($swaggerPath !== null) {
-            $result[] = [
-                'rel'  => 'swagger',
-                'href' => $swaggerPath,
-            ];
-        }
+            $swaggerPath = $this->reverseRouter->getAbsolutePath(SwaggerController::class, array('version' => $version, 'path' => $path));
+            if ($swaggerPath !== null) {
+                $result[] = [
+                    'rel'  => 'swagger',
+                    'href' => $swaggerPath,
+                ];
+            }
 
-        $ramlPath = $this->reverseRouter->getAbsolutePath(RamlController::class, array('version' => $version, 'path' => $path));
-        if ($ramlPath !== null) {
-            $result[] = [
-                'rel'  => 'raml',
-                'href' => $ramlPath,
-            ];
+            $ramlPath = $this->reverseRouter->getAbsolutePath(RamlController::class, array('version' => $version, 'path' => $path));
+            if ($ramlPath !== null) {
+                $result[] = [
+                    'rel'  => 'raml',
+                    'href' => $ramlPath,
+                ];
+            }
         }
 
         return $result;
