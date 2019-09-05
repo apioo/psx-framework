@@ -113,12 +113,14 @@
   },
   "methods": {
     "GET": {
+      "operationId": "doGet",
       "queryParameters": "#\/definitions\/GET-query",
       "responses": {
         "200": "#\/definitions\/GET-200-response"
       }
     },
     "POST": {
+      "operationId": "doPost",
       "request": "#\/definitions\/POST-request",
       "responses": {
         "201": "#\/definitions\/POST-201-response"
