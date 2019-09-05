@@ -183,16 +183,12 @@
       "href": "\/generate\/markup.markdown\/1\/api"
     },
     {
-      "rel": "markup.template",
-      "href": "\/generate\/markup.template\/1\/api"
-    },
-    {
       "rel": "server.php",
       "href": "\/generate\/server.php\/1\/api"
     },
     {
-      "rel": "markup.jsonschema",
-      "href": "\/generate\/markup.jsonschema\/1\/api"
+      "rel": "spec.jsonschema",
+      "href": "\/generate\/spec.jsonschema\/1\/api"
     },
     {
       "rel": "spec.openapi",
