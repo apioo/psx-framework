@@ -85,16 +85,12 @@
       "href": "\/generate\/markup.markdown\/*\/doc"
     },
     {
-      "rel": "markup.template",
-      "href": "\/generate\/markup.template\/*\/doc"
-    },
-    {
       "rel": "server.php",
       "href": "\/generate\/server.php\/*\/doc"
     },
     {
-      "rel": "markup.jsonschema",
-      "href": "\/generate\/markup.jsonschema\/*\/doc"
+      "rel": "spec.jsonschema",
+      "href": "\/generate\/spec.jsonschema\/*\/doc"
     },
     {
       "rel": "spec.openapi",

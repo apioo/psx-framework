@@ -132,16 +132,12 @@
       "href": "\/generate\/markup.markdown\/*\/doc\/:version\/*path"
     },
     {
-      "rel": "markup.template",
-      "href": "\/generate\/markup.template\/*\/doc\/:version\/*path"
-    },
-    {
       "rel": "server.php",
       "href": "\/generate\/server.php\/*\/doc\/:version\/*path"
     },
     {
-      "rel": "markup.jsonschema",
-      "href": "\/generate\/markup.jsonschema\/*\/doc\/:version\/*path"
+      "rel": "spec.jsonschema",
+      "href": "\/generate\/spec.jsonschema\/*\/doc\/:version\/*path"
     },
     {
       "rel": "spec.openapi",
