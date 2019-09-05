@@ -37,7 +37,7 @@ class GeneratorControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/client.php');
         $expect   = str_replace(array("\r\n", "\r"), "\n", $expect);
@@ -49,7 +49,7 @@ class GeneratorControllerTest extends ControllerTestCase
 
     public function testCollection()
     {
-        $response = $this->sendRequest('/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/*', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/*', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
 
         $this->assertEquals(500, $response->getStatusCode(), $json);
@@ -58,7 +58,7 @@ class GeneratorControllerTest extends ControllerTestCase
 
     public function testIndexFallback()
     {
-        $response = $this->sendRequest('/openapi/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/generate/openapi/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
 
@@ -70,9 +70,9 @@ class GeneratorControllerTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
+            [['GET'], '/generate/:type/:version/*path', GeneratorController::class],
             [['ANY'], '/api', TestSchemaApiController::class],
             [['ANY'], '/endpoint', TestSchemaApiV2Controller::class],
-            [['GET'], '/:type/:version/*path', GeneratorController::class],
         );
     }
 }
