@@ -1,0 +1,159 @@
+{
+  "path": "\/doc\/:version\/*path",
+  "version": "*",
+  "status": 1,
+  "description": null,
+  "schema": {
+    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+    "id": "urn:schema.phpsx.org#",
+    "definitions": {
+      "path-template": {
+        "type": "object",
+        "title": "path",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "Documentation_Schema": {
+        "type": "object",
+        "title": "Documentation Schema",
+        "description": "Contains the JSON Schema object"
+      },
+      "Documentation_Methods": {
+        "type": "object",
+        "title": "Documentation Methods",
+        "additionalProperties": {
+          "$ref": "#\/definitions\/Documentation_Method"
+        }
+      },
+      "Documentation_Method": {
+        "type": "object",
+        "title": "Documentation Method",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "queryParameters": {
+            "type": "string"
+          },
+          "request": {
+            "type": "string"
+          },
+          "responses": {
+            "$ref": "#\/definitions\/Documentation_Method_Responses"
+          }
+        }
+      },
+      "Documentation_Method_Responses": {
+        "type": "object",
+        "title": "Documentation Method Responses",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "Discovery_Link": {
+        "type": "object",
+        "title": "Discovery Link",
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "Documentation_Detail": {
+        "type": "object",
+        "title": "Documentation Detail",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "schema": {
+            "$ref": "#\/definitions\/Documentation_Schema"
+          },
+          "pathParameters": {
+            "type": "string"
+          },
+          "methods": {
+            "$ref": "#\/definitions\/Documentation_Methods"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/definitions\/Discovery_Link"
+            }
+          }
+        }
+      },
+      "GET-200-response": {
+        "$ref": "#\/definitions\/Documentation_Detail"
+      }
+    }
+  },
+  "pathParameters": "#\/definitions\/path-template",
+  "methods": {
+    "GET": {
+      "responses": {
+        "200": "#\/definitions\/GET-200-response"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "client.php",
+      "href": "\/generate\/client.php\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "client.typescript",
+      "href": "\/generate\/client.typescript\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup.html",
+      "href": "\/generate\/markup.html\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup.markdown",
+      "href": "\/generate\/markup.markdown\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup.template",
+      "href": "\/generate\/markup.template\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "server.php",
+      "href": "\/generate\/server.php\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup.jsonschema",
+      "href": "\/generate\/markup.jsonschema\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec.openapi",
+      "href": "\/generate\/spec.openapi\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec.raml",
+      "href": "\/generate\/spec.raml\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec.swagger",
+      "href": "\/generate\/spec.swagger\/*\/doc\/:version\/*path"
+    }
+  ]
+}

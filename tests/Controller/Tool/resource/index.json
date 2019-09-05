@@ -1,0 +1,43 @@
+{
+  "routings": [
+    {
+      "path": "\/doc",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/doc\/:version\/*path",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/api",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ],
+      "version": "*"
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "http:\/\/127.0.0.1\/doc"
+    },
+    {
+      "rel": "detail",
+      "href": "http:\/\/127.0.0.1\/doc\/{version}\/{path}"
+    },
+    {
+      "rel": "api",
+      "href": "http:\/\/127.0.0.1\/"
+    }
+  ]
+}

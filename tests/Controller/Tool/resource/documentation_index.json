@@ -1,0 +1,112 @@
+{
+  "path": "\/doc",
+  "version": "*",
+  "status": 1,
+  "description": null,
+  "schema": {
+    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
+    "id": "urn:schema.phpsx.org#",
+    "definitions": {
+      "Documentation_Route": {
+        "type": "object",
+        "title": "Documentation Route",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "Discovery_Link": {
+        "type": "object",
+        "title": "Discovery Link",
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "Documentation_Index": {
+        "type": "object",
+        "title": "Documentation Index",
+        "properties": {
+          "routings": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/definitions\/Documentation_Route"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/definitions\/Discovery_Link"
+            }
+          }
+        }
+      },
+      "GET-200-response": {
+        "$ref": "#\/definitions\/Documentation_Index"
+      }
+    }
+  },
+  "methods": {
+    "GET": {
+      "responses": {
+        "200": "#\/definitions\/GET-200-response"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "client.php",
+      "href": "\/generate\/client.php\/*\/doc"
+    },
+    {
+      "rel": "client.typescript",
+      "href": "\/generate\/client.typescript\/*\/doc"
+    },
+    {
+      "rel": "markup.html",
+      "href": "\/generate\/markup.html\/*\/doc"
+    },
+    {
+      "rel": "markup.markdown",
+      "href": "\/generate\/markup.markdown\/*\/doc"
+    },
+    {
+      "rel": "markup.template",
+      "href": "\/generate\/markup.template\/*\/doc"
+    },
+    {
+      "rel": "server.php",
+      "href": "\/generate\/server.php\/*\/doc"
+    },
+    {
+      "rel": "markup.jsonschema",
+      "href": "\/generate\/markup.jsonschema\/*\/doc"
+    },
+    {
+      "rel": "spec.openapi",
+      "href": "\/generate\/spec.openapi\/*\/doc"
+    },
+    {
+      "rel": "spec.raml",
+      "href": "\/generate\/spec.raml\/*\/doc"
+    },
+    {
+      "rel": "spec.swagger",
+      "href": "\/generate\/spec.swagger\/*\/doc"
+    }
+  ]
+}
