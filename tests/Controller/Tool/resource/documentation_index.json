@@ -69,40 +69,36 @@
   },
   "links": [
     {
-      "rel": "client.php",
-      "href": "\/generate\/client.php\/*\/doc"
+      "rel": "client-php",
+      "href": "\/generate\/client-php\/*\/doc"
     },
     {
-      "rel": "client.typescript",
-      "href": "\/generate\/client.typescript\/*\/doc"
+      "rel": "client-typescript",
+      "href": "\/generate\/client-typescript\/*\/doc"
     },
     {
-      "rel": "markup.html",
-      "href": "\/generate\/markup.html\/*\/doc"
+      "rel": "markup-html",
+      "href": "\/generate\/markup-html\/*\/doc"
     },
     {
-      "rel": "markup.markdown",
-      "href": "\/generate\/markup.markdown\/*\/doc"
+      "rel": "markup-markdown",
+      "href": "\/generate\/markup-markdown\/*\/doc"
     },
     {
-      "rel": "server.php",
-      "href": "\/generate\/server.php\/*\/doc"
+      "rel": "spec-jsonschema",
+      "href": "\/generate\/spec-jsonschema\/*\/doc"
     },
     {
-      "rel": "spec.jsonschema",
-      "href": "\/generate\/spec.jsonschema\/*\/doc"
+      "rel": "spec-openapi",
+      "href": "\/generate\/spec-openapi\/*\/doc"
     },
     {
-      "rel": "spec.openapi",
-      "href": "\/generate\/spec.openapi\/*\/doc"
+      "rel": "spec-raml",
+      "href": "\/generate\/spec-raml\/*\/doc"
     },
     {
-      "rel": "spec.raml",
-      "href": "\/generate\/spec.raml\/*\/doc"
-    },
-    {
-      "rel": "spec.swagger",
-      "href": "\/generate\/spec.swagger\/*\/doc"
+      "rel": "spec-swagger",
+      "href": "\/generate\/spec-swagger\/*\/doc"
     }
   ]
 }
