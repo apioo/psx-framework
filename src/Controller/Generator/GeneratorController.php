@@ -44,7 +44,7 @@ class GeneratorController extends GeneratorControllerAbstract
 
         // check whether the sub type matches
         foreach ($types as $value) {
-            [, $subType] = explode('.', $value);
+            [, $subType] = explode('-', $value);
             if ($subType === $type) {
                 return $value;
             }
