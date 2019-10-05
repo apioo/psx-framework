@@ -53,6 +53,9 @@ class Resource
 
     /**
      * Returns a collection
+     *
+     * @param GetQuery $query
+     * @return Collection
      */
     public function get(GetQuery $query): Collection
     {
@@ -66,6 +69,10 @@ class Resource
         return $this->convertToObject($data, Collection::class);
     }
 
+    /**
+     * @param Item $data
+     * @return Message
+     */
     public function post(Item $data): Message
     {
         $options = [
@@ -78,6 +85,10 @@ class Resource
         return $this->convertToObject($data, Message::class);
     }
 
+    /**
+     * @param Item $data
+     * @return Message
+     */
     public function put(Item $data): Message
     {
         $options = [
@@ -90,6 +101,9 @@ class Resource
         return $this->convertToObject($data, Message::class);
     }
 
+    /**
+     * @return Message
+     */
     public function delete(): Message
     {
         $options = [
@@ -101,6 +115,10 @@ class Resource
         return $this->convertToObject($data, Message::class);
     }
 
+    /**
+     * @param Item $data
+     * @return Message
+     */
     public function patch(Item $data): Message
     {
         $options = [
