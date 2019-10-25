@@ -1,46 +1,57 @@
 <?php
+
 namespace Api;
+
 use GuzzleHttp\Client;
 use PSX\Json\Parser;
 use PSX\Schema\Parser\Popo\Dumper;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\SchemaTraverser;
 use PSX\Schema\Visitor\TypeVisitor;
+
 class Resource
 {
     /**
      * @var string
      */
     private $url;
+
     /**
      * @var string
      */
     private $token;
+
     /**
      * @var Client
      */
     private $httpClient;
+
     /**
      * @var SchemaManager
      */
     private $schemaManager;
+
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var string
      */
     private $type;
+
     public function __construct(string $name, string $type, string $baseUrl, string $token, ?Client $httpClient = null, ?SchemaManager $schemaManager = null)
     {
         $this->name = $name;
         $this->type = $type;
+
         $this->url = $baseUrl . '/api';
         $this->token = $token;
         $this->httpClient = $httpClient ? $httpClient : new Client();
         $this->schemaManager = $schemaManager ? $schemaManager : new SchemaManager();
     }
+
     /**
      * Returns a collection
      *
@@ -52,10 +63,13 @@ class Resource
         $options = [
             'query' => $this->convertToArray($query),
         ];
+
         $response = $this->httpClient->request('GET', $this->url, $options);
         $data     = (string) $response->getBody();
+
         return $this->convertToObject($data, Collection::class);
     }
+
     /**
      * @param Item $data
      * @return Message
@@ -65,10 +79,13 @@ class Resource
         $options = [
             'json' => $this->convertToArray($data)
         ];
+
         $response = $this->httpClient->request('POST', $this->url, $options);
         $data     = (string) $response->getBody();
+
         return $this->convertToObject($data, Message::class);
     }
+
     /**
      * @param Item $data
      * @return Message
@@ -78,10 +95,13 @@ class Resource
         $options = [
             'json' => $this->convertToArray($data)
         ];
+
         $response = $this->httpClient->request('PUT', $this->url, $options);
         $data     = (string) $response->getBody();
+
         return $this->convertToObject($data, Message::class);
     }
+
     /**
      * @return Message
      */
@@ -89,10 +109,13 @@ class Resource
     {
         $options = [
         ];
+
         $response = $this->httpClient->request('DELETE', $this->url, $options);
         $data     = (string) $response->getBody();
+
         return $this->convertToObject($data, Message::class);
     }
+
     /**
      * @param Item $data
      * @return Message
@@ -102,14 +125,18 @@ class Resource
         $options = [
             'json' => $this->convertToArray($data)
         ];
+
         $response = $this->httpClient->request('PATCH', $this->url, $options);
         $data     = (string) $response->getBody();
+
         return $this->convertToObject($data, Message::class);
     }
+
     private function convertToArray($object)
     {
         return (new Dumper())->dump($object);
     }
+
     private function convertToObject(string $data, ?string $class)
     {
         $data = Parser::decode($data);
@@ -121,6 +148,11 @@ class Resource
         }
     }
 }
+
+
+
+
+
 /**
  * @Title("message")
  */
