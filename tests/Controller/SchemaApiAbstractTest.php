@@ -84,8 +84,8 @@ JSON;
 
         $expect = <<<JSON
 {
-	"success": true,
-	"message": "You have successful post a record"
+    "success": true,
+    "message": "You have successful post a record"
 }
 JSON;
 
@@ -103,9 +103,9 @@ JSON;
 
         $expect = <<<JSON
 {
-	"success": false,
-	"message": "/title must contain less or equal then 16 characters",
-	"title": "Internal Server Error"
+    "success": false,
+    "title": "Internal Server Error",
+    "message": "/title must contain less or equal than 16 characters"
 }
 JSON;
 
@@ -123,9 +123,9 @@ JSON;
 
         $expect = <<<JSON
 {
-	"success": false,
-	"message": "/ the following properties are required: title, date",
-	"title": "Internal Server Error"
+    "success": false,
+    "title": "Internal Server Error",
+    "message": "/ the following properties are required: title, date"
 }
 JSON;
 
@@ -141,8 +141,8 @@ JSON;
 
         $expect = <<<JSON
 {
-	"success": true,
-	"message": "You have successful put a record"
+    "success": true,
+    "message": "You have successful put a record"
 }
 JSON;
 
@@ -158,8 +158,8 @@ JSON;
 
         $expect = <<<JSON
 {
-	"success": true,
-	"message": "You have successful delete a record"
+    "success": true,
+    "message": "You have successful delete a record"
 }
 JSON;
 
