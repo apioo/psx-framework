@@ -26,6 +26,8 @@ use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Http\Writer\File;
+use PSX\Schema\Generator\Code\Chunks;
 
 /**
  * GeneratorControllerAbstract
@@ -80,7 +82,16 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
             $result = $generator->generate($resource);
         }
 
-        $response->setHeader('Content-Type', $this->generatorFactory->getMime($type));
+        if ($result instanceof Chunks) {
+            // write chunks to zip file
+            $file = tempnam(PSX_PATH_CACHE, 'sdk');
+            $result->writeTo($file);
+
+            $result = new File($file, 'sdk.zip', 'application/zip');
+        } else {
+            $response->setHeader('Content-Type', $this->generatorFactory->getMime($type));
+        }
+
         $this->responseWriter->setBody($response, $result, $request);
     }
 

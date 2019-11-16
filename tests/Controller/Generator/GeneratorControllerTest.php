@@ -37,23 +37,24 @@ class GeneratorControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::SPEC_OPENAPI . '/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/client.php');
-        $expect   = str_replace(array("\r\n", "\r"), "\n", $expect);
+        $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
 
         $this->assertEquals(null, $response->getStatusCode(), $json);
-        $this->assertEquals('application/php', $response->getHeader('Content-Type'), $json);
-        $this->assertEquals($expect, $json, $json);
+        $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
+        $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 
     public function testCollection()
     {
-        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::CLIENT_PHP . '/1/*', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::SPEC_OPENAPI . '/1/*', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
+        $expect   = file_get_contents(__DIR__ . '/resource/openapi_collection.json');
 
-        $this->assertEquals(500, $response->getStatusCode(), $json);
+        $this->assertEquals(null, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
+        $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
 
     public function testIndexFallback()
