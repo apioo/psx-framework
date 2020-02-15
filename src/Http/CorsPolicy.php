@@ -81,6 +81,8 @@ class CorsPolicy
             if (!empty($headers)) {
                 $response->setHeader('Access-Control-Allow-Headers', implode(', ', $allowedHeaders));
             }
+
+            $response->setHeader('Access-Control-Expose-Headers', '*');
         }
     }
 }
