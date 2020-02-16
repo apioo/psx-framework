@@ -204,7 +204,8 @@ JSON;
             'access-control-allow-origin' => ['*'],
             'access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
             'access-control-allow-headers' => ['Accept, Accept-Language, Authorization, Content-Language, Content-Type'],
-            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']
+            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
+            'access-control-expose-headers' => ['*'],
         ], $response->getHeaders());
         $this->assertEmpty($body);
     }
