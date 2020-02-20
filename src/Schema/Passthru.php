@@ -34,8 +34,9 @@ class Passthru extends SchemaAbstract
 {
     public function getDefinition()
     {
-        $sb = new Builder('passthru');
+        $sb = $this->getSchemaBuilder('passthru');
         $sb->setDescription('No schema information available');
+        $sb->setAdditionalProperties(true);
 
         return $sb->getProperty();
     }
