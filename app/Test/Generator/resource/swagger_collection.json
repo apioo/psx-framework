@@ -784,7 +784,8 @@
     "Documentation_Schema": {
       "type": "object",
       "title": "Documentation Schema",
-      "description": "Contains the JSON Schema object"
+      "description": "Contains the JSON Schema object",
+      "additionalProperties": true
     },
     "Documentation_Methods": {
       "type": "object",
