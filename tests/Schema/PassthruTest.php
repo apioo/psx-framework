@@ -45,7 +45,8 @@ class PassthruTest extends SchemaTestCase
     "id": "urn:schema.phpsx.org#",
     "type": "object",
     "title": "passthru",
-    "description": "No schema information available"
+    "description": "No schema information available",
+    "additionalProperties": true
 }
 JSON;
     }
