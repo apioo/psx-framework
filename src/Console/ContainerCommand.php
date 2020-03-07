@@ -20,16 +20,14 @@
 
 namespace PSX\Framework\Console;
 
-use Psr\Container\ContainerInterface;
-use PSX\Dependency\Container;
+use PSX\Dependency\InspectorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Displays all available services from the DI container. Note the getServiceIds
- * method is not defined in the interface
+ * Displays all available services from the DI container
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -37,13 +35,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ContainerCommand extends Command
 {
-    protected $container;
+    protected $inspector;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(InspectorInterface $inspector)
     {
         parent::__construct();
 
-        $this->container = $container;
+        $this->inspector = $inspector;
     }
 
     protected function configure()
@@ -55,25 +53,13 @@ class ContainerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->container instanceof Container) {
-            throw new \RuntimeException('It is not possible to introspect the container');
-        }
+        $services = $this->inspector->getTypedServiceIds();
+        $rows     = [];
 
-        $services  = $this->container->getServiceIds();
-        $rows      = array();
+        asort($services);
 
-        sort($services);
-
-        foreach ($services as $serviceId) {
-            $return = $this->container->getReturnType($serviceId);
-
-            if (!empty($return)) {
-                $definition = $return;
-            } else {
-                $definition = 'void';
-            }
-
-            $rows[] = array($serviceId, $definition);
+        foreach ($services as $type => $serviceId) {
+            $rows[] = [$serviceId, $type];
         }
 
         $table = new Table($output);
