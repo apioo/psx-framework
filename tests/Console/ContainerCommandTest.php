@@ -45,36 +45,38 @@ class ContainerCommandTest extends ControllerTestCase
         $actual = $commandTester->getDisplay();
         $expect = <<<TEXT
 
-annotation_reader            \Doctrine\Common\Annotations\Reader
-annotation_reader_controller \Doctrine\Common\Annotations\Reader
-api_manager                  \PSX\Api\ApiManager
-cache                        \Psr\Cache\CacheItemPoolInterface
-config                       \PSX\Framework\Config\Config
-connection                   \Doctrine\DBAL\Connection
-console                      \Symfony\Component\Console\Application
-controller_factory           \PSX\Framework\Dispatch\ControllerFactoryInterface
-cors_policy                  \PSX\Framework\Http\CorsPolicy
-dispatch                     \PSX\Framework\Dispatch\Dispatch
-event_dispatcher             \Symfony\Component\EventDispatcher\EventDispatcherInterface 
-exception_converter          \PSX\Framework\Exception\ConverterInterface
-generator_factory            \PSX\Api\GeneratorFactoryInterface
-http_client                  \PSX\Http\Client\ClientInterface
-io                           \PSX\Data\Processor
-listing_filter_factory       \PSX\Api\Listing\FilterFactoryInterface
-loader                       \PSX\Framework\Loader\Loader
-loader_location_finder       \PSX\Framework\Loader\LocationFinderInterface
-logger                       \Psr\Log\LoggerInterface
-object_builder               \PSX\Dependency\ObjectBuilderInterface
-population_service           \PSX\Framework\App\Service\Population
-request_reader               \PSX\Framework\Http\RequestReader
-resource_listing             \PSX\Api\ListingInterface
-response_writer              \PSX\Framework\Http\ResponseWriter
-reverse_router               \PSX\Framework\Loader\ReverseRouter
-routing_parser               \PSX\Framework\Loader\RoutingParserInterface
-schema_manager               \PSX\Schema\SchemaManagerInterface
-session                      \PSX\Framework\Session\Session
-table_manager                \PSX\Sql\TableManagerInterface
-validate                     \PSX\Validate\Validate
+annotation_reader            Doctrine\Common\Annotations\Reader
+api_manager                  PSX\Api\ApiManager
+autowire_resolver            PSX\Dependency\AutowireResolver
+cache                        Psr\Cache\CacheItemPoolInterface
+config                       PSX\Framework\Config\Config
+connection                   Doctrine\DBAL\Connection
+console                      Symfony\Component\Console\Application
+container_inspector          PSX\Dependency\InspectorInterface
+controller_factory           PSX\Framework\Dispatch\ControllerFactoryInterface
+cors_policy                  PSX\Framework\Http\CorsPolicy
+dispatch                     PSX\Framework\Dispatch\Dispatch
+event_dispatcher             Symfony\Component\EventDispatcher\EventDispatcherInterface 
+exception_converter          PSX\Framework\Exception\ConverterInterface
+generator_factory            PSX\Api\GeneratorFactoryInterface
+http_client                  PSX\Http\Client\ClientInterface
+io                           PSX\Data\Processor
+listing_filter_factory       PSX\Api\Listing\FilterFactoryInterface
+loader                       PSX\Framework\Loader\LoaderInterface
+loader_location_finder       PSX\Framework\Loader\LocationFinderInterface
+logger                       Psr\Log\LoggerInterface
+object_builder               PSX\Dependency\ObjectBuilderInterface
+population_service           PSX\Framework\App\Service\Population
+request_reader               PSX\Framework\Http\RequestReader
+resource_listing             PSX\Api\ListingInterface
+response_writer              PSX\Framework\Http\ResponseWriter
+reverse_router               PSX\Framework\Loader\ReverseRouter
+routing_parser               PSX\Framework\Loader\RoutingParserInterface
+schema_manager               PSX\Schema\SchemaManagerInterface
+session                      PSX\Framework\Session\Session
+table_manager                PSX\Sql\TableManagerInterface
+tag_resolver                 PSX\Dependency\TagResolver
+validate                     PSX\Validate\Validate
 
 TEXT;
 
