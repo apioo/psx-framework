@@ -40,10 +40,7 @@ use Symfony\Component\Console\Helper\HelperSet;
  */
 trait Console
 {
-    /**
-     * @return \Symfony\Component\Console\Application
-     */
-    public function getConsole()
+    public function getConsole(): Application
     {
         $application = new Application('psx', Base::getVersion());
         $application->setHelperSet(new HelperSet($this->appendConsoleHelpers()));
@@ -55,7 +52,7 @@ trait Console
 
     protected function appendConsoleCommands(Application $application)
     {
-        $application->add(new FrameworkConsole\ContainerCommand($this));
+        $application->add(new FrameworkConsole\ContainerCommand($this->get('container_inspector')));
         $application->add(new FrameworkConsole\RouteCommand($this->get('routing_parser')));
         $application->add(new FrameworkConsole\ServeCommand($this));
 
@@ -78,9 +75,6 @@ trait Console
         $application->add(new DBALCommand\RunSqlCommand());
     }
 
-    /**
-     * @return array
-     */
     protected function appendConsoleHelpers()
     {
         return array(

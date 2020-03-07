@@ -21,12 +21,17 @@
 namespace PSX\Framework\Dependency;
 
 use PSX\Api\ApiManager;
+use PSX\Api\ApiManagerInterface;
 use PSX\Api\GeneratorFactory;
+use PSX\Api\GeneratorFactoryInterface;
 use PSX\Api\Listing\CachedListing;
 use PSX\Api\Listing\FilterFactory;
+use PSX\Api\Listing\FilterFactoryInterface;
+use PSX\Api\ListingInterface;
 use PSX\Framework\Api\ControllerDocumentation;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\ControllerFactory;
+use PSX\Framework\Dispatch\ControllerFactoryInterface;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Exception;
 use PSX\Framework\Http\CorsPolicy;
@@ -44,10 +49,7 @@ use PSX\Framework\Session\Session;
  */
 trait Framework
 {
-    /**
-     * @return \PSX\Framework\Config\Config
-     */
-    public function getConfig()
+    public function getConfig(): Config
     {
         $config = new Config($this->appendDefaultConfig());
         $config = $config->merge(Config::fromFile($this->getParameter('config.file')));
@@ -55,18 +57,12 @@ trait Framework
         return $config;
     }
 
-    /**
-     * @return \PSX\Framework\Exception\ConverterInterface
-     */
-    public function getExceptionConverter()
+    public function getExceptionConverter(): Exception\ConverterInterface
     {
         return new Exception\Converter($this->get('config')->get('psx_debug'));
     }
 
-    /**
-     * @return \PSX\Framework\Session\Session
-     */
-    public function getSession()
+    public function getSession(): Session
     {
         $name    = $this->hasParameter('session.name') ? $this->getParameter('session.name') : 'psx';
         $session = new Session($name);
@@ -78,10 +74,7 @@ trait Framework
         return $session;
     }
 
-    /**
-     * @return \PSX\Framework\Dispatch\ControllerFactoryInterface
-     */
-    public function getControllerFactory()
+    public function getControllerFactory(): ControllerFactoryInterface
     {
         return new ControllerFactory(
             $this->get('object_builder'),
@@ -89,18 +82,12 @@ trait Framework
         );
     }
 
-    /**
-     * @return \PSX\Framework\Loader\LocationFinderInterface
-     */
-    public function getLoaderLocationFinder()
+    public function getLoaderLocationFinder(): Loader\LocationFinderInterface
     {
         return new Loader\LocationFinder\RoutingParser($this->get('routing_parser'));
     }
 
-    /**
-     * @return \PSX\Framework\Loader\Loader
-     */
-    public function getLoader()
+    public function getLoader(): Loader\LoaderInterface
     {
         return new Loader\Loader(
             $this->get('loader_location_finder'),
@@ -111,10 +98,7 @@ trait Framework
         );
     }
 
-    /**
-     * @return \PSX\Framework\Dispatch\Dispatch
-     */
-    public function getDispatch()
+    public function getDispatch(): Dispatch
     {
         return new Dispatch(
             $this->get('config'),
@@ -125,10 +109,7 @@ trait Framework
         );
     }
 
-    /**
-     * @return \PSX\Framework\Loader\RoutingParserInterface
-     */
-    public function getRoutingParser()
+    public function getRoutingParser(): Loader\RoutingParserInterface
     {
         $routingFile = $this->get('config')->get('psx_routing');
 
@@ -147,10 +128,7 @@ trait Framework
         }
     }
 
-    /**
-     * @return \PSX\Framework\Loader\ReverseRouter
-     */
-    public function getReverseRouter()
+    public function getReverseRouter(): Loader\ReverseRouter
     {
         return new Loader\ReverseRouter(
             $this->get('routing_parser'),
@@ -159,10 +137,7 @@ trait Framework
         );
     }
 
-    /**
-     * @return \PSX\Api\ListingInterface
-     */
-    public function getResourceListing()
+    public function getResourceListing(): ListingInterface
     {
         $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('controller_factory'));
 
@@ -173,18 +148,12 @@ trait Framework
         }
     }
 
-    /**
-     * @return \PSX\Api\Listing\FilterFactoryInterface
-     */
-    public function getListingFilterFactory()
+    public function getListingFilterFactory(): FilterFactoryInterface
     {
         return new FilterFactory();
     }
 
-    /**
-     * @return \PSX\Api\GeneratorFactoryInterface
-     */
-    public function getGeneratorFactory()
+    public function getGeneratorFactory(): GeneratorFactoryInterface
     {
         return new GeneratorFactory(
             $this->get('annotation_reader'),
@@ -194,41 +163,29 @@ trait Framework
         );
     }
 
-    /**
-     * @return \PSX\Api\ApiManager
-     */
-    public function getApiManager()
+    public function getApiManager(): ApiManagerInterface
     {
         return new ApiManager(
-            $this->get('annotation_reader_controller'),
+            $this->get('annotation_reader'),
             $this->get('schema_manager'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
     }
 
-    /**
-     * @return \PSX\Framework\Http\CorsPolicy
-     */
-    public function getCorsPolicy()
+    public function getCorsPolicy(): CorsPolicy
     {
         return new CorsPolicy(
             $this->get('config')
         );
     }
 
-    /**
-     * @return \PSX\Framework\Http\RequestReader
-     */
-    public function getRequestReader()
+    public function getRequestReader(): RequestReader
     {
         return new RequestReader($this->get('io'));
     }
 
-    /**
-     * @return \PSX\Framework\Http\ResponseWriter
-     */
-    public function getResponseWriter()
+    public function getResponseWriter(): ResponseWriter
     {
         return new ResponseWriter(
             $this->get('io'),

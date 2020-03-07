@@ -25,18 +25,28 @@ use Doctrine\Common\Cache as DoctrineCache;
 use Doctrine\DBAL;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
 use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
+use PSX\Dependency\AutowireResolver;
 use PSX\Dependency\Container;
+use PSX\Dependency\Inspector\CachedInspector;
+use PSX\Dependency\Inspector\ContainerInspector;
+use PSX\Dependency\InspectorInterface;
 use PSX\Dependency\ObjectBuilder;
+use PSX\Dependency\ObjectBuilderInterface;
+use PSX\Dependency\TagResolver;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Http;
 use PSX\Schema\SchemaManager;
+use PSX\Schema\SchemaManagerInterface;
 use PSX\Sql\Logger as SqlLogger;
 use PSX\Sql\TableManager;
+use PSX\Sql\TableManagerInterface;
 use PSX\Validate\Validate;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -54,39 +64,30 @@ class DefaultContainer extends Container
     use Framework;
     use Console;
 
-    /**
-     * @return \Doctrine\Common\Annotations\Reader
-     */
-    public function getAnnotationReader()
+    public function getAnnotationReader(): Annotations\Reader
     {
-        return $this->newDoctrineAnnotationImpl([
-            'PSX\Schema\Parser\Popo\Annotation',
-        ]);
+        $reader = new Annotations\SimpleAnnotationReader();
+        $reader->addNamespace('PSX\Api\Annotation');
+        $reader->addNamespace('PSX\Dependency\Annotation');
+        $reader->addNamespace('PSX\Schema\Parser\Popo\Annotation');
+
+        if (!$this->get('config')->get('psx_debug')) {
+            $reader = new Annotations\CachedReader(
+                $reader,
+                $this->newDoctrineCacheImpl('annotations/psx'),
+                $this->get('config')->get('psx_debug')
+            );
+        }
+
+        return $reader;
     }
 
-    /**
-     * @return \Doctrine\Common\Annotations\Reader
-     */
-    public function getAnnotationReaderController()
-    {
-        return $this->newDoctrineAnnotationImpl([
-            'PSX\Api\Annotation',
-            'PSX\Dependency\Annotation',
-        ]);
-    }
-
-    /**
-     * @return \Psr\Cache\CacheItemPoolInterface
-     */
-    public function getCache()
+    public function getCache(): CacheItemPoolInterface
     {
         return new Cache\Pool($this->newDoctrineCacheImpl('psx'));
     }
 
-    /**
-     * @return \Doctrine\DBAL\Connection
-     */
-    public function getConnection()
+    public function getConnection(): DBAL\Connection
     {
         $params = $this->get('config')->get('psx_connection');
         $config = new DBAL\Configuration();
@@ -95,10 +96,7 @@ class DefaultContainer extends Container
         return DBAL\DriverManager::getConnection($params, $config);
     }
 
-    /**
-     * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    public function getEventDispatcher()
+    public function getEventDispatcher(): EventDispatcherInterface
     {
         $eventDispatcher = new EventDispatcher();
 
@@ -107,18 +105,12 @@ class DefaultContainer extends Container
         return $eventDispatcher;
     }
 
-    /**
-     * @return \PSX\Http\Client\ClientInterface
-     */
-    public function getHttpClient()
+    public function getHttpClient(): Http\Client\ClientInterface
     {
         return new Http\Client\Client();
     }
 
-    /**
-     * @return \PSX\Data\Processor
-     */
-    public function getIo()
+    public function getIo(): Processor
     {
         $config = Configuration::createDefault(
             $this->get('annotation_reader'),
@@ -129,10 +121,7 @@ class DefaultContainer extends Container
         return new Processor($config);
     }
 
-    /**
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         $logger = new Logger('psx');
         $logger->pushHandler($this->newLoggerHandlerImpl());
@@ -140,10 +129,7 @@ class DefaultContainer extends Container
         return $logger;
     }
 
-    /**
-     * @return \PSX\Schema\SchemaManagerInterface
-     */
-    public function getSchemaManager()
+    public function getSchemaManager(): SchemaManagerInterface
     {
         return new SchemaManager(
             $this->get('annotation_reader'),
@@ -152,32 +138,50 @@ class DefaultContainer extends Container
         );
     }
 
-    /**
-     * @return \PSX\Sql\TableManagerInterface
-     */
-    public function getTableManager()
+    public function getTableManager(): TableManagerInterface
     {
         return new TableManager($this->get('connection'));
     }
 
-    /**
-     * @return \PSX\Validate\Validate
-     */
-    public function getValidate()
+    public function getValidate(): Validate
     {
         return new Validate();
     }
 
-    /**
-     * @return \PSX\Dependency\ObjectBuilderInterface
-     */
-    public function getObjectBuilder()
+    public function getAutowireResolver(): AutowireResolver
+    {
+        return new AutowireResolver(
+            $this,
+            $this->get('container_inspector')
+        );
+    }
+
+    public function getContainerInspector(): InspectorInterface
+    {
+        $inspector = new ContainerInspector($this, $this->get('annotation_reader'));
+
+        if (!$this->get('config')->get('psx_debug')) {
+            $inspector = new CachedInspector($inspector, $this->get('cache'));
+        }
+
+        return $inspector;
+    }
+
+    public function getObjectBuilder(): ObjectBuilderInterface
     {
         return new ObjectBuilder(
             $this,
-            $this->get('annotation_reader_controller'),
+            $this->get('annotation_reader'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
+        );
+    }
+
+    public function getTagResolver(): TagResolver
+    {
+        return new TagResolver(
+            $this,
+            $this->get('container_inspector')
         );
     }
 
