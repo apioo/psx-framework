@@ -119,7 +119,7 @@ trait ContainerTestCaseTrait
         Environment::getContainer()->set('config', Environment::getConfig());
 
         // remove services
-        $serviceIds = Environment::getContainer()->getServiceIds();
+        $serviceIds = Environment::getService('container_inspector')->getServiceIds();
         foreach ($serviceIds as $serviceId) {
             if (!in_array($serviceId, $this->_protectedServices)) {
                 Environment::getContainer()->set($serviceId, null);
