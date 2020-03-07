@@ -21,7 +21,7 @@
     "psx/api": "^2.0",
     "psx/cache": "^1.0",
     "psx/data": "^2.0",
-    "psx/dependency": "^0.1",
+    "psx/dependency": "^1.0",
     "psx/http": "^2.0",
     "psx/json": "^1.0",
     "psx/oauth": "^2.0",
@@ -30,8 +30,8 @@
     "psx/sql": "^2.0",
     "psx/uri": "^1.0",
     "psx/validate": "^1.0",
-    "symfony/console": "~2.8|~3.0|~4.0",
-    "symfony/event-dispatcher": "~2.8|~3.0|~4.0"
+    "symfony/console": "~3.0|~4.0|~5.0",
+    "symfony/event-dispatcher": "~3.0|~4.0|~5.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.0",
