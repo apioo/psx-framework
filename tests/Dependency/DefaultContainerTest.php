@@ -63,7 +63,6 @@ class DefaultContainerTest extends TestCase
 
         // default container
         $this->assertInstanceOf(\Doctrine\Common\Annotations\Reader::class, $container->get('annotation_reader'));
-        $this->assertInstanceOf(\Doctrine\Common\Annotations\Reader::class, $container->get('annotation_reader_controller'));
         $this->assertInstanceOf(\Psr\Cache\CacheItemPoolInterface::class, $container->get('cache'));
         $this->assertInstanceOf(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class, $container->get('event_dispatcher'));
         $this->assertInstanceOf(\PSX\Http\Client\ClientInterface::class, $container->get('http_client'));

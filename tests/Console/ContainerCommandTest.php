@@ -46,7 +46,7 @@ class ContainerCommandTest extends ControllerTestCase
         $expect = <<<TEXT
 
 annotation_reader            Doctrine\Common\Annotations\Reader
-api_manager                  PSX\Api\ApiManager
+api_manager                  PSX\Api\ApiManagerInterface
 autowire_resolver            PSX\Dependency\AutowireResolver
 cache                        Psr\Cache\CacheItemPoolInterface
 config                       PSX\Framework\Config\Config
