@@ -39,6 +39,7 @@ use PSX\Dependency\InspectorInterface;
 use PSX\Dependency\ObjectBuilder;
 use PSX\Dependency\ObjectBuilderInterface;
 use PSX\Dependency\TagResolver;
+use PSX\Framework\Annotation\ReaderFactory;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Http;
@@ -64,22 +65,12 @@ class DefaultContainer extends Container
     use Framework;
     use Console;
 
-    public function getAnnotationReader(): Annotations\Reader
+    public function getAnnotationReaderFactory(): ReaderFactory
     {
-        $reader = new Annotations\SimpleAnnotationReader();
-        $reader->addNamespace('PSX\Api\Annotation');
-        $reader->addNamespace('PSX\Dependency\Annotation');
-        $reader->addNamespace('PSX\Schema\Parser\Popo\Annotation');
-
-        if (!$this->get('config')->get('psx_debug')) {
-            $reader = new Annotations\CachedReader(
-                $reader,
-                $this->newDoctrineCacheImpl('annotations/psx'),
-                $this->get('config')->get('psx_debug')
-            );
-        }
-
-        return $reader;
+        return new ReaderFactory(
+            $this->newDoctrineCacheImpl('annotations/psx'),
+            $this->get('config')->get('psx_debug')
+        );
     }
 
     public function getCache(): CacheItemPoolInterface
@@ -113,7 +104,7 @@ class DefaultContainer extends Container
     public function getIo(): Processor
     {
         $config = Configuration::createDefault(
-            $this->get('annotation_reader'),
+            $this->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
             $this->get('schema_manager'),
             $this->get('config')->get('psx_soap_namespace')
         );
@@ -132,7 +123,7 @@ class DefaultContainer extends Container
     public function getSchemaManager(): SchemaManagerInterface
     {
         return new SchemaManager(
-            $this->get('annotation_reader'),
+            $this->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
@@ -158,7 +149,10 @@ class DefaultContainer extends Container
 
     public function getContainerInspector(): InspectorInterface
     {
-        $inspector = new ContainerInspector($this, $this->get('annotation_reader'));
+        $inspector = new ContainerInspector(
+            $this,
+            $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation')
+        );
 
         if (!$this->get('config')->get('psx_debug')) {
             $inspector = new CachedInspector($inspector, $this->get('cache'));
@@ -171,7 +165,7 @@ class DefaultContainer extends Container
     {
         return new ObjectBuilder(
             $this,
-            $this->get('annotation_reader'),
+            $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );

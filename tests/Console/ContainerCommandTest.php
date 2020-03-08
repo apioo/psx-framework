@@ -45,7 +45,7 @@ class ContainerCommandTest extends ControllerTestCase
         $actual = $commandTester->getDisplay();
         $expect = <<<TEXT
 
-annotation_reader            Doctrine\Common\Annotations\Reader
+annotation_reader_factory    PSX\Framework\Annotation\ReaderFactory
 api_manager                  PSX\Api\ApiManagerInterface
 autowire_resolver            PSX\Dependency\AutowireResolver
 cache                        Psr\Cache\CacheItemPoolInterface

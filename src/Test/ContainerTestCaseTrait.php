@@ -69,7 +69,7 @@ trait ContainerTestCaseTrait
 
         // schema manager use void cache
         Environment::getContainer()->set('schema_manager', new SchemaManager(
-            Environment::getContainer()->get('annotation_reader'),
+            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
             new Pool(new VoidCache()),
             true
         ));
