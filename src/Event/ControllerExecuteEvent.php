@@ -22,7 +22,7 @@ namespace PSX\Framework\Event;
 
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
+use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
 
 /**
  * ControllerExecuteEvent

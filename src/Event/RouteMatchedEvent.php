@@ -22,7 +22,7 @@ namespace PSX\Framework\Event;
 
 use PSX\Framework\Loader\Context;
 use PSX\Http\RequestInterface;
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
+use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
 
 /**
  * RouteMatchedEvent

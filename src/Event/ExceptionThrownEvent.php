@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Event;
 
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
+use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
 
 /**
  * ExceptionThrownEvent
