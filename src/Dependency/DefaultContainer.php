@@ -32,6 +32,7 @@ use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
 use PSX\Dependency\AutowireResolver;
+use PSX\Dependency\AutowireResolverInterface;
 use PSX\Dependency\Container;
 use PSX\Dependency\Inspector\CachedInspector;
 use PSX\Dependency\Inspector\ContainerInspector;
@@ -39,6 +40,9 @@ use PSX\Dependency\InspectorInterface;
 use PSX\Dependency\ObjectBuilder;
 use PSX\Dependency\ObjectBuilderInterface;
 use PSX\Dependency\TagResolver;
+use PSX\Dependency\TagResolverInterface;
+use PSX\Dependency\TypeResolver;
+use PSX\Dependency\TypeResolverInterface;
 use PSX\Framework\Annotation\ReaderFactory;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
@@ -139,11 +143,10 @@ class DefaultContainer extends Container
         return new Validate();
     }
 
-    public function getAutowireResolver(): AutowireResolver
+    public function getContainerAutowireResolver(): AutowireResolverInterface
     {
         return new AutowireResolver(
-            $this,
-            $this->get('container_inspector')
+            $this->get('container_type_resolver')
         );
     }
 
@@ -171,9 +174,17 @@ class DefaultContainer extends Container
         );
     }
 
-    public function getTagResolver(): TagResolver
+    public function getContainerTagResolver(): TagResolverInterface
     {
         return new TagResolver(
+            $this,
+            $this->get('container_inspector')
+        );
+    }
+
+    public function getContainerTypeResolver(): TypeResolverInterface
+    {
+        return new TypeResolver(
             $this,
             $this->get('container_inspector')
         );
