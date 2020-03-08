@@ -45,38 +45,59 @@ class ContainerCommandTest extends ControllerTestCase
         $actual = $commandTester->getDisplay();
         $expect = <<<TEXT
 
-annotation_reader_factory    PSX\Framework\Annotation\ReaderFactory
-api_manager                  PSX\Api\ApiManagerInterface
-autowire_resolver            PSX\Dependency\AutowireResolver
-cache                        Psr\Cache\CacheItemPoolInterface
-config                       PSX\Framework\Config\Config
-connection                   Doctrine\DBAL\Connection
-console                      Symfony\Component\Console\Application
-container_inspector          PSX\Dependency\InspectorInterface
-controller_factory           PSX\Framework\Dispatch\ControllerFactoryInterface
-cors_policy                  PSX\Framework\Http\CorsPolicy
-dispatch                     PSX\Framework\Dispatch\Dispatch
-event_dispatcher             Symfony\Component\EventDispatcher\EventDispatcherInterface 
-exception_converter          PSX\Framework\Exception\ConverterInterface
-generator_factory            PSX\Api\GeneratorFactoryInterface
-http_client                  PSX\Http\Client\ClientInterface
-io                           PSX\Data\Processor
-listing_filter_factory       PSX\Api\Listing\FilterFactoryInterface
-loader                       PSX\Framework\Loader\LoaderInterface
-loader_location_finder       PSX\Framework\Loader\LocationFinderInterface
-logger                       Psr\Log\LoggerInterface
-object_builder               PSX\Dependency\ObjectBuilderInterface
-population_service           PSX\Framework\App\Service\Population
-request_reader               PSX\Framework\Http\RequestReader
-resource_listing             PSX\Api\ListingInterface
-response_writer              PSX\Framework\Http\ResponseWriter
-reverse_router               PSX\Framework\Loader\ReverseRouter
-routing_parser               PSX\Framework\Loader\RoutingParserInterface
-schema_manager               PSX\Schema\SchemaManagerInterface
-session                      PSX\Framework\Session\Session
-table_manager                PSX\Sql\TableManagerInterface
-tag_resolver                 PSX\Dependency\TagResolver
-validate                     PSX\Validate\Validate
+ annotation_reader_factory   PSX\Framework\Annotation\ReaderFactory                     
+ api_manager                 PSX\Api\ApiManager                                         
+ api_manager                 PSX\Api\ApiManagerInterface                                
+ cache                       PSX\Cache\Pool                                             
+ cache                       Psr\Cache\CacheItemPoolInterface                           
+ config                      PSX\Framework\Config\Config                                
+ connection                  Doctrine\DBAL\Connection                                   
+ console                     Symfony\Component\Console\Application                      
+ container_autowire_resolver PSX\Dependency\AutowireResolver                            
+ container_autowire_resolver PSX\Dependency\AutowireResolverInterface                   
+ container_inspector         PSX\Dependency\InspectorInterface                          
+ container_inspector         PSX\Dependency\Inspector\ContainerInspector                
+ container_tag_resolver      PSX\Dependency\TagResolverInterface                        
+ container_tag_resolver      PSX\Dependency\TagResolver                                 
+ container_type_resolver     PSX\Dependency\TypeResolver                                
+ container_type_resolver     PSX\Dependency\TypeResolverInterface                       
+ controller_factory          PSX\Framework\Dispatch\ControllerFactory                   
+ controller_factory          PSX\Framework\Dispatch\ControllerFactoryInterface          
+ cors_policy                 PSX\Framework\Http\CorsPolicy                              
+ dispatch                    PSX\Framework\Dispatch\Dispatch                            
+ event_dispatcher            Symfony\Component\EventDispatcher\EventDispatcher          
+ event_dispatcher            Symfony\Component\EventDispatcher\EventDispatcherInterface 
+ exception_converter         PSX\Framework\Exception\ConverterInterface                 
+ exception_converter         PSX\Framework\Exception\Converter                          
+ generator_factory           PSX\Api\GeneratorFactory                                   
+ generator_factory           PSX\Api\GeneratorFactoryInterface                          
+ http_client                 PSX\Http\Client\Client                                     
+ http_client                 PSX\Http\Client\ClientInterface                            
+ io                          PSX\Data\Processor                                         
+ listing_filter_factory      PSX\Api\Listing\FilterFactoryInterface                     
+ listing_filter_factory      PSX\Api\Listing\FilterFactory                              
+ loader                      PSX\Framework\Loader\Loader                                
+ loader                      PSX\Framework\Loader\LoaderInterface                       
+ loader_location_finder      PSX\Framework\Loader\LocationFinder\RoutingParser          
+ loader_location_finder      PSX\Framework\Loader\LocationFinderInterface               
+ logger                      Monolog\Logger                                             
+ logger                      Psr\Log\LoggerInterface                                    
+ object_builder              PSX\Dependency\ObjectBuilderInterface                      
+ object_builder              PSX\Dependency\ObjectBuilder                               
+ population_service          PSX\Framework\App\Service\Population                       
+ request_reader              PSX\Framework\Http\RequestReader                           
+ resource_listing            PSX\Framework\Api\ControllerDocumentation                  
+ resource_listing            PSX\Api\ListingInterface                                   
+ response_writer             PSX\Framework\Http\ResponseWriter                          
+ reverse_router              PSX\Framework\Loader\ReverseRouter                         
+ routing_parser              PSX\Framework\Loader\RoutingParserInterface                
+ routing_parser              PSX\Framework\Loader\RoutingParser\RoutingFile             
+ schema_manager              PSX\Schema\SchemaManager                                   
+ schema_manager              PSX\Schema\SchemaManagerInterface                          
+ session                     PSX\Framework\Session\Session                              
+ table_manager               PSX\Sql\TableManagerInterface                              
+ table_manager               PSX\Sql\TableManager                                       
+ validate                    PSX\Validate\Validate     
 
 TEXT;
 
