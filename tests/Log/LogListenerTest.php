@@ -63,7 +63,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::REQUEST_INCOMING, new RequestIncomingEvent($request));
+        $eventDispatcher->dispatch(new RequestIncomingEvent($request), Event::REQUEST_INCOMING);
     }
 
     public function testEventRouteMatched()
@@ -80,7 +80,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::ROUTE_MATCHED, new RouteMatchedEvent($request, $context));
+        $eventDispatcher->dispatch(new RouteMatchedEvent($request, $context), Event::ROUTE_MATCHED);
     }
 
     public function testEventControllerExecute()
@@ -97,7 +97,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::CONTROLLER_EXECUTE, new ControllerExecuteEvent($controller, $request, $response));
+        $eventDispatcher->dispatch(new ControllerExecuteEvent($controller, $request, $response), Event::CONTROLLER_EXECUTE);
     }
 
     public function testEventControllerProcessed()
@@ -114,7 +114,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::CONTROLLER_PROCESSED, new ControllerProcessedEvent($controller, $request, $response));
+        $eventDispatcher->dispatch(new ControllerProcessedEvent($controller, $request, $response), Event::CONTROLLER_PROCESSED);
     }
 
     public function testEventResponseSend()
@@ -128,7 +128,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::RESPONSE_SEND, new ResponseSendEvent($response));
+        $eventDispatcher->dispatch(new ResponseSendEvent($response), Event::RESPONSE_SEND);
     }
 
     public function testEventResponseWithErrorStatusCode()
@@ -142,7 +142,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::RESPONSE_SEND, new ResponseSendEvent($response));
+        $eventDispatcher->dispatch(new ResponseSendEvent($response), Event::RESPONSE_SEND);
     }
 
     public function testEventResponseWithUnknownStatusCode()
@@ -156,7 +156,7 @@ class LogListenerTest extends ControllerTestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber(new LogListener($logger));
-        $eventDispatcher->dispatch(Event::RESPONSE_SEND, new ResponseSendEvent($response));
+        $eventDispatcher->dispatch(new ResponseSendEvent($response), Event::RESPONSE_SEND);
     }
 
     public function testEventExceptionThrownDisplayException()
@@ -175,7 +175,7 @@ class LogListenerTest extends ControllerTestCase
         try {
             throw new DisplayException('foobar');
         } catch (DisplayException $e) {
-            $eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
         }
     }
 
@@ -195,7 +195,7 @@ class LogListenerTest extends ControllerTestCase
         try {
             throw new \Exception('foobar');
         } catch (\Exception $e) {
-            $eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
         }
     }
 
@@ -215,7 +215,7 @@ class LogListenerTest extends ControllerTestCase
         try {
             throw new NotFoundException('foobar');
         } catch (NotFoundException $e) {
-            $eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
         }
     }
 
@@ -235,7 +235,7 @@ class LogListenerTest extends ControllerTestCase
         try {
             throw new InternalServerErrorException('foobar');
         } catch (InternalServerErrorException $e) {
-            $eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
         }
     }
 
@@ -255,7 +255,7 @@ class LogListenerTest extends ControllerTestCase
         try {
             throw new SeeOtherException('/bar.htm');
         } catch (SeeOtherException $e) {
-            $eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
         }
     }
 
