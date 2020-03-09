@@ -109,7 +109,7 @@ class Dispatch
     {
         $this->level++;
 
-        $this->eventDispatcher->dispatch(Event::REQUEST_INCOMING, new RequestIncomingEvent($request));
+        $this->eventDispatcher->dispatch(new RequestIncomingEvent($request), Event::REQUEST_INCOMING);
 
         // load controller
         if ($context === null) {
@@ -131,7 +131,7 @@ class Dispatch
             $response->setHeader('Location', $e->getLocation());
             $response->setBody(new StringStream());
         } catch (\Throwable $e) {
-            $this->eventDispatcher->dispatch(Event::EXCEPTION_THROWN, new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
+            $this->eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
 
             $this->handleException($e, $response);
 
@@ -162,7 +162,7 @@ class Dispatch
             $response->setBody(new StringStream(''));
         }
 
-        $this->eventDispatcher->dispatch(Event::RESPONSE_SEND, new ResponseSendEvent($response));
+        $this->eventDispatcher->dispatch(new ResponseSendEvent($response), Event::RESPONSE_SEND);
 
         $this->level--;
 

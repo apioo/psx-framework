@@ -95,7 +95,7 @@ class Loader implements LoaderInterface
         $result  = $this->locationFinder->resolve($request, $context);
 
         if ($result instanceof RequestInterface) {
-            $this->eventDispatcher->dispatch(Event::ROUTE_MATCHED, new RouteMatchedEvent($result, $context));
+            $this->eventDispatcher->dispatch(new RouteMatchedEvent($result, $context), Event::ROUTE_MATCHED);
 
             $controller = $this->controllerFactory->getController($context->getSource(), $context);
 
@@ -110,7 +110,7 @@ class Loader implements LoaderInterface
      */
     public function execute($controller, RequestInterface $request, ResponseInterface $response)
     {
-        $this->eventDispatcher->dispatch(Event::CONTROLLER_EXECUTE, new ControllerExecuteEvent($controller, $request, $response));
+        $this->eventDispatcher->dispatch(new ControllerExecuteEvent($controller, $request, $response), Event::CONTROLLER_EXECUTE);
 
         $filters = array_merge(
             $this->controllerFactory->getController($this->config->get('psx_filter_pre')),
@@ -122,6 +122,6 @@ class Loader implements LoaderInterface
         $filterChain->setLogger($this->logger);
         $filterChain->handle($request, $response);
 
-        $this->eventDispatcher->dispatch(Event::CONTROLLER_PROCESSED, new ControllerProcessedEvent($controller, $request, $response));
+        $this->eventDispatcher->dispatch(new ControllerProcessedEvent($controller, $request, $response), Event::CONTROLLER_PROCESSED);
     }
 }
