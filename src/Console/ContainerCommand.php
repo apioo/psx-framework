@@ -68,5 +68,7 @@ class ContainerCommand extends Command
             ->setRows($rows);
 
         $table->render();
+
+        return 0;
     }
 }
