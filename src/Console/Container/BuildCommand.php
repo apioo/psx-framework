@@ -18,56 +18,64 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Console\Container;
 
-use PSX\Dependency\InspectorInterface;
+use Doctrine\Common\Annotations\Reader;
+use Psr\Container\ContainerInterface;
+use PSX\Dependency\Compiler\PhpCompiler;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Displays all available services from the DI container
+ * BuildCommand
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ContainerCommand extends Command
+class BuildCommand extends Command
 {
-    protected $inspector;
+    /**
+     * @var \Psr\Container\ContainerInterface
+     */
+    protected $container;
 
-    public function __construct(InspectorInterface $inspector)
+    /**
+     * @var \Doctrine\Common\Annotations\Reader
+     */
+    private $reader;
+
+    public function __construct(ContainerInterface $container, Reader $reader)
     {
         parent::__construct();
 
-        $this->inspector = $inspector;
+        $this->container = $container;
+        $this->reader = $reader;
     }
 
     protected function configure()
     {
         $this
-            ->setName('container')
-            ->setDescription('Displays all registered services');
+            ->setName('container:build')
+            ->setDescription('Compiles the DI container');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $services = $this->inspector->getTypedServiceIds();
-        $rows     = [];
+        $compiler = new PhpCompiler($this->reader, 'Container', '');
 
-        asort($services);
+        $code = $compiler->compile($this->container);
+        $code.= '$container = new Container();' . "\n";
+        $code.= '$container->setParameter(\'config.file\', __DIR__ . \'/../configuration.php\');' . "\n";
+        $code.= 'return $container;' . "\n";
 
-        foreach ($services as $type => $serviceId) {
-            $rows[] = [$serviceId, $type];
-        }
+        $file = PSX_PATH_CACHE . '/container.compiled.php';
+        file_put_contents($file, $code);
 
-        $table = new Table($output);
-        $table
-            ->setStyle('compact')
-            ->setRows($rows);
-
-        $table->render();
+        $output->writeln('Write compiled container to: ' . $file);
+        $output->writeln('To use the container you need to include the file at index.php');
+        $output->writeln('');
 
         return 0;
     }

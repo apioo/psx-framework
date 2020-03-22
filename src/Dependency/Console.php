@@ -52,9 +52,10 @@ trait Console
 
     protected function appendConsoleCommands(Application $application)
     {
-        $application->add(new FrameworkConsole\ContainerCommand($this->get('container_inspector')));
         $application->add(new FrameworkConsole\RouteCommand($this->get('routing_parser')));
         $application->add(new FrameworkConsole\ServeCommand($this));
+        $application->add(new FrameworkConsole\Container\ListCommand($this->get('container_inspector')));
+        $application->add(new FrameworkConsole\Container\BuildCommand($this, $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation')));
 
         $application->add(new ApiConsole\ParseCommand($this->get('api_manager'), $this->get('generator_factory')));
         $application->add(new ApiConsole\ResourceCommand($this->get('resource_listing'), $this->get('generator_factory')));

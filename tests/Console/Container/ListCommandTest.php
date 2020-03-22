@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Console\Container;
 
 use PSX\Framework\Test\Assert;
 use PSX\Framework\Test\ControllerTestCase;
@@ -32,11 +32,11 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ContainerCommandTest extends ControllerTestCase
+class ListCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService('console')->find('container');
+        $command = Environment::getService('console')->find('container:list');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
