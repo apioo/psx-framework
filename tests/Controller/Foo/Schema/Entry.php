@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
+use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -31,17 +32,15 @@ use PSX\Schema\SchemaAbstract;
  */
 class Entry extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('item');
-        $sb->integer('id');
-        $sb->integer('userId');
-        $sb->string('title')
+        $type = $this->newStruct('Entry');
+        $type->addInteger('id');
+        $type->addInteger('userId');
+        $type->addString('title')
             ->setMinLength(3)
             ->setMaxLength(16)
             ->setPattern('[A-z]+');
-        $sb->dateTime('date');
-
-        return $sb->getProperty();
+        $type->addDateTime('date');
     }
 }

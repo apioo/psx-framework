@@ -34,7 +34,7 @@ class PassthruTest extends ControllerTestCase
 {
     protected $payload;
     
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

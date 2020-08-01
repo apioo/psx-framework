@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Schema\Property;
@@ -36,28 +37,20 @@ class PropertyDocumentationController extends SchemaApiAbstract
 {
     use PropertyControllerTrait;
 
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManager
-     */
-    protected $schemaManager;
-
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addPathParameter('id', Property::getInteger());
+        $builder->setPathParameters('Path')->addInteger('id');
+        
+        $get = $builder->addMethod('GET');
+        $get->setQueryParameters('GetQuery')->addInteger('type');
+        $get->addResponse(200, Schema\Property::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addQueryParameter('type', Property::getInteger())
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Property::class))
-        );
+        $post = $builder->addMethod('POST');
+        $post->setRequest(Schema\Property::class);
+        $post->addResponse(200, Schema\Property::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema(Schema\Property::class))
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Property::class))
-        );
-
-        return $resource;
+        return $builder->getSpecification();
     }
 }

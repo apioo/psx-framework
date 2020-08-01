@@ -37,12 +37,12 @@ class SessionTest extends TestCase
      */
     protected $sess;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->sess = new Session('psx_session');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

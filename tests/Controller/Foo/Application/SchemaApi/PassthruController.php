@@ -89,16 +89,16 @@ class PassthruController extends SchemaApiAbstract
     {
         $this->testCase->assertInstanceOf('stdClass', $record->any);
         $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->any);
-        $this->testCase->assertInternalType('array', $record->array);
+        $this->testCase->assertIsArray($record->array);
         $this->testCase->assertEquals(1, count($record->array));
         $this->testCase->assertEquals(['bar'], $record->array);
-        $this->testCase->assertInternalType('array', $record->arrayComplex);
+        $this->testCase->assertIsArray($record->arrayComplex);
         $this->testCase->assertEquals(2, count($record->arrayComplex));
         $this->testCase->assertInstanceOf('stdClass', $record->arrayComplex[0]);
         $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->arrayComplex[0]);
         $this->testCase->assertInstanceOf('stdClass', $record->arrayComplex[1]);
         $this->testCase->assertEquals(['foo' => 'foo'], (array) $record->arrayComplex[1]);
-        $this->testCase->assertInternalType('array', $record->arrayChoice);
+        $this->testCase->assertIsArray($record->arrayChoice);
         $this->testCase->assertEquals(3, count($record->arrayChoice));
         $this->testCase->assertInstanceOf('stdClass', $record->arrayChoice[0]);
         $this->testCase->assertEquals(['foo' => 'baz'], (array) $record->arrayChoice[0]);
@@ -106,20 +106,20 @@ class PassthruController extends SchemaApiAbstract
         $this->testCase->assertEquals(['bar' => 'bar'], (array) $record->arrayChoice[1]);
         $this->testCase->assertInstanceOf('stdClass', $record->arrayChoice[2]);
         $this->testCase->assertEquals(['foo' => 'foo'], (array) $record->arrayChoice[2]);
-        $this->testCase->assertInternalType('boolean', $record->boolean);
+        $this->testCase->assertIsBool($record->boolean);
         $this->testCase->assertEquals(true, $record->boolean);
         $this->testCase->assertInstanceOf('stdClass', $record->choice);
-        $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->complex);
+        $this->testCase->assertEquals(['bar' => 'test'], (array) $record->choice);
         $this->testCase->assertInstanceOf('stdClass', $record->complex);
         $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->complex);
         $this->testCase->assertEquals('2015-05-01', $record->date);
         $this->testCase->assertEquals('2015-05-01T13:37:14Z', $record->dateTime);
         $this->testCase->assertEquals('P1M', $record->duration);
-        $this->testCase->assertInternalType('float', $record->float);
+        $this->testCase->assertIsFloat($record->float);
         $this->testCase->assertEquals(13.37, $record->float);
-        $this->testCase->assertInternalType('integer', $record->integer);
+        $this->testCase->assertIsInt($record->integer);
         $this->testCase->assertEquals(7, $record->integer);
-        $this->testCase->assertInternalType('string', $record->string);
+        $this->testCase->assertIsString($record->string);
         $this->testCase->assertEquals('bar', $record->string);
         $this->testCase->assertEquals('13:37:14', $record->time);
 

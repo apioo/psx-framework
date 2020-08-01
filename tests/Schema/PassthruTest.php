@@ -41,12 +41,13 @@ class PassthruTest extends SchemaTestCase
     {
         return <<<'JSON'
 {
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "type": "object",
-    "title": "passthru",
-    "description": "No schema information available",
-    "additionalProperties": true
+    "definitions": {
+        "Passthru": {
+            "description": "No schema information available",
+            "type": "object"
+        }
+    },
+    "$ref": "Passthru"
 }
 JSON;
     }

@@ -22,13 +22,17 @@ namespace PSX\Framework\Api;
 
 use PSX\Api\DocumentedInterface;
 use PSX\Api\Listing\FilterInterface;
+use PSX\Api\Listing\Route;
 use PSX\Api\ListingInterface;
 use PSX\Api\Resource;
 use PSX\Api\ResourceCollection;
+use PSX\Api\Specification;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Dispatch\ControllerFactoryInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\PathMatcher;
 use PSX\Framework\Loader\RoutingParserInterface;
+use PSX\Schema\Definitions;
 
 /**
  * The documentation how a request and response looks is provided in the
@@ -63,13 +67,13 @@ class ControllerDocumentation implements ListingInterface
     /**
      * @inheritdoc
      */
-    public function getResourceIndex(FilterInterface $filter = null)
+    public function getAvailableRoutes(FilterInterface $filter = null): iterable
     {
         $collections = $this->routingParser->getCollection();
         $result      = array();
 
         foreach ($collections as $collection) {
-            list($methods, $path, $source) = $collection;
+            [$methods, $path, $source] = $collection;
 
             if ($filter !== null && !$filter->match($path)) {
                 continue;
@@ -77,25 +81,12 @@ class ControllerDocumentation implements ListingInterface
 
             $parts     = explode('::', $source, 2);
             $className = isset($parts[0]) ? $parts[0] : null;
-            $resource  = new Resource(Resource::STATUS_ACTIVE, $path);
-
-            if ($methods === ['ANY']) {
-                $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
-            }
-
-            foreach ($methods as $methodName) {
-                $method = Resource\Factory::getMethod($methodName);
-
-                if ($method instanceof Resource\MethodAbstract) {
-                    $resource->addMethod($method);
-                }
-            }
 
             // because creating a new instance of a controller is expensive
             // since we resolve all dependencies we use class_implements to
             // check whether this is a documented API endpoint
             if (class_exists($className) && in_array(DocumentedInterface::class, class_implements($className))) {
-                $result[] = $resource;
+                $result[] = new Route($path, $methods, '*');
             }
         }
 
@@ -105,13 +96,13 @@ class ControllerDocumentation implements ListingInterface
     /**
      * @inheritdoc
      */
-    public function getResource($sourcePath, $version = null)
+    public function find(string $path, ?string $version = null): ?SpecificationInterface
     {
-        $matcher    = new PathMatcher($sourcePath);
+        $matcher    = new PathMatcher($path);
         $collection = $this->routingParser->getCollection();
 
         foreach ($collection as $route) {
-            list($methods, $path, $source) = $route;
+            [$methods, $path, $source] = $route;
 
             $parts     = explode('::', $source, 2);
             $className = isset($parts[0]) ? $parts[0] : null;
@@ -130,19 +121,19 @@ class ControllerDocumentation implements ListingInterface
     /**
      * @inheritdoc
      */
-    public function getResourceCollection($version = null, FilterInterface $filter = null)
+    public function findAll(?string $version = null, FilterInterface $filter = null): SpecificationInterface
     {
-        $collection = new ResourceCollection();
-        $index      = $this->getResourceIndex($filter);
+        $spec  = new Specification(new ResourceCollection(), new Definitions());
+        $index = $this->getAvailableRoutes($filter);
 
         foreach ($index as $resource) {
-            $result = $this->getResource($resource->getPath(), $version);
-            if ($result instanceof Resource) {
-                $collection->set($result);
+            $result = $this->find($resource->getPath(), $version);
+            if ($result instanceof SpecificationInterface) {
+                $spec->merge($result);
             }
         }
 
-        return $collection;
+        return $spec;
     }
 
     /**

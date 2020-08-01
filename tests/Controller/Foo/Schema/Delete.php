@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
+use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -31,11 +32,9 @@ use PSX\Schema\SchemaAbstract;
  */
 class Delete extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $entry = $this->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Entry');
-        $entry->setRequired(['id']);
-
-        return $entry;
+        $type = $this->modify(Entry::class, 'Delete');
+        $type->setRequired(['id']);
     }
 }

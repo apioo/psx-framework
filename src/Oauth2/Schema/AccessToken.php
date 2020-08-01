@@ -32,14 +32,12 @@ use PSX\Schema\SchemaAbstract;
  */
 class AccessToken extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('access_token');
-        $sb->string('access_token');
-        $sb->string('token_type');
-        $sb->string('expires_in');
-        $sb->string('refresh_token');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Access_Token');
+        $type->addString('access_token');
+        $type->addString('token_type');
+        $type->addString('expires_in');
+        $type->addString('refresh_token');
     }
 }

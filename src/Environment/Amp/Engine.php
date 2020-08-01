@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment\Aerys;
+namespace PSX\Framework\Environment\Amp;
 
 use Amp\ByteStream\ResourceOutputStream;
 use Amp\Http\Server\Request as AerysRequest;

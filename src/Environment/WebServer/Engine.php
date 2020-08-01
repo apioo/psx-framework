@@ -23,6 +23,9 @@ namespace PSX\Framework\Environment\WebServer;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Environment\EngineInterface;
+use PSX\Http\Server\RequestFactory;
+use PSX\Http\Server\ResponseFactory;
+use PSX\Http\Server\Sender;
 
 /**
  * Uses a classical PHP web server like Apache or Nginx. In this context we dont 
@@ -42,10 +45,9 @@ class Engine implements EngineInterface
     {
         $requestFactory  = new RequestFactory($config->get('psx_url'));
         $responseFactory = new ResponseFactory();
-        $sender          = new Sender();
 
         $response = $dispatch->route($requestFactory->createRequest(), $responseFactory->createResponse());
 
-        $sender->send($response);
+        (new Sender())->send($response);
     }
 }

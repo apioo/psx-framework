@@ -22,6 +22,7 @@ namespace PSX\Framework\Framework\Tests\Upload;
 
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Upload\File;
+use PSX\Framework\Upload\Exception;
 
 /**
  * FileTest
@@ -67,75 +68,66 @@ class FileTest extends TestCase
         $file->move('/foo/bar');
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileIniSize()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_INI_SIZE);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileFormSize()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_FORM_SIZE);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFilePartial()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_PARTIAL);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileNoFile()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_NO_FILE);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileNoTmpDir()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_NO_TMP_DIR);
     }
     
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileCantWrite()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_CANT_WRITE);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileExtension()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', UPLOAD_ERR_EXTENSION);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFileUnknown()
     {
+        $this->expectException(Exception::class);
+
         $this->createFile('foo', 'text/plain', 12, 'bar', -1);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFromEnvironmentInvalidUpload()
     {
+        $this->expectException(Exception::class);
+
         $key = uniqid('upload_');
 
         $_FILES[$key] = [
@@ -150,11 +142,10 @@ class FileTest extends TestCase
         File::fromEnvironment($key);
     }
 
-    /**
-     * @expectedException \PSX\Framework\Upload\Exception
-     */
     public function testFromEnvironmentNotExisting()
     {
+        $this->expectException(Exception::class);
+
         File::fromEnvironment('foo');
     }
 

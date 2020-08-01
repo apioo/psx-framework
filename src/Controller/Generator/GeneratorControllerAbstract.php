@@ -20,8 +20,7 @@
 
 namespace PSX\Framework\Controller\Generator;
 
-use PSX\Api\GeneratorCollectionInterface;
-use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
@@ -58,29 +57,25 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
 
     public function onGet(RequestInterface $request, ResponseInterface $response)
     {
-        $version = (int) $this->context->getParameter('version');
+        $version = $this->context->getParameter('version');
         $path    = $this->context->getParameter('path');
         $type    = $this->getType();
 
         $generator = $this->generatorFactory->getGenerator($type);
 
         if ($path == '*') {
-            if (!$generator instanceof GeneratorCollectionInterface) {
-                throw new StatusCode\InternalServerErrorException('Generator does not support resource collections');
-            }
+            $filter = $this->listingFilterFactory->getFilter($request->getUri()->getParameter('filter') ?? '');
 
-            $filter     = $this->listingFilterFactory->getFilter($request->getUri()->getParameter('filter'));
-            $collection = $this->resourceListing->getResourceCollection($version, $filter);
-            $result     = $generator->generateAll($collection);
+            $spec = $this->resourceListing->findAll($version, $filter);
         } else {
-            $resource = $this->resourceListing->getResource($path, $version);
-
-            if (!$resource instanceof Resource) {
-                throw new StatusCode\NotFoundException('Invalid resource');
-            }
-
-            $result = $generator->generate($resource);
+            $spec = $this->resourceListing->find($path, $version);
         }
+
+        if (!$spec instanceof SpecificationInterface) {
+            throw new StatusCode\NotFoundException('Invalid resource');
+        }
+
+        $result = $generator->generate($spec);
 
         if ($result instanceof Chunks) {
             // write chunks to zip file

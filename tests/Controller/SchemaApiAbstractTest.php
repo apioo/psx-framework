@@ -42,35 +42,7 @@ class SchemaApiAbstractTest extends ControllerDbTestCase
     {
         $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
-
-        $expect = <<<JSON
-{"entry": [
-    {
-      "id": 4,
-      "userId": 3,
-      "title": "blub",
-      "date": "2013-04-29T16:56:32Z"
-    },
-    {
-      "id": 3,
-      "userId": 2,
-      "title": "test",
-      "date": "2013-04-29T16:56:32Z"
-    },
-    {
-      "id": 2,
-      "userId": 1,
-      "title": "bar",
-      "date": "2013-04-29T16:56:32Z"
-    },
-    {
-      "id": 1,
-      "userId": 1,
-      "title": "foo",
-      "date": "2013-04-29T16:56:32Z"
-    }
-  ]}
-JSON;
+        $expect   = file_get_contents(__DIR__ . '/resource/schema_api_abstract_get.json');
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool\Documentation;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
@@ -55,21 +56,20 @@ class IndexController extends SchemaApiAbstract
     /**
      * @inheritdoc
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Documentation\Index::class))
-        );
+        $get = $builder->addMethod('GET');
+        $get->addResponse(200, Schema\Documentation\Index::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     public function doGet(HttpContextInterface $httpContext)
     {
         return [
-            'routings' => $this->getRoutings($httpContext->getParameter('filter')),
+            'routings' => $this->getRoutings($httpContext->getParameter('filter') ?? ''),
             'links'    => [
                 [
                     'rel'  => 'self',
@@ -91,12 +91,12 @@ class IndexController extends SchemaApiAbstract
     {
         $filter    = $this->listingFilterFactory->getFilter($filter);
         $routings  = array();
-        $resources = $this->resourceListing->getResourceIndex($filter);
+        $resources = $this->resourceListing->getAvailableRoutes($filter);
 
         foreach ($resources as $resource) {
             $routings[] = [
                 'path'    => $resource->getPath(),
-                'methods' => $resource->getAllowedMethods(),
+                'methods' => $resource->getMethods(),
                 'version' => '*',
             ];
         }

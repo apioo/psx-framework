@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Filter\Oauth2Authentication;
+use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
 use PSX\Http\Request;
@@ -67,11 +68,10 @@ class Oauth2AuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\UnauthorizedException
-     */
     public function testFailure()
     {
+        $this->expectException(UnauthorizedException::class);
+
         $handle = new Oauth2Authentication(function ($accessToken) {
 
             return false;
@@ -91,11 +91,10 @@ class Oauth2AuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\UnauthorizedException
-     */
     public function testFailureEmptyCredentials()
     {
+        $this->expectException(UnauthorizedException::class);
+
         $handle = new Oauth2Authentication(function ($accessToken) {
             
             return $accessToken == self::ACCESS_TOKEN;

@@ -31,16 +31,14 @@ use PSX\Schema\SchemaAbstract;
  */
 class File extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('file');
-        $sb->setDescription('File upload provided through a multipart/form-data post');
-        $sb->string('name');
-        $sb->string('type');
-        $sb->integer('size');
-        $sb->string('tmp_name');
-        $sb->integer('error');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('File');
+        $type->setDescription('File upload provided through a multipart/form-data post');
+        $type->addString('name');
+        $type->addString('type');
+        $type->addInteger('size');
+        $type->addString('tmp_name');
+        $type->addInteger('error');
     }
 }

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
@@ -46,15 +47,14 @@ class DiscoveryController extends SchemaApiAbstract
     /**
      * @inheritdoc
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Discovery\Collection::class))
-        );
+        $get = $builder->addMethod('GET');
+        $get->addResponse(200, Schema\Discovery\Collection::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     public function doGet(HttpContextInterface $httpContext)

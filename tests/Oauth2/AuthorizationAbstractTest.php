@@ -38,7 +38,7 @@ class AuthorizationAbstractTest extends ControllerTestCase
     const CLIENT_ID     = 's6BhdRkqt3';
     const CLIENT_SECRET = 'gX1fBat3bV';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

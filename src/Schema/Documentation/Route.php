@@ -22,6 +22,7 @@ namespace PSX\Framework\Schema\Documentation;
 
 use PSX\Schema\Property;
 use PSX\Schema\SchemaAbstract;
+use PSX\Schema\TypeFactory;
 
 /**
  * Route
@@ -32,14 +33,11 @@ use PSX\Schema\SchemaAbstract;
  */
 class Route extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Documentation Route');
-        $sb->string('path');
-        $sb->arrayType('methods')
-            ->setItems(Property::getString());
-        $sb->string('version');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Documentation_Route');
+        $type->addString('path');
+        $type->addArray('methods', TypeFactory::getString());
+        $type->addString('version');
     }
 }

@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Tests\Api;
 
+use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
 
@@ -40,35 +42,39 @@ class ControllerDocumentationTest extends ControllerDbTestCase
     public function testGetResourceIndex()
     {
         /** @var \PSX\Api\Resource[] $resources */
-        $resources = Environment::getService('resource_listing')->getResourceIndex();
+        $resources = Environment::getService('resource_listing')->getAvailableRoutes();
 
         $this->assertEquals(2, count($resources));
 
-        $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resources[0]->getAllowedMethods());
+        $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resources[0]->getMethods());
         $this->assertEquals('/bar', $resources[0]->getPath());
 
-        $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resources[1]->getAllowedMethods());
+        $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resources[1]->getMethods());
         $this->assertEquals('/foo', $resources[1]->getPath());
     }
 
     public function testGetDocumentation()
     {
-        /** @var \PSX\Api\Resource $resource */
-        $resource = Environment::getService('resource_listing')->getResource('/foo');
+        /** @var \PSX\Api\SpecificationInterface $specification */
+        $specification = Environment::getService('resource_listing')->find('/foo');
 
-        $this->assertInstanceOf('PSX\Api\Resource', $resource);
+        $this->assertInstanceOf(SpecificationInterface::class, $specification);
+
+        $resource = $specification->getResourceCollection()->get('/foo');
+
+        $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resource->getAllowedMethods());
 
         $this->assertEmpty($resource->getMethod('GET')->getRequest());
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('GET')->getResponse(200));
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('POST')->getRequest());
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('POST')->getResponse(201));
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PUT')->getRequest());
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PUT')->getResponse(200));
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('DELETE')->getRequest());
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('DELETE')->getResponse(200));
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PATCH')->getRequest());
-        $this->assertInstanceOf('PSX\Schema\SchemaInterface', $resource->getMethod('PATCH')->getResponse(200));
+        $this->assertEquals('Collection', $resource->getMethod('GET')->getResponse(200));
+        $this->assertEquals('Create', $resource->getMethod('POST')->getRequest());
+        $this->assertEquals('Message', $resource->getMethod('POST')->getResponse(201));
+        $this->assertEquals('Update', $resource->getMethod('PUT')->getRequest());
+        $this->assertEquals('Message', $resource->getMethod('PUT')->getResponse(200));
+        $this->assertEquals('Delete', $resource->getMethod('DELETE')->getRequest());
+        $this->assertEquals('Message', $resource->getMethod('DELETE')->getResponse(200));
+        $this->assertEquals('Patch', $resource->getMethod('PATCH')->getRequest());
+        $this->assertEquals('Message', $resource->getMethod('PATCH')->getResponse(200));
     }
 
     protected function getPaths()

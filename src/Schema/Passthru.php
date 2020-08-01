@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Schema;
 
-use PSX\Schema\Builder;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -32,12 +31,11 @@ use PSX\Schema\SchemaAbstract;
  */
 class Passthru extends SchemaAbstract
 {
-    public function getDefinition()
-    {
-        $sb = $this->getSchemaBuilder('passthru');
-        $sb->setDescription('No schema information available');
-        $sb->setAdditionalProperties(true);
+    public const NAME = 'Passthru';
 
-        return $sb->getProperty();
+    protected function build(): void
+    {
+        $sb = $this->newStruct(self::NAME);
+        $sb->setDescription('No schema information available');
     }
 }

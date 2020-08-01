@@ -29,223 +29,299 @@ use DateTime;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @AdditionalProperties(false)
  */
 class Property
 {
     /**
-     * @Ref("PSX\Framework\Tests\Controller\Foo\Model\Any")
+     * @var \PSX\Framework\Tests\Controller\Foo\Model\Any
      */
-    protected $any;
+    private $any;
 
     /**
-     * @Type("array")
-     * @Items(@Schema(type="string"))
+     * @var array<string>
      */
-    protected $array;
+    private $array;
 
     /**
-     * @Type("array")
-     * @Items(@Ref("PSX\Framework\Tests\Controller\Foo\Model\Complex"))
+     * @var array<\PSX\Framework\Tests\Controller\Foo\Model\Complex>
      */
-    protected $arrayComplex;
+    private $arrayComplex;
 
     /**
-     * @Type("array")
-     * @Items(@Schema(oneOf={@Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceA"), @Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceB")}))
+     * @var array<\PSX\Framework\Tests\Controller\Foo\Model\ChoiceA|\PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>
      */
-    protected $arrayChoice;
+    private $arrayChoice;
 
     /**
-     * @Type("boolean")
+     * @var boolean
      */
-    protected $boolean;
+    private $boolean;
 
     /**
-     * @OneOf(@Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceA"), @Ref("PSX\Framework\Tests\Controller\Foo\Model\ChoiceB"))
+     * @var \PSX\Framework\Tests\Controller\Foo\Model\ChoiceA|\PSX\Framework\Tests\Controller\Foo\Model\ChoiceB
      */
-    protected $choice;
+    private $choice;
 
     /**
-     * @Ref("PSX\Framework\Tests\Controller\Foo\Model\Complex")
+     * @var \PSX\Framework\Tests\Controller\Foo\Model\Complex
      */
-    protected $complex;
+    private $complex;
 
     /**
-     * @Type("string")
-     * @Format("date")
+     * @var \PSX\DateTime\Date
      */
-    protected $date;
+    private $date;
 
     /**
-     * @Type("string")
-     * @Format("date-time")
+     * @var \PSX\DateTime\DateTime
      */
-    protected $dateTime;
+    private $dateTime;
 
     /**
-     * @Type("string")
-     * @Format("duration")
+     * @var \PSX\DateTime\Duration
      */
-    protected $duration;
+    private $duration;
 
     /**
-     * @Type("number")
+     * @var float
      */
-    protected $float;
+    private $float;
 
     /**
-     * @Type("integer")
+     * @var integer
      */
-    protected $integer;
+    private $integer;
 
     /**
-     * @Type("string")
+     * @var string
      */
-    protected $string;
+    private $string;
 
     /**
-     * @Type("string")
-     * @Format("time")
+     * @var \PSX\DateTime\Time
      */
-    protected $time;
+    private $time;
 
-    public function getAny()
+    /**
+     * @return Any
+     */
+    public function getAny(): ?Any
     {
         return $this->any;
     }
 
-    public function setAny($any)
+    /**
+     * @param Any $any
+     */
+    public function setAny(Any $any): void
     {
         $this->any = $any;
     }
 
-    public function getArray()
+    /**
+     * @return array
+     */
+    public function getArray(): ?array
     {
         return $this->array;
     }
 
-    public function setArray(array $array)
+    /**
+     * @param array $array
+     */
+    public function setArray(array $array): void
     {
         $this->array = $array;
     }
 
-    public function getArrayComplex()
+    /**
+     * @return array
+     */
+    public function getArrayComplex(): ?array
     {
         return $this->arrayComplex;
     }
 
-    public function setArrayComplex(array $arrayComplex)
+    /**
+     * @param array $arrayComplex
+     */
+    public function setArrayComplex(array $arrayComplex): void
     {
         $this->arrayComplex = $arrayComplex;
     }
 
-    public function getArrayChoice()
+    /**
+     * @return array
+     */
+    public function getArrayChoice(): ?array
     {
         return $this->arrayChoice;
     }
 
-    public function setArrayChoice(array $arrayChoice)
+    /**
+     * @param array $arrayChoice
+     */
+    public function setArrayChoice(array $arrayChoice): void
     {
         $this->arrayChoice = $arrayChoice;
     }
 
-    public function getBoolean()
+    /**
+     * @return bool
+     */
+    public function getBoolean(): ?bool
     {
         return $this->boolean;
     }
 
-    public function setBoolean($boolean)
+    /**
+     * @param bool $boolean
+     */
+    public function setBoolean(bool $boolean): void
     {
         $this->boolean = $boolean;
     }
 
+    /**
+     * @return ChoiceA|ChoiceB
+     */
     public function getChoice()
     {
         return $this->choice;
     }
 
-    public function setChoice($choice)
+    /**
+     * @param ChoiceA|ChoiceB $choice
+     */
+    public function setChoice($choice): void
     {
         $this->choice = $choice;
     }
 
-    public function getComplex()
+    /**
+     * @return Complex
+     */
+    public function getComplex(): ?Complex
     {
         return $this->complex;
     }
 
-    public function setComplex(Complex $complex)
+    /**
+     * @param Complex $complex
+     */
+    public function setComplex(Complex $complex): void
     {
         $this->complex = $complex;
     }
 
-    public function getDate()
+    /**
+     * @return \PSX\DateTime\Date
+     */
+    public function getDate(): ?\PSX\DateTime\Date
     {
         return $this->date;
     }
 
-    public function setDate(DateTime $date)
+    /**
+     * @param \PSX\DateTime\Date $date
+     */
+    public function setDate(\PSX\DateTime\Date $date): void
     {
         $this->date = $date;
     }
 
-    public function getDateTime()
+    /**
+     * @return \PSX\DateTime\DateTime
+     */
+    public function getDateTime(): ?\PSX\DateTime\DateTime
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(DateTime $dateTime)
+    /**
+     * @param \PSX\DateTime\DateTime $dateTime
+     */
+    public function setDateTime(\PSX\DateTime\DateTime $dateTime): void
     {
         $this->dateTime = $dateTime;
     }
 
-    public function getDuration()
+    /**
+     * @return \PSX\DateTime\Duration
+     */
+    public function getDuration(): ?\PSX\DateTime\Duration
     {
         return $this->duration;
     }
 
-    public function setDuration(DateInterval $duration)
+    /**
+     * @param \PSX\DateTime\Duration $duration
+     */
+    public function setDuration(\PSX\DateTime\Duration $duration): void
     {
         $this->duration = $duration;
     }
 
-    public function getFloat()
+    /**
+     * @return float
+     */
+    public function getFloat(): ?float
     {
         return $this->float;
     }
 
-    public function setFloat($float)
+    /**
+     * @param float $float
+     */
+    public function setFloat(float $float): void
     {
         $this->float = $float;
     }
 
-    public function getInteger()
+    /**
+     * @return int
+     */
+    public function getInteger(): ?int
     {
         return $this->integer;
     }
 
-    public function setInteger($integer)
+    /**
+     * @param int $integer
+     */
+    public function setInteger(int $integer): void
     {
         $this->integer = $integer;
     }
 
-    public function getString()
+    /**
+     * @return string
+     */
+    public function getString(): ?string
     {
         return $this->string;
     }
 
-    public function setString($string)
+    /**
+     * @param string $string
+     */
+    public function setString(string $string): void
     {
         $this->string = $string;
     }
 
-    public function getTime()
+    /**
+     * @return \PSX\DateTime\Time
+     */
+    public function getTime(): ?\PSX\DateTime\Time
     {
         return $this->time;
     }
 
-    public function setTime(DateTime $time)
+    /**
+     * @param \PSX\DateTime\Time $time
+     */
+    public function setTime(\PSX\DateTime\Time $time): void
     {
         $this->time = $time;
     }

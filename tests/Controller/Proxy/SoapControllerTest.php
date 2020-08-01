@@ -46,36 +46,36 @@ class SoapControllerTest extends ControllerDbTestCase
         $expect = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <record xmlns="http://phpsx.org/2014/data" type="object">
-      <entry type="array">
-        <entry type="object">
-          <id type="integer">4</id>
-          <userId type="integer">3</userId>
-          <title type="string">blub</title>
-          <date type="date-time">2013-04-29T16:56:32Z</date>
-        </entry>
-        <entry type="object">
-          <id type="integer">3</id>
-          <userId type="integer">2</userId>
-          <title type="string">test</title>
-          <date type="date-time">2013-04-29T16:56:32Z</date>
-        </entry>
-        <entry type="object">
-          <id type="integer">2</id>
-          <userId type="integer">1</userId>
-          <title type="string">bar</title>
-          <date type="date-time">2013-04-29T16:56:32Z</date>
-        </entry>
-        <entry type="object">
-          <id type="integer">1</id>
-          <userId type="integer">1</userId>
-          <title type="string">foo</title>
-          <date type="date-time">2013-04-29T16:56:32Z</date>
-        </entry>
-      </entry>
-    </record>
-  </soap:Body>
+ <soap:Body>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:array name="entry">
+    <json:object>
+     <json:number name="id">4</json:number>
+     <json:number name="userId">3</json:number>
+     <json:string name="title">blub</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">3</json:number>
+     <json:number name="userId">2</json:number>
+     <json:string name="title">test</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">2</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">bar</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">1</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">foo</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+   </json:array>
+  </json:object>
+ </soap:Body>
 </soap:Envelope>
 XML;
 
@@ -107,10 +107,10 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <record type="object" xmlns="http://phpsx.org/2014/data">
-   <success type="boolean">true</success>
-   <message type="string">You have successful post a record</message>
-  </record>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:boolean name="success">true</json:boolean>
+   <json:string name="message">You have successful post a record</json:string>
+  </json:object>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -132,10 +132,11 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <soap:Fault>
-   <faultcode>soap:Server</faultcode>
-   <faultstring>Only POST requests are allowed</faultstring>
-  </soap:Fault>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:boolean name="success">false</json:boolean>
+   <json:string name="title">Internal Server Error</json:string>
+   <json:string name="message">Only POST requests are allowed</json:string>
+  </json:object>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -157,10 +158,11 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <soap:Fault>
-   <faultcode>soap:Server</faultcode>
-   <faultstring>Invalid request method</faultstring>
-  </soap:Fault>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:boolean name="success">false</json:boolean>
+   <json:string name="title">Internal Server Error</json:string>
+   <json:string name="message">Invalid request method</json:string>
+  </json:object>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -182,34 +184,34 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <record type="object" xmlns="http://phpsx.org/2014/data">
-   <entry type="array">
-    <entry type="object">
-     <id type="integer">4</id>
-     <userId type="integer">3</userId>
-     <title type="string">blub</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">3</id>
-     <userId type="integer">2</userId>
-     <title type="string">test</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">2</id>
-     <userId type="integer">1</userId>
-     <title type="string">bar</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">1</id>
-     <userId type="integer">1</userId>
-     <title type="string">foo</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-   </entry>
-  </record>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:array name="entry">
+    <json:object>
+     <json:number name="id">4</json:number>
+     <json:number name="userId">3</json:number>
+     <json:string name="title">blub</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">3</json:number>
+     <json:number name="userId">2</json:number>
+     <json:string name="title">test</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">2</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">bar</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">1</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">foo</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+   </json:array>
+  </json:object>
  </soap:Body>
 </soap:Envelope>
 XML;
@@ -231,34 +233,34 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <record type="object" xmlns="http://phpsx.org/2014/data">
-   <entry type="array">
-    <entry type="object">
-     <id type="integer">4</id>
-     <userId type="integer">3</userId>
-     <title type="string">blub</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">3</id>
-     <userId type="integer">2</userId>
-     <title type="string">test</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">2</id>
-     <userId type="integer">1</userId>
-     <title type="string">bar</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-    <entry type="object">
-     <id type="integer">1</id>
-     <userId type="integer">1</userId>
-     <title type="string">foo</title>
-     <date type="date-time">2013-04-29T16:56:32Z</date>
-    </entry>
-   </entry>
-  </record>
+  <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:array name="entry">
+    <json:object>
+     <json:number name="id">4</json:number>
+     <json:number name="userId">3</json:number>
+     <json:string name="title">blub</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">3</json:number>
+     <json:number name="userId">2</json:number>
+     <json:string name="title">test</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">2</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">bar</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+    <json:object>
+     <json:number name="id">1</json:number>
+     <json:number name="userId">1</json:number>
+     <json:string name="title">foo</json:string>
+     <json:string name="date">2013-04-29T16:56:32Z</json:string>
+    </json:object>
+   </json:array>
+  </json:object>
  </soap:Body>
 </soap:Envelope>
 XML;

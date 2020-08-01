@@ -31,12 +31,9 @@ use PSX\Schema\SchemaAbstract;
  */
 class Collection extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Routing Collection');
-        $sb->arrayType('routings')
-            ->setItems($this->getSchema(Route::class));
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Routing_Collection');
+        $type->addArray('routings', $this->get(Route::class));
     }
 }

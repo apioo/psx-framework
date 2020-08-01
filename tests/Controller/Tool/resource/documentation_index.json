@@ -1,104 +1,63 @@
 {
-  "path": "\/doc",
-  "version": "*",
-  "status": 1,
-  "description": null,
-  "schema": {
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "definitions": {
-      "Documentation_Route": {
-        "type": "object",
-        "title": "Documentation Route",
-        "properties": {
-          "path": {
-            "type": "string"
-          },
-          "methods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "version": {
-            "type": "string"
+  "paths": {
+    "\/doc": {
+      "status": 1,
+      "path": "\/doc",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Documentation_Index"
           }
         }
-      },
-      "Discovery_Link": {
-        "type": "object",
-        "title": "Discovery Link",
-        "properties": {
-          "rel": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          }
-        }
-      },
-      "Documentation_Index": {
-        "type": "object",
-        "title": "Documentation Index",
-        "properties": {
-          "routings": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/definitions\/Documentation_Route"
-            }
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/definitions\/Discovery_Link"
-            }
-          }
-        }
-      },
-      "GET-200-response": {
-        "$ref": "#\/definitions\/Documentation_Index"
       }
     }
   },
-  "methods": {
-    "GET": {
-      "responses": {
-        "200": "#\/definitions\/GET-200-response"
+  "definitions": {
+    "Discovery_Link": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Documentation_Index": {
+      "type": "object",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "Documentation_Route"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
+          }
+        }
+      }
+    },
+    "Documentation_Route": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
       }
     }
-  },
-  "links": [
-    {
-      "rel": "client-php",
-      "href": "\/generate\/client-php\/*\/doc"
-    },
-    {
-      "rel": "client-typescript",
-      "href": "\/generate\/client-typescript\/*\/doc"
-    },
-    {
-      "rel": "markup-html",
-      "href": "\/generate\/markup-html\/*\/doc"
-    },
-    {
-      "rel": "markup-markdown",
-      "href": "\/generate\/markup-markdown\/*\/doc"
-    },
-    {
-      "rel": "spec-jsonschema",
-      "href": "\/generate\/spec-jsonschema\/*\/doc"
-    },
-    {
-      "rel": "spec-openapi",
-      "href": "\/generate\/spec-openapi\/*\/doc"
-    },
-    {
-      "rel": "spec-raml",
-      "href": "\/generate\/spec-raml\/*\/doc"
-    },
-    {
-      "rel": "spec-swagger",
-      "href": "\/generate\/spec-swagger\/*\/doc"
-    }
-  ]
+  }
 }

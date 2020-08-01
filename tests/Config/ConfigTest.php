@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Config;
 
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Config\Config;
+use PSX\Framework\Config\NotFoundException;
 
 /**
  * ConfigTest
@@ -42,22 +43,20 @@ class ConfigTest extends TestCase
         $this->assertEquals('bar', $config->get('foo'));
     }
 
-    /**
-     * @expectedException \PSX\Framework\Config\NotFoundException
-     */
     public function testDefinitionConfig()
     {
+        $this->expectException(NotFoundException::class);
+
         $config = Config::fromFile(__DIR__ . '/definition_config.php');
 
         $this->assertEquals('bar', $config['foo']);
         $this->assertEquals('bar', $config->get('foo'));
     }
 
-    /**
-     * @expectedException \PSX\Framework\Config\NotFoundException
-     */
     public function testDefinitionConfigInvalidType()
     {
+        $this->expectException(NotFoundException::class);
+
         Config::fromFile(__DIR__ . '/definition_invalid_config_type.php');
     }
 
@@ -69,27 +68,24 @@ class ConfigTest extends TestCase
         $this->assertEquals('bar', $config->get('foo'));
     }
 
-    /**
-     * @expectedException \PSX\Framework\Config\NotFoundException
-     */
     public function testReturnConfigInvalidType()
     {
+        $this->expectException(NotFoundException::class);
+
         Config::fromFile(__DIR__ . '/return_invalid_config_type.php');
     }
 
-    /**
-     * @expectedException \PSX\Framework\Config\NotFoundException
-     */
     public function testNoConfig()
     {
+        $this->expectException(NotFoundException::class);
+
         Config::fromFile(__DIR__ . '/no_config.php');
     }
 
-    /**
-     * @expectedException \ErrorException
-     */
     public function testConfigFileNotExisting()
     {
+        $this->expectException(\ErrorException::class);
+
         Config::fromFile(__DIR__ . '/foo_config.php');
     }
 

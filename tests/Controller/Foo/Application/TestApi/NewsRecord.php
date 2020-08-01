@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
-use PSX\Record\RecordObject;
-
 /**
  * NewsRecord
  *
@@ -29,35 +27,48 @@ use PSX\Record\RecordObject;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class NewsRecord extends RecordObject
+class NewsRecord
 {
-    protected $title;
-    protected $user;
+    /**
+     * @var string
+     */
+    private $title;
 
     /**
-     * @param string $title
+     * @var string
      */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
+    private $user;
 
-    public function getTitle()
+    /**
+     * @return string
+     */
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param string $user
+     * @param string $title
      */
-    public function setUser($user)
+    public function setTitle(string $title): void
     {
-        $this->user = $user;
+        $this->title = $title;
     }
 
-    public function getUser()
+    /**
+     * @return string
+     */
+    public function getUser(): string
     {
         return $this->user;
+    }
+
+    /**
+     * @param string $user
+     */
+    public function setUser(string $user): void
+    {
+        $this->user = $user;
     }
 }
 

@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
-use PSX\Schema\Property as SchemaProperty;
 use PSX\Schema\SchemaAbstract;
+use PSX\Schema\TypeFactory;
 
 /**
  * Property
@@ -32,46 +32,36 @@ use PSX\Schema\SchemaAbstract;
  */
 class Property extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('choiceA');
-        $sb->string('foo');
-        $sb->setAdditionalProperties(false);
-        $complexA = $sb->getProperty();
+        $any = $this->newMap('Any');
+        $any->setAdditionalProperties(TypeFactory::getString());
 
-        $sb = $this->getSchemaBuilder('choiceB');
-        $sb->string('bar');
-        $sb->setAdditionalProperties(false);
-        $complexB = $sb->getProperty();
+        $complexA = $this->newStruct('ChoiceA');
+        $complexA->addString('foo');
+        $complexA->setRequired(['foo']);
 
-        $choice = SchemaProperty::get()->setOneOf([$complexA, $complexB]);
+        $complexB = $this->newStruct('ChoiceB');
+        $complexB->addString('bar');
+        $complexB->setRequired(['bar']);
 
-        $sb = $this->getSchemaBuilder('complex');
-        $sb->string('foo');
-        $sb->setAdditionalProperties(false);
-        $complex = $sb->getProperty();
+        $complex = $this->newStruct('Complex');
+        $complex->addString('foo');
 
-        $sb = $this->getSchemaBuilder('any');
-        $sb->setAdditionalProperties(SchemaProperty::getString('foo'));
-        $any = $sb->getProperty();
-
-        $sb = $this->getSchemaBuilder('property');
-        $sb->objectType('any', $any);
-        $sb->arrayType('array')->setItems(SchemaProperty::getString('foo'));
-        $sb->arrayType('arrayComplex')->setItems($complex);
-        $sb->arrayType('arrayChoice')->setItems($choice);
-        $sb->boolean('boolean');
-        $sb->add('choice', SchemaProperty::get()->setOneOf([$complexA, $complexB]));
-        $sb->objectType('complex', $complex);
-        $sb->date('date');
-        $sb->dateTime('dateTime');
-        $sb->duration('duration');
-        $sb->number('float');
-        $sb->integer('integer');
-        $sb->string('string');
-        $sb->time('time');
-        $sb->setAdditionalProperties(false);
-
-        return $sb->getProperty();
+        $sb = $this->newStruct('Property');
+        $sb->addReference('any', 'Any');
+        $sb->addArray('array', TypeFactory::getString());
+        $sb->addArray('arrayComplex', TypeFactory::getReference('Complex'));
+        $sb->addArray('arrayChoice', TypeFactory::getUnion([TypeFactory::getReference('ChoiceA'), TypeFactory::getReference('ChoiceB')]));
+        $sb->addBoolean('boolean');
+        $sb->add('choice', TypeFactory::getUnion([TypeFactory::getReference('ChoiceA'), TypeFactory::getReference('ChoiceB')]));
+        $sb->addReference('complex', 'Complex');
+        $sb->addDate('date');
+        $sb->addDateTime('dateTime');
+        $sb->addDuration('duration');
+        $sb->addNumber('float');
+        $sb->addInteger('integer');
+        $sb->addString('string');
+        $sb->addTime('time');
     }
 }

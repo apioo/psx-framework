@@ -125,7 +125,7 @@ class FlowTest extends ControllerTestCase
         $response = $client->request($request);
 
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertContains('Invalid consumer key or signature', (string) $response->getBody());
+        $this->assertStringContainsString('Invalid consumer key or signature', (string) $response->getBody());
     }
 
     protected function getPaths()

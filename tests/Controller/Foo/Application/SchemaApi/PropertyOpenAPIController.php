@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Parser;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Loader\Context;
 
@@ -35,7 +36,7 @@ class PropertyOpenAPIController extends SchemaApiAbstract
 {
     use PropertyControllerTrait;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
         return Parser\OpenAPI::fromFile(__DIR__ . '/../../Resource/openapi.json', $this->context->getPath());
     }

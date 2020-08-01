@@ -22,6 +22,7 @@ namespace PSX\Framework\Schema\Documentation;
 
 use PSX\Framework\Schema\Discovery\Link;
 use PSX\Schema\SchemaAbstract;
+use PSX\Schema\TypeFactory;
 
 /**
  * Detail
@@ -32,26 +33,22 @@ use PSX\Schema\SchemaAbstract;
  */
 class Detail extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Documentation Schema');
-        $sb->setDescription('Contains the JSON Schema object');
-        $sb->setAdditionalProperties(true);
-        $schema = $sb->getProperty();
+        $type = $this->newMap('Documentation_Schema');
+        $type->setAdditionalProperties(true);
 
-        $sb = $this->getSchemaBuilder('Documentation Detail');
-        $sb->string('path');
-        $sb->string('version');
-        $sb->integer('status');
-        $sb->string('description');
-        $sb->objectType('schema', $schema);
-        $sb->string('pathParameters');
-        $sb->objectType('methods')
-            ->setTitle('Documentation Methods')
-            ->setAdditionalProperties($this->getSchema(Method::class));
-        $sb->arrayType('links')
-            ->setItems($this->getSchema(Link::class));
+        $type = $this->newMap('Documentation_Methods');
+        $type->setAdditionalProperties($this->get(Method::class));
 
-        return $sb->getProperty();
+        $type = $this->newStruct('Documentation_Detail');
+        $type->addString('path');
+        $type->addString('version');
+        $type->addInteger('status');
+        $type->addString('description');
+        $type->addReference('schema', 'Documentation_Schema');
+        $type->addString('pathParameters');
+        $type->addReference('methods', 'Documentation_Methods');
+        $type->addArray('links', $this->get(Link::class));
     }
 }

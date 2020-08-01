@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
+use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -31,22 +32,19 @@ use PSX\Schema\SchemaAbstract;
  */
 class NestedEntry extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('author');
-        $sb->string('name');
-        $sb->string('uri');
-        $author = $sb->getProperty();
+        $type = $this->newStruct('Author');
+        $type->addString('name');
+        $type->addString('uri');
 
-        $sb = $this->getSchemaBuilder('item');
-        $sb->integer('id');
-        $sb->objectType('author', $author);
-        $sb->string('title')
+        $type = $this->newStruct('Item');
+        $type->addInteger('id');
+        $type->addReference('author', 'Author');
+        $type->addString('title')
             ->setMinLength(3)
             ->setMaxLength(16)
             ->setPattern('[A-z]+');
-        $sb->dateTime('date');
-
-        return $sb->getProperty();
+        $type->addDateTime('date');
     }
 }

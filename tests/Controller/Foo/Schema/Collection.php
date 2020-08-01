@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
+use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -31,12 +32,9 @@ use PSX\Schema\SchemaAbstract;
  */
 class Collection extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('collection');
-        $sb->arrayType('entry')
-            ->setItems($this->getSchema('PSX\Framework\Tests\Controller\Foo\Schema\Entry'));
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Collection');
+        $type->addArray('entry', $this->get(Entry::class));
     }
 }

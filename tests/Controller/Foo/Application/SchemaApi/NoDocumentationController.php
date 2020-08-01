@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 
 /**
@@ -43,7 +44,7 @@ class NoDocumentationController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
         return null;
     }

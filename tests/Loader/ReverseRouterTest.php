@@ -70,22 +70,20 @@ class ReverseRouterTest extends TestCase
         $this->assertEquals('/foo/bla/blub', $router->getPath('PSX\Framework\Loader\Foo4Controller', ['bla', 'blub']));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetPathMissingParameter()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $routingFile = new RoutingFile(__DIR__ . '/routes');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
         $router->getPath('PSX\Framework\Loader\Foo4Controller', ['bla']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetPathRegExpMissingParameter()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $routingFile = new RoutingFile(__DIR__ . '/routes');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 

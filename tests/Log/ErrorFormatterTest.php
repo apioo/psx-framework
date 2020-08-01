@@ -37,12 +37,12 @@ class ErrorFormatterTest extends TestCase
      */
     protected $formatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formatter = new ErrorFormatter();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->formatter = null;
     }

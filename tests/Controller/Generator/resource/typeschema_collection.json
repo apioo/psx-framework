@@ -44,6 +44,18 @@
           }
         }
       }
+    },
+    "\/endpoint": {
+      "status": 1,
+      "path": "\/endpoint",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Collection"
+          }
+        }
+      }
     }
   },
   "definitions": {

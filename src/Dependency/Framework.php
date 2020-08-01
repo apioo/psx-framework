@@ -156,7 +156,7 @@ trait Framework
     public function getGeneratorFactory(): GeneratorFactoryInterface
     {
         return new GeneratorFactory(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
+            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('config')->get('psx_json_namespace'),
             $this->get('config')->get('psx_url'),
             $this->get('config')->get('psx_dispatch')

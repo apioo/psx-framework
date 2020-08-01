@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -39,14 +40,14 @@ class RestrictMethodController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
-        $resource->addMethod(Resource\Factory::getMethod('DELETE'));
+        $builder->addMethod('GET');
+        $builder->addMethod('DELETE');
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     protected function doGet(HttpContextInterface $context)

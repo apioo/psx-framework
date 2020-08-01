@@ -32,14 +32,10 @@ use PSX\Schema\SchemaAbstract;
  */
 class Index extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Documentation Index');
-        $sb->arrayType('routings')
-            ->setItems($this->getSchema(Route::class));
-        $sb->arrayType('links')
-            ->setItems($this->getSchema(Link::class));
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Documentation_Index');
+        $type->addArray('routings', $this->get(Route::class));
+        $type->addArray('links', $this->get(Link::class));
     }
 }

@@ -45,7 +45,7 @@ trait ContainerTestCaseTrait
 {
     protected $_protectedServices = array('config', 'connection');
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -69,7 +69,7 @@ trait ContainerTestCaseTrait
 
         // schema manager use void cache
         Environment::getContainer()->set('schema_manager', new SchemaManager(
-            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
+            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             new Pool(new VoidCache()),
             true
         ));
@@ -99,7 +99,7 @@ trait ContainerTestCaseTrait
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

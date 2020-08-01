@@ -46,7 +46,7 @@ abstract class DbTestCase extends TestCase
         return Environment::getService('connection');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setup();
 

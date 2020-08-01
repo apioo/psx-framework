@@ -31,12 +31,10 @@ use PSX\Schema\SchemaAbstract;
  */
 class Message extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('message');
-        $sb->boolean('success');
-        $sb->string('message');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Message');
+        $type->addBoolean('success');
+        $type->addString('message');
     }
 }
