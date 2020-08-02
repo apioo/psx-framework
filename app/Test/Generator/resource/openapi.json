@@ -33,11 +33,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Collection result",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
                 }
               }
             }
@@ -47,85 +47,35 @@
       "post": {
         "operationId": "doPost",
         "requestBody": {
+          "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
+                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPostRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Operation message",
+            "description": "POST 201 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
                 }
               }
             }
           }
         }
-      },
-      "parameters": []
+      }
     }
   },
   "components": {
     "schemas": {
-      "Entity": {
-        "type": "object",
-        "title": "entity",
-        "description": "Represents an internet population entity",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Unique id for each entry"
-          },
-          "place": {
-            "type": "integer",
-            "description": "Position in the top list",
-            "minimum": 1,
-            "maximum": 64
-          },
-          "region": {
-            "type": "string",
-            "description": "Name of the region",
-            "pattern": "[A-z]+",
-            "minLength": 3,
-            "maxLength": 64
-          },
-          "population": {
-            "type": "integer",
-            "description": "Complete number of population"
-          },
-          "users": {
-            "type": "integer",
-            "description": "Number of internet users"
-          },
-          "worldUsers": {
-            "type": "number",
-            "description": "Percentage users of the world"
-          },
-          "datetime": {
-            "type": "string",
-            "description": "Date when the entity was created",
-            "format": "date-time"
-          }
-        },
-        "required": [
-          "place",
-          "region",
-          "population",
-          "users",
-          "worldUsers"
-        ],
-        "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-      },
       "Collection": {
-        "type": "object",
-        "title": "collection",
         "description": "Collection result",
+        "type": "object",
         "properties": {
           "totalResults": {
             "type": "integer"
@@ -136,22 +86,80 @@
               "$ref": "#\/components\/schemas\/Entity"
             }
           }
-        },
-        "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
+        }
       },
-      "Message": {
+      "DogetQuery": {
         "type": "object",
-        "title": "message",
-        "description": "Operation message",
         "properties": {
-          "success": {
-            "type": "boolean"
+          "startIndex": {
+            "type": "integer"
           },
-          "message": {
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "Entity": {
+        "description": "Represents an internet population entity",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique id for each entry",
+            "type": "integer"
+          },
+          "place": {
+            "description": "Position in the top list",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "region": {
+            "description": "Name of the region",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 64
+          },
+          "population": {
+            "description": "Complete number of population",
+            "type": "integer"
+          },
+          "users": {
+            "description": "Number of internet users",
+            "type": "integer"
+          },
+          "worldUsers": {
+            "description": "Percentage users of the world",
+            "type": "number"
+          },
+          "datetime": {
+            "description": "Date when the entity was created",
+            "format": "date-time",
             "type": "string"
           }
         },
-        "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
+        "required": [
+          "place",
+          "region",
+          "population",
+          "users",
+          "worldUsers"
+        ]
+      },
+      "Message": {
+        "title": "message",
+        "description": "Operation message",
+        "type": "object"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
+        "$ref": "#\/components\/schemas\/Collection"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+        "$ref": "#\/components\/schemas\/Entity"
       }
     }
   }

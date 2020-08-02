@@ -21,20 +21,19 @@
 namespace PSX\Framework\App\Model;
 
 /**
- * @Title("entity")
  * @Description("Represents an internet population entity")
  * @Required({"place", "region", "population", "users", "worldUsers"})
  */
 class Entity
 {
     /**
-     * @Type("integer")
+     * @var integer
      * @Description("Unique id for each entry")
      */
     protected $id;
 
     /**
-     * @Type("integer")
+     * @var integer
      * @Minimum(1)
      * @Maximum(64)
      * @Description("Position in the top list")
@@ -42,7 +41,7 @@ class Entity
     protected $place;
 
     /**
-     * @Type("string")
+     * @var string
      * @MinLength(3)
      * @MaxLength(64)
      * @Pattern("[A-z]+")
@@ -51,96 +50,137 @@ class Entity
     protected $region;
 
     /**
-     * @Type("integer")
+     * @var integer
      * @Description("Complete number of population")
      */
     protected $population;
 
     /**
-     * @Type("integer")
+     * @var integer
      * @Description("Number of internet users")
      */
     protected $users;
 
     /**
-     * @Type("number")
+     * @var float
      * @Description("Percentage users of the world")
      */
     protected $worldUsers;
 
     /**
-     * @Type("string")
-     * @Format("date-time")
+     * @var \DateTime
      * @Description("Date when the entity was created")
      */
     protected $datetime;
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getPlace()
+    /**
+     * @return int
+     */
+    public function getPlace(): ?int
     {
         return $this->place;
     }
 
-    public function setPlace($place)
+    /**
+     * @param int $place
+     */
+    public function setPlace(int $place): void
     {
         $this->place = $place;
     }
 
-    public function getRegion()
+    /**
+     * @return string
+     */
+    public function getRegion(): ?string
     {
         return $this->region;
     }
 
-    public function setRegion($region)
+    /**
+     * @param string $region
+     */
+    public function setRegion(string $region): void
     {
         $this->region = $region;
     }
 
-    public function getPopulation()
+    /**
+     * @return int
+     */
+    public function getPopulation(): ?int
     {
         return $this->population;
     }
 
-    public function setPopulation($population)
+    /**
+     * @param int $population
+     */
+    public function setPopulation(int $population): void
     {
         $this->population = $population;
     }
 
-    public function getUsers()
+    /**
+     * @return int
+     */
+    public function getUsers(): ?int
     {
         return $this->users;
     }
 
-    public function setUsers($users)
+    /**
+     * @param int $users
+     */
+    public function setUsers(int $users): void
     {
         $this->users = $users;
     }
 
-    public function getWorldUsers()
+    /**
+     * @return float
+     */
+    public function getWorldUsers(): ?float
     {
         return $this->worldUsers;
     }
 
-    public function setWorldUsers($worldUsers)
+    /**
+     * @param float $worldUsers
+     */
+    public function setWorldUsers(float $worldUsers): void
     {
         $this->worldUsers = $worldUsers;
     }
 
-    public function getDatetime()
+    /**
+     * @return \DateTime
+     */
+    public function getDatetime(): ?\DateTime
     {
         return $this->datetime;
     }
 
-    public function setDatetime($datetime)
+    /**
+     * @param \DateTime $datetime
+     */
+    public function setDatetime(\DateTime $datetime): void
     {
         $this->datetime = $datetime;
     }

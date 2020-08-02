@@ -34,10 +34,11 @@
         ],
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "file:///schema/population/collection.json"
+                  "$ref": "#/components/schemas/Collection"
                 }
               }
             }
@@ -49,17 +50,18 @@
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "file:///schema/population/entity.json"
+                "$ref": "#/components/schemas/Entity"
               }
             }
           }
         },
         "responses": {
           "201": {
+            "description": "201 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "file:///schema/population/message.json"
+                  "$ref": "#/components/schemas/Message"
                 }
               }
             }
@@ -98,10 +100,11 @@
         ],
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "file:///schema/population/collection.json"
+                  "$ref": "#/components/schemas/Collection"
                 }
               }
             }
@@ -113,17 +116,18 @@
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "file:///schema/population/entity.json"
+                "$ref": "#/components/schemas/Entity"
               }
             }
           }
         },
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "file:///schema/population/message.json"
+                  "$ref": "#/components/schemas/Message"
                 }
               }
             }
@@ -133,13 +137,86 @@
       "delete": {
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "file:///schema/population/message.json"
+                  "$ref": "#/components/schemas/Message"
                 }
               }
             }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Collection": {
+        "description": "Collection result",
+        "type": "object",
+        "properties": {
+          "totalResults": {
+            "type": "integer"
+          },
+          "entry": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entity"
+            }
+          }
+        }
+      },
+      "Entity": {
+        "description": "Represents an internet population entity",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique id for each entry"
+          },
+          "place": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64,
+            "description": "Position in the top list"
+          },
+          "region": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "pattern": "[A-z]+",
+            "description": "Name of the region"
+          },
+          "population": {
+            "type": "integer",
+            "description": "Complete number of population"
+          },
+          "users": {
+            "type": "integer",
+            "description": "Number of internet users"
+          },
+          "worldUsers": {
+            "type": "number",
+            "description": "Percentage users of the world"
+          },
+          "datetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date when the entity was created"
+          }
+        },
+        "required": ["place", "region", "population", "users", "worldUsers"]
+      },
+      "Message": {
+        "description": "Operation message",
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
           }
         }
       }

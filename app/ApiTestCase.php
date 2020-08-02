@@ -58,10 +58,8 @@ class ApiTestCase extends ControllerDbTestCase
         return [
             [['ANY'], '/population/popo', Population\CollectionPopo::class],
             [['ANY'], '/population/popo/:id', Population\EntityPopo::class],
-            [['ANY'], '/population/jsonschema', Population\CollectionJsonSchema::class],
-            [['ANY'], '/population/jsonschema/:id', Population\EntityJsonSchema::class],
-            [['ANY'], '/population/raml', Api\Population\CollectionRaml::class],
-            [['ANY'], '/population/raml/:id', Population\EntityRaml::class],
+            [['ANY'], '/population/typeschema', Population\CollectionTypeSchema::class],
+            [['ANY'], '/population/typeschema/:id', Population\EntityTypeSchema::class],
             [['ANY'], '/population/openapi', Population\CollectionOpenAPI::class],
             [['ANY'], '/population/openapi/:id', Population\EntityOpenAPI::class],
             [['ANY'], '/population', Population\Collection::class],
@@ -73,9 +71,7 @@ class ApiTestCase extends ControllerDbTestCase
             [['GET'], '/tool/doc/:version/*path', Tool\Documentation\DetailController::class],
             [['GET'], '/tool/routing', Tool\RoutingController::class],
 
-            [['GET'], '/generator/raml/:version/*path', Generator\RamlController::class],
-            [['GET'], '/generator/swagger/:version/*path', Generator\SwaggerController::class],
-            [['GET'], '/generator/openapi/:version/*path', Generator\OpenAPIController::class],
+            [['GET'], '/generator/:type/:version/*path', Generator\GeneratorController::class],
         ];
     }
 

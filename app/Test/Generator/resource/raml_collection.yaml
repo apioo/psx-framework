@@ -17,153 +17,16 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list",
-                                  "minimum": 1,
-                                  "maximum": 64
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ],
-                          "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
-              }
+            type: PSXFrameworkAppApiPopulationCollectionPopoGet200Response
   post:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list",
-                      "minimum": 1,
-                      "maximum": 64
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ],
-              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-          }
+        type: 1
     responses:
       201:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
+            type: PSXFrameworkAppApiPopulationCollectionPopoPost201Response
 /population/popo/{id}:
   description: 'Entity endpoint'
   uriParameters:
@@ -175,157 +38,23 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "entity",
-                  "description": "Represents an internet population entity",
-                  "properties": {
-                      "id": {
-                          "type": "integer",
-                          "description": "Unique id for each entry"
-                      },
-                      "place": {
-                          "type": "integer",
-                          "description": "Position in the top list",
-                          "minimum": 1,
-                          "maximum": 64
-                      },
-                      "region": {
-                          "type": "string",
-                          "description": "Name of the region",
-                          "pattern": "[A-z]+",
-                          "minLength": 3,
-                          "maxLength": 64
-                      },
-                      "population": {
-                          "type": "integer",
-                          "description": "Complete number of population"
-                      },
-                      "users": {
-                          "type": "integer",
-                          "description": "Number of internet users"
-                      },
-                      "worldUsers": {
-                          "type": "number",
-                          "description": "Percentage users of the world"
-                      },
-                      "datetime": {
-                          "type": "string",
-                          "description": "Date when the entity was created",
-                          "format": "date-time"
-                      }
-                  },
-                  "required": [
-                      "place",
-                      "region",
-                      "population",
-                      "users",
-                      "worldUsers"
-                  ],
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-              }
+            type: PSXFrameworkAppApiPopulationEntityPopoGet200Response
   put:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list",
-                      "minimum": 1,
-                      "maximum": 64
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ],
-              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-          }
+        type: 1
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
+            type: PSXFrameworkAppApiPopulationEntityPopoPut200Response
   delete:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
-/population/jsonschema:
+            type: PSXFrameworkAppApiPopulationEntityPopoDelete200Response
+/population/typeschema:
   description: 'Collection endpoint'
   get:
     queryParameters:
@@ -339,146 +68,17 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list"
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ]
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  }
-              }
+            type: PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response
   post:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
+        type: 1
     responses:
       201:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
-/population/jsonschema/{id}:
+            type: PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response
+/population/typeschema/{id}:
   description: 'Entity endpoint'
   uriParameters:
     id:
@@ -489,454 +89,22 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "entity",
-                  "description": "Represents an internet population entity",
-                  "properties": {
-                      "id": {
-                          "type": "integer",
-                          "description": "Unique id for each entry"
-                      },
-                      "place": {
-                          "type": "integer",
-                          "description": "Position in the top list"
-                      },
-                      "region": {
-                          "type": "string",
-                          "description": "Name of the region",
-                          "pattern": "[A-z]+",
-                          "minLength": 3,
-                          "maxLength": 64
-                      },
-                      "population": {
-                          "type": "integer",
-                          "description": "Complete number of population"
-                      },
-                      "users": {
-                          "type": "integer",
-                          "description": "Number of internet users"
-                      },
-                      "worldUsers": {
-                          "type": "number",
-                          "description": "Percentage users of the world"
-                      },
-                      "datetime": {
-                          "type": "string",
-                          "description": "Date when the entity was created",
-                          "format": "date-time"
-                      }
-                  },
-                  "required": [
-                      "place",
-                      "region",
-                      "population",
-                      "users",
-                      "worldUsers"
-                  ]
-              }
+            type: PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response
   put:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
+        type: 1
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
+            type: PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response
   delete:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
-/population/raml:
-  description: 'Returns a collection of population entries'
-  get:
-    queryParameters:
-      startIndex:
-        type: integer
-        required: false
-      count:
-        type: integer
-        required: false
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list"
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ]
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  }
-              }
-  post:
-    body:
-      application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
-    responses:
-      201:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
-/population/raml/{id}:
-  description: 'Returns a single population entity'
-  uriParameters:
-    id:
-      type: integer
-      required: false
-  get:
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "entity",
-                  "description": "Represents an internet population entity",
-                  "properties": {
-                      "id": {
-                          "type": "integer",
-                          "description": "Unique id for each entry"
-                      },
-                      "place": {
-                          "type": "integer",
-                          "description": "Position in the top list"
-                      },
-                      "region": {
-                          "type": "string",
-                          "description": "Name of the region",
-                          "pattern": "[A-z]+",
-                          "minLength": 3,
-                          "maxLength": 64
-                      },
-                      "population": {
-                          "type": "integer",
-                          "description": "Complete number of population"
-                      },
-                      "users": {
-                          "type": "integer",
-                          "description": "Number of internet users"
-                      },
-                      "worldUsers": {
-                          "type": "number",
-                          "description": "Percentage users of the world"
-                      },
-                      "datetime": {
-                          "type": "string",
-                          "description": "Date when the entity was created",
-                          "format": "date-time"
-                      }
-                  },
-                  "required": [
-                      "place",
-                      "region",
-                      "population",
-                      "users",
-                      "worldUsers"
-                  ]
-              }
-  put:
-    body:
-      application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
-  delete:
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
+            type: PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response
 /population/openapi:
   get:
     queryParameters:
@@ -950,145 +118,16 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list"
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ]
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  }
-              }
+            type: Collection
   post:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
+        type: 1
     responses:
       201:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
+            type: Message
 /population/openapi/{id}:
   uriParameters:
     id:
@@ -1106,603 +145,43 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list"
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ]
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  }
-              }
+            type: Collection
   put:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list"
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ]
-          }
+        type: 1
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
+            type: Message
   delete:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  }
-              }
-/population:
-  description: 'Collection endpoint'
-  get:
-    queryParameters:
-      startIndex:
-        type: integer
-        required: false
-      count:
-        type: integer
-        required: false
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list",
-                                  "minimum": 1,
-                                  "maximum": 64
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ],
-                          "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
-              }
-  post:
-    body:
-      application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list",
-                      "minimum": 1,
-                      "maximum": 64
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ],
-              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-          }
-    responses:
-      201:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
-/population/{id}:
-  description: 'Entity endpoint'
-  uriParameters:
-    id:
-      type: integer
-      required: true
-  get:
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "entity",
-                  "description": "Represents an internet population entity",
-                  "properties": {
-                      "id": {
-                          "type": "integer",
-                          "description": "Unique id for each entry"
-                      },
-                      "place": {
-                          "type": "integer",
-                          "description": "Position in the top list",
-                          "minimum": 1,
-                          "maximum": 64
-                      },
-                      "region": {
-                          "type": "string",
-                          "description": "Name of the region",
-                          "pattern": "[A-z]+",
-                          "minLength": 3,
-                          "maxLength": 64
-                      },
-                      "population": {
-                          "type": "integer",
-                          "description": "Complete number of population"
-                      },
-                      "users": {
-                          "type": "integer",
-                          "description": "Number of internet users"
-                      },
-                      "worldUsers": {
-                          "type": "number",
-                          "description": "Percentage users of the world"
-                      },
-                      "datetime": {
-                          "type": "string",
-                          "description": "Date when the entity was created",
-                          "format": "date-time"
-                      }
-                  },
-                  "required": [
-                      "place",
-                      "region",
-                      "population",
-                      "users",
-                      "worldUsers"
-                  ],
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-              }
-  put:
-    body:
-      application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list",
-                      "minimum": 1,
-                      "maximum": 64
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ],
-              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-          }
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
-  delete:
-    responses:
-      200:
-        body:
-          application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
+            type: Message
 /tool:
   get:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "properties": {
-                      "message": {
-                          "type": "string"
-                      },
-                      "url": {
-                          "type": "string"
-                      }
-                  }
-              }
+            type: Welcome
 /tool/discovery:
   get:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Discovery_Link": {
-                          "type": "object",
-                          "title": "Discovery Link",
-                          "properties": {
-                              "rel": {
-                                  "type": "string"
-                              },
-                              "href": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "type": "object",
-                  "title": "Discovery Collection",
-                  "properties": {
-                      "links": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Discovery_Link"
-                          }
-                      }
-                  }
-              }
+            type: Discovery_Collection
 /tool/doc:
   get:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Documentation_Route": {
-                          "type": "object",
-                          "title": "Documentation Route",
-                          "properties": {
-                              "path": {
-                                  "type": "string"
-                              },
-                              "methods": {
-                                  "type": "array",
-                                  "items": {
-                                      "type": "string"
-                                  }
-                              },
-                              "version": {
-                                  "type": "string"
-                              }
-                          }
-                      },
-                      "Discovery_Link": {
-                          "type": "object",
-                          "title": "Discovery Link",
-                          "properties": {
-                              "rel": {
-                                  "type": "string"
-                              },
-                              "href": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "type": "object",
-                  "title": "Documentation Index",
-                  "properties": {
-                      "routings": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Documentation_Route"
-                          }
-                      },
-                      "links": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Discovery_Link"
-                          }
-                      }
-                  }
-              }
+            type: Documentation_Index
 /tool/doc/{version}/{path}:
   uriParameters:
     version:
@@ -1716,132 +195,47 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Documentation_Schema": {
-                          "type": "object",
-                          "title": "Documentation Schema",
-                          "description": "Contains the JSON Schema object",
-                          "additionalProperties": true
-                      },
-                      "Documentation_Methods": {
-                          "type": "object",
-                          "title": "Documentation Methods",
-                          "additionalProperties": {
-                              "$ref": "#\/definitions\/Documentation_Method"
-                          }
-                      },
-                      "Documentation_Method": {
-                          "type": "object",
-                          "title": "Documentation Method",
-                          "properties": {
-                              "description": {
-                                  "type": "string"
-                              },
-                              "queryParameters": {
-                                  "type": "string"
-                              },
-                              "request": {
-                                  "type": "string"
-                              },
-                              "responses": {
-                                  "$ref": "#\/definitions\/Documentation_Method_Responses"
-                              }
-                          }
-                      },
-                      "Documentation_Method_Responses": {
-                          "type": "object",
-                          "title": "Documentation Method Responses",
-                          "additionalProperties": {
-                              "type": "string"
-                          }
-                      },
-                      "Discovery_Link": {
-                          "type": "object",
-                          "title": "Discovery Link",
-                          "properties": {
-                              "rel": {
-                                  "type": "string"
-                              },
-                              "href": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "type": "object",
-                  "title": "Documentation Detail",
-                  "properties": {
-                      "path": {
-                          "type": "string"
-                      },
-                      "version": {
-                          "type": "string"
-                      },
-                      "status": {
-                          "type": "integer"
-                      },
-                      "description": {
-                          "type": "string"
-                      },
-                      "schema": {
-                          "$ref": "#\/definitions\/Documentation_Schema"
-                      },
-                      "pathParameters": {
-                          "type": "string"
-                      },
-                      "methods": {
-                          "$ref": "#\/definitions\/Documentation_Methods"
-                      },
-                      "links": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Discovery_Link"
-                          }
-                      }
-                  }
-              }
+            type: Documentation_Detail
 /tool/routing:
   get:
     responses:
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Routing_Route": {
-                          "type": "object",
-                          "title": "Routing Route",
-                          "properties": {
-                              "methods": {
-                                  "type": "array",
-                                  "items": {
-                                      "type": "string"
-                                  }
-                              },
-                              "path": {
-                                  "type": "string"
-                              },
-                              "source": {
-                                  "type": "string"
-                              }
-                          }
-                      }
-                  },
-                  "type": "object",
-                  "title": "Routing Collection",
-                  "properties": {
-                      "routings": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Routing_Route"
-                          }
-                      }
-                  }
-              }
+            type: Routing_Collection
+types:
+  Collection: { description: 'Collection result', type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
+  Discovery_Collection: { type: object, properties: { links: { type: array, items: { $ref: '#/types/Discovery_Link' } } } }
+  Discovery_Link: { type: object, properties: { rel: { type: string }, href: { type: string } } }
+  Documentation_Detail: { type: object, properties: { path: { type: string }, version: { type: string }, status: { type: integer }, description: { type: string }, schema: { $ref: '#/types/Documentation_Schema' }, pathParameters: { type: string }, methods: { $ref: '#/types/Documentation_Methods' }, links: { type: array, items: { $ref: '#/types/Discovery_Link' } } } }
+  Documentation_Index: { type: object, properties: { routings: { type: array, items: { $ref: '#/types/Documentation_Route' } }, links: { type: array, items: { $ref: '#/types/Discovery_Link' } } } }
+  Documentation_Method: { type: object, properties: { description: { type: string }, queryParameters: { type: string }, request: { type: string }, responses: { $ref: '#/types/Documentation_Method_Responses' } } }
+  Documentation_Method_Responses: { type: object, additionalProperties: { type: string } }
+  Documentation_Methods: { type: object, additionalProperties: { $ref: '#/types/Documentation_Method' } }
+  Documentation_Path: { type: object, properties: { version: { type: string }, path: { type: string } } }
+  Documentation_Route: { type: object, properties: { path: { type: string }, methods: { type: array, items: { type: string } }, version: { type: string } } }
+  Documentation_Schema: { type: object, additionalProperties: true }
+  DogetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
+  Entity: { description: 'Represents an internet population entity', type: object, properties: { id: { description: 'Unique id for each entry', type: integer }, place: { description: 'Position in the top list', type: integer, minimum: 1, maximum: 64 }, region: { description: 'Name of the region', type: string, pattern: '[A-z]+', minLength: 3, maxLength: 64 }, population: { description: 'Complete number of population', type: integer }, users: { description: 'Number of internet users', type: integer }, worldUsers: { description: 'Percentage users of the world', type: number }, datetime: { description: 'Date when the entity was created', format: date-time, type: string } }, required: [place, region, population, users, worldUsers] }
+  Message: { title: message, description: 'Operation message', type: object }
+  PSXFrameworkAppApiPopulationCollectionPopoGet200Response: { $ref: '#/types/Collection' }
+  PSXFrameworkAppApiPopulationCollectionPopoPost201Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationCollectionPopoPostRequest: { $ref: '#/types/Entity' }
+  PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response: { $ref: '#/types/Collection' }
+  PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest: { $ref: '#/types/Entity' }
+  PSXFrameworkAppApiPopulationEntityPopoDelete200Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationEntityPopoGet200Response: { $ref: '#/types/Entity' }
+  PSXFrameworkAppApiPopulationEntityPopoPut200Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationEntityPopoPutRequest: { $ref: '#/types/Entity' }
+  PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response: { $ref: '#/types/Entity' }
+  PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest: { $ref: '#/types/Entity' }
+  Path: { type: object, properties: { id: { type: integer } }, required: [id] }
+  PopulationOpenapiGetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
+  PopulationOpenapiIdGetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
+  PopulationOpenapiIdPath: { type: object, properties: { id: { type: integer } }, required: {  } }
+  Routing_Collection: { type: object, properties: { routings: { type: array, items: { $ref: '#/types/Routing_Route' } } } }
+  Routing_Route: { type: object, properties: { methods: { type: array, items: { type: string } }, path: { type: string }, source: { type: string } } }
+  Welcome: { type: object, properties: { message: { type: string }, url: { type: string } } }

@@ -151,8 +151,7 @@ JSON;
     {
         return [
             ['population/popo/:id'],
-            ['population/jsonschema/:id'],
-            ['population/raml/:id'],
+            ['population/typeschema/:id'],
             ['population/openapi/:id'],
         ];
     }

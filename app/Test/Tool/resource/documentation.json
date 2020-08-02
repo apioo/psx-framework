@@ -3,110 +3,56 @@
     {
       "path": "\/population\/popo",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
       "path": "\/population\/popo\/:id",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
-      "path": "\/population\/jsonschema",
+      "path": "\/population\/typeschema",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
-      "path": "\/population\/jsonschema\/:id",
+      "path": "\/population\/typeschema\/:id",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
-      ],
-      "version": "*"
-    },
-    {
-      "path": "\/population\/raml",
-      "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
-      ],
-      "version": "*"
-    },
-    {
-      "path": "\/population\/raml\/:id",
-      "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
       "path": "\/population\/openapi",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
       "path": "\/population\/openapi\/:id",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
       "path": "\/population",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },
     {
       "path": "\/population\/:id",
       "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
+        "ANY"
       ],
       "version": "*"
     },

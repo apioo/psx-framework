@@ -31,15 +31,15 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SwaggerTest extends ApiTestCase
+class TypeSchemaTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/generator/swagger/*/population/popo', 'GET');
+        $response = $this->sendRequest('/generator/typeschema/*/population/popo', 'GET');
         $baseUrl  = new Uri(Environment::getBaseUrl());
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/swagger.json');
+        $expect = file_get_contents(__DIR__ . '/resource/typeschema.json');
         $expect = str_replace('"127.0.0.1"', json_encode($baseUrl->getAuthority()), $expect);
         $expect = str_replace('"\/"', json_encode($baseUrl->getPath()), $expect);
 
@@ -49,11 +49,11 @@ class SwaggerTest extends ApiTestCase
 
     public function testGetCollection()
     {
-        $response = $this->sendRequest('/generator/swagger/*/*', 'GET');
+        $response = $this->sendRequest('/generator/typeschema/*/*', 'GET');
         $baseUrl  = new Uri(Environment::getBaseUrl());
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
+        $expect = file_get_contents(__DIR__ . '/resource/typeschema_collection.json');
         $expect = str_replace('"127.0.0.1"', json_encode($baseUrl->getAuthority()), $expect);
         $expect = str_replace('"\/"', json_encode($baseUrl->getPath()), $expect);
 

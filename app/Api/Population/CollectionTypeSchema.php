@@ -25,10 +25,9 @@ use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * @Title("Population")
- * @Description("Entity endpoint")
- * @PathParam(name="id", type="integer", required=true)
+ * @Description("Collection endpoint")
  */
-class EntityJsonSchema extends SchemaApiAbstract
+class CollectionTypeSchema extends SchemaApiAbstract
 {
     /**
      * @Inject
@@ -37,23 +36,25 @@ class EntityJsonSchema extends SchemaApiAbstract
     protected $populationService;
 
     /**
-     * @Outgoing(code=200, schema="../../Resource/schema/population/entity.json")
+     * @QueryParam(name="startIndex", type="integer")
+     * @QueryParam(name="count", type="integer")
+     * @Outgoing(code=200, schema="../../Resource/schema/population/collection.json")
      */
     protected function doGet(HttpContextInterface $context)
     {
-        return $this->populationService->get(
-            $context->getUriFragment('id')
+        return $this->populationService->getAll(
+            $context->getParameter('startIndex'),
+            $context->getParameter('count')
         );
     }
 
     /**
      * @Incoming(schema="../../Resource/schema/population/entity.json")
-     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
+     * @Outgoing(code=201, schema="../../Resource/schema/population/message.json")
      */
-    protected function doPut($record, HttpContextInterface $context)
+    protected function doPost($record, HttpContextInterface $context)
     {
-        $this->populationService->update(
-            $context->getUriFragment('id'),
+        $this->populationService->create(
             $record['place'],
             $record['region'],
             $record['population'],
@@ -63,22 +64,7 @@ class EntityJsonSchema extends SchemaApiAbstract
 
         return [
             'success' => true,
-            'message' => 'Update successful',
-        ];
-    }
-
-    /**
-     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
-     */
-    protected function doDelete($record, HttpContextInterface $context)
-    {
-        $this->populationService->delete(
-            $context->getUriFragment('id')
-        );
-
-        return [
-            'success' => true,
-            'message' => 'Delete successful',
+            'message' => 'Create population successful',
         ];
     }
 }

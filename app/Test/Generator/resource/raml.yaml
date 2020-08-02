@@ -17,150 +17,21 @@ title: PSX
       200:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "definitions": {
-                      "Entity": {
-                          "type": "object",
-                          "title": "entity",
-                          "description": "Represents an internet population entity",
-                          "properties": {
-                              "id": {
-                                  "type": "integer",
-                                  "description": "Unique id for each entry"
-                              },
-                              "place": {
-                                  "type": "integer",
-                                  "description": "Position in the top list",
-                                  "minimum": 1,
-                                  "maximum": 64
-                              },
-                              "region": {
-                                  "type": "string",
-                                  "description": "Name of the region",
-                                  "pattern": "[A-z]+",
-                                  "minLength": 3,
-                                  "maxLength": 64
-                              },
-                              "population": {
-                                  "type": "integer",
-                                  "description": "Complete number of population"
-                              },
-                              "users": {
-                                  "type": "integer",
-                                  "description": "Number of internet users"
-                              },
-                              "worldUsers": {
-                                  "type": "number",
-                                  "description": "Percentage users of the world"
-                              },
-                              "datetime": {
-                                  "type": "string",
-                                  "description": "Date when the entity was created",
-                                  "format": "date-time"
-                              }
-                          },
-                          "required": [
-                              "place",
-                              "region",
-                              "population",
-                              "users",
-                              "worldUsers"
-                          ],
-                          "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-                      }
-                  },
-                  "type": "object",
-                  "title": "collection",
-                  "description": "Collection result",
-                  "properties": {
-                      "totalResults": {
-                          "type": "integer"
-                      },
-                      "entry": {
-                          "type": "array",
-                          "items": {
-                              "$ref": "#\/definitions\/Entity"
-                          }
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
-              }
+            type: PSXFrameworkAppApiPopulationCollectionPopoGet200Response
   post:
     body:
       application/json:
-        type: |
-          {
-              "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-              "id": "urn:schema.phpsx.org#",
-              "type": "object",
-              "title": "entity",
-              "description": "Represents an internet population entity",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "description": "Unique id for each entry"
-                  },
-                  "place": {
-                      "type": "integer",
-                      "description": "Position in the top list",
-                      "minimum": 1,
-                      "maximum": 64
-                  },
-                  "region": {
-                      "type": "string",
-                      "description": "Name of the region",
-                      "pattern": "[A-z]+",
-                      "minLength": 3,
-                      "maxLength": 64
-                  },
-                  "population": {
-                      "type": "integer",
-                      "description": "Complete number of population"
-                  },
-                  "users": {
-                      "type": "integer",
-                      "description": "Number of internet users"
-                  },
-                  "worldUsers": {
-                      "type": "number",
-                      "description": "Percentage users of the world"
-                  },
-                  "datetime": {
-                      "type": "string",
-                      "description": "Date when the entity was created",
-                      "format": "date-time"
-                  }
-              },
-              "required": [
-                  "place",
-                  "region",
-                  "population",
-                  "users",
-                  "worldUsers"
-              ],
-              "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-          }
+        type: 1
     responses:
       201:
         body:
           application/json:
-            type: |
-              {
-                  "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-                  "id": "urn:schema.phpsx.org#",
-                  "type": "object",
-                  "title": "message",
-                  "description": "Operation message",
-                  "properties": {
-                      "success": {
-                          "type": "boolean"
-                      },
-                      "message": {
-                          "type": "string"
-                      }
-                  },
-                  "x-psx-class": "PSX\\Framework\\App\\Model\\Message"
-              }
+            type: PSXFrameworkAppApiPopulationCollectionPopoPost201Response
+types:
+  Collection: { description: 'Collection result', type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
+  DogetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
+  Entity: { description: 'Represents an internet population entity', type: object, properties: { id: { description: 'Unique id for each entry', type: integer }, place: { description: 'Position in the top list', type: integer, minimum: 1, maximum: 64 }, region: { description: 'Name of the region', type: string, pattern: '[A-z]+', minLength: 3, maxLength: 64 }, population: { description: 'Complete number of population', type: integer }, users: { description: 'Number of internet users', type: integer }, worldUsers: { description: 'Percentage users of the world', type: number }, datetime: { description: 'Date when the entity was created', format: date-time, type: string } }, required: [place, region, population, users, worldUsers] }
+  Message: { title: message, description: 'Operation message', type: object }
+  PSXFrameworkAppApiPopulationCollectionPopoGet200Response: { $ref: '#/types/Collection' }
+  PSXFrameworkAppApiPopulationCollectionPopoPost201Response: { $ref: '#/types/Message' }
+  PSXFrameworkAppApiPopulationCollectionPopoPostRequest: { $ref: '#/types/Entity' }

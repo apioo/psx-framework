@@ -81,7 +81,7 @@ JSON;
         $actual = (string) $response->getBody();
         $actual = Parser::decode($actual);
 
-        $this->assertEquals(406, $response->getStatusCode(), $actual);
+        $this->assertEquals(406, $response->getStatusCode(), $actual->message);
         $this->assertEquals(false, $actual->success);
         $this->assertEquals('PSX\\Http\\Exception\\NotAcceptableException', $actual->title);
         $this->assertEquals('Version is not available', substr($actual->message, 0, 24));

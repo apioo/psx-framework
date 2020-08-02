@@ -133,8 +133,7 @@ JSON;
     {
         return [
             ['population/popo'],
-            ['population/jsonschema'],
-            ['population/raml'],
+            ['population/typeschema'],
             ['population/openapi'],
         ];
     }

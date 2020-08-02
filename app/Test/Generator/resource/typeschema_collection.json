@@ -1,0 +1,563 @@
+{
+  "paths": {
+    "\/population\/popo": {
+      "status": 1,
+      "path": "\/population\/popo",
+      "title": "Population",
+      "description": "Collection endpoint",
+      "methods": {
+        "GET": {
+          "operationId": "doGet",
+          "tags": [],
+          "queryParameters": "DogetQuery",
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+          }
+        },
+        "POST": {
+          "operationId": "doPost",
+          "tags": [],
+          "request": "PSXFrameworkAppApiPopulationCollectionPopoPostRequest",
+          "responses": {
+            "201": "PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
+          }
+        }
+      }
+    },
+    "\/population\/popo\/:id": {
+      "status": 1,
+      "path": "\/population\/popo\/:id",
+      "title": "Population",
+      "description": "Entity endpoint",
+      "pathParameters": "Path",
+      "methods": {
+        "GET": {
+          "operationId": "doGet",
+          "tags": [],
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityPopoGet200Response"
+          }
+        },
+        "PUT": {
+          "operationId": "doPut",
+          "tags": [],
+          "request": "PSXFrameworkAppApiPopulationEntityPopoPutRequest",
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityPopoPut200Response"
+          }
+        },
+        "DELETE": {
+          "operationId": "doDelete",
+          "tags": [],
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityPopoDelete200Response"
+          }
+        }
+      }
+    },
+    "\/population\/typeschema": {
+      "status": 1,
+      "path": "\/population\/typeschema",
+      "title": "Population",
+      "description": "Collection endpoint",
+      "methods": {
+        "GET": {
+          "operationId": "doGet",
+          "tags": [],
+          "queryParameters": "DogetQuery",
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response"
+          }
+        },
+        "POST": {
+          "operationId": "doPost",
+          "tags": [],
+          "request": "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest",
+          "responses": {
+            "201": "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response"
+          }
+        }
+      }
+    },
+    "\/population\/typeschema\/:id": {
+      "status": 1,
+      "path": "\/population\/typeschema\/:id",
+      "title": "Population",
+      "description": "Entity endpoint",
+      "pathParameters": "Path",
+      "methods": {
+        "GET": {
+          "operationId": "doGet",
+          "tags": [],
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response"
+          }
+        },
+        "PUT": {
+          "operationId": "doPut",
+          "tags": [],
+          "request": "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest",
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response"
+          }
+        },
+        "DELETE": {
+          "operationId": "doDelete",
+          "tags": [],
+          "responses": {
+            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response"
+          }
+        }
+      }
+    },
+    "\/population\/openapi": {
+      "status": 1,
+      "path": "\/population\/openapi",
+      "title": "Returns a collection of population entries",
+      "methods": {
+        "GET": {
+          "operationId": "doGet",
+          "tags": [],
+          "queryParameters": "PopulationOpenapiGetQuery",
+          "responses": {
+            "200": "Collection"
+          }
+        },
+        "POST": {
+          "tags": [],
+          "request": "Entity",
+          "responses": {
+            "201": "Message"
+          }
+        }
+      }
+    },
+    "\/population\/openapi\/:id": {
+      "status": 1,
+      "path": "\/population\/openapi\/:id",
+      "title": "Returns a collection of population entries",
+      "pathParameters": "PopulationOpenapiIdPath",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "queryParameters": "PopulationOpenapiIdGetQuery",
+          "responses": {
+            "200": "Collection"
+          }
+        },
+        "PUT": {
+          "tags": [],
+          "request": "Entity",
+          "responses": {
+            "200": "Message"
+          }
+        },
+        "DELETE": {
+          "tags": [],
+          "responses": {
+            "200": "Message"
+          }
+        }
+      }
+    },
+    "\/tool": {
+      "status": 1,
+      "path": "\/tool",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Welcome"
+          }
+        }
+      }
+    },
+    "\/tool\/discovery": {
+      "status": 1,
+      "path": "\/tool\/discovery",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Discovery_Collection"
+          }
+        }
+      }
+    },
+    "\/tool\/doc": {
+      "status": 1,
+      "path": "\/tool\/doc",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Documentation_Index"
+          }
+        }
+      }
+    },
+    "\/tool\/doc\/:version\/*path": {
+      "status": 1,
+      "path": "\/tool\/doc\/:version\/*path",
+      "pathParameters": "Documentation_Path",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Documentation_Detail"
+          }
+        }
+      }
+    },
+    "\/tool\/routing": {
+      "status": 1,
+      "path": "\/tool\/routing",
+      "methods": {
+        "GET": {
+          "tags": [],
+          "responses": {
+            "200": "Routing_Collection"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Collection": {
+      "description": "Collection result",
+      "type": "object",
+      "properties": {
+        "totalResults": {
+          "type": "integer"
+        },
+        "entry": {
+          "type": "array",
+          "items": {
+            "$ref": "Entity"
+          }
+        }
+      }
+    },
+    "Discovery_Collection": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
+          }
+        }
+      }
+    },
+    "Discovery_Link": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Documentation_Detail": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "Documentation_Schema"
+        },
+        "pathParameters": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "Documentation_Methods"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
+          }
+        }
+      }
+    },
+    "Documentation_Index": {
+      "type": "object",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "Documentation_Route"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
+          }
+        }
+      }
+    },
+    "Documentation_Method": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "queryParameters": {
+          "type": "string"
+        },
+        "request": {
+          "type": "string"
+        },
+        "responses": {
+          "$ref": "Documentation_Method_Responses"
+        }
+      }
+    },
+    "Documentation_Method_Responses": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "Documentation_Methods": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "Documentation_Method"
+      }
+    },
+    "Documentation_Path": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "Documentation_Route": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Documentation_Schema": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "DogetQuery": {
+      "type": "object",
+      "properties": {
+        "startIndex": {
+          "type": "integer"
+        },
+        "count": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "Entity": {
+      "description": "Represents an internet population entity",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique id for each entry",
+          "type": "integer"
+        },
+        "place": {
+          "description": "Position in the top list",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "region": {
+          "description": "Name of the region",
+          "type": "string",
+          "pattern": "[A-z]+",
+          "minLength": 3,
+          "maxLength": 64
+        },
+        "population": {
+          "description": "Complete number of population",
+          "type": "integer"
+        },
+        "users": {
+          "description": "Number of internet users",
+          "type": "integer"
+        },
+        "worldUsers": {
+          "description": "Percentage users of the world",
+          "type": "number"
+        },
+        "datetime": {
+          "description": "Date when the entity was created",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "place",
+        "region",
+        "population",
+        "users",
+        "worldUsers"
+      ]
+    },
+    "Message": {
+      "title": "message",
+      "description": "Operation message",
+      "type": "object"
+    },
+    "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
+      "$ref": "Collection"
+    },
+    "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+      "$ref": "Entity"
+    },
+    "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response": {
+      "$ref": "Collection"
+    },
+    "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest": {
+      "$ref": "Entity"
+    },
+    "PSXFrameworkAppApiPopulationEntityPopoDelete200Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationEntityPopoGet200Response": {
+      "$ref": "Entity"
+    },
+    "PSXFrameworkAppApiPopulationEntityPopoPut200Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationEntityPopoPutRequest": {
+      "$ref": "Entity"
+    },
+    "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response": {
+      "$ref": "Entity"
+    },
+    "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response": {
+      "$ref": "Message"
+    },
+    "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest": {
+      "$ref": "Entity"
+    },
+    "Path": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "PopulationOpenapiGetQuery": {
+      "type": "object",
+      "properties": {
+        "startIndex": {
+          "type": "integer"
+        },
+        "count": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "PopulationOpenapiIdGetQuery": {
+      "type": "object",
+      "properties": {
+        "startIndex": {
+          "type": "integer"
+        },
+        "count": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "PopulationOpenapiIdPath": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "Routing_Collection": {
+      "type": "object",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "Routing_Route"
+          }
+        }
+      }
+    },
+    "Routing_Route": {
+      "type": "object",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "Welcome": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
