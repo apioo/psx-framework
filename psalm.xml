@@ -12,4 +12,11 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <globals>
+        <var name="PSX" type="string" />
+        <var name="PSX_PATH_CACHE" type="string" />
+        <var name="PSX_PATH_PUBLIC" type="string" />
+        <var name="PSX_PATH_SRC" type="string" />
+        <var name="PSX_PATH_LIBRARY" type="string" />
+    </globals>
 </psalm>
