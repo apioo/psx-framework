@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Environment\CLI;
 
-use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\Dispatch;
-use PSX\Framework\Environment\EngineInterface;
+use PSX\Engine\DispatchInterface;
+use PSX\Engine\EngineInterface;
 use PSX\Http\Request;
 use PSX\Http\Server\ResponseFactory;
 use PSX\Uri\Uri;
@@ -63,7 +62,7 @@ class Engine implements EngineInterface
     /**
      * @inheritdoc
      */
-    public function serve(Dispatch $dispatch, Config $config)
+    public function serve(DispatchInterface $dispatch): void
     {
         $request  = $this->createRequest($this->input->getArgument('method'), $this->input->getArgument('uri'), $this->input->getArgument('headers'));
         $response = (new ResponseFactory())->createResponse();
@@ -71,8 +70,6 @@ class Engine implements EngineInterface
         $response = $dispatch->route($request, $response);
 
         $this->output->write($response->getBody()->__toString());
-
-        return $response->getStatusCode() >= 400 && $response->getStatusCode() < 600 ? 1 : 0;
     }
 
     /**
