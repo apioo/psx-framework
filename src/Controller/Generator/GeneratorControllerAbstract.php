@@ -79,7 +79,7 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
 
         if ($result instanceof Chunks) {
             // write chunks to zip file
-            $file = tempnam(PSX_PATH_CACHE, 'sdk');
+            $file = tempnam($this->config->get('psx_path_cache'), 'sdk');
             $result->writeTo($file);
 
             $result = new File($file, 'sdk.zip', 'application/zip');
