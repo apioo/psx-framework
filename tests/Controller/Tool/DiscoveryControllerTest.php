@@ -113,10 +113,6 @@ JSON;
             "href": "http:\/\/127.0.0.1\/openapi"
         },
         {
-            "rel": "swagger",
-            "href": "http:\/\/127.0.0.1\/swagger"
-        },
-        {
             "rel": "raml",
             "href": "http:\/\/127.0.0.1\/raml"
         }
