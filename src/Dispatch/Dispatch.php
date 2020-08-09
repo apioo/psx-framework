@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Dispatch;
 
+use PSX\Engine\DispatchInterface;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Controller\ErrorController;
 use PSX\Framework\Event\Context\ControllerContext;
@@ -47,7 +48,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Dispatch
+class Dispatch implements DispatchInterface
 {
     /**
      * @var \PSX\Framework\Config\Config
@@ -105,7 +106,7 @@ class Dispatch
      * @param \PSX\Framework\Loader\Context $context
      * @return \PSX\Http\ResponseInterface
      */
-    public function route(RequestInterface $request, ResponseInterface $response, Context $context = null)
+    public function route(RequestInterface $request, ResponseInterface $response, Context $context = null): ResponseInterface
     {
         $this->level++;
 
