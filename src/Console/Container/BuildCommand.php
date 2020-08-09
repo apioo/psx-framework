@@ -23,6 +23,7 @@ namespace PSX\Framework\Console\Container;
 use Doctrine\Common\Annotations\Reader;
 use Psr\Container\ContainerInterface;
 use PSX\Dependency\Compiler\PhpCompiler;
+use PSX\Framework\Config\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,19 +40,25 @@ class BuildCommand extends Command
     /**
      * @var \Psr\Container\ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var \Doctrine\Common\Annotations\Reader
      */
     private $reader;
 
-    public function __construct(ContainerInterface $container, Reader $reader)
+    /**
+     * @var Config
+     */
+    private $config;
+
+    public function __construct(ContainerInterface $container, Reader $reader, Config $config)
     {
         parent::__construct();
 
         $this->container = $container;
         $this->reader = $reader;
+        $this->config = $config;
     }
 
     protected function configure()
@@ -70,7 +77,7 @@ class BuildCommand extends Command
         $code.= '$container->setParameter(\'config.file\', __DIR__ . \'/../configuration.php\');' . "\n";
         $code.= 'return $container;' . "\n";
 
-        $file = PSX_PATH_CACHE . '/container.compiled.php';
+        $file = $this->config->get('psx_path_cache') . '/container.compiled.php';
         file_put_contents($file, $code);
 
         $output->writeln('Write compiled container to: ' . $file);
