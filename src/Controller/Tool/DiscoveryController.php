@@ -87,7 +87,6 @@ class DiscoveryController extends SchemaApiAbstract
 
         $generators = [
             'openapi' => OpenAPIController::class,
-            'swagger' => SwaggerController::class,
             'raml'    => RamlController::class,
         ];
 
