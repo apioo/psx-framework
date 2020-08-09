@@ -21,6 +21,7 @@
     "psx/api": "^3.0-RC1",
     "psx/cache": "^1.0",
     "psx/data": "^3.0-RC1",
+    "psx/engine": "^0.1",
     "psx/dependency": "^1.0",
     "psx/http": "^2.0",
     "psx/json": "^1.0",
