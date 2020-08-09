@@ -41,28 +41,30 @@ class FileTest extends SchemaTestCase
     {
         return <<<'JSON'
 {
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "type": "object",
-    "title": "file",
-    "description": "File upload provided through a multipart\/form-data post",
-    "properties": {
-        "name": {
-            "type": "string"
-        },
-        "type": {
-            "type": "string"
-        },
-        "size": {
-            "type": "integer"
-        },
-        "tmp_name": {
-            "type": "string"
-        },
-        "error": {
-            "type": "integer"
+    "definitions": {
+        "File": {
+            "description": "File upload provided through a multipart\/form-data post",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "tmp_name": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "integer"
+                }
+            }
         }
-    }
+    },
+    "$ref": "File"
 }
 JSON;
     }

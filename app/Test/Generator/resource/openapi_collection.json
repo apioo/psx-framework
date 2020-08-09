@@ -12,7 +12,7 @@
   "paths": {
     "\/population\/popo": {
       "get": {
-        "operationId": "populationPopoDoGet",
+        "operationId": "doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -33,11 +33,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Collection result",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
                 }
               }
             }
@@ -45,41 +45,41 @@
         }
       },
       "post": {
-        "operationId": "populationPopoDoPost",
+        "operationId": "doPost",
         "requestBody": {
+          "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
+                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPostRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Operation message",
+            "description": "POST 201 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
                 }
               }
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
     "\/population\/popo\/{id}": {
       "get": {
-        "operationId": "populationPopoIdDoGet",
+        "operationId": "doGet",
         "responses": {
           "200": {
-            "description": "Represents an internet population entity",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Entity"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoGet200Response"
                 }
               }
             }
@@ -87,23 +87,24 @@
         }
       },
       "put": {
-        "operationId": "populationPopoIdDoPut",
+        "operationId": "doPut",
         "requestBody": {
+          "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
+                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoPutRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "PUT 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoPut200Response"
                 }
               }
             }
@@ -111,14 +112,14 @@
         }
       },
       "delete": {
-        "operationId": "populationPopoIdDoDelete",
+        "operationId": "doDelete",
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "DELETE 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoDelete200Response"
                 }
               }
             }
@@ -136,9 +137,9 @@
         }
       ]
     },
-    "\/population\/jsonschema": {
+    "\/population\/typeschema": {
       "get": {
-        "operationId": "populationJsonschemaDoGet",
+        "operationId": "doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -159,11 +160,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Collection result",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response"
                 }
               }
             }
@@ -171,41 +172,41 @@
         }
       },
       "post": {
-        "operationId": "populationJsonschemaDoPost",
+        "operationId": "doPost",
         "requestBody": {
+          "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
+                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Operation message",
+            "description": "POST 201 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response"
                 }
               }
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
-    "\/population\/jsonschema\/{id}": {
+    "\/population\/typeschema\/{id}": {
       "get": {
-        "operationId": "populationJsonschemaIdDoGet",
+        "operationId": "doGet",
         "responses": {
           "200": {
-            "description": "Represents an internet population entity",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Entity"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response"
                 }
               }
             }
@@ -213,23 +214,24 @@
         }
       },
       "put": {
-        "operationId": "populationJsonschemaIdDoPut",
+        "operationId": "doPut",
         "requestBody": {
+          "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
+                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "PUT 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response"
                 }
               }
             }
@@ -237,140 +239,14 @@
         }
       },
       "delete": {
-        "operationId": "populationJsonschemaIdDoDelete",
+        "operationId": "doDelete",
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "DELETE 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer"
-          }
-        }
-      ]
-    },
-    "\/population\/raml": {
-      "get": {
-        "operationId": "populationRamlGetCollection",
-        "parameters": [
-          {
-            "name": "startIndex",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "count",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Collection result",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "populationRamlPostEntity",
-        "requestBody": {
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": []
-    },
-    "\/population\/raml\/{id}": {
-      "get": {
-        "operationId": "populationRamlIdGetEntity",
-        "responses": {
-          "200": {
-            "description": "Represents an internet population entity",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Entity"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "operationId": "populationRamlIdPutEntity",
-        "requestBody": {
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "populationRamlIdDeleteMessage",
-        "responses": {
-          "200": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response"
                 }
               }
             }
@@ -390,7 +266,7 @@
     },
     "\/population\/openapi": {
       "get": {
-        "operationId": "populationOpenapiDoGet",
+        "operationId": "doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -411,7 +287,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Collection result",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -423,8 +299,8 @@
         }
       },
       "post": {
-        "operationId": "populationOpenapiPostEntity",
         "requestBody": {
+          "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
@@ -435,7 +311,7 @@
         },
         "responses": {
           "201": {
-            "description": "Operation message",
+            "description": "POST 201 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -445,12 +321,10 @@
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
     "\/population\/openapi\/{id}": {
       "get": {
-        "operationId": "populationOpenapiIdGetCollection",
         "parameters": [
           {
             "name": "startIndex",
@@ -471,7 +345,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Collection result",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -483,8 +357,8 @@
         }
       },
       "put": {
-        "operationId": "populationOpenapiIdPutEntity",
         "requestBody": {
+          "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
@@ -495,7 +369,7 @@
         },
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "PUT 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -507,10 +381,9 @@
         }
       },
       "delete": {
-        "operationId": "populationOpenapiIdDeleteMessage",
         "responses": {
           "200": {
-            "description": "Operation message",
+            "description": "DELETE 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -525,133 +398,7 @@
         {
           "name": "id",
           "in": "path",
-          "required": true,
-          "schema": {
-            "type": "integer"
-          }
-        }
-      ]
-    },
-    "\/population": {
-      "get": {
-        "operationId": "populationDoGet",
-        "parameters": [
-          {
-            "name": "startIndex",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "count",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Collection result",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "populationDoPost",
-        "requestBody": {
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": []
-    },
-    "\/population\/{id}": {
-      "get": {
-        "operationId": "populationIdDoGet",
-        "responses": {
-          "200": {
-            "description": "Represents an internet population entity",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Entity"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "operationId": "populationIdDoPut",
-        "requestBody": {
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "populationIdDoDelete",
-        "responses": {
-          "200": {
-            "description": "Operation message",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
+          "required": false,
           "schema": {
             "type": "integer"
           }
@@ -660,28 +407,25 @@
     },
     "\/tool": {
       "get": {
-        "operationId": "toolGetMessage",
         "responses": {
           "200": {
-            "description": "GET 200 response",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/Welcome"
                 }
               }
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
     "\/tool\/discovery": {
       "get": {
-        "operationId": "toolDiscoveryGetDiscovery_Collection",
         "responses": {
           "200": {
-            "description": "GET 200 response",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -691,15 +435,13 @@
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
     "\/tool\/doc": {
       "get": {
-        "operationId": "toolDocGetDocumentation_Index",
         "responses": {
           "200": {
-            "description": "GET 200 response",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -709,15 +451,13 @@
             }
           }
         }
-      },
-      "parameters": []
+      }
     },
     "\/tool\/doc\/{version}\/{path}": {
       "get": {
-        "operationId": "toolDocVersionPathGetDocumentation_Detail",
         "responses": {
           "200": {
-            "description": "GET 200 response",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -732,7 +472,7 @@
         {
           "name": "version",
           "in": "path",
-          "required": true,
+          "required": false,
           "schema": {
             "type": "string"
           }
@@ -740,7 +480,7 @@
         {
           "name": "path",
           "in": "path",
-          "required": true,
+          "required": false,
           "schema": {
             "type": "string"
           }
@@ -749,10 +489,9 @@
     },
     "\/tool\/routing": {
       "get": {
-        "operationId": "toolRoutingGetRouting_Collection",
         "responses": {
           "200": {
-            "description": "GET 200 response",
+            "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
@@ -762,65 +501,14 @@
             }
           }
         }
-      },
-      "parameters": []
+      }
     }
   },
   "components": {
     "schemas": {
-      "Entity": {
-        "type": "object",
-        "title": "entity",
-        "description": "Represents an internet population entity",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Unique id for each entry"
-          },
-          "place": {
-            "type": "integer",
-            "description": "Position in the top list",
-            "minimum": 1,
-            "maximum": 64
-          },
-          "region": {
-            "type": "string",
-            "description": "Name of the region",
-            "pattern": "[A-z]+",
-            "minLength": 3,
-            "maxLength": 64
-          },
-          "population": {
-            "type": "integer",
-            "description": "Complete number of population"
-          },
-          "users": {
-            "type": "integer",
-            "description": "Number of internet users"
-          },
-          "worldUsers": {
-            "type": "number",
-            "description": "Percentage users of the world"
-          },
-          "datetime": {
-            "type": "string",
-            "description": "Date when the entity was created",
-            "format": "date-time"
-          }
-        },
-        "required": [
-          "place",
-          "region",
-          "population",
-          "users",
-          "worldUsers"
-        ],
-        "x-psx-class": "PSX\\Framework\\App\\Model\\Entity"
-      },
       "Collection": {
-        "type": "object",
-        "title": "collection",
         "description": "Collection result",
+        "type": "object",
         "properties": {
           "totalResults": {
             "type": "integer"
@@ -831,24 +519,21 @@
               "$ref": "#\/components\/schemas\/Entity"
             }
           }
-        },
-        "x-psx-class": "PSX\\Framework\\App\\Model\\Collection"
+        }
       },
-      "Message": {
+      "Discovery_Collection": {
         "type": "object",
-        "title": "message",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Discovery_Link"
+            }
           }
         }
       },
       "Discovery_Link": {
         "type": "object",
-        "title": "Discovery Link",
         "properties": {
           "rel": {
             "type": "string"
@@ -858,95 +543,8 @@
           }
         }
       },
-      "Discovery_Collection": {
-        "type": "object",
-        "title": "Discovery Collection",
-        "properties": {
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/components\/schemas\/Discovery_Link"
-            }
-          }
-        }
-      },
-      "Documentation_Route": {
-        "type": "object",
-        "title": "Documentation Route",
-        "properties": {
-          "path": {
-            "type": "string"
-          },
-          "methods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "version": {
-            "type": "string"
-          }
-        }
-      },
-      "Documentation_Index": {
-        "type": "object",
-        "title": "Documentation Index",
-        "properties": {
-          "routings": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/components\/schemas\/Documentation_Route"
-            }
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/components\/schemas\/Discovery_Link"
-            }
-          }
-        }
-      },
-      "Documentation_Schema": {
-        "type": "object",
-        "title": "Documentation Schema",
-        "description": "Contains the JSON Schema object",
-        "additionalProperties": true
-      },
-      "Documentation_Methods": {
-        "type": "object",
-        "title": "Documentation Methods",
-        "additionalProperties": {
-          "$ref": "#\/components\/schemas\/Documentation_Method"
-        }
-      },
-      "Documentation_Method": {
-        "type": "object",
-        "title": "Documentation Method",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "queryParameters": {
-            "type": "string"
-          },
-          "request": {
-            "type": "string"
-          },
-          "responses": {
-            "$ref": "#\/components\/schemas\/Documentation_Method_Responses"
-          }
-        }
-      },
-      "Documentation_Method_Responses": {
-        "type": "object",
-        "title": "Documentation Method Responses",
-        "additionalProperties": {
-          "type": "string"
-        }
-      },
       "Documentation_Detail": {
         "type": "object",
-        "title": "Documentation Detail",
         "properties": {
           "path": {
             "type": "string"
@@ -977,9 +575,247 @@
           }
         }
       },
+      "Documentation_Index": {
+        "type": "object",
+        "properties": {
+          "routings": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Documentation_Route"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Discovery_Link"
+            }
+          }
+        }
+      },
+      "Documentation_Method": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "queryParameters": {
+            "type": "string"
+          },
+          "request": {
+            "type": "string"
+          },
+          "responses": {
+            "$ref": "#\/components\/schemas\/Documentation_Method_Responses"
+          }
+        }
+      },
+      "Documentation_Method_Responses": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "Documentation_Methods": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#\/components\/schemas\/Documentation_Method"
+        }
+      },
+      "Documentation_Path": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "Documentation_Route": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "Documentation_Schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "DogetQuery": {
+        "type": "object",
+        "properties": {
+          "startIndex": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "Entity": {
+        "description": "Represents an internet population entity",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique id for each entry",
+            "type": "integer"
+          },
+          "place": {
+            "description": "Position in the top list",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "region": {
+            "description": "Name of the region",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 64
+          },
+          "population": {
+            "description": "Complete number of population",
+            "type": "integer"
+          },
+          "users": {
+            "description": "Number of internet users",
+            "type": "integer"
+          },
+          "worldUsers": {
+            "description": "Percentage users of the world",
+            "type": "number"
+          },
+          "datetime": {
+            "description": "Date when the entity was created",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place",
+          "region",
+          "population",
+          "users",
+          "worldUsers"
+        ]
+      },
+      "Message": {
+        "title": "message",
+        "description": "Operation message",
+        "type": "object"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
+        "$ref": "#\/components\/schemas\/Collection"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response": {
+        "$ref": "#\/components\/schemas\/Collection"
+      },
+      "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSXFrameworkAppApiPopulationEntityPopoDelete200Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationEntityPopoGet200Response": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSXFrameworkAppApiPopulationEntityPopoPut200Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationEntityPopoPutRequest": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest": {
+        "$ref": "#\/components\/schemas\/Entity"
+      },
+      "Path": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "PopulationOpenapiGetQuery": {
+        "type": "object",
+        "properties": {
+          "startIndex": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "PopulationOpenapiIdGetQuery": {
+        "type": "object",
+        "properties": {
+          "startIndex": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "PopulationOpenapiIdPath": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": []
+      },
+      "Routing_Collection": {
+        "type": "object",
+        "properties": {
+          "routings": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Routing_Route"
+            }
+          }
+        }
+      },
       "Routing_Route": {
         "type": "object",
-        "title": "Routing Route",
         "properties": {
           "methods": {
             "type": "array",
@@ -995,15 +831,14 @@
           }
         }
       },
-      "Routing_Collection": {
+      "Welcome": {
         "type": "object",
-        "title": "Routing Collection",
         "properties": {
-          "routings": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/components\/schemas\/Routing_Route"
-            }
+          "message": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
           }
         }
       }

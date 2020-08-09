@@ -20,18 +20,15 @@
 
 namespace PSX\Framework\App\Api\Population;
 
-use PSX\Api\Parser\Raml;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
 /**
- * EntityRaml
- *
- * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * @link    http://phpsx.org
+ * @Title("Population")
+ * @Description("Entity endpoint")
+ * @PathParam(name="id", type="integer", required=true)
  */
-class EntityRaml extends SchemaApiAbstract
+class EntityTypeSchema extends SchemaApiAbstract
 {
     /**
      * @Inject
@@ -39,11 +36,9 @@ class EntityRaml extends SchemaApiAbstract
      */
     protected $populationService;
 
-    public function getDocumentation($version = null)
-    {
-        return Raml::fromFile(__DIR__ . '/../../Resource/population.raml', $this->context->getPath());
-    }
-
+    /**
+     * @Outgoing(code=200, schema="../../Resource/schema/population/entity.json")
+     */
     protected function doGet(HttpContextInterface $context)
     {
         return $this->populationService->get(
@@ -51,6 +46,10 @@ class EntityRaml extends SchemaApiAbstract
         );
     }
 
+    /**
+     * @Incoming(schema="../../Resource/schema/population/entity.json")
+     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
+     */
     protected function doPut($record, HttpContextInterface $context)
     {
         $this->populationService->update(
@@ -68,6 +67,9 @@ class EntityRaml extends SchemaApiAbstract
         ];
     }
 
+    /**
+     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
+     */
     protected function doDelete($record, HttpContextInterface $context)
     {
         $this->populationService->delete(

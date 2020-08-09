@@ -33,7 +33,7 @@ interface GeneratorFactoryInterface
      * Returns a generator based on a content type
      *
      * @param string $contentType
-     * @return \PSX\Template\GeneratorInterface
+     * @return GeneratorInterface
      */
     public function getByContentType($contentType);
 }

@@ -24,6 +24,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Loader\InvalidPathException;
 use PSX\Framework\Loader\Loader;
 use PSX\Framework\Loader\LocationFinder\CallbackMethod;
 use PSX\Framework\Loader\LocationFinderInterface;
@@ -140,11 +141,10 @@ class LoaderTest extends TestCase
         $this->assertEquals($expect, $testListener->getCalled());
     }
 
-    /**
-     * @expectedException \PSX\Framework\Loader\InvalidPathException
-     */
     public function testLoadUnknownLocation()
     {
+        $this->expectException(InvalidPathException::class);
+
         $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
             return null;
         });

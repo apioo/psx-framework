@@ -33,7 +33,7 @@ use PSX\Framework\Test\Environment;
  */
 class TwigTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('Twig_Environment')) {
             $this->markTestSkipped('Twig is not installed');

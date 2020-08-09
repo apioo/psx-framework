@@ -40,36 +40,31 @@ class DefaultControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "path": "\/",
-    "version": "*",
-    "status": 1,
-    "description": null,
-    "schema": {
-        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-        "id": "urn:schema.phpsx.org#",
-        "definitions": {
-            "Message": {
-                "type": "object",
-                "title": "message",
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    }
+    "definitions": {
+        "Welcome": {
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 }
             },
-            "GET-200-response": {
-                "$ref": "#\/definitions\/Message"
-            }
+            "type": "object"
         }
     },
-    "methods": {
-        "GET": {
-            "responses": {
-                "200": "#\/definitions\/GET-200-response"
-            }
+    "paths": {
+        "/": {
+            "methods": {
+                "GET": {
+                    "responses": {
+                        "200": "Welcome"
+                    },
+                    "tags": []
+                }
+            },
+            "path": "/",
+            "status": 1
         }
     }
 }

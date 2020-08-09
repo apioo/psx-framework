@@ -32,14 +32,12 @@ use PSX\Schema\SchemaAbstract;
  */
 class Error extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('error');
-        $sb->string('error');
-        $sb->string('error_description');
-        $sb->string('error_uri');
-        $sb->string('state');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Error');
+        $type->addString('error');
+        $type->addString('error_description');
+        $type->addString('error_uri');
+        $type->addString('state');
     }
 }

@@ -1,27 +1,37 @@
 {
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PSX",
+    "version": "0.1"
+  },
   "paths": {
     "/api/{id}": {
-      "parameters": [{
-        "name": "id",
-        "in": "path",
-        "schema": {
-          "type": "integer"
-        }
-      }],
-      "get": {
-        "parameters": [{
-          "name": "type",
-          "in": "query",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
           "schema": {
             "type": "integer"
           }
-        }],
+        }
+      ],
+      "get": {
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/property"
+                  "$ref": "#/components/schemas/Property"
                 }
               }
             }
@@ -33,17 +43,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/property"
+                "$ref": "#/components/schemas/Property"
               }
             }
           }
         },
         "responses": {
           "200": {
+            "description": "200 Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/property"
+                  "$ref": "#/components/schemas/Property"
                 }
               }
             }
@@ -53,15 +64,48 @@
     }
   },
   "components": {
-    "schema": {
-      "property": {
+    "schemas": {
+      "Any": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "ChoiceA": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "foo"
+        ]
+      },
+      "ChoiceB": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bar"
+        ]
+      },
+      "Complex": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
+      "Property": {
         "type": "object",
         "properties": {
           "any": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/Any"
           },
           "array": {
             "type": "array",
@@ -72,71 +116,37 @@
           "arrayComplex": {
             "type": "array",
             "items": {
-              "title": "a",
-              "type": "object",
-              "properties": {
-                "foo": {
-                  "type": "string"
-                }
-              }
+              "$ref": "#/components/schemas/Complex"
             }
           },
           "arrayChoice": {
             "type": "array",
             "items": {
-              "oneOf": [{
-                "title": "choiceA",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "foo": {
-                    "type": "string"
-                  }
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ChoiceA"
+                },
+                {
+                  "$ref": "#/components/schemas/ChoiceB"
                 }
-              },{
-                "title": "choiceB",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "bar": {
-                    "type": "string"
-                  }
-                }
-              }]
+              ]
             }
           },
           "boolean": {
             "type": "boolean"
           },
           "choice": {
-            "oneOf": [{
-              "title": "choiceA",
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "foo": {
-                  "type": "string"
-                }
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChoiceA"
+              },
+              {
+                "$ref": "#/components/schemas/ChoiceB"
               }
-            },{
-              "title": "choiceB",
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "bar": {
-                  "type": "string"
-                }
-              }
-            }]
+            ]
           },
           "complex": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "foo": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/Complex"
           },
           "date": {
             "type": "string",

@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Resource;
+use PSX\Api\Specification;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo;
@@ -49,20 +51,14 @@ class TestSchemaApiV2Controller extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $schema = $this->schemaManager->getSchema(Foo\Schema\Collection::class);
+        $get = $builder->addMethod('GET');
+        $get->addResponse(200, Foo\Schema\CollectionV2::class);
 
-        // remove userId property so we have a different output
-        $property = $schema->getDefinition();
-        $property->getProperty('entry')->getItems()->removeProperty('userId');
-
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, new Schema($property)));
-
-        return $resource;
+        return $builder->getSpecification();
     }
 
     protected function doGet(HttpContextInterface $context)

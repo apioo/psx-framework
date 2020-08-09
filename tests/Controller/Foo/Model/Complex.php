@@ -26,12 +26,11 @@ namespace PSX\Framework\Tests\Controller\Foo\Model;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @AdditionalProperties(false)
  */
 class Complex
 {
     /**
-     * @Type("string")
+     * @var string
      */
     protected $foo;
 

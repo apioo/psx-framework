@@ -39,7 +39,7 @@ use PSX\Framework\Tests\Oauth2\GrantType\TestRefreshToken;
  */
 class TokenAbstractTest extends ControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -60,168 +60,151 @@ class TokenAbstractTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "path": "\/token",
-    "version": "*",
-    "status": 1,
-    "description": null,
-    "schema": {
-        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-        "id": "urn:schema.phpsx.org#",
-        "definitions": {
-            "Authorization_code": {
-                "type": "object",
-                "title": "authorization_code",
-                "properties": {
-                    "grant_type": {
-                        "type": "string",
-                        "const": "authorization_code"
-                    },
-                    "code": {
-                        "type": "string"
-                    },
-                    "redirect_uri": {
-                        "type": "string"
-                    },
-                    "client_id": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "grant_type",
-                    "code"
-                ]
-            },
-            "Password": {
-                "type": "object",
-                "title": "password",
-                "properties": {
-                    "grant_type": {
-                        "type": "string",
-                        "const": "password"
-                    },
-                    "username": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "scope": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "grant_type",
-                    "username",
-                    "password"
-                ]
-            },
-            "Client_credentials": {
-                "type": "object",
-                "title": "client_credentials",
-                "properties": {
-                    "grant_type": {
-                        "type": "string",
-                        "const": "client_credentials"
-                    },
-                    "scope": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "grant_type"
-                ]
-            },
-            "Refresh_token": {
-                "type": "object",
-                "title": "refresh_token",
-                "properties": {
-                    "grant_type": {
-                        "type": "string",
-                        "const": "refresh_token"
-                    },
-                    "refresh_token": {
-                        "type": "string"
-                    },
-                    "scope": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "grant_type",
-                    "refresh_token"
-                ]
-            },
-            "Authorization": {
-                "title": "authorization",
-                "oneOf": [
-                    {
-                        "$ref": "#\/definitions\/Authorization_code"
-                    },
-                    {
-                        "$ref": "#\/definitions\/Password"
-                    },
-                    {
-                        "$ref": "#\/definitions\/Client_credentials"
-                    },
-                    {
-                        "$ref": "#\/definitions\/Refresh_token"
-                    }
-                ]
-            },
-            "Access_token": {
-                "type": "object",
-                "title": "access_token",
-                "properties": {
-                    "access_token": {
-                        "type": "string"
-                    },
-                    "token_type": {
-                        "type": "string"
-                    },
-                    "expires_in": {
-                        "type": "string"
-                    },
-                    "refresh_token": {
-                        "type": "string"
+    "paths": {
+        "\/token": {
+            "status": 1,
+            "path": "\/token",
+            "methods": {
+                "POST": {
+                    "tags": [],
+                    "request": "OAuth2_Request",
+                    "responses": {
+                        "200": "OAuth2_Access_Token",
+                        "400": "OAuth2_Error"
                     }
                 }
-            },
-            "Error": {
-                "type": "object",
-                "title": "error",
-                "properties": {
-                    "error": {
-                        "type": "string"
-                    },
-                    "error_description": {
-                        "type": "string"
-                    },
-                    "error_uri": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "type": "string"
-                    }
-                }
-            },
-            "POST-request": {
-                "$ref": "#\/definitions\/Authorization"
-            },
-            "POST-200-response": {
-                "$ref": "#\/definitions\/Access_token"
-            },
-            "POST-400-response": {
-                "$ref": "#\/definitions\/Error"
             }
         }
     },
-    "methods": {
-        "POST": {
-            "request": "#\/definitions\/POST-request",
-            "responses": {
-                "200": "#\/definitions\/POST-200-response",
-                "400": "#\/definitions\/POST-400-response"
+    "definitions": {
+        "OAuth2_Access_Token": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "token_type": {
+                    "type": "string"
+                },
+                "expires_in": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
             }
+        },
+        "OAuth2_Authorization_Code": {
+            "type": "object",
+            "properties": {
+                "grant_type": {
+                    "const": "authorization_code",
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "redirect_uri": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grant_type",
+                "code"
+            ]
+        },
+        "OAuth2_Client_Credentials": {
+            "type": "object",
+            "properties": {
+                "grant_type": {
+                    "const": "client_credentials",
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grant_type"
+            ]
+        },
+        "OAuth2_Error": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "error_description": {
+                    "type": "string"
+                },
+                "error_uri": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        },
+        "OAuth2_Password": {
+            "type": "object",
+            "properties": {
+                "grant_type": {
+                    "const": "password",
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grant_type",
+                "username",
+                "password"
+            ]
+        },
+        "OAuth2_Refresh_Token": {
+            "type": "object",
+            "properties": {
+                "grant_type": {
+                    "const": "refresh_token",
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grant_type",
+                "refresh_token"
+            ]
+        },
+        "OAuth2_Request": {
+            "oneOf": [
+                {
+                    "$ref": "OAuth2_Authorization_Code"
+                },
+                {
+                    "$ref": "OAuth2_Password"
+                },
+                {
+                    "$ref": "OAuth2_Client_Credentials"
+                },
+                {
+                    "$ref": "OAuth2_Refresh_Token"
+                }
+            ]
         }
     }
 }

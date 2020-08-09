@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 
 /**
@@ -32,20 +33,8 @@ use PSX\Framework\Controller\SchemaApiAbstract;
  */
 class NoViewController extends SchemaApiAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManager
-     */
-    protected $schemaManager;
-
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        return new Resource(Resource::STATUS_ACTIVE, '/');
+        return $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, '/')->getSpecification();
     }
 }

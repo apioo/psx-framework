@@ -21,12 +21,14 @@
 namespace PSX\Framework\Oauth2;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
+use PSX\Schema\Definitions;
 
 /**
  * TokenAbstract
@@ -47,17 +49,16 @@ abstract class TokenAbstract extends SchemaApiAbstract
      * @param integer $version
      * @return \PSX\Api\Resource
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema(Schema\Request::class))
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\AccessToken::class))
-            ->addResponse(400, $this->schemaManager->getSchema(Schema\Error::class))
-        );
+        $post = $builder->addMethod('POST');
+        $post->setRequest(Schema\Request::class);
+        $post->addResponse(200, Schema\AccessToken::class);
+        $post->addResponse(400, Schema\Error::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     public function getPreFilter()

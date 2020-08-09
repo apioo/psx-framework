@@ -1,113 +1,111 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://test.phpsx.org/test#",
-    "type": "object",
-    "properties": {
+  "definitions": {
+    "Any": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "ChoiceA": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "required": ["foo"]
+    },
+    "ChoiceB": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "string"
+        }
+      },
+      "required": ["bar"]
+    },
+    "Complex": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
         "any": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            }
+          "$ref": "Any"
         },
         "array": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "arrayComplex": {
-            "type": "array",
-            "items": {
-                "title": "a",
-                "type": "object",
-                "properties": {
-                    "foo": {
-                        "type": "string"
-                    }
-                }
-            }
+          "type": "array",
+          "items": {
+            "$ref": "Complex"
+          }
         },
         "arrayChoice": {
-            "type": "array",
-            "items": {
-                "oneOf": [{
-                    "title": "choiceA",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                        "foo": {
-                            "type": "string"
-                        }
-                    }
-                },{
-                    "title": "choiceB",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                        "bar": {
-                            "type": "string"
-                        }
-                    }
-                }]
-            }
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "ChoiceA"
+              },
+              {
+                "$ref": "ChoiceB"
+              }
+            ]
+          }
         },
         "boolean": {
-            "type": "boolean"
+          "type": "boolean"
         },
         "choice": {
-            "oneOf": [{
-                "title": "choiceA",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "foo": {
-                        "type": "string"
-                    }
-                }
-            },{
-                "title": "choiceB",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "bar": {
-                        "type": "string"
-                    }
-                }
-            }]
+          "oneOf": [
+            {
+              "$ref": "ChoiceA"
+            },
+            {
+              "$ref": "ChoiceB"
+            }
+          ]
         },
         "complex": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "foo": {
-                    "type": "string"
-                }
-            }
+          "$ref": "Complex"
         },
         "date": {
-            "type": "string",
-            "format": "date"
+          "type": "string",
+          "format": "date"
         },
         "dateTime": {
-            "type": "string",
-            "format": "date-time"
+          "type": "string",
+          "format": "date-time"
         },
         "duration": {
-            "type": "string",
-            "format": "duration"
+          "type": "string",
+          "format": "duration"
         },
         "float": {
-            "type": "number"
+          "type": "number"
         },
         "integer": {
-            "type": "integer"
+          "type": "integer"
         },
         "string": {
-            "type": "string"
+          "type": "string"
         },
         "time": {
-            "type": "string",
-            "format": "time"
+          "type": "string",
+          "format": "time"
         }
+      }
     }
+  },
+  "$ref": "Property"
 }

@@ -59,8 +59,10 @@ class ServeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $engine      = new Engine($input, $output);
-        $environment = new Environment($this->container, $engine);
+        $environment = Environment::fromContainer($this->container, $engine);
 
-        return $environment->serve();
+        $environment->serve();
+
+        return 0;
     }
 }

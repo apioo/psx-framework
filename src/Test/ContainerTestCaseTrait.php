@@ -24,6 +24,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\VoidCache;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Exception;
 use PSX\Cache\Pool;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
@@ -45,7 +46,7 @@ trait ContainerTestCaseTrait
 {
     protected $_protectedServices = array('config', 'connection');
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -69,7 +70,7 @@ trait ContainerTestCaseTrait
 
         // schema manager use void cache
         Environment::getContainer()->set('schema_manager', new SchemaManager(
-            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
+            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             new Pool(new VoidCache()),
             true
         ));
@@ -78,11 +79,9 @@ trait ContainerTestCaseTrait
         // this we can make assertions inside an controller
         $eventDispatcher = Environment::getContainer()->get('event_dispatcher');
         $eventDispatcher->addListener(Event::EXCEPTION_THROWN, function (ExceptionThrownEvent $event) {
-
-            if ($event->getException() instanceof \PHPUnit_Framework_Exception) {
+            if ($event->getException() instanceof Exception) {
                 throw $event->getException();
             }
-
         });
     }
 
@@ -99,7 +98,7 @@ trait ContainerTestCaseTrait
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

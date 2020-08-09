@@ -44,64 +44,44 @@ class DiscoveryControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "path": "\/discovery",
-    "version": "*",
-    "status": 1,
-    "description": null,
-    "schema": {
-        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-        "id": "urn:schema.phpsx.org#",
-        "definitions": {
-            "Discovery_Link": {
-                "type": "object",
-                "title": "Discovery Link",
-                "properties": {
-                    "rel": {
-                        "type": "string"
-                    },
-                    "href": {
-                        "type": "string"
+    "paths": {
+        "\/discovery": {
+            "status": 1,
+            "path": "\/discovery",
+            "methods": {
+                "GET": {
+                    "tags": [],
+                    "responses": {
+                        "200": "Discovery_Collection"
                     }
                 }
-            },
-            "Discovery_Collection": {
-                "type": "object",
-                "title": "Discovery Collection",
-                "properties": {
-                    "links": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#\/definitions\/Discovery_Link"
-                        }
-                    }
-                }
-            },
-            "GET-200-response": {
-                "$ref": "#\/definitions\/Discovery_Collection"
             }
         }
     },
-    "methods": {
-        "GET": {
-            "responses": {
-                "200": "#\/definitions\/GET-200-response"
+    "definitions": {
+        "Discovery_Collection": {
+            "type": "object",
+            "properties": {
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "Discovery_Link"
+                    }
+                }
+            }
+        },
+        "Discovery_Link": {
+            "type": "object",
+            "properties": {
+                "rel": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                }
             }
         }
-    },
-    "links": [
-        {
-            "rel": "openapi",
-            "href": "\/openapi"
-        },
-        {
-            "rel": "swagger",
-            "href": "\/swagger"
-        },
-        {
-            "rel": "raml",
-            "href": "\/raml"
-        }
-    ]
+    }
 }
 JSON;
 
@@ -131,10 +111,6 @@ JSON;
         {
             "rel": "openapi",
             "href": "http:\/\/127.0.0.1\/openapi"
-        },
-        {
-            "rel": "swagger",
-            "href": "http:\/\/127.0.0.1\/swagger"
         },
         {
             "rel": "raml",

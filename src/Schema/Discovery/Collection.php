@@ -31,12 +31,9 @@ use PSX\Schema\SchemaAbstract;
  */
 class Collection extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('Discovery Collection');
-        $sb->arrayType('links')
-            ->setItems($this->getSchema(Link::class));
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Discovery_Collection');
+        $type->addArray('links', $this->get(Link::class));
     }
 }

@@ -18,15 +18,21 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment\WebServer;
+namespace PSX\Framework\Controller\Generator;
+
+use PSX\Api\GeneratorFactoryInterface;
 
 /**
- * RequestFactory
+ * TypeSchemaController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RequestFactory extends \PSX\Http\Server\RequestFactory
+class TypeSchemaController extends GeneratorControllerAbstract
 {
+    protected function getType()
+    {
+        return GeneratorFactoryInterface::SPEC_TYPESCHEMA;
+    }
 }

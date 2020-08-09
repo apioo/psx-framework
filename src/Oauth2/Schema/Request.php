@@ -23,6 +23,7 @@ namespace PSX\Framework\Oauth2\Schema;
 
 use PSX\Schema\Property;
 use PSX\Schema\SchemaAbstract;
+use PSX\Schema\TypeFactory;
 
 /**
  * Request
@@ -33,44 +34,40 @@ use PSX\Schema\SchemaAbstract;
  */
 class Request extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('authorization_code');
-        $sb->string('grant_type')->setConst('authorization_code');
-        $sb->string('code');
-        $sb->string('redirect_uri');
-        $sb->string('client_id');
-        $sb->setRequired(['grant_type', 'code']);
-        $authorizationCode = $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Authorization_Code');
+        $type->addString('grant_type')->setConst('authorization_code');
+        $type->addString('code');
+        $type->addString('redirect_uri');
+        $type->addString('client_id');
+        $type->setRequired(['grant_type', 'code']);
 
-        $sb = $this->getSchemaBuilder('password');
-        $sb->string('grant_type')->setConst('password');
-        $sb->string('username');
-        $sb->string('password');
-        $sb->string('scope');
-        $sb->setRequired(['grant_type', 'username', 'password']);
-        $password = $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Password');
+        $type->addString('grant_type')->setConst('password');
+        $type->addString('username');
+        $type->addString('password');
+        $type->addString('scope');
+        $type->setRequired(['grant_type', 'username', 'password']);
 
-        $sb = $this->getSchemaBuilder('client_credentials');
-        $sb->string('grant_type')->setConst('client_credentials');
-        $sb->string('scope');
-        $sb->setRequired(['grant_type']);
-        $clientCredentials = $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Client_Credentials');
+        $type->addString('grant_type')->setConst('client_credentials');
+        $type->addString('scope');
+        $type->setRequired(['grant_type']);
 
-        $sb = $this->getSchemaBuilder('refresh_token');
-        $sb->string('grant_type')->setConst('refresh_token');
-        $sb->string('refresh_token');
-        $sb->string('scope');
-        $sb->setRequired(['grant_type', 'refresh_token']);
-        $refreshToken = $sb->getProperty();
+        $type = $this->newStruct('OAuth2_Refresh_Token');
+        $type->addString('grant_type')->setConst('refresh_token');
+        $type->addString('refresh_token');
+        $type->addString('scope');
+        $type->setRequired(['grant_type', 'refresh_token']);
 
-        return Property::get()
-            ->setTitle('authorization')
-            ->setOneOf([
-                $authorizationCode,
-                $password,
-                $clientCredentials,
-                $refreshToken,
-            ]);
+        $this->add('OAuth2_Request', TypeFactory::getUnion([
+            TypeFactory::getReference('OAuth2_Authorization_Code'),
+            TypeFactory::getReference('OAuth2_Password'),
+            TypeFactory::getReference('OAuth2_Client_Credentials'),
+            TypeFactory::getReference('OAuth2_Refresh_Token'),
+        ]));
+
+        $this->setRoot('OAuth2_Request');
     }
 }

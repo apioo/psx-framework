@@ -18,29 +18,15 @@
       "methods": [
         "ANY"
       ],
-      "path": "\/population\/jsonschema",
-      "source": "PSX\\Framework\\App\\Api\\Population\\CollectionJsonSchema"
+      "path": "\/population\/typeschema",
+      "source": "PSX\\Framework\\App\\Api\\Population\\CollectionTypeSchema"
     },
     {
       "methods": [
         "ANY"
       ],
-      "path": "\/population\/jsonschema\/:id",
-      "source": "PSX\\Framework\\App\\Api\\Population\\EntityJsonSchema"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/population\/raml",
-      "source": "PSX\\Framework\\App\\Api\\Population\\CollectionRaml"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/population\/raml\/:id",
-      "source": "PSX\\Framework\\App\\Api\\Population\\EntityRaml"
+      "path": "\/population\/typeschema\/:id",
+      "source": "PSX\\Framework\\App\\Api\\Population\\EntityTypeSchema"
     },
     {
       "methods": [
@@ -109,22 +95,8 @@
       "methods": [
         "GET"
       ],
-      "path": "\/generator\/raml\/:version\/*path",
-      "source": "PSX\\Framework\\Controller\\Generator\\RamlController"
-    },
-    {
-      "methods": [
-        "GET"
-      ],
-      "path": "\/generator\/swagger\/:version\/*path",
-      "source": "PSX\\Framework\\Controller\\Generator\\SwaggerController"
-    },
-    {
-      "methods": [
-        "GET"
-      ],
-      "path": "\/generator\/openapi\/:version\/*path",
-      "source": "PSX\\Framework\\Controller\\Generator\\OpenAPIController"
+      "path": "\/generator\/:type\/:version\/*path",
+      "source": "PSX\\Framework\\Controller\\Generator\\GeneratorController"
     }
   ]
 }

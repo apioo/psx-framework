@@ -26,6 +26,7 @@ use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
 use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Tests\Controller\Foo\Model\Any;
 use PSX\Framework\Tests\Controller\Foo\Model\ChoiceA;
 use PSX\Framework\Tests\Controller\Foo\Model\ChoiceB;
 use PSX\Framework\Tests\Controller\Foo\Model\Complex;
@@ -170,24 +171,6 @@ JSON;
         $this->assertEquals('/choice must match one required schema', substr($data->message, 0, 38), $body);
     }
 
-    public function testPostInvalidComplex()
-    {
-        $data = <<<JSON
-{
-    "complex": {
-        "baz": "test"
-    }
-}
-JSON;
-
-        $response = $this->sendRequest('/api/1', 'POST', [], $data);
-        $body     = (string) $response->getBody();
-        $data     = json_decode($body);
-
-        $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/complex property "baz" is not allowed', substr($data->message, 0, 38), $body);
-    }
-
     public function testPostInvalidDateTime()
     {
         $data = <<<JSON
@@ -249,7 +232,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(500, $response->getStatusCode(), $body);
-        $this->assertEquals('/float must be of type number', substr($data->message, 0, 29), $body);
+        $this->assertEquals('/float must be of type float', substr($data->message, 0, 28), $body);
     }
 
     public function testPostInvalidInteger()
@@ -309,44 +292,44 @@ JSON;
      */
     public static function assertRecord(TestCase $testCase, RecordInterface $record)
     {
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->any);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->any);
         $testCase->assertEquals(['foo' => 'bar'], $record->any->getProperties());
-        $testCase->assertInternalType('array', $record->array);
+        $testCase->assertIsArray($record->array);
         $testCase->assertEquals(1, count($record->array));
         $testCase->assertEquals(['bar'], $record->array);
-        $testCase->assertInternalType('array', $record->arrayComplex);
+        $testCase->assertIsArray($record->arrayComplex);
         $testCase->assertEquals(2, count($record->arrayComplex));
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayComplex[0]);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayComplex[0]);
         $testCase->assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getProperties());
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayComplex[1]);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
         $testCase->assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getProperties());
-        $testCase->assertInternalType('array', $record->arrayChoice);
+        $testCase->assertIsArray($record->arrayChoice);
         $testCase->assertEquals(3, count($record->arrayChoice));
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[0]);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[0]);
         $testCase->assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getProperties());
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[1]);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[1]);
         $testCase->assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getProperties());
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->arrayChoice[2]);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[2]);
         $testCase->assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getProperties());
-        $testCase->assertInternalType('boolean', $record->boolean);
+        $testCase->assertIsBool($record->boolean);
         $testCase->assertEquals(true, $record->boolean);
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->choice);
+        $testCase->assertInstanceOf(RecordInterface::class, $record->choice);
+        $testCase->assertEquals(['bar' => 'test'], $record->choice->getProperties());
+        $testCase->assertInstanceOf(RecordInterface::class, $record->complex);
         $testCase->assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        $testCase->assertInstanceOf('PSX\Record\RecordInterface', $record->complex);
-        $testCase->assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        $testCase->assertInstanceOf('PSX\DateTime\Date', $record->date);
+        $testCase->assertInstanceOf(Date::class, $record->date);
         $testCase->assertEquals('2015-05-01', $record->date->format('Y-m-d'));
-        $testCase->assertInstanceOf('DateTime', $record->dateTime);
+        $testCase->assertInstanceOf(DateTime::class, $record->dateTime);
         $testCase->assertEquals('2015-05-01T13:37:14Z', $record->dateTime->format('Y-m-d\TH:i:s\Z'));
-        $testCase->assertInstanceOf('PSX\DateTime\Duration', $record->duration);
+        $testCase->assertInstanceOf(Duration::class, $record->duration);
         $testCase->assertEquals('000100000000', $record->duration->format('%Y%M%D%H%I%S'));
-        $testCase->assertInternalType('float', $record->float);
+        $testCase->assertIsFloat($record->float);
         $testCase->assertEquals(13.37, $record->float);
-        $testCase->assertInternalType('integer', $record->integer);
+        $testCase->assertIsInt($record->integer);
         $testCase->assertEquals(7, $record->integer);
-        $testCase->assertInternalType('string', $record->string);
+        $testCase->assertIsString($record->string);
         $testCase->assertEquals('bar', $record->string);
-        $testCase->assertInstanceOf('PSX\DateTime\Time', $record->time);
+        $testCase->assertInstanceOf(Time::class, $record->time);
         $testCase->assertEquals('13:37:14', $record->time->format('H:i:s'));
     }
 
@@ -370,147 +353,162 @@ JSON;
      * types to the same response format
      *
      * @param integer $type
-     * @return array
+     * @return mixed
      */
     public static function getDataByType($type)
     {
         switch ($type) {
             case 1:
-                // we return actual types
-                return [
-                    'any' => [
-                        'foo' => 'bar'
-                    ],
-                    'array' => ['bar'],
-                    'arrayComplex' => [[
-                        'foo' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'arrayChoice' => [[
-                        'foo' => 'baz'
-                    ],[
-                        'bar' => 'bar'
-                    ],[
-                        'foo' => 'foo'
-                    ]],
-                    'boolean' => true,
-                    'choice' => [
-                        'bar' => 'test'
-                    ],
-                    'complex' => [
-                        'foo' => 'bar'
-                    ],
-                    'date' => new Date(2015, 5, 1),
-                    'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
-                    'duration' => new Duration('P1M'),
-                    'float' => 13.37,
-                    'integer' => 7,
-                    'string' => 'bar',
-                    'time' => new Time(13, 37, 14),
-                ];
-                break;
+                return self::getArrayStructure();
 
             case 2:
-                // we return stdClass
-                return (object) [
-                    'any' => (object) [
-                        'foo' => 'bar'
-                    ],
-                    'array' => ['bar'],
-                    'arrayComplex' => [(object) [
-                        'foo' => 'bar'
-                    ], (object) [
-                        'foo' => 'foo'
-                    ]],
-                    'arrayChoice' => [(object) [
-                        'foo' => 'baz'
-                    ], (object) [
-                        'bar' => 'bar'
-                    ], (object) [
-                        'foo' => 'foo'
-                    ]],
-                    'boolean' => true,
-                    'choice' => (object) [
-                        'bar' => 'test'
-                    ],
-                    'complex' => (object) [
-                        'foo' => 'bar'
-                    ],
-                    'date' => new Date(2015, 5, 1),
-                    'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
-                    'duration' => new Duration('P1M'),
-                    'float' => 13.37,
-                    'integer' => 7,
-                    'string' => 'bar',
-                    'time' => new Time(13, 37, 14),
-                ];
-                break;
+                return self::getObjectStructure();
 
             case 3:
-                // we return records
-                return Record::fromArray([
-                    'any' => Record::fromArray([
-                        'foo' => 'bar'
-                    ]),
-                    'array' => ['bar'],
-                    'arrayComplex' => [
-                        Record::fromArray([
-                            'foo' => 'bar'
-                        ]),
-                        Record::fromArray([
-                            'foo' => 'foo'
-                        ])
-                    ],
-                    'arrayChoice' => [
-                        Record::fromArray([
-                            'foo' => 'baz'
-                        ]),
-                        Record::fromArray([
-                            'bar' => 'bar'
-                        ]),
-                        Record::fromArray([
-                            'foo' => 'foo'
-                        ])
-                    ],
-                    'boolean' => true,
-                    'choice' => Record::fromArray([
-                        'bar' => 'test'
-                    ]),
-                    'complex' => Record::fromArray([
-                        'foo' => 'bar'
-                    ]),
-                    'date' => new Date(2015, 5, 1),
-                    'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
-                    'duration' => new Duration('P1M'),
-                    'float' => 13.37,
-                    'integer' => 7,
-                    'string' => 'bar',
-                    'time' => new Time(13, 37, 14),
-                ]);
-                break;
+                return self::getRecordStructure();
 
             case 4:
-                // we return POPOs
-                $object = new Property();
-                $object->setAny(new ChoiceA('bar'));
-                $object->setArray(['bar']);
-                $object->setArrayComplex([new ChoiceA('bar'), new ChoiceA('foo')]);
-                $object->setArrayChoice([new ChoiceA('baz'), new ChoiceB('bar'), new ChoiceA('foo')]);
-                $object->setBoolean(true);
-                $object->setChoice(new ChoiceB('test'));
-                $object->setComplex(new Complex('bar'));
-                $object->setDate(new Date(2015, 5, 1));
-                $object->setDateTime(new DateTime(2015, 5, 1, 13, 37, 14));
-                $object->setDuration(new Duration('P1M'));
-                $object->setFloat(13.37);
-                $object->setInteger(7);
-                $object->setString('bar');
-                $object->setTime(new Time(13, 37, 14));
-
-                return $object;
-                break;
+                return self::getPopoStructure();
         }
+    }
+
+    private static function getArrayStructure(): array
+    {
+        return [
+            'any' => [
+                'foo' => 'bar'
+            ],
+            'array' => ['bar'],
+            'arrayComplex' => [[
+                'foo' => 'bar'
+            ],[
+                'foo' => 'foo'
+            ]],
+            'arrayChoice' => [[
+                'foo' => 'baz'
+            ],[
+                'bar' => 'bar'
+            ],[
+                'foo' => 'foo'
+            ]],
+            'boolean' => true,
+            'choice' => [
+                'bar' => 'test'
+            ],
+            'complex' => [
+                'foo' => 'bar'
+            ],
+            'date' => new Date(2015, 5, 1),
+            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'duration' => new Duration('P1M'),
+            'float' => 13.37,
+            'integer' => 7,
+            'string' => 'bar',
+            'time' => new Time(13, 37, 14),
+        ];
+    }
+
+    private static function getObjectStructure(): \stdClass
+    {
+        return (object) [
+            'any' => (object) [
+                'foo' => 'bar'
+            ],
+            'array' => ['bar'],
+            'arrayComplex' => [(object) [
+                'foo' => 'bar'
+            ], (object) [
+                'foo' => 'foo'
+            ]],
+            'arrayChoice' => [(object) [
+                'foo' => 'baz'
+            ], (object) [
+                'bar' => 'bar'
+            ], (object) [
+                'foo' => 'foo'
+            ]],
+            'boolean' => true,
+            'choice' => (object) [
+                'bar' => 'test'
+            ],
+            'complex' => (object) [
+                'foo' => 'bar'
+            ],
+            'date' => new Date(2015, 5, 1),
+            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'duration' => new Duration('P1M'),
+            'float' => 13.37,
+            'integer' => 7,
+            'string' => 'bar',
+            'time' => new Time(13, 37, 14),
+        ];
+    }
+
+    private static function getRecordStructure(): RecordInterface
+    {
+        return Record::fromArray([
+            'any' => Record::fromArray([
+                'foo' => 'bar'
+            ]),
+            'array' => ['bar'],
+            'arrayComplex' => [
+                Record::fromArray([
+                    'foo' => 'bar'
+                ]),
+                Record::fromArray([
+                    'foo' => 'foo'
+                ])
+            ],
+            'arrayChoice' => [
+                Record::fromArray([
+                    'foo' => 'baz'
+                ]),
+                Record::fromArray([
+                    'bar' => 'bar'
+                ]),
+                Record::fromArray([
+                    'foo' => 'foo'
+                ])
+            ],
+            'boolean' => true,
+            'choice' => Record::fromArray([
+                'bar' => 'test'
+            ]),
+            'complex' => Record::fromArray([
+                'foo' => 'bar'
+            ]),
+            'date' => new Date(2015, 5, 1),
+            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'duration' => new Duration('P1M'),
+            'float' => 13.37,
+            'integer' => 7,
+            'string' => 'bar',
+            'time' => new Time(13, 37, 14),
+        ]);
+    }
+
+    private static function getPopoStructure(): Property
+    {
+        $any = new Any();
+        $any['foo'] = 'bar';
+
+        $object = new Property();
+        $object->setAny($any);
+        $object->setArray(['bar']);
+        $object->setArrayComplex([new ChoiceA('bar'), new ChoiceA('foo')]);
+        $object->setArrayChoice([new ChoiceA('baz'), new ChoiceB('bar'), new ChoiceA('foo')]);
+        $object->setBoolean(true);
+        $object->setChoice(new ChoiceB('test'));
+        $object->setComplex(new Complex('bar'));
+        $object->setDate(new Date(2015, 5, 1));
+        $object->setDateTime(new DateTime(2015, 5, 1, 13, 37, 14));
+        $object->setDuration(new Duration('P1M'));
+        $object->setFloat(13.37);
+        $object->setInteger(7);
+        $object->setString('bar');
+        $object->setTime(new Time(13, 37, 14));
+
+        return $object;
     }
 
     /**

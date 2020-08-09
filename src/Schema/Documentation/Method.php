@@ -22,6 +22,7 @@ namespace PSX\Framework\Schema\Documentation;
 
 use PSX\Schema\Property;
 use PSX\Schema\SchemaAbstract;
+use PSX\Schema\TypeFactory;
 
 /**
  * Method
@@ -32,16 +33,15 @@ use PSX\Schema\SchemaAbstract;
  */
 class Method extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Documentation Method');
-        $sb->string('description');
-        $sb->string('queryParameters');
-        $sb->string('request');
-        $sb->objectType('responses')
-            ->setTitle('Documentation Method Responses')
-            ->setAdditionalProperties(Property::getString());
+        $type = $this->newMap('Documentation_Method_Responses');
+        $type->setAdditionalProperties(TypeFactory::getString());
 
-        return $sb->getProperty();
+        $type = $this->newStruct('Documentation_Method');
+        $type->addString('description');
+        $type->addString('queryParameters');
+        $type->addString('request');
+        $type->addReference('responses', 'Documentation_Method_Responses');
     }
 }

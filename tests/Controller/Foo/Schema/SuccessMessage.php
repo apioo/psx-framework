@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
+use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -31,12 +32,10 @@ use PSX\Schema\SchemaAbstract;
  */
 class SuccessMessage extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('message');
-        $sb->boolean('success');
-        $sb->string('message');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Message');
+        $type->addBoolean('success');
+        $type->addString('message');
     }
 }

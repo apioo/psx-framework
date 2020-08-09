@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Filter;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Filter\OauthAuthentication;
 use PSX\Http\Client\Client;
+use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
 use PSX\Http\Request;
@@ -73,11 +74,10 @@ class OauthAuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
-     */
     public function testFailureEmptyCredentials()
     {
+        $this->expectException(BadRequestException::class);
+        
         $handle = new OauthAuthentication(function ($consumerKey, $token) {
 
             if ($consumerKey == self::CONSUMER_KEY && $token == self::TOKEN) {
@@ -99,11 +99,10 @@ class OauthAuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
-     */
     public function testFailureWrongConsumerKey()
     {
+        $this->expectException(BadRequestException::class);
+
         $handle = new OauthAuthentication(function ($consumerKey, $token) {
 
             if ($consumerKey == self::CONSUMER_KEY && $token == self::TOKEN) {
@@ -125,11 +124,10 @@ class OauthAuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
-     */
     public function testFailureWrongConsumerSecret()
     {
+        $this->expectException(BadRequestException::class);
+
         $handle = new OauthAuthentication(function ($consumerKey, $token) {
 
             if ($consumerKey == self::CONSUMER_KEY && $token == self::TOKEN) {
@@ -151,11 +149,10 @@ class OauthAuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
-     */
     public function testFailureWrongToken()
     {
+        $this->expectException(BadRequestException::class);
+
         $handle = new OauthAuthentication(function ($consumerKey, $token) {
 
             if ($consumerKey == self::CONSUMER_KEY && $token == self::TOKEN) {
@@ -177,11 +174,10 @@ class OauthAuthenticationTest extends TestCase
         $handle->handle($request, $response, $filterChain);
     }
 
-    /**
-     * @expectedException \PSX\Http\Exception\BadRequestException
-     */
     public function testFailureWrongTokenSecret()
     {
+        $this->expectException(BadRequestException::class);
+
         $handle = new OauthAuthentication(function ($consumerKey, $token) {
 
             if ($consumerKey == self::CONSUMER_KEY && $token == self::TOKEN) {

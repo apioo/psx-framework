@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Proxy;
 
 use PSX\Api\DocumentedInterface;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
@@ -100,7 +101,7 @@ abstract class VersionController extends ControllerAbstract implements Documente
         $this->loader->execute($controller, $request, $response);
     }
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
         $versions = $this->getVersions();
         $class    = null;

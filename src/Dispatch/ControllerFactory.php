@@ -22,6 +22,7 @@ namespace PSX\Framework\Dispatch;
 
 use Psr\Container\ContainerInterface;
 use PSX\Api\DocumentedInterface;
+use PSX\Api\SpecificationInterface;
 use PSX\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Http\FilterInterface;
@@ -102,9 +103,9 @@ class ControllerFactory implements ControllerFactoryInterface
      * @param string $className
      * @param Context|null $context
      * @param string|null $version
-     * @return \PSX\Api\Resource|null
+     * @return SpecificationInterface|null
      */
-    public function getDocumentation($className, Context $context = null, $version = null)
+    public function getDocumentation(string $className, Context $context = null, ?string $version = null): ?SpecificationInterface
     {
         try {
             $controller = $this->getController($className, $context);
@@ -119,6 +120,7 @@ class ControllerFactory implements ControllerFactoryInterface
                 }
             }
         } catch (\Throwable $e) {
+            throw $e;
         }
 
         return null;

@@ -40,53 +40,47 @@ class RoutingControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "path": "\/routing",
-    "version": "*",
-    "status": 1,
-    "description": null,
-    "schema": {
-        "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-        "id": "urn:schema.phpsx.org#",
-        "definitions": {
-            "Routing_Route": {
-                "type": "object",
-                "title": "Routing Route",
-                "properties": {
-                    "methods": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "path": {
-                        "type": "string"
-                    },
-                    "source": {
-                        "type": "string"
+    "paths": {
+        "\/routing": {
+            "status": 1,
+            "path": "\/routing",
+            "methods": {
+                "GET": {
+                    "tags": [],
+                    "responses": {
+                        "200": "Routing_Collection"
                     }
                 }
-            },
-            "Routing_Collection": {
-                "type": "object",
-                "title": "Routing Collection",
-                "properties": {
-                    "routings": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#\/definitions\/Routing_Route"
-                        }
-                    }
-                }
-            },
-            "GET-200-response": {
-                "$ref": "#\/definitions\/Routing_Collection"
             }
         }
     },
-    "methods": {
-        "GET": {
-            "responses": {
-                "200": "#\/definitions\/GET-200-response"
+    "definitions": {
+        "Routing_Collection": {
+            "type": "object",
+            "properties": {
+                "routings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "Routing_Route"
+                    }
+                }
+            }
+        },
+        "Routing_Route": {
+            "type": "object",
+            "properties": {
+                "methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "path": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                }
             }
         }
     }

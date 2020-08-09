@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
@@ -37,15 +38,14 @@ class DefaultController extends SchemaApiAbstract
     /**
      * @inheritdoc
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Welcome::class))
-        );
+        $get = $builder->addMethod('GET');
+        $get->addResponse(200, Schema\Welcome::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     public function doGet(HttpContextInterface $httpContext)

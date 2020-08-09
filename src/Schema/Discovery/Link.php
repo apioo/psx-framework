@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Schema\Discovery;
 
-use PSX\Schema\Property;
 use PSX\Schema\SchemaAbstract;
 
 /**
@@ -32,12 +31,10 @@ use PSX\Schema\SchemaAbstract;
  */
 class Link extends SchemaAbstract
 {
-    public function getDefinition()
+    public function build(): void
     {
-        $sb = $this->getSchemaBuilder('Discovery Link');
-        $sb->string('rel');
-        $sb->string('href');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Discovery_Link');
+        $type->addString('rel');
+        $type->addString('href');
     }
 }

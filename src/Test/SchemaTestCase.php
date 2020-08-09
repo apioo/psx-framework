@@ -36,7 +36,7 @@ abstract class SchemaTestCase extends TestCase
 {
     public function testSchema()
     {
-        $generator = new Generator\JsonSchema();
+        $generator = new Generator\TypeSchema();
         $manage = new SchemaManager();
         $schema = $manage->getSchema($this->getSchema());
 

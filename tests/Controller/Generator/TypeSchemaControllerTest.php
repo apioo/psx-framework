@@ -20,25 +20,25 @@
 
 namespace PSX\Framework\Tests\Controller\Generator;
 
-use PSX\Framework\Controller\Generator\SwaggerController;
+use PSX\Framework\Controller\Generator\TypeSchemaController;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 
 /**
- * SwaggerControllerTest
+ * TypeSchemaControllerTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SwaggerControllerTest extends ControllerTestCase
+class TypeSchemaControllerTest extends ControllerTestCase
 {
     public function testIndex()
     {
-        $response = $this->sendRequest('/swagger/1/api', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/typeschema/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/swagger.json');
+        $expect   = file_get_contents(__DIR__ . '/resource/typeschema.json');
 
         $this->assertEquals(null, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
@@ -47,9 +47,9 @@ class SwaggerControllerTest extends ControllerTestCase
 
     public function testCollection()
     {
-        $response = $this->sendRequest('/swagger/1/*', 'GET', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/typeschema/1/*', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/swagger_collection.json');
+        $expect   = file_get_contents(__DIR__ . '/resource/typeschema_collection.json');
 
         $this->assertEquals(null, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
@@ -59,7 +59,7 @@ class SwaggerControllerTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
-            [['GET'], '/swagger/:version/*path', SwaggerController::class],
+            [['GET'], '/typeschema/:version/*path', TypeSchemaController::class],
             [['ANY'], '/api', TestSchemaApiController::class],
             [['ANY'], '/endpoint', TestSchemaApiV2Controller::class],
         );

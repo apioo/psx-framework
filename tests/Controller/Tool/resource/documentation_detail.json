@@ -1,152 +1,106 @@
 {
-  "path": "\/doc\/:version\/*path",
-  "version": "*",
-  "status": 1,
-  "description": null,
-  "schema": {
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "definitions": {
-      "path-template": {
-        "type": "object",
-        "title": "path",
-        "properties": {
-          "version": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          }
-        }
-      },
-      "Documentation_Schema": {
-        "type": "object",
-        "title": "Documentation Schema",
-        "description": "Contains the JSON Schema object",
-        "additionalProperties": true
-      },
-      "Documentation_Methods": {
-        "type": "object",
-        "title": "Documentation Methods",
-        "additionalProperties": {
-          "$ref": "#\/definitions\/Documentation_Method"
-        }
-      },
-      "Documentation_Method": {
-        "type": "object",
-        "title": "Documentation Method",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "queryParameters": {
-            "type": "string"
-          },
-          "request": {
-            "type": "string"
-          },
+  "paths": {
+    "\/doc\/:version\/*path": {
+      "status": 1,
+      "path": "\/doc\/:version\/*path",
+      "pathParameters": "Documentation_Path",
+      "methods": {
+        "GET": {
+          "tags": [],
           "responses": {
-            "$ref": "#\/definitions\/Documentation_Method_Responses"
+            "200": "Documentation_Detail"
           }
         }
-      },
-      "Documentation_Method_Responses": {
-        "type": "object",
-        "title": "Documentation Method Responses",
-        "additionalProperties": {
+      }
+    }
+  },
+  "definitions": {
+    "Discovery_Link": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
           "type": "string"
         }
-      },
-      "Discovery_Link": {
-        "type": "object",
-        "title": "Discovery Link",
-        "properties": {
-          "rel": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
+      }
+    },
+    "Documentation_Detail": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "Documentation_Schema"
+        },
+        "pathParameters": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "Documentation_Methods"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
           }
         }
-      },
-      "Documentation_Detail": {
-        "type": "object",
-        "title": "Documentation Detail",
-        "properties": {
-          "path": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "status": {
-            "type": "integer"
-          },
-          "description": {
-            "type": "string"
-          },
-          "schema": {
-            "$ref": "#\/definitions\/Documentation_Schema"
-          },
-          "pathParameters": {
-            "type": "string"
-          },
-          "methods": {
-            "$ref": "#\/definitions\/Documentation_Methods"
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#\/definitions\/Discovery_Link"
-            }
-          }
+      }
+    },
+    "Documentation_Method": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "queryParameters": {
+          "type": "string"
+        },
+        "request": {
+          "type": "string"
+        },
+        "responses": {
+          "$ref": "Documentation_Method_Responses"
         }
-      },
-      "GET-200-response": {
-        "$ref": "#\/definitions\/Documentation_Detail"
       }
-    }
-  },
-  "pathParameters": "#\/definitions\/path-template",
-  "methods": {
-    "GET": {
-      "responses": {
-        "200": "#\/definitions\/GET-200-response"
+    },
+    "Documentation_Method_Responses": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
       }
+    },
+    "Documentation_Methods": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "Documentation_Method"
+      }
+    },
+    "Documentation_Path": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "Documentation_Schema": {
+      "type": "object",
+      "additionalProperties": true
     }
-  },
-  "links": [
-    {
-      "rel": "client-php",
-      "href": "\/generate\/client-php\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "client-typescript",
-      "href": "\/generate\/client-typescript\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "markup-html",
-      "href": "\/generate\/markup-html\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "markup-markdown",
-      "href": "\/generate\/markup-markdown\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "spec-jsonschema",
-      "href": "\/generate\/spec-jsonschema\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "spec-openapi",
-      "href": "\/generate\/spec-openapi\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "spec-raml",
-      "href": "\/generate\/spec-raml\/*\/doc\/:version\/*path"
-    },
-    {
-      "rel": "spec-swagger",
-      "href": "\/generate\/spec-swagger\/*\/doc\/:version\/*path"
-    }
-  ]
+  }
 }

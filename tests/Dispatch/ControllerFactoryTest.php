@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Dispatch;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Http\Exception\BadRequestException;
 
 /**
  * ControllerFactoryTest
@@ -41,11 +42,10 @@ class ControllerFactoryTest extends TestCase
         $this->assertInstanceOf(DummyController::class, $controller[0]);
     }
 
-    /**
-     * @expectedException \ReflectionException
-     */
     public function testGetControllerInvalid()
     {
+        $this->expectException(\ReflectionException::class);
+
         $this->getController('Foo\Bar');
     }
 

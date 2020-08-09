@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Dispatch;
 
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Loader\Context;
 
 /**
@@ -47,7 +48,7 @@ interface ControllerFactoryInterface
      * @param string $className
      * @param Context|null $context
      * @param string|null $version
-     * @return \PSX\Api\Resource|null
+     * @return SpecificationInterface|null
      */
-    public function getDocumentation($className, Context $context = null, $version = null);
+    public function getDocumentation(string $className, Context $context = null, ?string $version = null): ?SpecificationInterface;
 }

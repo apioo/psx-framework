@@ -21,19 +21,17 @@
 namespace PSX\Framework\App\Model;
 
 /**
- * @Title("collection")
  * @Description("Collection result")
  */
 class Collection
 {
     /**
-     * @Type("integer")
+     * @var integer
      */
     protected $totalResults;
 
     /**
-     * @Type("array")
-     * @Items(@Ref("PSX\Framework\App\Model\Entity"))
+     * @var array<\PSX\Framework\App\Model\Entity>
      */
     protected $entry;
 

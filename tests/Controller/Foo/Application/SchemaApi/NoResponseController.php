@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Http\Environment\HttpContextInterface;
@@ -46,25 +47,25 @@ class NoResponseController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET'));
+        $builder->addMethod('GET');
 
-        $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema(Schema\Create::class)));
+        $post = $builder->addMethod('POST');
+        $post->setRequest(Schema\Create::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('PUT')
-            ->setRequest($this->schemaManager->getSchema(Schema\Update::class)));
+        $put = $builder->addMethod('PUT');
+        $put->setRequest(Schema\Update::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('DELETE')
-            ->setRequest($this->schemaManager->getSchema(Schema\Delete::class)));
+        $delete = $builder->addMethod('DELETE');
+        $delete->setRequest(Schema\Delete::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('PATCH')
-            ->setRequest($this->schemaManager->getSchema(Schema\Patch::class)));
+        $patch = $builder->addMethod('PATCH');
+        $patch->setRequest(Schema\Patch::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     protected function doGet(HttpContextInterface $context)

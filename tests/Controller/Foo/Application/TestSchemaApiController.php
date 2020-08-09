@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
@@ -50,49 +51,52 @@ class TestSchemaApiController extends SchemaApiAbstract
      */
     protected $testCase;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
-        $resource->setTitle('foo');
-        $resource->setDescription('lorem ipsum');
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
+        $builder->setTitle('foo');
+        $builder->setDescription('lorem ipsum');
 
-        $resource->addPathParameter('name', Property::getString()
+        $path = $builder->setPathParameters('Path');
+        $path->addString('name')
             ->setDescription('Name parameter')
             ->setMinLength(0)
             ->setMaxLength(16)
-            ->setPattern('[A-z]+'));
-        $resource->addPathParameter('type', Property::getString()
-            ->setEnum(['foo', 'bar']));
+            ->setPattern('[A-z]+');
+        $path->addString('type')
+            ->setEnum(['foo', 'bar']);
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->setDescription('Returns a collection')
-            ->addQueryParameter('startIndex', Property::getInteger()
+        $get = $builder->addMethod('GET');
+        $get->setDescription('Returns a collection');
+        $get->addResponse(200, Schema\Collection::class);
+
+        $query = $get->setQueryParameters('Get_Query');
+        $query->addInteger('startIndex')
                 ->setDescription('startIndex parameter')
                 ->setMinimum(0)
-                ->setMaximum(32))
-            ->addQueryParameter('float', Property::getNumber())
-            ->addQueryParameter('boolean', Property::getBoolean())
-            ->addQueryParameter('date', Property::getDate())
-            ->addQueryParameter('datetime', Property::getDateTime())
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Collection::class)));
+                ->setMaximum(32);
+        $query->addNumber('float');
+        $query->addBoolean('boolean');
+        $query->addDate('date');
+        $query->addDateTime('datetime');
 
-        $resource->addMethod(Resource\Factory::getMethod('POST')
-            ->setRequest($this->schemaManager->getSchema(Schema\Create::class))
-            ->addResponse(201, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
+        $post = $builder->addMethod('POST');
+        $post->setRequest(Schema\Create::class);
+        $post->addResponse(201, Schema\SuccessMessage::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('PUT')
-            ->setRequest($this->schemaManager->getSchema(Schema\Update::class))
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
+        $put = $builder->addMethod('PUT');
+        $put->setRequest(Schema\Update::class);
+        $put->addResponse(200, Schema\SuccessMessage::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('DELETE')
-            ->setRequest($this->schemaManager->getSchema(Schema\Delete::class))
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
+        $delete = $builder->addMethod('DELETE');
+        $delete->setRequest(Schema\Delete::class);
+        $delete->addResponse(200, Schema\SuccessMessage::class);
 
-        $resource->addMethod(Resource\Factory::getMethod('PATCH')
-            ->setRequest($this->schemaManager->getSchema(Schema\Patch::class))
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\SuccessMessage::class)));
+        $patch = $builder->addMethod('PATCH');
+        $patch->setRequest(Schema\Patch::class);
+        $patch->addResponse(200, Schema\SuccessMessage::class);
 
-        return $resource;
+        return $builder->getSpecification();
     }
 
     protected function doGet(HttpContextInterface $context)

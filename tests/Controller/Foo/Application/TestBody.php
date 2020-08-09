@@ -44,62 +44,85 @@ use SimpleXMLElement;
 class TestBody
 {
     /**
-     * @Type("string")
+     * @var string
      */
     protected $foo;
 
     /**
-     * @Type("string")
+     * @var string
      */
     protected $title;
 
     /**
-     * @Ref("\PSX\Framework\Tests\Controller\Foo\Application\TestBody")
+     * @var \PSX\Framework\Tests\Controller\Foo\Application\TestBody
      */
     protected $bar;
 
     /**
-     * @Type("array")
-     * @Items(@Ref("\PSX\Framework\Tests\Controller\Foo\Application\TestBody"))
+     * @var array<\PSX\Framework\Tests\Controller\Foo\Application\TestBody>
      */
     protected $entries;
 
-    public function getFoo()
+    /**
+     * @return string
+     */
+    public function getFoo(): string
     {
         return $this->foo;
     }
 
-    public function setFoo($foo)
+    /**
+     * @param string $foo
+     */
+    public function setFoo(string $foo): void
     {
         $this->foo = $foo;
     }
 
-    public function getTitle()
+    /**
+     * @return string
+     */
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    public function getBar()
+    /**
+     * @return TestBody
+     */
+    public function getBar(): TestBody
     {
         return $this->bar;
     }
 
-    public function setBar(TestBody $bar)
+    /**
+     * @param TestBody $bar
+     */
+    public function setBar(TestBody $bar): void
     {
         $this->bar = $bar;
     }
 
-    public function getEntries()
+    /**
+     * @return array
+     */
+    public function getEntries(): array
     {
         return $this->entries;
     }
 
-    public function setEntries(array $entries)
+    /**
+     * @param array $entries
+     */
+    public function setEntries(array $entries): void
     {
         $this->entries = $entries;
     }

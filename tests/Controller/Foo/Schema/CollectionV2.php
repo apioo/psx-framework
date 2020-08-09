@@ -18,25 +18,23 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
+namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
-use PSX\Api\Parser;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
+use PSX\Schema\DefinitionsInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * PropertyRamlController
+ * CollectionV2
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyRamlController extends SchemaApiAbstract
+class CollectionV2 extends SchemaAbstract
 {
-    use PropertyControllerTrait;
-
-    public function getDocumentation($version = null)
+    protected function build(): void
     {
-        return Parser\Raml::fromFile(__DIR__ . '/../../Resource/raml.yaml', $this->context->getPath());
+        $type = $this->newStruct('Collection');
+        $type->addArray('entries', $this->get(Entry::class));
     }
 }

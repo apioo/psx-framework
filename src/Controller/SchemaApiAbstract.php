@@ -23,14 +23,15 @@ namespace PSX\Framework\Controller;
 use PSX\Api\DocumentedInterface;
 use PSX\Api\Resource;
 use PSX\Api\Resource\MethodAbstract;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Schema\Passthru;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
-use PSX\Record\Record;
-use PSX\Schema\SchemaInterface;
+use PSX\Schema\Schema;
+use PSX\Schema\Type\ReferenceType;
 
 /**
  * The schema api controller helps to build an API based on a API specification.
@@ -55,20 +56,19 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     protected $apiManager;
 
     /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManagerInterface
-     */
-    protected $schemaManager;
-
-    /**
      * @var \PSX\Api\Resource
      */
-    protected $resource;
+    private $resource;
+
+    /**
+     * @var \PSX\Schema\DefinitionsInterface
+     */
+    private $definitions;
 
     /**
      * @var array
      */
-    protected $allowedMethods;
+    private $allowedMethods;
 
     /**
      * @inheritdoc
@@ -77,17 +77,20 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     {
         parent::onLoad();
 
-        // get the current resource based on the context
-        $this->resource = $this->getResource();
-
-        // get the allowed methods
-        $methods = $this->resource->getAllowedMethods();
-        $allowed = ['OPTIONS'];
-        if (in_array('GET', $methods)) {
-            $allowed[] = 'HEAD';
+        // get the current specification based on the context
+        $specification = $this->resourceListing->find($this->context->getPath(), $this->context->getVersion());
+        if (!$specification instanceof SpecificationInterface) {
+            throw new StatusCode\InternalServerErrorException('No specification available');
         }
 
-        $this->allowedMethods = array_merge($allowed, $methods);
+        $resource = $specification->getResourceCollection()->get($this->context->getPath());
+        if (!$resource instanceof Resource) {
+            throw new StatusCode\InternalServerErrorException('Resource is not available for path ' . $this->context->getPath());
+        }
+
+        $this->definitions = $specification->getDefinitions();
+        $this->resource = $resource;
+        $this->allowedMethods = $this->getAllowedMethods();
     }
 
     /**
@@ -98,7 +101,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         try {
             parent::onRequest($request, $response);
         } finally {
-            $this->corsPolicy->handle($request, $response, $this->allowedMethods ?: []);
+            $this->corsPolicy->handle($request, $response, $this->allowedMethods ?? []);
         }
     }
 
@@ -191,7 +194,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     /**
      * @inheritdoc
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
         return $this->apiManager->getApi(get_class($this), $this->context->getPath());
     }
@@ -270,13 +273,13 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     protected function parseRequest(RequestInterface $request, MethodAbstract $method)
     {
         if ($method->hasRequest()) {
-            $schema = $method->getRequest();
-            if ($schema instanceof Passthru) {
+            $type   = $this->definitions->getType($method->getRequest());
+            $schema = new Schema($type, $this->definitions);
+
+            if ($type instanceof ReferenceType && $type->getRef() === Passthru::NAME) {
                 $data = $this->requestReader->getBody($request);
-            } elseif ($schema instanceof SchemaInterface) {
-                $data = $this->requestReader->getBodyAs($request, $method->getRequest(), $this->getValidator($method));
             } else {
-                $data = new Record();
+                $data = $this->requestReader->getBodyAs($request, $schema, $this->getValidator($method));
             }
         } else {
             $data = null;
@@ -325,27 +328,11 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
     }
 
     /**
-     * Returns the resource from the listing for the current path
-     *
-     * @return \PSX\Api\Resource
-     */
-    private function getResource()
-    {
-        $resource = $this->resourceListing->getResource($this->context->getPath(), $this->context->getVersion());
-
-        if (!$resource instanceof Resource) {
-            throw new StatusCode\InternalServerErrorException('Resource is not available');
-        }
-
-        return $resource;
-    }
-
-    /**
      * @param string $methodName
      * @param \PSX\Http\ResponseInterface $response
      * @return \PSX\Api\Resource\MethodAbstract
      */
-    private function getResourceMethod($methodName, ResponseInterface $response)
+    private function getResourceMethod($methodName, ResponseInterface $response): MethodAbstract
     {
         if (!$this->resource->hasMethod($methodName)) {
             throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->allowedMethods);
@@ -361,5 +348,16 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
         }
 
         return $this->resource->getMethod($methodName);
+    }
+
+    private function getAllowedMethods(): array
+    {
+        $methods = $this->resource->getAllowedMethods();
+        $allowed = ['OPTIONS'];
+        if (in_array('GET', $methods)) {
+            $allowed[] = 'HEAD';
+        }
+
+        return array_merge($allowed, $methods);
     }
 }

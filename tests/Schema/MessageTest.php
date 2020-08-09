@@ -41,18 +41,20 @@ class MessageTest extends SchemaTestCase
     {
         return <<<'JSON'
 {
-    "$schema": "http:\/\/json-schema.org\/draft-04\/schema#",
-    "id": "urn:schema.phpsx.org#",
-    "type": "object",
-    "title": "message",
-    "properties": {
-        "success": {
-            "type": "boolean"
-        },
-        "message": {
-            "type": "string"
+    "definitions": {
+        "Message": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
         }
-    }
+    },
+    "$ref": "Message"
 }
 JSON;
     }

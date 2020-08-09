@@ -110,6 +110,6 @@ class NoDocumentationTest extends ControllerTestCase
         $this->assertArrayHasKey('context', $data);
 
         $this->assertEquals(false, $data['success']);
-        $this->assertEquals('Resource is not available', substr($data['message'], 0, 25));
+        $this->assertEquals('No specification available', substr($data['message'], 0, 26));
     }
 }

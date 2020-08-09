@@ -23,15 +23,15 @@ namespace PSX\Framework\Controller\Tool\Documentation;
 use PSX\Api\Generator;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\Resource;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\Generator\GeneratorController;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
-use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
-use PSX\Schema\Property;
+use PSX\Schema\TypeFactory;
 
 /**
  * DetailController
@@ -57,17 +57,18 @@ class DetailController extends SchemaApiAbstract
     /**
      * @inheritdoc
      */
-    public function getDocumentation($version = null)
+    public function getDocumentation(?string $version = null): ?SpecificationInterface
     {
-        $resource = new Resource(Resource::STATUS_ACTIVE, $this->context->getPath());
-        $resource->addPathParameter('version', Property::getString());
-        $resource->addPathParameter('path', Property::getString());
+        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
 
-        $resource->addMethod(Resource\Factory::getMethod('GET')
-            ->addResponse(200, $this->schemaManager->getSchema(Schema\Documentation\Detail::class))
-        );
+        $path = $builder->setPathParameters('Documentation_Path');
+        $path->addString('version');
+        $path->addString('path');
 
-        return $resource;
+        $get = $builder->addMethod('GET');
+        $get->addResponse(200, Schema\Documentation\Detail::class);
+
+        return $builder->getSpecification();
     }
 
     public function doGet(HttpContextInterface $httpContext)
@@ -79,76 +80,26 @@ class DetailController extends SchemaApiAbstract
             throw new StatusCode\BadRequestException('Version and path not provided');
         }
 
-        $resource = $this->resourceListing->getResource($path, $version);
-
-        if (!$resource instanceof Resource) {
+        $specification = $this->resourceListing->find($path, $version);
+        if (!$specification instanceof SpecificationInterface) {
             throw new StatusCode\BadRequestException('Invalid api version');
         }
 
-        $generator = new Generator\Spec\JsonSchema($this->config['psx_json_namespace']);
-
-        $api = new \stdClass();
-        $api->path = $resource->getPath();
-        $api->version = $version;
-        $api->status = $resource->getStatus();
-        $api->description = $resource->getDescription();
-        $api->schema = $generator->toArray($resource);
-
-        // path parameters
-        if ($resource->hasPathParameters()) {
-            $api->pathParameters = '#/definitions/path-template';
+        $resource = $specification->getResourceCollection()->getFirst();
+        if (!$resource instanceof Resource) {
+            throw new StatusCode\BadRequestException('Resource not found');
         }
 
-        // methods
-        $methods = $resource->getMethods();
-        $details = [];
-
-        foreach ($methods as $method) {
-            $data = new \stdClass();
-
-            // description
-            $description = $method->getDescription();
-            if (!empty($description)) {
-                $data->description = $description;
-            }
-
-            // operation id
-            $operationId = $method->getOperationId();
-            if (!empty($operationId)) {
-                $data->operationId = $operationId;
-            }
-
-            // query parameters
-            if ($method->hasQueryParameters()) {
-                $data->queryParameters = '#/definitions/' . $method->getName() . '-query';
-            }
-
-            // request
-            if ($method->hasRequest()) {
-                $data->request = '#/definitions/' . $method->getName() . '-request';
-            }
-
-            // responses
-            $responses = $method->getResponses();
-            if (!empty($responses)) {
-                $resps = array();
-                foreach ($responses as $statusCode => $resp) {
-                    $resps[$statusCode] = '#/definitions/' . $method->getName() . '-' . $statusCode . '-response';
-                }
-
-                $data->responses = $resps;
-            }
-
-            $details[$method->getName()] = $data;
-        }
-
-        $api->methods = $details;
+        $generator = new Generator\Spec\TypeSchema();
+        $api = $generator->generate($specification);
 
         // links
+        /*
         $links = $this->getLinks($version, $resource->getPath());
         if (!empty($links)) {
             $api->links = $links;
         }
+        */
 
         return $api;
     }
@@ -158,39 +109,12 @@ class DetailController extends SchemaApiAbstract
         $path   = ltrim($path, '/');
         $result = [];
 
-        $generatorPath = $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => '*', 'version' => $version, 'path' => $path]);
-        if ($generatorPath !== null) {
-            $types = GeneratorFactory::getPossibleTypes();
-            foreach ($types as $type) {
-                $result[] = [
-                    'rel'  => $type,
-                    'href' => $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => $type, 'version' => $version, 'path' => $path]),
-                ];
-            }
-        } else {
-            $openAPIPath = $this->reverseRouter->getAbsolutePath(OpenAPIController::class, array('version' => $version, 'path' => $path));
-            if ($openAPIPath !== null) {
-                $result[] = [
-                    'rel'  => 'openapi',
-                    'href' => $openAPIPath,
-                ];
-            }
-
-            $swaggerPath = $this->reverseRouter->getAbsolutePath(SwaggerController::class, array('version' => $version, 'path' => $path));
-            if ($swaggerPath !== null) {
-                $result[] = [
-                    'rel'  => 'swagger',
-                    'href' => $swaggerPath,
-                ];
-            }
-
-            $ramlPath = $this->reverseRouter->getAbsolutePath(RamlController::class, array('version' => $version, 'path' => $path));
-            if ($ramlPath !== null) {
-                $result[] = [
-                    'rel'  => 'raml',
-                    'href' => $ramlPath,
-                ];
-            }
+        $types = GeneratorFactory::getPossibleTypes();
+        foreach ($types as $type) {
+            $result[] = [
+                'rel'  => $type,
+                'href' => $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => $type, 'version' => $version, 'path' => $path]),
+            ];
         }
 
         return $result;

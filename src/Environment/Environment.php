@@ -21,7 +21,11 @@
 namespace PSX\Framework\Environment;
 
 use Psr\Container\ContainerInterface;
+use PSX\Engine\DispatchInterface;
+use PSX\Engine\EngineInterface;
+use PSX\Engine\WebServer\Engine;
 use PSX\Framework\Bootstrap;
+use PSX\Framework\Config\Config;
 
 /**
  * Environment
@@ -33,37 +37,57 @@ use PSX\Framework\Bootstrap;
 class Environment
 {
     /**
-     * @var \Psr\Container\ContainerInterface
+     * @var \PSX\Engine\DispatchInterface
      */
-    protected $container;
+    protected $dispatch;
 
     /**
-     * @var \PSX\Framework\Environment\EngineInterface
+     * @var \PSX\Engine\EngineInterface
      */
     protected $engine;
 
     /**
-     * @param \Psr\Container\ContainerInterface $container
-     * @param \PSX\Framework\Environment\EngineInterface $engine
+     * @var \PSX\Framework\Config\Config
      */
-    public function __construct(ContainerInterface $container, EngineInterface $engine)
+    protected $config;
+
+    /**
+     * @param \PSX\Engine\DispatchInterface $dispatch
+     * @param \PSX\Engine\EngineInterface $engine
+     * @param \PSX\Framework\Config\Config $config
+     */
+    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, Config $config)
     {
-        $this->container = $container;
-        $this->engine    = $engine;
+        $this->dispatch = $dispatch;
+        $this->engine   = $engine;
+        $this->config   = $config;
+    }
+
+    public function serve(): void
+    {
+        Bootstrap::setupEnvironment($this->config);
+
+        $this->engine->serve($this->dispatch);
     }
 
     /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @return mixed
+     * Creates a new PSX environment based on a DI container. You can optional provide
+     * a different engine to support different web servers
+     * 
+     * @link https://github.com/apioo/psx-engine
+     * @param ContainerInterface $container
+     * @param EngineInterface|null $engine
+     * @return Environment
      */
-    public function serve()
+    public static function fromContainer(ContainerInterface $container, ?EngineInterface $engine = null): Environment
     {
-        $dispatch = $this->container->get('dispatch');
-        $config   = $this->container->get('config');
+        $dispatch = $container->get('dispatch');
+        $config   = $container->get('config');
 
-        Bootstrap::setupEnvironment($config);
+        if ($engine === null) {
+            $engine = new Engine($config->get('psx_url'));
+        }
 
-        return $this->engine->serve($dispatch, $config);
+        return new self($dispatch, $engine, $config);
     }
 }

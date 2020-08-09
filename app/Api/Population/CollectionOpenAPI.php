@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Parser\OpenAPI;
+use PSX\Api\SpecificationInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -39,7 +40,7 @@ class CollectionOpenAPI extends SchemaApiAbstract
      */
     protected $populationService;
 
-    public function getDocumentation($version = null)
+    public function getDocumentation(string $version = null): ?SpecificationInterface
     {
         return OpenAPI::fromFile(__DIR__ . '/../../Resource/population.json', $this->context->getPath());
     }

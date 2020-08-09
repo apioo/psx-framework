@@ -108,9 +108,8 @@ class DefaultContainer extends Container
     public function getIo(): Processor
     {
         $config = Configuration::createDefault(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
-            $this->get('schema_manager'),
-            $this->get('config')->get('psx_soap_namespace')
+            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
+            $this->get('schema_manager')
         );
 
         return new Processor($config);
@@ -127,7 +126,7 @@ class DefaultContainer extends Container
     public function getSchemaManager(): SchemaManagerInterface
     {
         return new SchemaManager(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Parser\Popo\Annotation'),
+            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
@@ -203,7 +202,7 @@ class DefaultContainer extends Container
             ],
             'psx_annotation_autoload' => [
                 'PSX\Api\Annotation',
-                'PSX\Schema\Parser\Popo\Annotation',
+                'PSX\Schema\Annotation',
                 'PSX\Dependency\Annotation',
                 'JMS\Serializer\Annotation',
                 'Doctrine\ORM\Mapping'

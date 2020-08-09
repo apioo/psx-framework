@@ -31,12 +31,10 @@ use PSX\Schema\SchemaAbstract;
  */
 class Welcome extends SchemaAbstract
 {
-    public function getDefinition()
+    protected function build(): void
     {
-        $sb = $this->getSchemaBuilder('message');
-        $sb->string('message');
-        $sb->string('url');
-
-        return $sb->getProperty();
+        $type = $this->newStruct('Welcome');
+        $type->addString('message');
+        $type->addString('url');
     }
 }
