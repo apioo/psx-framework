@@ -1,27 +1,23 @@
 {
-  "paths": {
-    "\/population\/popo": {
-      "status": 1,
-      "path": "\/population\/popo",
-      "title": "Population",
-      "description": "Collection endpoint",
-      "methods": {
-        "GET": {
-          "operationId": "doGet",
-          "tags": [],
-          "queryParameters": "DogetQuery",
-          "responses": {
-            "200": "PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
-          }
-        },
-        "POST": {
-          "operationId": "doPost",
-          "tags": [],
-          "request": "PSXFrameworkAppApiPopulationCollectionPopoPostRequest",
-          "responses": {
-            "201": "PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
-          }
-        }
+  "status": 1,
+  "path": "\/population\/popo",
+  "title": "Population",
+  "description": "Collection endpoint",
+  "methods": {
+    "GET": {
+      "operationId": "doGet",
+      "tags": [],
+      "queryParameters": "DogetQuery",
+      "responses": {
+        "200": "PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+      }
+    },
+    "POST": {
+      "operationId": "doPost",
+      "tags": [],
+      "request": "PSXFrameworkAppApiPopulationCollectionPopoPostRequest",
+      "responses": {
+        "201": "PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
       }
     }
   },
