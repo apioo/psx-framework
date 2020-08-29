@@ -60,19 +60,15 @@ class TokenAbstractTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "paths": {
-        "\/token": {
-            "status": 1,
-            "path": "\/token",
-            "methods": {
-                "POST": {
-                    "tags": [],
-                    "request": "OAuth2_Request",
-                    "responses": {
-                        "200": "OAuth2_Access_Token",
-                        "400": "OAuth2_Error"
-                    }
-                }
+    "status": 1,
+    "path": "\/token",
+    "methods": {
+        "POST": {
+            "tags": [],
+            "request": "OAuth2_Request",
+            "responses": {
+                "200": "OAuth2_Access_Token",
+                "400": "OAuth2_Error"
             }
         }
     },
