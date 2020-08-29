@@ -53,7 +53,9 @@ class ApiGenerateCommandTest extends ControllerTestCase
         $this->assertTrue(is_file(__DIR__ . '/output/foo__bar.md'));
 
         $actual = file_get_contents(__DIR__ . '/output/controller.md');
+        $actual = str_replace("\r\n", "\n", $actual);
         $expect = file_get_contents(__DIR__ . '/output/expect.md');
+        $expect = str_replace("\r\n", "\n", $expect);
 
         $this->assertEquals($expect, $actual);
     }
