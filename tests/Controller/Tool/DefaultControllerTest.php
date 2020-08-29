@@ -40,8 +40,19 @@ class DefaultControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
+    "status": 1,
+    "path": "\/",
+    "methods": {
+        "GET": {
+            "tags": [],
+            "responses": {
+                "200": "Welcome"
+            }
+        }
+    },
     "definitions": {
         "Welcome": {
+            "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
@@ -49,22 +60,7 @@ class DefaultControllerTest extends ControllerTestCase
                 "url": {
                     "type": "string"
                 }
-            },
-            "type": "object"
-        }
-    },
-    "paths": {
-        "/": {
-            "methods": {
-                "GET": {
-                    "responses": {
-                        "200": "Welcome"
-                    },
-                    "tags": []
-                }
-            },
-            "path": "/",
-            "status": 1
+            }
         }
     }
 }

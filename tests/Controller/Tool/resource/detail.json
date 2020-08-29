@@ -1,48 +1,44 @@
 {
-  "paths": {
-    "\/api": {
-      "status": 1,
-      "path": "\/api",
-      "title": "foo",
-      "description": "lorem ipsum",
-      "pathParameters": "Path",
-      "methods": {
-        "GET": {
-          "description": "Returns a collection",
-          "tags": [],
-          "queryParameters": "Get_Query",
-          "responses": {
-            "200": "Collection"
-          }
-        },
-        "POST": {
-          "tags": [],
-          "request": "Create",
-          "responses": {
-            "201": "Message"
-          }
-        },
-        "PUT": {
-          "tags": [],
-          "request": "Update",
-          "responses": {
-            "200": "Message"
-          }
-        },
-        "DELETE": {
-          "tags": [],
-          "request": "Delete",
-          "responses": {
-            "200": "Message"
-          }
-        },
-        "PATCH": {
-          "tags": [],
-          "request": "Patch",
-          "responses": {
-            "200": "Message"
-          }
-        }
+  "status": 1,
+  "path": "\/api",
+  "title": "foo",
+  "description": "lorem ipsum",
+  "pathParameters": "Path",
+  "methods": {
+    "GET": {
+      "description": "Returns a collection",
+      "tags": [],
+      "queryParameters": "Get_Query",
+      "responses": {
+        "200": "Collection"
+      }
+    },
+    "POST": {
+      "tags": [],
+      "request": "Create",
+      "responses": {
+        "201": "Message"
+      }
+    },
+    "PUT": {
+      "tags": [],
+      "request": "Update",
+      "responses": {
+        "200": "Message"
+      }
+    },
+    "DELETE": {
+      "tags": [],
+      "request": "Delete",
+      "responses": {
+        "200": "Message"
+      }
+    },
+    "PATCH": {
+      "tags": [],
+      "request": "Patch",
+      "responses": {
+        "200": "Message"
       }
     }
   },

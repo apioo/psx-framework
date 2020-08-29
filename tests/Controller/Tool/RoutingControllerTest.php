@@ -40,17 +40,13 @@ class RoutingControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "paths": {
-        "\/routing": {
-            "status": 1,
-            "path": "\/routing",
-            "methods": {
-                "GET": {
-                    "tags": [],
-                    "responses": {
-                        "200": "Routing_Collection"
-                    }
-                }
+    "status": 1,
+    "path": "\/routing",
+    "methods": {
+        "GET": {
+            "tags": [],
+            "responses": {
+                "200": "Routing_Collection"
             }
         }
     },

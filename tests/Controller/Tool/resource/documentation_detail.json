@@ -1,16 +1,12 @@
 {
-  "paths": {
-    "\/doc\/:version\/*path": {
-      "status": 1,
-      "path": "\/doc\/:version\/*path",
-      "pathParameters": "Documentation_Path",
-      "methods": {
-        "GET": {
-          "tags": [],
-          "responses": {
-            "200": "Documentation_Detail"
-          }
-        }
+  "status": 1,
+  "path": "\/doc\/:version\/*path",
+  "pathParameters": "Documentation_Path",
+  "methods": {
+    "GET": {
+      "tags": [],
+      "responses": {
+        "200": "Documentation_Detail"
       }
     }
   },

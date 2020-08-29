@@ -1,15 +1,11 @@
 {
-  "paths": {
-    "\/doc": {
-      "status": 1,
-      "path": "\/doc",
-      "methods": {
-        "GET": {
-          "tags": [],
-          "responses": {
-            "200": "Documentation_Index"
-          }
-        }
+  "status": 1,
+  "path": "\/doc",
+  "methods": {
+    "GET": {
+      "tags": [],
+      "responses": {
+        "200": "Documentation_Index"
       }
     }
   },

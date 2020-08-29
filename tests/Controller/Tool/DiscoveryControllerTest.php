@@ -44,17 +44,13 @@ class DiscoveryControllerTest extends ControllerTestCase
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
 {
-    "paths": {
-        "\/discovery": {
-            "status": 1,
-            "path": "\/discovery",
-            "methods": {
-                "GET": {
-                    "tags": [],
-                    "responses": {
-                        "200": "Discovery_Collection"
-                    }
-                }
+    "status": 1,
+    "path": "\/discovery",
+    "methods": {
+        "GET": {
+            "tags": [],
+            "responses": {
+                "200": "Discovery_Collection"
             }
         }
     },
