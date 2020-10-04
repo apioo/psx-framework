@@ -1,6 +1,6 @@
 {
   "$import": {
-    "ns": "file:///entity.json"
+    "self": "file:///entity.json"
   },
   "definitions": {
     "Collection": {
@@ -13,7 +13,7 @@
         "entry": {
           "type": "array",
           "items": {
-            "$ref": "ns:Entity"
+            "$ref": "Entity"
           }
         }
       }
