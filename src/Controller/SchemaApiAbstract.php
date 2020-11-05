@@ -298,7 +298,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
      * Returns the validator which is used for a specific request method
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
-     * @return \PSX\Schema\ValidatorInterface
+     * @return \PSX\Schema\Validation\ValidatorInterface
      */
     protected function getValidator(MethodAbstract $method)
     {

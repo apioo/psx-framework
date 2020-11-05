@@ -67,7 +67,7 @@ class RequestReader
     /**
      * @param \PSX\Http\RequestInterface $request
      * @param string $schema
-     * @param \PSX\Schema\Validation\ValidatorInterface $validator
+     * @param \PSX\Schema\Validation\ValidatorInterface|null $validator
      * @param string $readerType
      * @return mixed
      */
