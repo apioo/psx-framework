@@ -276,7 +276,13 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
             $type   = $this->definitions->getType($method->getRequest());
             $schema = new Schema($type, $this->definitions);
 
-            if ($type instanceof ReferenceType && $type->getRef() === Passthru::NAME) {
+            if ($type instanceof ReferenceType) {
+                $passthru = $type->getRef() === Passthru::NAME;
+            } else {
+                $passthru = $method->getRequest() === Passthru::NAME;
+            }
+
+            if ($passthru) {
                 $data = $this->requestReader->getBody($request);
             } else {
                 $data = $this->requestReader->getBodyAs($request, $schema, $this->getValidator($method));
@@ -301,7 +307,7 @@ abstract class SchemaApiAbstract extends ControllerAbstract implements Documente
 
     /**
      * Checks whether a response schema is defined for the provided status code
-     * and writes the data to the body if a status code is available. Otherwise 
+     * and writes the data to the body if a status code is available. Otherwise
      * the API returns 204 no content
      *
      * @param \PSX\Api\Resource\MethodAbstract $method
