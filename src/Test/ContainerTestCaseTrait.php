@@ -59,7 +59,7 @@ trait ContainerTestCaseTrait
         Environment::getContainer()->set('logger', $logger);
 
         // we replace the routing parser and location finder so that the test
-        // cases work with the routes deinfed in getPaths
+        // cases work with the routes defined in getPaths
         $this->setUpRoutes();
 
         // assign the phpunit test case
@@ -67,13 +67,6 @@ trait ContainerTestCaseTrait
 
         // use null cache
         Environment::getContainer()->set('cache', new Pool(new ArrayCache()));
-
-        // schema manager use void cache
-        Environment::getContainer()->set('schema_manager', new SchemaManager(
-            Environment::getContainer()->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
-            new Pool(new VoidCache()),
-            true
-        ));
 
         // add event listener which redirects PHPUnit exceptions. Because of
         // this we can make assertions inside an controller
