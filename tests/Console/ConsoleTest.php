@@ -55,8 +55,6 @@ class ConsoleTest extends ControllerTestCase
             'route',
             'schema:parse',
             'serve',
-            'sql:generate',
-            'sql:migrate',
         ];
 
         $this->assertEquals($expect, $keys);
