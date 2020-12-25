@@ -39,68 +39,73 @@ class ListCommandTest extends ControllerTestCase
         $command = Environment::getService('console')->find('container:list');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
-        ));
+        $commandTester->execute([]);
 
-        $actual = $commandTester->getDisplay();
-        $expect = <<<TEXT
+        $lines = explode("\n", $commandTester->getDisplay());
+        $actual = [];
+        foreach ($lines as $line) {
+            $parts = array_values(array_filter(explode(' ', trim($line))));
+            if (count($parts) === 2) {
+                $actual[$parts[1]] = $parts[0];
+            }
+        }
 
- annotation_reader_factory   PSX\Framework\Annotation\ReaderFactory                     
- api_manager                 PSX\Api\ApiManager                                         
- api_manager                 PSX\Api\ApiManagerInterface                                
- cache                       PSX\Cache\Pool                                             
- cache                       Psr\Cache\CacheItemPoolInterface                           
- config                      PSX\Framework\Config\Config                                
- connection                  Doctrine\DBAL\Connection                                   
- console                     Symfony\Component\Console\Application                      
- container_autowire_resolver PSX\Dependency\AutowireResolver                            
- container_autowire_resolver PSX\Dependency\AutowireResolverInterface                   
- container_inspector         PSX\Dependency\InspectorInterface                          
- container_inspector         PSX\Dependency\Inspector\ContainerInspector                
- container_tag_resolver      PSX\Dependency\TagResolverInterface                        
- container_tag_resolver      PSX\Dependency\TagResolver                                 
- container_type_resolver     PSX\Dependency\TypeResolver                                
- container_type_resolver     PSX\Dependency\TypeResolverInterface                       
- controller_factory          PSX\Framework\Dispatch\ControllerFactory                   
- controller_factory          PSX\Framework\Dispatch\ControllerFactoryInterface          
- cors_policy                 PSX\Framework\Http\CorsPolicy                              
- dispatch                    PSX\Framework\Dispatch\Dispatch                            
- event_dispatcher            Symfony\Component\EventDispatcher\EventDispatcher          
- event_dispatcher            Symfony\Component\EventDispatcher\EventDispatcherInterface 
- exception_converter         PSX\Framework\Exception\ConverterInterface                 
- exception_converter         PSX\Framework\Exception\Converter                          
- generator_factory           PSX\Api\GeneratorFactory                                   
- generator_factory           PSX\Api\GeneratorFactoryInterface                          
- http_client                 PSX\Http\Client\Client                                     
- http_client                 PSX\Http\Client\ClientInterface                            
- io                          PSX\Data\Processor                                         
- listing_filter_factory      PSX\Api\Listing\FilterFactoryInterface                     
- listing_filter_factory      PSX\Api\Listing\FilterFactory                              
- loader                      PSX\Framework\Loader\Loader                                
- loader                      PSX\Framework\Loader\LoaderInterface                       
- loader_location_finder      PSX\Framework\Loader\LocationFinder\RoutingParser          
- loader_location_finder      PSX\Framework\Loader\LocationFinderInterface               
- logger                      Monolog\Logger                                             
- logger                      Psr\Log\LoggerInterface                                    
- object_builder              PSX\Dependency\ObjectBuilderInterface                      
- object_builder              PSX\Dependency\ObjectBuilder                               
- population_service          PSX\Framework\App\Service\Population                       
- request_reader              PSX\Framework\Http\RequestReader                           
- resource_listing            PSX\Framework\Api\ControllerDocumentation                  
- resource_listing            PSX\Api\ListingInterface                                   
- response_writer             PSX\Framework\Http\ResponseWriter                          
- reverse_router              PSX\Framework\Loader\ReverseRouter                         
- routing_parser              PSX\Framework\Loader\RoutingParserInterface                
- routing_parser              PSX\Framework\Loader\RoutingParser\RoutingFile             
- schema_manager              PSX\Schema\SchemaManager                                   
- schema_manager              PSX\Schema\SchemaManagerInterface                          
- session                     PSX\Framework\Session\Session                              
- table_manager               PSX\Sql\TableManagerInterface                              
- table_manager               PSX\Sql\TableManager                                       
- validate                    PSX\Validate\Validate     
+        $expect = [
+            'PSX\\Framework\\Annotation\\ReaderFactory' => 'annotation_reader_factory',
+            'PSX\\Api\\ApiManager' => 'api_manager',
+            'PSX\\Api\\ApiManagerInterface' => 'api_manager',
+            'PSX\\Cache\\Pool' => 'cache',
+            'Psr\\Cache\\CacheItemPoolInterface' => 'cache',
+            'PSX\\Framework\\Config\\Config' => 'config',
+            'Doctrine\\DBAL\\Connection' => 'connection',
+            'Symfony\\Component\\Console\\Application' => 'console',
+            'PSX\\Dependency\\AutowireResolver' => 'container_autowire_resolver',
+            'PSX\\Dependency\\AutowireResolverInterface' => 'container_autowire_resolver',
+            'PSX\\Dependency\\InspectorInterface' => 'container_inspector',
+            'PSX\\Dependency\\Inspector\\ContainerInspector' => 'container_inspector',
+            'PSX\\Dependency\\TagResolverInterface' => 'container_tag_resolver',
+            'PSX\\Dependency\\TagResolver' => 'container_tag_resolver',
+            'PSX\\Dependency\\TypeResolver' => 'container_type_resolver',
+            'PSX\\Dependency\\TypeResolverInterface' => 'container_type_resolver',
+            'PSX\\Framework\\Dispatch\\ControllerFactory' => 'controller_factory',
+            'PSX\\Framework\\Dispatch\\ControllerFactoryInterface' => 'controller_factory',
+            'PSX\\Framework\\Http\\CorsPolicy' => 'cors_policy',
+            'PSX\\Framework\\Dispatch\\Dispatch' => 'dispatch',
+            'Symfony\\Component\\EventDispatcher\\EventDispatcher' => 'event_dispatcher',
+            'Symfony\\Component\\EventDispatcher\\EventDispatcherInterface' => 'event_dispatcher',
+            'PSX\\Framework\\Exception\\ConverterInterface' => 'exception_converter',
+            'PSX\\Framework\\Exception\\Converter' => 'exception_converter',
+            'PSX\\Api\\GeneratorFactory' => 'generator_factory',
+            'PSX\\Api\\GeneratorFactoryInterface' => 'generator_factory',
+            'PSX\\Http\\Client\\Client' => 'http_client',
+            'PSX\\Http\\Client\\ClientInterface' => 'http_client',
+            'PSX\\Data\\Processor' => 'io',
+            'PSX\\Api\\Listing\\FilterFactoryInterface' => 'listing_filter_factory',
+            'PSX\\Api\\Listing\\FilterFactory' => 'listing_filter_factory',
+            'PSX\\Framework\\Loader\\Loader' => 'loader',
+            'PSX\\Framework\\Loader\\LoaderInterface' => 'loader',
+            'PSX\\Framework\\Loader\\LocationFinder\\RoutingParser' => 'loader_location_finder',
+            'PSX\\Framework\\Loader\\LocationFinderInterface' => 'loader_location_finder',
+            'Monolog\\Logger' => 'logger',
+            'Psr\\Log\\LoggerInterface' => 'logger',
+            'PSX\\Dependency\\ObjectBuilderInterface' => 'object_builder',
+            'PSX\\Dependency\\ObjectBuilder' => 'object_builder',
+            'PSX\\Framework\\App\\Service\\Population' => 'population_service',
+            'PSX\\Framework\\Http\\RequestReader' => 'request_reader',
+            'PSX\\Framework\\Api\\ControllerDocumentation' => 'resource_listing',
+            'PSX\\Api\\ListingInterface' => 'resource_listing',
+            'PSX\\Framework\\Http\\ResponseWriter' => 'response_writer',
+            'PSX\\Framework\\Loader\\ReverseRouter' => 'reverse_router',
+            'PSX\\Framework\\Loader\\RoutingParserInterface' => 'routing_parser',
+            'PSX\\Framework\\Loader\\RoutingParser\\RoutingFile' => 'routing_parser',
+            'PSX\\Schema\\SchemaManager' => 'schema_manager',
+            'PSX\\Schema\\SchemaManagerInterface' => 'schema_manager',
+            'PSX\\Framework\\Session\\Session' => 'session',
+            'PSX\\Sql\\TableManagerInterface' => 'table_manager',
+            'PSX\\Sql\\TableManager' => 'table_manager',
+            'PSX\\Validate\\Validate' => 'validate',
+        ];
 
-TEXT;
-
-        Assert::assertStringMatchIgnoreWhitespace($expect, $actual);
+        $this->assertEquals($expect, $actual);
     }
 }
