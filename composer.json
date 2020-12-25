@@ -12,7 +12,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.2",
     "doctrine/annotations": "^1.5",
     "monolog/monolog": "^1.17",
     "psr/log": "^1.0",
