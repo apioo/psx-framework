@@ -63,9 +63,6 @@ trait Console
 
         $application->add(new SchemaConsole\ParseCommand($this->get('schema_manager')));
 
-        $application->add(new SqlConsole\MigrateCommand($this->get('connection'), $this->get('table_manager')));
-        $application->add(new SqlConsole\GenerateCommand($this->get('connection')));
-
         // symfony commands
         $application->add(new SymfonyCommand\HelpCommand());
         $application->add(new SymfonyCommand\ListCommand());
