@@ -21,6 +21,8 @@
 namespace PSX\Framework\Loader\RoutingParser;
 
 use Psr\Cache\CacheItemPoolInterface;
+use PSX\Api\Listing\FilterInterface;
+use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 
 /**
@@ -45,7 +47,7 @@ class CachedParser implements RoutingParserInterface
         $this->expire        = $expire;
     }
 
-    public function getCollection()
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         $item = $this->cache->getItem(self::CACHE_KEY);
 
@@ -54,7 +56,8 @@ class CachedParser implements RoutingParserInterface
         } else {
             $collection = $this->routingParser->getCollection();
 
-            $item->set($collection, $this->expire);
+            $item->set($collection);
+            $item->expiresAfter($this->expire);
 
             $this->cache->save($item);
 

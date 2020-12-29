@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Loader\RoutingParser;
 
+use PSX\Api\Listing\FilterInterface;
 use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 
@@ -39,12 +40,12 @@ class ArrayCollection implements RoutingParserInterface
         $this->routings = $routings;
     }
 
-    public function getCollection()
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         $collection = new RoutingCollection();
 
         foreach ($this->routings as $route) {
-            list($methods, $path, $source) = $route;
+            [$methods, $path, $source] = $route;
 
             $collection->add($methods, $path, $source);
         }

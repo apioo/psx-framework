@@ -69,7 +69,7 @@ class ControllerDocumentation implements ListingInterface
      */
     public function getAvailableRoutes(FilterInterface $filter = null): iterable
     {
-        $collections = $this->routingParser->getCollection();
+        $collections = $this->routingParser->getCollection($filter);
         $result      = array();
 
         foreach ($collections as $collection) {

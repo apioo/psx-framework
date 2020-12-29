@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Loader\RoutingParser;
 
+use PSX\Api\Listing\FilterInterface;
 use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 
@@ -41,14 +42,14 @@ class PhpFile implements RoutingParserInterface
         $this->file = $file;
     }
 
-    public function getCollection()
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         if ($this->_collection === null) {
             $collection = new RoutingCollection();
             $routes     = include $this->file;
 
             foreach ($routes as $route) {
-                list($allowed, $path, $class) = $route;
+                [$allowed, $path, $class] = $route;
 
                 $collection->add($allowed, $path, $class);
             }

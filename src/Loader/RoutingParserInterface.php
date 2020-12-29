@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Loader;
 
+use PSX\Api\Listing\FilterInterface;
+
 /**
  * RoutingParserInterface
  *
@@ -30,7 +32,8 @@ namespace PSX\Framework\Loader;
 interface RoutingParserInterface
 {
     /**
-     * @return \PSX\Framework\Loader\RoutingCollection
+     * @param FilterInterface|null $filter
+     * @return RoutingCollection
      */
-    public function getCollection();
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection;
 }
