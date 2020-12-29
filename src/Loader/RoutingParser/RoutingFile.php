@@ -42,7 +42,7 @@ class RoutingFile implements RoutingParserInterface
         $this->file = $file;
     }
 
-    public function getCollection(?FilterInterface $filter = null): RoutingCollection
+    public function getCollection(?FilterInterface $filter = null)
     {
         if ($this->_collection === null) {
             $collection = new RoutingCollection();

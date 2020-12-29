@@ -35,5 +35,5 @@ interface RoutingParserInterface
      * @param FilterInterface|null $filter
      * @return RoutingCollection
      */
-    public function getCollection(?FilterInterface $filter = null): RoutingCollection;
+    public function getCollection(?FilterInterface $filter = null);
 }

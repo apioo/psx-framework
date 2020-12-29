@@ -47,7 +47,7 @@ class CachedParser implements RoutingParserInterface
         $this->expire        = $expire;
     }
 
-    public function getCollection(?FilterInterface $filter = null): RoutingCollection
+    public function getCollection(?FilterInterface $filter = null)
     {
         $item = $this->cache->getItem(self::CACHE_KEY);
 
