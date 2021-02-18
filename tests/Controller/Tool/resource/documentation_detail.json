@@ -98,5 +98,43 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "links": [
+    {
+      "rel": "client-go",
+      "href": "http:\/\/127.0.0.1\/generate\/client-go\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "client-java",
+      "href": "http:\/\/127.0.0.1\/generate\/client-java\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "client-php",
+      "href": "http:\/\/127.0.0.1\/generate\/client-php\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "client-typescript",
+      "href": "http:\/\/127.0.0.1\/generate\/client-typescript\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup-html",
+      "href": "http:\/\/127.0.0.1\/generate\/markup-html\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "markup-markdown",
+      "href": "http:\/\/127.0.0.1\/generate\/markup-markdown\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec-typeschema",
+      "href": "http:\/\/127.0.0.1\/generate\/spec-typeschema\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec-openapi",
+      "href": "http:\/\/127.0.0.1\/generate\/spec-openapi\/*\/doc\/:version\/*path"
+    },
+    {
+      "rel": "spec-raml",
+      "href": "http:\/\/127.0.0.1\/generate\/spec-raml\/*\/doc\/:version\/*path"
+    }
+  ]
 }

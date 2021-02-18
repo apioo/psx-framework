@@ -109,9 +109,14 @@ class DetailController extends SchemaApiAbstract
 
         $types = GeneratorFactory::getPossibleTypes();
         foreach ($types as $type) {
+            $href = $this->reverseRouter->getUrl(GeneratorController::class, ['type' => $type, 'version' => $version, 'path' => $path]);
+            if (empty($href)) {
+                continue;
+            }
+
             $result[] = [
                 'rel'  => $type,
-                'href' => $this->reverseRouter->getAbsolutePath(GeneratorController::class, ['type' => $type, 'version' => $version, 'path' => $path]),
+                'href' => $href,
             ];
         }
 

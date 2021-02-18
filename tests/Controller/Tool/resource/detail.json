@@ -227,5 +227,43 @@
         "id"
       ]
     }
-  }
+  },
+  "links": [
+    {
+      "href": "http://127.0.0.1/generate/client-go/1/api",
+      "rel": "client-go"
+    },
+    {
+      "href": "http://127.0.0.1/generate/client-java/1/api",
+      "rel": "client-java"
+    },
+    {
+      "href": "http://127.0.0.1/generate/client-php/1/api",
+      "rel": "client-php"
+    },
+    {
+      "href": "http://127.0.0.1/generate/client-typescript/1/api",
+      "rel": "client-typescript"
+    },
+    {
+      "href": "http://127.0.0.1/generate/markup-html/1/api",
+      "rel": "markup-html"
+    },
+    {
+      "href": "http://127.0.0.1/generate/markup-markdown/1/api",
+      "rel": "markup-markdown"
+    },
+    {
+      "href": "http://127.0.0.1/generate/spec-typeschema/1/api",
+      "rel": "spec-typeschema"
+    },
+    {
+      "href": "http://127.0.0.1/generate/spec-openapi/1/api",
+      "rel": "spec-openapi"
+    },
+    {
+      "href": "http://127.0.0.1/generate/spec-raml/1/api",
+      "rel": "spec-raml"
+    }
+  ]
 }
