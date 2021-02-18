@@ -91,15 +91,13 @@ class DetailController extends SchemaApiAbstract
         }
 
         $generator = new Generator\Spec\TypeSchema();
-        $api = $generator->generate($specification);
+        $api = \json_decode($generator->generate($specification));
 
         // links
-        /*
         $links = $this->getLinks($version, $resource->getPath());
         if (!empty($links)) {
             $api->links = $links;
         }
-        */
 
         return $api;
     }
