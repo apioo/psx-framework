@@ -110,5 +110,43 @@
     "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
       "$ref": "Entity"
     }
-  }
+  },
+  "links": [
+    {
+      "rel": "client-go",
+      "href": "http:\/\/127.0.0.1\/generator\/client-go\/*\/population\/popo"
+    },
+    {
+      "rel": "client-java",
+      "href": "http:\/\/127.0.0.1\/generator\/client-java\/*\/population\/popo"
+    },
+    {
+      "rel": "client-php",
+      "href": "http:\/\/127.0.0.1\/generator\/client-php\/*\/population\/popo"
+    },
+    {
+      "rel": "client-typescript",
+      "href": "http:\/\/127.0.0.1\/generator\/client-typescript\/*\/population\/popo"
+    },
+    {
+      "rel": "markup-html",
+      "href": "http:\/\/127.0.0.1\/generator\/markup-html\/*\/population\/popo"
+    },
+    {
+      "rel": "markup-markdown",
+      "href": "http:\/\/127.0.0.1\/generator\/markup-markdown\/*\/population\/popo"
+    },
+    {
+      "rel": "spec-typeschema",
+      "href": "http:\/\/127.0.0.1\/generator\/spec-typeschema\/*\/population\/popo"
+    },
+    {
+      "rel": "spec-openapi",
+      "href": "http:\/\/127.0.0.1\/generator\/spec-openapi\/*\/population\/popo"
+    },
+    {
+      "rel": "spec-raml",
+      "href": "http:\/\/127.0.0.1\/generator\/spec-raml\/*\/population\/popo"
+    }
+  ]
 }
