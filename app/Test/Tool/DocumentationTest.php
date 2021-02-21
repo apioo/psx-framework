@@ -52,7 +52,7 @@ class DocumentationTest extends ApiTestCase
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/documentation_detail.json');
-        $expect = str_replace('\/generator\/', trim(json_encode(parse_url($baseUrl, PHP_URL_PATH) . 'generator/'), '"'), $expect);
+        $expect = str_replace('http:\/\/127.0.0.1\/', trim(json_encode($baseUrl), '"'), $expect);
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
