@@ -23,7 +23,7 @@ namespace PSX\Framework\Tests\Dispatch;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
-use PSX\Http\Exception\BadRequestException;
+use PSX\Http\Filter\CORS;
 
 /**
  * ControllerFactoryTest
@@ -39,7 +39,8 @@ class ControllerFactoryTest extends TestCase
         $controller = $this->getController(DummyController::class);
 
         $this->assertTrue(is_array($controller));
-        $this->assertInstanceOf(DummyController::class, $controller[0]);
+        $this->assertInstanceOf(CORS::class, $controller[0]);
+        $this->assertInstanceOf(DummyController::class, $controller[1]);
     }
 
     public function testGetControllerInvalid()

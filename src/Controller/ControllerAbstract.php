@@ -20,9 +20,11 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Framework\Config\Config;
 use PSX\Framework\Loader\Context;
 use PSX\Http\Environment\HttpContext;
 use PSX\Http\Exception as StatusCode;
+use PSX\Http\Filter\CORS;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterCollectionInterface;
 use PSX\Http\FilterInterface;
@@ -110,7 +112,18 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
      */
     public function getPreFilter()
     {
-        return [];
+        $filter = [];
+
+        if ($this->config instanceof Config) {
+            $filter[] = new CORS(
+                $this->config->get('psx_cors_origin'),
+                ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+                $this->config->get('psx_cors_headers'),
+                false
+            );
+        }
+
+        return $filter;
     }
 
     /**

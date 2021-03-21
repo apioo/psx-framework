@@ -69,7 +69,6 @@ class ListCommandTest extends ControllerTestCase
             'PSX\\Dependency\\TypeResolverInterface' => 'container_type_resolver',
             'PSX\\Framework\\Dispatch\\ControllerFactory' => 'controller_factory',
             'PSX\\Framework\\Dispatch\\ControllerFactoryInterface' => 'controller_factory',
-            'PSX\\Framework\\Http\\CorsPolicy' => 'cors_policy',
             'PSX\\Framework\\Dispatch\\Dispatch' => 'dispatch',
             'Symfony\\Component\\EventDispatcher\\EventDispatcher' => 'event_dispatcher',
             'Symfony\\Component\\EventDispatcher\\EventDispatcherInterface' => 'event_dispatcher',
