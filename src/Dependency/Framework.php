@@ -173,13 +173,6 @@ trait Framework
         );
     }
 
-    public function getCorsPolicy(): CorsPolicy
-    {
-        return new CorsPolicy(
-            $this->get('config')
-        );
-    }
-
     public function getRequestReader(): RequestReader
     {
         return new RequestReader($this->get('io'));
