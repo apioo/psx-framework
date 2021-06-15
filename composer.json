@@ -2,13 +2,13 @@
   "name": "psx/framework",
   "description": "Engine of the PSX framework",
   "keywords": ["psx", "rest", "api", "framework"],
-  "homepage": "http://phpsx.org",
+  "homepage": "https://phpsx.org",
   "license": "Apache-2.0",
   "authors": [
     {
       "name": "Christoph Kappestein",
       "email": "christoph.kappestein@gmail.com",
-      "homepage": "http://christoph.kappestein.com/"
+      "homepage": "https://chrisk.app"
     }
   ],
   "require": {
