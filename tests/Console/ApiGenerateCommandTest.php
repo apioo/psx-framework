@@ -49,7 +49,7 @@ class ApiGenerateCommandTest extends ControllerTestCase
         $response = $commandTester->getDisplay();
 
         $this->assertRegExp('/Successful!/', $response);
-        $this->assertTrue(is_file(__DIR__ . '/output/output.md'));
+        $this->assertTrue(is_file(__DIR__ . '/output/output-markup-markdown.md'));
     }
 
     protected function getPaths()
