@@ -621,17 +621,6 @@
           "$ref": "#\/components\/schemas\/Documentation_Method"
         }
       },
-      "Documentation_Path": {
-        "type": "object",
-        "properties": {
-          "version": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          }
-        }
-      },
       "Documentation_Route": {
         "type": "object",
         "properties": {
@@ -652,18 +641,6 @@
       "Documentation_Schema": {
         "type": "object",
         "additionalProperties": true
-      },
-      "DogetQuery": {
-        "type": "object",
-        "properties": {
-          "startIndex": {
-            "type": "integer"
-          },
-          "count": {
-            "type": "integer"
-          }
-        },
-        "required": []
       },
       "Entity": {
         "description": "Represents an internet population entity",
@@ -758,50 +735,6 @@
       },
       "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest": {
         "$ref": "#\/components\/schemas\/Entity"
-      },
-      "Path": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id"
-        ]
-      },
-      "PopulationOpenapiGetQuery": {
-        "type": "object",
-        "properties": {
-          "startIndex": {
-            "type": "integer"
-          },
-          "count": {
-            "type": "integer"
-          }
-        },
-        "required": []
-      },
-      "PopulationOpenapiIdGetQuery": {
-        "type": "object",
-        "properties": {
-          "startIndex": {
-            "type": "integer"
-          },
-          "count": {
-            "type": "integer"
-          }
-        },
-        "required": []
-      },
-      "PopulationOpenapiIdPath": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          }
-        },
-        "required": []
       },
       "Routing_Collection": {
         "type": "object",

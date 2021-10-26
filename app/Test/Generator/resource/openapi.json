@@ -88,18 +88,6 @@
           }
         }
       },
-      "DogetQuery": {
-        "type": "object",
-        "properties": {
-          "startIndex": {
-            "type": "integer"
-          },
-          "count": {
-            "type": "integer"
-          }
-        },
-        "required": []
-      },
       "Entity": {
         "description": "Represents an internet population entity",
         "type": "object",
