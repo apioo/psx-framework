@@ -1,257 +1,50 @@
 {
-  "components": {
-    "schemas": {
-      "Collection": {
-        "properties": {
-          "entry": {
-            "items": {
-              "$ref": "#/components/schemas/Entry"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
-      "Create": {
-        "properties": {
-          "date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "title": {
-            "maxLength": 16,
-            "minLength": 3,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "title",
-          "date"
-        ],
-        "type": "object"
-      },
-      "Delete": {
-        "properties": {
-          "date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "title": {
-            "maxLength": 16,
-            "minLength": 3,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id"
-        ],
-        "type": "object"
-      },
-      "Entry": {
-        "properties": {
-          "date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "title": {
-            "maxLength": 16,
-            "minLength": 3,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "Get_Query": {
-        "properties": {
-          "boolean": {
-            "type": "boolean"
-          },
-          "date": {
-            "format": "date",
-            "type": "string"
-          },
-          "datetime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "float": {
-            "type": "number"
-          },
-          "startIndex": {
-            "description": "startIndex parameter",
-            "maximum": 32,
-            "minimum": 0,
-            "type": "integer"
-          }
-        },
-        "type": "object"
-      },
-      "Message": {
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "success": {
-            "type": "boolean"
-          }
-        },
-        "type": "object"
-      },
-      "Patch": {
-        "properties": {
-          "date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "title": {
-            "maxLength": 16,
-            "minLength": 3,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id"
-        ],
-        "type": "object"
-      },
-      "Path": {
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "maxLength": 16,
-            "minLength": 0,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "Update": {
-        "properties": {
-          "date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "title": {
-            "maxLength": 16,
-            "minLength": 3,
-            "pattern": "[A-z]+",
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id"
-        ],
-        "type": "object"
-      }
-    }
-  },
+  "openapi": "3.0.0",
   "info": {
     "title": "PSX",
     "version": "1"
   },
-  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http:\/\/127.0.0.1\/"
+    }
+  ],
   "paths": {
-    "/api": {
-      "delete": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Delete"
-              }
-            }
-          },
-          "description": "DELETE Request"
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            },
-            "description": "DELETE 200 Response"
-          }
-        }
-      },
+    "\/api": {
       "get": {
         "description": "Returns a collection",
         "parameters": [
           {
-            "description": "startIndex parameter",
-            "in": "query",
             "name": "startIndex",
+            "in": "query",
+            "description": "startIndex parameter",
             "required": false,
             "schema": {
               "description": "startIndex parameter",
-              "maximum": 32,
+              "type": "integer",
               "minimum": 0,
-              "type": "integer"
+              "maximum": 32
             }
           },
           {
-            "in": "query",
             "name": "float",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "number"
             }
           },
           {
-            "in": "query",
             "name": "boolean",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "in": "query",
             "name": "date",
+            "in": "query",
             "required": false,
             "schema": {
               "format": "date",
@@ -259,8 +52,8 @@
             }
           },
           {
-            "in": "query",
             "name": "datetime",
+            "in": "query",
             "required": false,
             "schema": {
               "format": "date-time",
@@ -270,34 +63,130 @@
         ],
         "responses": {
           "200": {
+            "description": "GET 200 Response",
             "content": {
-              "application/json": {
+              "application\/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Collection"
+                  "$ref": "#\/components\/schemas\/Collection"
                 }
               }
-            },
-            "description": "GET 200 Response"
+            }
+          }
+        }
+      },
+      "put": {
+        "requestBody": {
+          "description": "PUT Request",
+          "content": {
+            "application\/json": {
+              "schema": {
+                "$ref": "#\/components\/schemas\/Update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PUT 200 Response",
+            "content": {
+              "application\/json": {
+                "schema": {
+                  "$ref": "#\/components\/schemas\/Message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "description": "POST Request",
+          "content": {
+            "application\/json": {
+              "schema": {
+                "$ref": "#\/components\/schemas\/Create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "POST 201 Response",
+            "content": {
+              "application\/json": {
+                "schema": {
+                  "$ref": "#\/components\/schemas\/Message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "requestBody": {
+          "description": "DELETE Request",
+          "content": {
+            "application\/json": {
+              "schema": {
+                "$ref": "#\/components\/schemas\/Delete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DELETE 200 Response",
+            "content": {
+              "application\/json": {
+                "schema": {
+                  "$ref": "#\/components\/schemas\/Message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "requestBody": {
+          "description": "PATCH Request",
+          "content": {
+            "application\/json": {
+              "schema": {
+                "$ref": "#\/components\/schemas\/Patch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PATCH 200 Response",
+            "content": {
+              "application\/json": {
+                "schema": {
+                  "$ref": "#\/components\/schemas\/Message"
+                }
+              }
+            }
           }
         }
       },
       "parameters": [
         {
-          "description": "Name parameter",
-          "in": "path",
           "name": "name",
+          "in": "path",
+          "description": "Name parameter",
           "required": false,
           "schema": {
             "description": "Name parameter",
-            "maxLength": 16,
-            "minLength": 0,
+            "type": "string",
             "pattern": "[A-z]+",
-            "type": "string"
+            "minLength": 0,
+            "maxLength": 16
           }
         },
         {
-          "in": "path",
           "name": "type",
+          "in": "path",
           "required": false,
           "schema": {
             "enum": [
@@ -307,84 +196,151 @@
             "type": "string"
           }
         }
-      ],
-      "patch": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Patch"
-              }
-            }
-          },
-          "description": "PATCH Request"
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            },
-            "description": "PATCH 200 Response"
-          }
-        }
-      },
-      "post": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Create"
-              }
-            }
-          },
-          "description": "POST Request"
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            },
-            "description": "POST 201 Response"
-          }
-        }
-      },
-      "put": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Update"
-              }
-            }
-          },
-          "description": "PUT Request"
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            },
-            "description": "PUT 200 Response"
-          }
-        }
-      }
+      ]
     }
   },
-  "servers": [
-    {
-      "url": "http://127.0.0.1/"
+  "components": {
+    "schemas": {
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "entry": {
+            "type": "array",
+            "items": {
+              "$ref": "#\/components\/schemas\/Entry"
+            }
+          }
+        }
+      },
+      "Create": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 16
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "date"
+        ]
+      },
+      "Delete": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 16
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "Entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 16
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Patch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 16
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "Update": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 3,
+            "maxLength": 16
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
     }
-  ]
+  }
 }

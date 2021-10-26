@@ -73,7 +73,7 @@ JSON;
         $expect = <<<'JSON'
 {
     "success": false,
-    "title": "PSX\\Schema\\ValidationException",
+    "title": "PSX\\Schema\\Exception\\ValidationException",
     "message": "/title has an invalid length min 3 and max 8 signs",
     "trace": "",
     "context": ""
@@ -94,7 +94,7 @@ JSON;
         $expect = <<<'JSON'
 {
     "success": false,
-    "title": "PSX\\Schema\\ValidationException",
+    "title": "PSX\\Schema\\Exception\\ValidationException",
     "message": "/author/name has an invalid length min 3 and max 8 signs",
     "trace": "",
     "context": ""
