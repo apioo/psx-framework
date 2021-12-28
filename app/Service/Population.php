@@ -40,7 +40,7 @@ class Population
         $this->populationTable = $populationTable;
     }
 
-    public function getAll(int $startIndex = 0, int $count = 16)
+    public function getAll(?int $startIndex = null, ?int $count = null)
     {
         return $this->populationTable->getCollection($startIndex, $count);
     }

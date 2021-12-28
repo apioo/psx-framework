@@ -30,34 +30,6 @@
     },
     {
       "methods": [
-        "ANY"
-      ],
-      "path": "\/population\/openapi",
-      "source": "PSX\\Framework\\App\\Api\\Population\\CollectionOpenAPI"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/population\/openapi\/:id",
-      "source": "PSX\\Framework\\App\\Api\\Population\\EntityOpenAPI"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/population",
-      "source": "PSX\\Framework\\App\\Api\\Population\\Collection"
-    },
-    {
-      "methods": [
-        "ANY"
-      ],
-      "path": "\/population\/:id",
-      "source": "PSX\\Framework\\App\\Api\\Population\\Entity"
-    },
-    {
-      "methods": [
         "GET"
       ],
       "path": "\/tool",

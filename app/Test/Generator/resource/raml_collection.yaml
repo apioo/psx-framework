@@ -6,6 +6,7 @@ title: PSX
 /population/popo:
   description: 'Collection endpoint'
   get:
+    description: 'Collection endpoint'
     queryParameters:
       startIndex:
         type: integer
@@ -17,8 +18,9 @@ title: PSX
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionPopoGet200Response
+            type: PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response
   post:
+    description: 'Collection endpoint'
     body:
       application/json:
         type: 1
@@ -26,7 +28,7 @@ title: PSX
       201:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionPopoPost201Response
+            type: PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response
 /population/popo/{id}:
   description: 'Entity endpoint'
   uriParameters:
@@ -34,12 +36,14 @@ title: PSX
       type: integer
       required: true
   get:
+    description: 'Entity endpoint'
     responses:
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityPopoGet200Response
+            type: PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response
   put:
+    description: 'Entity endpoint'
     body:
       application/json:
         type: 1
@@ -47,16 +51,18 @@ title: PSX
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityPopoPut200Response
+            type: PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response
   delete:
+    description: 'Entity endpoint'
     responses:
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityPopoDelete200Response
+            type: PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response
 /population/typeschema:
   description: 'Collection endpoint'
   get:
+    description: 'Collection endpoint'
     queryParameters:
       startIndex:
         type: integer
@@ -68,8 +74,9 @@ title: PSX
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response
+            type: PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response
   post:
+    description: 'Collection endpoint'
     body:
       application/json:
         type: 1
@@ -77,7 +84,7 @@ title: PSX
       201:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response
+            type: PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response
 /population/typeschema/{id}:
   description: 'Entity endpoint'
   uriParameters:
@@ -85,12 +92,14 @@ title: PSX
       type: integer
       required: true
   get:
+    description: 'Entity endpoint'
     responses:
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response
+            type: PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response
   put:
+    description: 'Entity endpoint'
     body:
       application/json:
         type: 1
@@ -98,90 +107,35 @@ title: PSX
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response
+            type: PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response
   delete:
+    description: 'Entity endpoint'
     responses:
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response
-/population/openapi:
-  get:
-    queryParameters:
-      startIndex:
-        type: integer
-        required: false
-      count:
-        type: integer
-        required: false
-    responses:
-      200:
-        body:
-          application/json:
-            type: Collection
-  post:
-    body:
-      application/json:
-        type: 1
-    responses:
-      201:
-        body:
-          application/json:
-            type: Message
-/population/openapi/{id}:
-  uriParameters:
-    id:
-      type: integer
-      required: false
-  get:
-    queryParameters:
-      startIndex:
-        type: integer
-        required: false
-      count:
-        type: integer
-        required: false
-    responses:
-      200:
-        body:
-          application/json:
-            type: Collection
-  put:
-    body:
-      application/json:
-        type: 1
-    responses:
-      200:
-        body:
-          application/json:
-            type: Message
-  delete:
-    responses:
-      200:
-        body:
-          application/json:
-            type: Message
+            type: PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response
 /tool:
   get:
     responses:
       200:
         body:
           application/json:
-            type: Welcome
+            type: PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response
 /tool/discovery:
   get:
     responses:
       200:
         body:
           application/json:
-            type: Discovery_Collection
+            type: PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response
 /tool/doc:
   get:
     responses:
       200:
         body:
           application/json:
-            type: Documentation_Index
+            type: PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response
 /tool/doc/{version}/{path}:
   uriParameters:
     version:
@@ -195,16 +149,18 @@ title: PSX
       200:
         body:
           application/json:
-            type: Documentation_Detail
+            type: PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response
 /tool/routing:
   get:
     responses:
       200:
         body:
           application/json:
-            type: Routing_Collection
+            type: PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response
+/generator/{type}/{version}/{path}:
+  get:
 types:
-  Collection: { description: 'Collection result', type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
+  Collection: { type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
   Discovery_Collection: { type: object, properties: { links: { type: array, items: { $ref: '#/types/Discovery_Link' } } } }
   Discovery_Link: { type: object, properties: { rel: { type: string }, href: { type: string } } }
   Documentation_Detail: { type: object, properties: { path: { type: string }, version: { type: string }, status: { type: integer }, description: { type: string }, schema: { $ref: '#/types/Documentation_Schema' }, pathParameters: { type: string }, methods: { $ref: '#/types/Documentation_Methods' }, links: { type: array, items: { $ref: '#/types/Discovery_Link' } } } }
@@ -212,30 +168,34 @@ types:
   Documentation_Method: { type: object, properties: { description: { type: string }, queryParameters: { type: string }, request: { type: string }, responses: { $ref: '#/types/Documentation_Method_Responses' } } }
   Documentation_Method_Responses: { type: object, additionalProperties: { type: string } }
   Documentation_Methods: { type: object, additionalProperties: { $ref: '#/types/Documentation_Method' } }
-  Documentation_Path: { type: object, properties: { version: { type: string }, path: { type: string } } }
   Documentation_Route: { type: object, properties: { path: { type: string }, methods: { type: array, items: { type: string } }, version: { type: string } } }
   Documentation_Schema: { type: object, additionalProperties: true }
-  DogetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
-  Entity: { description: 'Represents an internet population entity', type: object, properties: { id: { description: 'Unique id for each entry', type: integer }, place: { description: 'Position in the top list', type: integer, minimum: 1, maximum: 64 }, region: { description: 'Name of the region', type: string, pattern: '[A-z]+', minLength: 3, maxLength: 64 }, population: { description: 'Complete number of population', type: integer }, users: { description: 'Number of internet users', type: integer }, worldUsers: { description: 'Percentage users of the world', type: number }, datetime: { description: 'Date when the entity was created', format: date-time, type: string } }, required: [place, region, population, users, worldUsers] }
-  Message: { title: message, description: 'Operation message', type: object }
-  PSXFrameworkAppApiPopulationCollectionPopoGet200Response: { $ref: '#/types/Collection' }
-  PSXFrameworkAppApiPopulationCollectionPopoPost201Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationCollectionPopoPostRequest: { $ref: '#/types/Entity' }
-  PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response: { $ref: '#/types/Collection' }
-  PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest: { $ref: '#/types/Entity' }
-  PSXFrameworkAppApiPopulationEntityPopoDelete200Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationEntityPopoGet200Response: { $ref: '#/types/Entity' }
-  PSXFrameworkAppApiPopulationEntityPopoPut200Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationEntityPopoPutRequest: { $ref: '#/types/Entity' }
-  PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response: { $ref: '#/types/Entity' }
-  PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest: { $ref: '#/types/Entity' }
-  Path: { type: object, properties: { id: { type: integer } }, required: [id] }
-  PopulationOpenapiGetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
-  PopulationOpenapiIdGetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
-  PopulationOpenapiIdPath: { type: object, properties: { id: { type: integer } }, required: {  } }
+  Entity: { type: object, properties: { id: { type: integer }, place: { type: integer }, region: { type: string }, population: { type: integer }, users: { type: integer }, worldUsers: { type: number }, datetime: { format: date-time, type: string } } }
+  Message: { type: object }
+  PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response: { $ref: '#/types/Collection' }
+  PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } } }
+  PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request: { $ref: '#/types/Entity' }
+  PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response: { $ref: '#/types/Collection' }
+  PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_Query: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } } }
+  PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_Request: { $ref: '#/types/Entity' }
+  PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response: { $ref: '#/types/Entity' }
+  PSX_Framework_App_Api_Population_EntityPopo_doGet_Path: { type: object, properties: { id: { type: integer } }, required: [id] }
+  PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_Request: { $ref: '#/types/Entity' }
+  PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response: { $ref: '#/types/Entity' }
+  PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_Path: { type: object, properties: { id: { type: integer } }, required: [id] }
+  PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_Request: { $ref: '#/types/Entity' }
+  PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response: { $ref: '#/types/Welcome' }
+  PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response: { $ref: '#/types/Discovery_Collection' }
+  PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response: { $ref: '#/types/Documentation_Detail' }
+  PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_Path: { type: object, properties: { version: { type: string }, path: { type: string } } }
+  PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response: { $ref: '#/types/Documentation_Index' }
+  PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response: { $ref: '#/types/Routing_Collection' }
   Routing_Collection: { type: object, properties: { routings: { type: array, items: { $ref: '#/types/Routing_Route' } } } }
   Routing_Route: { type: object, properties: { methods: { type: array, items: { type: string } }, path: { type: string }, source: { type: string } } }
   Welcome: { type: object, properties: { message: { type: string }, url: { type: string } } }

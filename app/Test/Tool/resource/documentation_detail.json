@@ -1,29 +1,29 @@
 {
   "status": 1,
   "path": "\/population\/popo",
-  "title": "Population",
   "description": "Collection endpoint",
   "methods": {
     "GET": {
-      "operationId": "doGet",
+      "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doGet",
+      "description": "Collection endpoint",
       "tags": [],
-      "queryParameters": "DogetQuery",
+      "queryParameters": "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query",
       "responses": {
-        "200": "PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+        "200": "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response"
       }
     },
     "POST": {
-      "operationId": "doPost",
+      "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doPost",
+      "description": "Collection endpoint",
       "tags": [],
-      "request": "PSXFrameworkAppApiPopulationCollectionPopoPostRequest",
+      "request": "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request",
       "responses": {
-        "201": "PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
+        "201": "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response"
       }
     }
   },
   "definitions": {
     "Collection": {
-      "description": "Collection result",
       "type": "object",
       "properties": {
         "totalResults": {
@@ -37,7 +37,40 @@
         }
       }
     },
-    "DogetQuery": {
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "place": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "users": {
+          "type": "integer"
+        },
+        "worldUsers": {
+          "type": "number"
+        },
+        "datetime": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Message": {
+      "type": "object"
+    },
+    "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response": {
+      "$ref": "Collection"
+    },
+    "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query": {
       "type": "object",
       "properties": {
         "startIndex": {
@@ -46,68 +79,12 @@
         "count": {
           "type": "integer"
         }
-      },
-      "required": []
+      }
     },
-    "Entity": {
-      "description": "Represents an internet population entity",
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "Unique id for each entry",
-          "type": "integer"
-        },
-        "place": {
-          "description": "Position in the top list",
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64
-        },
-        "region": {
-          "description": "Name of the region",
-          "type": "string",
-          "pattern": "[A-z]+",
-          "minLength": 3,
-          "maxLength": 64
-        },
-        "population": {
-          "description": "Complete number of population",
-          "type": "integer"
-        },
-        "users": {
-          "description": "Number of internet users",
-          "type": "integer"
-        },
-        "worldUsers": {
-          "description": "Percentage users of the world",
-          "type": "number"
-        },
-        "datetime": {
-          "description": "Date when the entity was created",
-          "format": "date-time",
-          "type": "string"
-        }
-      },
-      "required": [
-        "place",
-        "region",
-        "population",
-        "users",
-        "worldUsers"
-      ]
-    },
-    "Message": {
-      "title": "message",
-      "description": "Operation message",
-      "type": "object"
-    },
-    "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
-      "$ref": "Collection"
-    },
-    "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+    "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response": {
       "$ref": "Message"
     },
-    "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+    "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request": {
       "$ref": "Entity"
     }
   },

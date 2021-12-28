@@ -6,6 +6,7 @@ title: PSX
 /population/popo:
   description: 'Collection endpoint'
   get:
+    description: 'Collection endpoint'
     queryParameters:
       startIndex:
         type: integer
@@ -17,8 +18,9 @@ title: PSX
       200:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionPopoGet200Response
+            type: PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response
   post:
+    description: 'Collection endpoint'
     body:
       application/json:
         type: 1
@@ -26,12 +28,12 @@ title: PSX
       201:
         body:
           application/json:
-            type: PSXFrameworkAppApiPopulationCollectionPopoPost201Response
+            type: PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response
 types:
-  Collection: { description: 'Collection result', type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
-  DogetQuery: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } }, required: {  } }
-  Entity: { description: 'Represents an internet population entity', type: object, properties: { id: { description: 'Unique id for each entry', type: integer }, place: { description: 'Position in the top list', type: integer, minimum: 1, maximum: 64 }, region: { description: 'Name of the region', type: string, pattern: '[A-z]+', minLength: 3, maxLength: 64 }, population: { description: 'Complete number of population', type: integer }, users: { description: 'Number of internet users', type: integer }, worldUsers: { description: 'Percentage users of the world', type: number }, datetime: { description: 'Date when the entity was created', format: date-time, type: string } }, required: [place, region, population, users, worldUsers] }
-  Message: { title: message, description: 'Operation message', type: object }
-  PSXFrameworkAppApiPopulationCollectionPopoGet200Response: { $ref: '#/types/Collection' }
-  PSXFrameworkAppApiPopulationCollectionPopoPost201Response: { $ref: '#/types/Message' }
-  PSXFrameworkAppApiPopulationCollectionPopoPostRequest: { $ref: '#/types/Entity' }
+  Collection: { type: object, properties: { totalResults: { type: integer }, entry: { type: array, items: { $ref: '#/types/Entity' } } } }
+  Entity: { type: object, properties: { id: { type: integer }, place: { type: integer }, region: { type: string }, population: { type: integer }, users: { type: integer }, worldUsers: { type: number }, datetime: { format: date-time, type: string } } }
+  Message: { type: object }
+  PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response: { $ref: '#/types/Collection' }
+  PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query: { type: object, properties: { startIndex: { type: integer }, count: { type: integer } } }
+  PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response: { $ref: '#/types/Message' }
+  PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request: { $ref: '#/types/Entity' }

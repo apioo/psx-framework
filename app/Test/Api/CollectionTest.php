@@ -84,7 +84,7 @@ class CollectionTest extends ApiTestCase
 }
 JSON;
 
-        $this->assertEquals(201, $response->getStatusCode(), $actual);
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
