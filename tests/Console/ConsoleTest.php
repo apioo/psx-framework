@@ -42,9 +42,10 @@ class ConsoleTest extends ControllerTestCase
         sort($keys);
 
         $expect = [
+            '_complete',
             'api:generate',
             'api:parse',
-            'api:resource',
+            'completion',
             'container:build',
             'container:list',
             'dbal:import',

@@ -32,14 +32,9 @@ use PSX\Http\RequestInterface;
 interface LocationFinderInterface
 {
     /**
-     * Resolves the incoming request to a source. A source is a string which
-     * can be resolved to a callback. The source must be added to the context.
-     * If the request can not be resolved the method must return null else the
-     * given request
-     *
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Framework\Loader\Context $context
-     * @return \PSX\Http\RequestInterface|null
+     * Resolves the incoming request to a source. A source is a string which can be resolved to a callback. The source
+     * must be added to the context. If the request can not be resolved the method must return null else the given
+     * request
      */
-    public function resolve(RequestInterface $request, Context $context);
+    public function resolve(RequestInterface $request, Context $context): ?RequestInterface;
 }

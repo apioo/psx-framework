@@ -33,14 +33,14 @@ use PSX\Framework\Loader\RoutingParserInterface;
  */
 class ArrayCollection implements RoutingParserInterface
 {
-    protected $routings;
+    private array $routings;
 
     public function __construct(array $routings)
     {
         $this->routings = $routings;
     }
 
-    public function getCollection(?FilterInterface $filter = null)
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         $collection = new RoutingCollection();
 

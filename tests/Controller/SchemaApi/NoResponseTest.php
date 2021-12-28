@@ -96,7 +96,7 @@ class NoResponseTest extends ControllerTestCase
         $body     = (string) $response->getBody();
 
         $expect = [
-            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH']
+            'allow' => ['OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE']
         ];
 
         $this->assertEquals(200, $response->getStatusCode());

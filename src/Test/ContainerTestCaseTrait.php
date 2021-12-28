@@ -31,9 +31,11 @@ use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Loader;
 use PSX\Http\Request;
 use PSX\Http\Response;
+use PSX\Http\Stream\Stream;
 use PSX\Http\Stream\TempStream;
 use PSX\Schema\SchemaManager;
 use PSX\Uri\Uri;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * ContainerTestCaseTrait
@@ -66,7 +68,7 @@ trait ContainerTestCaseTrait
         Environment::getContainer()->set('test_case', $this);
 
         // use null cache
-        Environment::getContainer()->set('cache', new Pool(new ArrayCache()));
+        Environment::getContainer()->set('cache', new ArrayAdapter());
 
         // add event listener which redirects PHPUnit exceptions. Because of
         // this we can make assertions inside an controller
@@ -155,7 +157,7 @@ trait ContainerTestCaseTrait
     {
         $request  = new Request(is_string($uri) ? new Uri($uri) : $uri, $method, $headers, $body);
         $response = new Response();
-        $response->setBody(new TempStream(fopen('php://memory', 'r+')));
+        $response->setBody(new Stream(fopen('php://memory', 'r+')));
 
         $this->loadController($request, $response);
 

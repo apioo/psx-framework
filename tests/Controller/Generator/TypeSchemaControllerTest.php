@@ -40,7 +40,7 @@ class TypeSchemaControllerTest extends ControllerTestCase
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/typeschema.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
@@ -51,7 +51,7 @@ class TypeSchemaControllerTest extends ControllerTestCase
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/typeschema_collection.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }

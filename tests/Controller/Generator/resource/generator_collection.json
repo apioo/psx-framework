@@ -10,6 +10,12 @@
     }
   ],
   "paths": {
+    "\/generate\/{type}\/{version}\/{path}": {
+      "get": {
+        "operationId": "PSX_Framework_Controller_Generator_GeneratorController_doGet",
+        "responses": {}
+      }
+    },
     "\/api": {
       "get": {
         "description": "Returns a collection",
@@ -204,6 +210,39 @@
           }
         }
       ]
+    },
+    "\/endpoint": {
+      "get": {
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet",
+        "responses": {
+          "200": {
+            "description": "GET 200 Response",
+            "content": {
+              "application\/json": {
+                "schema": {
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet_GET_200_Response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPut",
+        "responses": {}
+      },
+      "post": {
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPost",
+        "responses": {}
+      },
+      "delete": {
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doDelete",
+        "responses": {}
+      },
+      "patch": {
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPatch",
+        "responses": {}
+      }
     }
   },
   "components": {
@@ -326,6 +365,9 @@
       },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request": {
         "$ref": "#\/components\/schemas\/Update"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Collection"
       },
       "Patch": {
         "type": "object",

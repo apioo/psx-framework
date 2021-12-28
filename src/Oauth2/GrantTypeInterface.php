@@ -20,6 +20,9 @@
 
 namespace PSX\Framework\Oauth2;
 
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\GrantInterface;
+
 /**
  * GrantTypeInterface
  *
@@ -29,26 +32,20 @@ namespace PSX\Framework\Oauth2;
  */
 interface GrantTypeInterface
 {
-    const TYPE_AUTHORIZATION_CODE = 'authorization_code';
-    const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
-    const TYPE_IMPLICIT           = 'implicit';
-    const TYPE_PASSWORD           = 'password';
-    const TYPE_REFRESH_TOKEN      = 'refresh_token';
+    public const TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    public const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
+    public const TYPE_IMPLICIT           = 'implicit';
+    public const TYPE_PASSWORD           = 'password';
+    public const TYPE_REFRESH_TOKEN      = 'refresh_token';
 
     /**
      * Returns the name of this grant type
-     *
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Returns an access token based on the credentials and request parameters.
      * In some grant types the credentials can be null
-     *
-     * @param \PSX\Framework\Oauth2\Credentials $credentials
-     * @param array $parameters
-     * @return \PSX\Oauth2\AccessToken
      */
-    public function generateAccessToken(Credentials $credentials = null, array $parameters);
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken;
 }

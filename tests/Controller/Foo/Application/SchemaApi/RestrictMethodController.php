@@ -20,9 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
 /**
@@ -32,25 +30,16 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RestrictMethodController extends SchemaApiAbstract
+class RestrictMethodController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
+    protected function doGet(HttpContextInterface $context): array
     {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $builder->addMethod('GET');
-        $builder->addMethod('DELETE');
-
-        return $builder->getSpecification();
+        return array(
+            'foo' => 'bar'
+        );
     }
 
-    protected function doGet(HttpContextInterface $context)
+    protected function doDelete(HttpContextInterface $context): array
     {
         return array(
             'foo' => 'bar'

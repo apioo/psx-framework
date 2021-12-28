@@ -39,9 +39,9 @@ class GeneratorControllerTest extends ControllerTestCase
     {
         $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::SPEC_OPENAPI . '/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
+        $expect   = file_get_contents(__DIR__ . '/resource/generator.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
@@ -50,9 +50,9 @@ class GeneratorControllerTest extends ControllerTestCase
     {
         $response = $this->sendRequest('/generate/' . GeneratorFactoryInterface::SPEC_OPENAPI . '/1/*', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/openapi_collection.json');
+        $expect   = file_get_contents(__DIR__ . '/resource/generator_collection.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
@@ -61,9 +61,9 @@ class GeneratorControllerTest extends ControllerTestCase
     {
         $response = $this->sendRequest('/generate/openapi/1/api', 'GET', ['Accept' => 'application/json']);
         $json     = (string) $response->getBody();
-        $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
+        $expect   = file_get_contents(__DIR__ . '/resource/generator.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }

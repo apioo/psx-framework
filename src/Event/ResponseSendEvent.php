@@ -32,14 +32,14 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class ResponseSendEvent extends SymfonyEvent
 {
-    protected $response;
+    private ResponseInterface $response;
 
     public function __construct(ResponseInterface $response)
     {
         $this->response = $response;
     }
 
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }

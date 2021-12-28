@@ -12,7 +12,8 @@
   "paths": {
     "\/population\/popo": {
       "get": {
-        "operationId": "doGet",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -37,7 +38,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response"
                 }
               }
             }
@@ -45,13 +46,14 @@
         }
       },
       "post": {
-        "operationId": "doPost",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doPost",
         "requestBody": {
           "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPostRequest"
+                "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request"
               }
             }
           }
@@ -62,7 +64,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response"
                 }
               }
             }
@@ -74,7 +76,6 @@
   "components": {
     "schemas": {
       "Collection": {
-        "description": "Collection result",
         "type": "object",
         "properties": {
           "totalResults": {
@@ -89,64 +90,42 @@
         }
       },
       "Entity": {
-        "description": "Represents an internet population entity",
         "type": "object",
         "properties": {
           "id": {
-            "description": "Unique id for each entry",
             "type": "integer"
           },
           "place": {
-            "description": "Position in the top list",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 64
+            "type": "integer"
           },
           "region": {
-            "description": "Name of the region",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 3,
-            "maxLength": 64
+            "type": "string"
           },
           "population": {
-            "description": "Complete number of population",
             "type": "integer"
           },
           "users": {
-            "description": "Number of internet users",
             "type": "integer"
           },
           "worldUsers": {
-            "description": "Percentage users of the world",
             "type": "number"
           },
           "datetime": {
-            "description": "Date when the entity was created",
             "format": "date-time",
             "type": "string"
           }
-        },
-        "required": [
-          "place",
-          "region",
-          "population",
-          "users",
-          "worldUsers"
-        ]
+        }
       },
       "Message": {
-        "title": "message",
-        "description": "Operation message",
         "type": "object"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Collection"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request": {
         "$ref": "#\/components\/schemas\/Entity"
       }
     }

@@ -37,27 +37,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class BuildCommand extends Command
 {
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
+    private Config $config;
 
-    /**
-     * @var \Doctrine\Common\Annotations\Reader
-     */
-    private $reader;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    public function __construct(ContainerInterface $container, Reader $reader, Config $config)
+    public function __construct(ContainerInterface $container, Config $config)
     {
         parent::__construct();
 
         $this->container = $container;
-        $this->reader = $reader;
         $this->config = $config;
     }
 
@@ -70,7 +57,7 @@ class BuildCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $compiler = new PhpCompiler($this->reader, 'Container', '');
+        $compiler = new PhpCompiler('Container', '');
 
         $code = $compiler->compile($this->container);
         $code.= '$container = new Container();' . "\n";

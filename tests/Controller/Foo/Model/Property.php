@@ -20,8 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use DateInterval;
-use DateTime;
+use PSX\DateTime\Date;
+use PSX\DateTime\DateTime;
+use PSX\DateTime\Duration;
+use PSX\DateTime\Time;
 
 /**
  * Property
@@ -32,296 +34,170 @@ use DateTime;
  */
 class Property
 {
-    /**
-     * @var \PSX\Framework\Tests\Controller\Foo\Model\Any
-     */
-    private $any;
+    private ?Any $any = null;
 
     /**
      * @var array<string>
      */
-    private $array;
+    private ?array $array = null;
 
     /**
-     * @var array<\PSX\Framework\Tests\Controller\Foo\Model\Complex>
+     * @var array<Complex>
      */
-    private $arrayComplex;
+    private ?array $arrayComplex = null;
 
     /**
-     * @var array<\PSX\Framework\Tests\Controller\Foo\Model\ChoiceA|\PSX\Framework\Tests\Controller\Foo\Model\ChoiceB>
+     * @var array<ChoiceA|ChoiceB>
      */
-    private $arrayChoice;
+    private ?array $arrayChoice = null;
 
-    /**
-     * @var boolean
-     */
-    private $boolean;
+    private ?bool $boolean = null;
+    private ChoiceA|ChoiceB|null $choice = null;
+    private ?Complex $complex = null;
+    private ?Date $date = null;
+    private ?DateTime $dateTime = null;
+    private ?Duration $duration = null;
+    private ?float $float = null;
+    private ?int $integer = null;
+    private ?string $string = null;
+    private ?Time $time = null;
 
-    /**
-     * @var \PSX\Framework\Tests\Controller\Foo\Model\ChoiceA|\PSX\Framework\Tests\Controller\Foo\Model\ChoiceB
-     */
-    private $choice;
-
-    /**
-     * @var \PSX\Framework\Tests\Controller\Foo\Model\Complex
-     */
-    private $complex;
-
-    /**
-     * @var \PSX\DateTime\Date
-     */
-    private $date;
-
-    /**
-     * @var \PSX\DateTime\DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var \PSX\DateTime\Duration
-     */
-    private $duration;
-
-    /**
-     * @var float
-     */
-    private $float;
-
-    /**
-     * @var integer
-     */
-    private $integer;
-
-    /**
-     * @var string
-     */
-    private $string;
-
-    /**
-     * @var \PSX\DateTime\Time
-     */
-    private $time;
-
-    /**
-     * @return Any
-     */
     public function getAny(): ?Any
     {
         return $this->any;
     }
 
-    /**
-     * @param Any $any
-     */
     public function setAny(Any $any): void
     {
         $this->any = $any;
     }
 
-    /**
-     * @return array
-     */
     public function getArray(): ?array
     {
         return $this->array;
     }
 
-    /**
-     * @param array $array
-     */
     public function setArray(array $array): void
     {
         $this->array = $array;
     }
 
-    /**
-     * @return array
-     */
     public function getArrayComplex(): ?array
     {
         return $this->arrayComplex;
     }
 
-    /**
-     * @param array $arrayComplex
-     */
     public function setArrayComplex(array $arrayComplex): void
     {
         $this->arrayComplex = $arrayComplex;
     }
 
-    /**
-     * @return array
-     */
     public function getArrayChoice(): ?array
     {
         return $this->arrayChoice;
     }
 
-    /**
-     * @param array $arrayChoice
-     */
     public function setArrayChoice(array $arrayChoice): void
     {
         $this->arrayChoice = $arrayChoice;
     }
 
-    /**
-     * @return bool
-     */
     public function getBoolean(): ?bool
     {
         return $this->boolean;
     }
 
-    /**
-     * @param bool $boolean
-     */
     public function setBoolean(bool $boolean): void
     {
         $this->boolean = $boolean;
     }
 
-    /**
-     * @return ChoiceA|ChoiceB
-     */
-    public function getChoice()
+    public function getChoice(): ChoiceA|ChoiceB|null
     {
         return $this->choice;
     }
 
-    /**
-     * @param ChoiceA|ChoiceB $choice
-     */
-    public function setChoice($choice): void
+    public function setChoice(ChoiceA|ChoiceB $choice): void
     {
         $this->choice = $choice;
     }
 
-    /**
-     * @return Complex
-     */
     public function getComplex(): ?Complex
     {
         return $this->complex;
     }
 
-    /**
-     * @param Complex $complex
-     */
     public function setComplex(Complex $complex): void
     {
         $this->complex = $complex;
     }
 
-    /**
-     * @return \PSX\DateTime\Date
-     */
-    public function getDate(): ?\PSX\DateTime\Date
+    public function getDate(): ?Date
     {
         return $this->date;
     }
 
-    /**
-     * @param \PSX\DateTime\Date $date
-     */
-    public function setDate(\PSX\DateTime\Date $date): void
+    public function setDate(Date $date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * @return \PSX\DateTime\DateTime
-     */
-    public function getDateTime(): ?\PSX\DateTime\DateTime
+    public function getDateTime(): ?DateTime
     {
         return $this->dateTime;
     }
 
-    /**
-     * @param \PSX\DateTime\DateTime $dateTime
-     */
-    public function setDateTime(\PSX\DateTime\DateTime $dateTime): void
+    public function setDateTime(DateTime $dateTime): void
     {
         $this->dateTime = $dateTime;
     }
 
-    /**
-     * @return \PSX\DateTime\Duration
-     */
-    public function getDuration(): ?\PSX\DateTime\Duration
+    public function getDuration(): ?Duration
     {
         return $this->duration;
     }
 
-    /**
-     * @param \PSX\DateTime\Duration $duration
-     */
-    public function setDuration(\PSX\DateTime\Duration $duration): void
+    public function setDuration(Duration $duration): void
     {
         $this->duration = $duration;
     }
 
-    /**
-     * @return float
-     */
     public function getFloat(): ?float
     {
         return $this->float;
     }
 
-    /**
-     * @param float $float
-     */
     public function setFloat(float $float): void
     {
         $this->float = $float;
     }
 
-    /**
-     * @return int
-     */
     public function getInteger(): ?int
     {
         return $this->integer;
     }
 
-    /**
-     * @param int $integer
-     */
     public function setInteger(int $integer): void
     {
         $this->integer = $integer;
     }
 
-    /**
-     * @return string
-     */
     public function getString(): ?string
     {
         return $this->string;
     }
 
-    /**
-     * @param string $string
-     */
     public function setString(string $string): void
     {
         $this->string = $string;
     }
 
-    /**
-     * @return \PSX\DateTime\Time
-     */
-    public function getTime(): ?\PSX\DateTime\Time
+    public function getTime(): ?Time
     {
         return $this->time;
     }
 
-    /**
-     * @param \PSX\DateTime\Time $time
-     */
-    public function setTime(\PSX\DateTime\Time $time): void
+    public function setTime(Time $time): void
     {
         $this->time = $time;
     }

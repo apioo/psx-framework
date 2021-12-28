@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Loader;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -35,108 +36,80 @@ use PSX\Http\ResponseInterface;
  */
 class ProbeController extends ControllerAbstract
 {
-    protected $methodsCalled = array();
+    private static array $methodsCalled = [];
 
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         parent::__construct($context);
 
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getIterator();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         parent::handle($request, $response, $filterChain);
     }
 
-    public function getPreFilter()
+    public function getPreFilter(): array
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getPreFilter();
     }
 
-    public function getPostFilter()
+    public function getPostFilter(): array
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getPostFilter();
     }
 
-    public function onLoad()
+    public function doGet(HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function doPost(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
-
-        parent::onRequest($request, $response);
+        self::$methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    public function doPut(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onHead(RequestInterface $request, ResponseInterface $response)
+    public function doPatch(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onPost(RequestInterface $request, ResponseInterface $response)
+    public function doDelete(HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onPut(RequestInterface $request, ResponseInterface $response)
+    public static function getMethodsCalled(): array
     {
-        $this->methodsCalled[] = __METHOD__;
+        return self::$methodsCalled;
     }
 
-    public function onDelete(RequestInterface $request, ResponseInterface $response)
+    public static function clear(): void
     {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onOptions(RequestInterface $request, ResponseInterface $response)
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onPatch(RequestInterface $request, ResponseInterface $response)
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onFinish()
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function getMethodsCalled()
-    {
-        return $this->methodsCalled;
-    }
-
-    public function getFragments()
-    {
-        return $this->uriFragments;
+        self::$methodsCalled = [];
     }
 }

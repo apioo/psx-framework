@@ -33,15 +33,15 @@ use PSX\Sql\TableAbstract;
  */
 class Population extends TableAbstract
 {
-    public function getName()
+    public function getName(): string
     {
         return 'population';
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return array(
-            'id'          => self::TYPE_INT | 10 | self::AUTO_INCREMENT | self ::PRIMARY_KEY,
+            'id'          => self::TYPE_INT | 10 | self::AUTO_INCREMENT | self::PRIMARY_KEY,
             'place'       => self::TYPE_INT | 10,
             'region'      => self::TYPE_VARCHAR | 64,
             'population'  => self::TYPE_INT | 10,
@@ -53,7 +53,7 @@ class Population extends TableAbstract
 
     public function getEntity(int $id)
     {
-        $definition = $this->doEntity([$this, 'get'], [$id], [
+        $definition = $this->doEntity([$this, 'find'], [$id], [
             'id' => $this->fieldInteger('id'),
             'place' => $this->fieldInteger('place'),
             'region' => 'region',
@@ -66,7 +66,7 @@ class Population extends TableAbstract
         return $this->build($definition);
     }
 
-    public function getCollection(int $startIndex = null, int $count = null)
+    public function getCollection(?int $startIndex = null, ?int $count = null)
     {
         if (empty($startIndex) || $startIndex < 0) {
             $startIndex = 0;
@@ -82,7 +82,7 @@ class Population extends TableAbstract
             'totalResults' => $this->getCount($condition),
             'startIndex' => $startIndex,
             'itemsPerPage' => $count,
-            'entry' => $this->doCollection([$this, 'getAll'], [$startIndex, $count, 'priority', Sql::SORT_DESC, $condition], [
+            'entry' => $this->doCollection([$this, 'findAll'], [$condition, $startIndex, $count, 'priority', Sql::SORT_DESC], [
                 'id' => $this->fieldInteger('id'),
                 'place' => $this->fieldInteger('place'),
                 'region' => 'region',

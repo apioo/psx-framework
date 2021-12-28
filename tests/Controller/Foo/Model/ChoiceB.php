@@ -20,32 +20,31 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
+use PSX\Schema\Attribute\Required;
+
 /**
  * ChoiceB
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @Required({"bar"})
  */
+#[Required(['bar'])]
 class ChoiceB
 {
-    /**
-     * @var string
-     */
-    protected $bar;
+    private ?string $bar;
 
-    public function __construct($bar = null)
+    public function __construct(?string $bar = null)
     {
         $this->bar = $bar;
     }
 
-    public function getBar()
+    public function getBar(): ?string
     {
         return $this->bar;
     }
 
-    public function setBar($bar)
+    public function setBar(string $bar)
     {
         $this->bar = $bar;
     }

@@ -32,14 +32,14 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class RequestIncomingEvent extends SymfonyEvent
 {
-    protected $request;
+    private RequestInterface $request;
 
     public function __construct(RequestInterface $request)
     {
         $this->request = $request;
     }
 
-    public function getRequest()
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }

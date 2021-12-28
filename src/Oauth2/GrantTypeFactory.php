@@ -32,23 +32,19 @@ use PSX\Oauth2\Authorization\Exception\UnsupportedGrantTypeException;
 class GrantTypeFactory
 {
     /**
-     * @var \PSX\Framework\Oauth2\GrantTypeInterface[]
+     * @var GrantTypeInterface[]
      */
-    protected $types = array();
+    private array $types = [];
 
-    /**
-     * @param \PSX\Framework\Oauth2\GrantTypeInterface $grantType
-     */
-    public function add(GrantTypeInterface $grantType)
+    public function add(GrantTypeInterface $grantType): void
     {
         $this->types[] = $grantType;
     }
 
     /**
-     * @param string $type
-     * @return \PSX\Framework\Oauth2\GrantTypeInterface
+     * @throws UnsupportedGrantTypeException
      */
-    public function get($type)
+    public function get(string $type): GrantTypeInterface
     {
         foreach ($this->types as $grantType) {
             if ($type == $grantType->getType()) {

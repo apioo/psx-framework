@@ -31,11 +31,12 @@ use InvalidArgumentException;
  */
 class ReverseRouter
 {
-    protected $routingParser;
-    protected $url;
-    protected $dispatch;
+    private RoutingParserInterface $routingParser;
+    private string $url;
+    private ?string $basePath;
+    private string $dispatch;
 
-    public function __construct(RoutingParserInterface $routingParser, $url, $dispatch)
+    public function __construct(RoutingParserInterface $routingParser, string $url, string $dispatch)
     {
         $this->routingParser = $routingParser;
         $this->url           = $url;

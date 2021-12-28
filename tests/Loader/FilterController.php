@@ -34,7 +34,7 @@ use PSX\Http\ResponseInterface;
  */
 class FilterController extends ControllerAbstract
 {
-    public function getPreFilter()
+    public function getPreFilter(): array
     {
         return [
             function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
@@ -45,7 +45,7 @@ class FilterController extends ControllerAbstract
         ];
     }
 
-    public function getPostFilter()
+    public function getPostFilter(): array
     {
         return [
             function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){

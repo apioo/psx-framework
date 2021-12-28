@@ -33,9 +33,9 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class ControllerProcessedEvent extends SymfonyEvent
 {
-    protected $controller;
-    protected $request;
-    protected $response;
+    private $controller;
+    private RequestInterface $request;
+    private ResponseInterface $response;
 
     public function __construct($controller, RequestInterface $request, ResponseInterface $response)
     {
@@ -49,12 +49,12 @@ class ControllerProcessedEvent extends SymfonyEvent
         return $this->controller;
     }
 
-    public function getRequest()
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }

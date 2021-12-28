@@ -20,10 +20,12 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
-use PSX\Framework\Controller\ApiAbstract;
+use PHPUnit\Framework\Assert;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Util\Api\FilterParameter;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Sql\Sql;
 
 /**
@@ -33,38 +35,34 @@ use PSX\Sql\Sql;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class InspectController extends ApiAbstract
+class InspectController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $params = FilterParameter::extract($request->getUri()->getParameters());
+        $params = FilterParameter::extract($context->getParameters());
 
-        $this->testCase->assertEquals(array('foo', 'bar'), $params->getFields());
-        $this->testCase->assertEquals('2014-01-26', $params->getUpdatedSince()->format('Y-m-d'));
-        $this->testCase->assertEquals(8, $params->getCount());
-        $this->testCase->assertEquals('id', $params->getFilterBy());
-        $this->testCase->assertEquals('equals', $params->getFilterOp());
-        $this->testCase->assertEquals('12', $params->getFilterValue());
-        $this->testCase->assertEquals('id', $params->getSortBy());
-        $this->testCase->assertEquals(Sql::SORT_DESC, $params->getSortOrder());
-        $this->testCase->assertEquals(4, $params->getStartIndex());
+        Assert::assertEquals(array('foo', 'bar'), $params->getFields());
+        Assert::assertEquals('2014-01-26', $params->getUpdatedSince()->format('Y-m-d'));
+        Assert::assertEquals(8, $params->getCount());
+        Assert::assertEquals('id', $params->getFilterBy());
+        Assert::assertEquals('equals', $params->getFilterOp());
+        Assert::assertEquals('12', $params->getFilterValue());
+        Assert::assertEquals('id', $params->getSortBy());
+        Assert::assertEquals(Sql::SORT_DESC, $params->getSortOrder());
+        Assert::assertEquals(4, $params->getStartIndex());
 
         $condition = FilterParameter::getCondition($params);
 
-        $this->testCase->assertEquals('WHERE (id = ? AND date > ?)', $condition->getStatment());
-        $this->testCase->assertEquals(['12', '2014-01-26 00:00:00'], $condition->getValues());
+        Assert::assertEquals('WHERE (id = ? AND date > ?)', $condition->getStatement());
+        Assert::assertEquals(['12', '2014-01-26 00:00:00'], $condition->getValues());
+
+        return null;
     }
 
-    public function onPost(RequestInterface $request, ResponseInterface $response)
+    #[Incoming(schema: NewsRecord::class)]
+    #[Outgoing(code: 200, schema: NewsRecord::class)]
+    protected function doPost(mixed $record, HttpContextInterface $context): mixed
     {
-        $record = $this->requestReader->getBodyAs($request, NewsRecord::class);
-
-        $this->responseWriter->setBody($response, $record, $request);
+        return $record;
     }
 }

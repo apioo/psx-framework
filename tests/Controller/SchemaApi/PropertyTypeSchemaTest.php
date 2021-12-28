@@ -18,33 +18,23 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth;
+namespace PSX\Framework\Tests\Controller\SchemaApi;
 
-use PSX\Framework\Oauth\RequestAbstract;
-use PSX\Oauth\Data\Credentials;
-use PSX\Oauth\Data\Request;
-use PSX\Oauth\Data\Response;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyTypeSchemaController;
 
 /**
- * TestRequestAbstract
+ * PropertyAnnotationTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestRequestAbstract extends RequestAbstract
+class PropertyTypeSchemaTest extends PropertyTestCase
 {
-    protected function getConsumer($consumerKey)
+    protected function getPaths()
     {
-        return new Credentials(FlowTest::CONSUMER_KEY, FlowTest::CONSUMER_SECRET);
-    }
-
-    protected function getResponse(Credentials $consumer, Request $request)
-    {
-        $response = new Response();
-        $response->setToken(FlowTest::TMP_TOKEN);
-        $response->setTokenSecret(FlowTest::TMP_TOKEN_SECRET);
-
-        return $response;
+        return array(
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyTypeSchemaController::class],
+        );
     }
 }

@@ -20,7 +20,9 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Http\Writer;
+use PSX\Framework\Loader\ReverseRouter;
 use PSX\Http\ResponseInterface;
 
 /**
@@ -33,21 +35,11 @@ use PSX\Http\ResponseInterface;
  */
 abstract class ViewAbstract extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\ReverseRouter
-     */
-    protected $reverseRouter;
+    #[Inject]
+    protected ReverseRouter $reverseRouter;
 
-    /**
-     * @param \PSX\Http\ResponseInterface $response
-     * @param string $templateFile
-     * @param mixed $data
-     */
-    public function render(ResponseInterface $response, $templateFile, $data)
+    public function render(string $templateFile, $data)
     {
-        $body = new Writer\Template($data, $templateFile, $this->reverseRouter);
-
-        $this->responseWriter->setBody($response, $body);
+        return new Writer\Template($data, $templateFile, $this->reverseRouter);
     }
 }

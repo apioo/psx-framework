@@ -20,9 +20,20 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Api\ApiManager;
+use PSX\Api\Attribute\Exclude;
+use PSX\Api\ListingInterface;
+use PSX\Api\Resource;
+use PSX\Api\Resource\MethodAbstract;
+use PSX\Api\SpecificationInterface;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Config\Config;
+use PSX\Framework\Http\RequestReader;
+use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Schema\Passthru;
 use PSX\Http\Environment\HttpContext;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Filter\CORS;
 use PSX\Http\FilterChainInterface;
@@ -30,6 +41,10 @@ use PSX\Http\FilterCollectionInterface;
 use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Record\RecordInterface;
+use PSX\Schema\DefinitionsInterface;
+use PSX\Schema\Schema;
+use PSX\Schema\Type\ReferenceType;
 
 /**
  * ControllerAbstract
@@ -40,65 +55,35 @@ use PSX\Http\ResponseInterface;
  */
 abstract class ControllerAbstract implements FilterInterface, FilterCollectionInterface
 {
-    use Behaviour\HttpTrait;
-    use Behaviour\RedirectTrait;
+    #[Inject]
+    protected Config $config;
 
-    /**
-     * @var \PSX\Http\RequestInterface
-     * @deprecated
-     */
-    protected $request;
+    #[Inject]
+    protected RequestReader $requestReader;
 
-    /**
-     * @var \PSX\Http\ResponseInterface
-     * @deprecated
-     */
-    protected $response;
+    #[Inject]
+    protected ResponseWriter $responseWriter;
 
-    /**
-     * @var array
-     * @deprecated
-     */
-    protected $uriFragments;
+    #[Inject]
+    protected ListingInterface $resourceListing;
 
-    /**
-     * @var \PSX\Framework\Loader\Context
-     */
-    protected $context;
+    #[Inject]
+    protected ApiManager $apiManager;
 
-    /**
-     * @Inject
-     * @var \PSX\Framework\Config\Config
-     */
-    protected $config;
+    protected Context $context;
+    protected ?Resource $resource = null;
+    protected ?DefinitionsInterface $definitions = null;
+    protected ?array $allowedMethods = null;
 
-    /**
-     * @Inject
-     * @var \PSX\Framework\Http\RequestReader
-     */
-    protected $requestReader;
-
-    /**
-     * @Inject
-     * @var \PSX\Framework\Http\ResponseWriter
-     */
-    protected $responseWriter;
-
-    /**
-     * @param \PSX\Framework\Loader\Context $context
-     */
     public function __construct(Context $context = null)
     {
-        $this->context      = $context ?? new Context();
-        $this->uriFragments = $this->context->getParameters();
+        $this->context = $context ?? new Context();
     }
 
     /**
      * Returns a traversable of callable or FilterInterface objects
-     * 
-     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator(array_merge(
             $this->getPreFilter(),
@@ -107,207 +92,61 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
         ));
     }
 
-    /**
-     * @return array
-     */
-    public function getPreFilter()
+    protected function getPreFilter(): array
     {
         $filter = [];
 
-        if ($this->config instanceof Config) {
-            $filter[] = new CORS(
-                $this->config->get('psx_cors_origin'),
-                ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-                $this->config->get('psx_cors_headers'),
-                false
-            );
-        }
+        $filter[] = new CORS(
+            $this->config->get('psx_cors_origin'),
+            ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+            $this->config->get('psx_cors_headers'),
+            false
+        );
 
         return $filter;
     }
 
-    /**
-     * @return array
-     */
-    public function getPostFilter()
+    protected function getPostFilter(): array
     {
         return [];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $this->setState($request, $response);
+        $this->initialize();
 
-        $this->onLoad();
-        $this->onRequest($request, $response);
-        $this->onFinish();
+        $methodName = $request->getMethod() === 'HEAD' ? 'GET' : $request->getMethod();
+        if ($methodName === 'OPTIONS') {
+            $response->setHeader('Allow', implode(', ', $this->allowedMethods));
+            return;
+        }
+
+        $method  = $this->getResourceMethod($methodName, $response);
+        $context = $this->newContext($request);
+        if (in_array($methodName, ['POST', 'PUT', 'PATCH'])) {
+            $record = $this->parseRequest($request, $method);
+        } else {
+            $record = null;
+        }
+
+        $result = match ($methodName) {
+            'GET'    => $this->doGet($context),
+            'DELETE' => $this->doDelete($context),
+            'POST'   => $this->doPost($record, $context),
+            'PUT'    => $this->doPut($record, $context),
+            'PATCH'  => $this->doPatch($record, $context),
+            default  => null,
+        };
+
+        $this->responseWriter->setBody($response, $result, $request);
 
         $filterChain->handle($request, $response);
     }
 
     /**
-     * Is called on load to initialize state which does not depend on the 
-     * request and response context. It is recommended to use this method 
-     * instead of the constructor
-     */
-    public function onLoad()
-    {
-    }
-
-    /**
-     * Is called if a request arrives at our controller. The controller can read
-     * data from the request object and write data to the response body
-     * 
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
-    {
-        switch ($request->getMethod()) {
-            case 'GET':
-                $this->onGet($request, $response);
-                break;
-
-            case 'HEAD':
-                $this->onHead($request, $response);
-                break;
-
-            case 'POST':
-                $this->onPost($request, $response);
-                break;
-
-            case 'PUT':
-                $this->onPut($request, $response);
-                break;
-
-            case 'DELETE':
-                $this->onDelete($request, $response);
-                break;
-
-            case 'OPTIONS':
-                $this->onOptions($request, $response);
-                break;
-
-            case 'PATCH':
-                $this->onPatch($request, $response);
-                break;
-
-            default:
-                throw new StatusCode\NotImplementedException('Request method is not supported');
-                break;
-        }
-    }
-
-    /**
-     * Is called after the request to potentially clean up state
-     */
-    public function onFinish()
-    {
-        $this->request  = null;
-        $this->response = null;
-    }
-
-    /**
-     * Is called if the client has send a GET request 
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onGet(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a HEAD request. Note the framework 
-     * automatically removes the response body
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.2
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onHead(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a POST request
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onPost(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a PUT request
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onPut(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a DELETE request
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onDelete(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a OPTIONS request
-     * 
-     * @see http://tools.ietf.org/html/rfc7231#section-4.3.7
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onOptions(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Is called if the client has send a PATCH request
-     * 
-     * @see https://tools.ietf.org/html/rfc5789#section-2
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     */
-    public function onPatch(RequestInterface $request, ResponseInterface $response)
-    {
-    }
-
-    /**
-     * Returns a specific uri fragment. This method is deprecated please access
-     * the uri fragment directly through $this->context->getParameter()
-     *
-     * @param string $key
-     * @return string
-     * @deprecated
-     */
-    protected function getUriFragment($key)
-    {
-        return isset($this->uriFragments[$key]) ? $this->uriFragments[$key] : null;
-    }
-
-    /**
      * Returns a http context object for the provided request
-     * 
-     * @param \PSX\Http\RequestInterface $request
-     * @return \PSX\Http\Environment\HttpContextInterface
      */
-    protected function newContext(RequestInterface $request)
+    protected function newContext(RequestInterface $request): HttpContextInterface
     {
         return new HttpContext(
             $request,
@@ -316,12 +155,134 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
     }
 
     /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
+     * Handles a GET request and returns a response
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.1
      */
-    private function setState(RequestInterface $request, ResponseInterface $response)
+    #[Exclude]
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $this->request  = $request;
-        $this->response = $response;
+        return null;
+    }
+
+    /**
+     * Handles a POST request and returns a response
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.3
+     */
+    #[Exclude]
+    protected function doPost(mixed $record, HttpContextInterface $context): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Handles a PUT request and returns a response
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.4
+     */
+    #[Exclude]
+    protected function doPut(mixed $record, HttpContextInterface $context): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Handles a DELETE request and returns a response
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-4.3.5
+     */
+    #[Exclude]
+    protected function doDelete(HttpContextInterface $context): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Handles a PATCH request and returns a response
+     *
+     * @see https://tools.ietf.org/html/rfc5789#section-2
+     */
+    #[Exclude]
+    protected function doPatch(mixed $record, HttpContextInterface $context): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Imports the request data based on the schema if available
+     */
+    protected function parseRequest(RequestInterface $request, MethodAbstract $method): mixed
+    {
+        if (!$method->hasRequest()) {
+            return null;
+        }
+
+        $type   = $this->definitions->getType($method->getRequest());
+        $schema = new Schema($type, $this->definitions);
+
+        if ($type instanceof ReferenceType) {
+            $passthru = $type->getRef() === Passthru::NAME;
+        } else {
+            $passthru = $method->getRequest() === Passthru::NAME;
+        }
+
+        if ($passthru) {
+            $data = $this->requestReader->getBody($request);
+        } else {
+            $data = $this->requestReader->getBodyAs($request, $schema);
+        }
+
+        return $data;
+    }
+
+    private function initialize()
+    {
+        if ($this->resource !== null) {
+            return;
+        }
+
+        $specification = $this->resourceListing->find($this->context->getPath(), $this->context->getVersion());
+        if (!$specification instanceof SpecificationInterface) {
+            throw new StatusCode\InternalServerErrorException('No specification available for path ' . $this->context->getPath());
+        }
+
+        $resource = $specification->getResourceCollection()->get($this->context->getPath());
+        if (!$resource instanceof Resource) {
+            throw new StatusCode\InternalServerErrorException('Resource is not available for path ' . $this->context->getPath());
+        }
+
+        $this->definitions = $specification->getDefinitions();
+        $this->resource = $resource;
+        $this->allowedMethods = $this->getAllowedMethods();
+    }
+
+    private function getResourceMethod(string $methodName, ResponseInterface $response): MethodAbstract
+    {
+        if (!$this->resource->hasMethod($methodName)) {
+            throw new StatusCode\MethodNotAllowedException('Method is not allowed', $this->allowedMethods);
+        }
+
+        if ($this->resource->isActive()) {
+        } elseif ($this->resource->isDeprecated()) {
+            $response->addHeader('Warning', '199 PSX "Resource is deprecated"');
+        } elseif ($this->resource->isClosed()) {
+            throw new StatusCode\GoneException('Resource is not longer supported');
+        } elseif ($this->resource->isDevelopment()) {
+            $response->addHeader('Warning', '199 PSX "Resource is in development"');
+        }
+
+        return $this->resource->getMethod($methodName);
+    }
+
+    private function getAllowedMethods(): array
+    {
+        $methods = $this->resource->getAllowedMethods();
+        $allowed = ['OPTIONS'];
+        if (in_array('GET', $methods)) {
+            $allowed[] = 'HEAD';
+        }
+
+        return array_merge($allowed, $methods);
     }
 }

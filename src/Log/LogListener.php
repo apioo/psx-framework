@@ -43,10 +43,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LogListener implements EventSubscriberInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
+    private LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger)
     {
@@ -79,7 +76,7 @@ class LogListener implements EventSubscriberInterface
     public function onResponseSend(ResponseSendEvent $event)
     {
         $code = $event->getResponse()->getStatusCode();
-        $code = isset(Http::$codes[$code]) ? $code : 200;
+        $code = isset(Http::CODES[$code]) ? $code : 200;
 
         $this->logger->info('Send response ' . $code);
     }

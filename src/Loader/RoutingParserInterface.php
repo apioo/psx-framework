@@ -31,9 +31,5 @@ use PSX\Api\Listing\FilterInterface;
  */
 interface RoutingParserInterface
 {
-    /**
-     * @param FilterInterface|null $filter
-     * @return RoutingCollection
-     */
-    public function getCollection(?FilterInterface $filter = null);
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection;
 }

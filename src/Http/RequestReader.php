@@ -23,6 +23,7 @@ namespace PSX\Framework\Http;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Http\RequestInterface;
+use PSX\Schema\SchemaInterface;
 use PSX\Schema\Validation\ValidatorInterface;
 use PSX\Schema\Visitor\TypeVisitor;
 
@@ -35,14 +36,8 @@ use PSX\Schema\Visitor\TypeVisitor;
  */
 class RequestReader
 {
-    /**
-     * @var \PSX\Data\Processor
-     */
-    protected $processor;
+    private Processor $processor;
 
-    /**
-     * @param \PSX\Data\Processor $processor
-     */
     public function __construct(Processor $processor)
     {
         $this->processor = $processor;
@@ -50,32 +45,27 @@ class RequestReader
 
     /**
      * Returns the result of the reader for the request
-     *
-     * @param \PSX\Http\RequestInterface $request
-     * @param string $readerType
-     * @return mixed
      */
-    public function getBody(RequestInterface $request, $readerType = null)
+    public function getBody(RequestInterface $request, ?string $readerType = null): \stdClass
     {
-        $data    = (string) $request->getBody();
-        $payload = Payload::create($data, $request->getHeader('Content-Type'))
-            ->setRwType($readerType);
+        $data = (string) $request->getBody();
+
+        $payload = Payload::create($data, $request->getHeader('Content-Type'));
+        if ($readerType !== null) {
+            $payload->setRwType($readerType);
+        }
 
         return $this->processor->parse($payload);
     }
 
-    /**
-     * @param \PSX\Http\RequestInterface $request
-     * @param string $schema
-     * @param \PSX\Schema\Validation\ValidatorInterface|null $validator
-     * @param string $readerType
-     * @return mixed
-     */
-    public function getBodyAs(RequestInterface $request, $schema, ValidatorInterface $validator = null, $readerType = null)
+    public function getBodyAs(RequestInterface $request, mixed $schema, ?ValidatorInterface $validator = null, ?string $readerType = null): mixed
     {
-        $data    = (string) $request->getBody();
-        $payload = Payload::create($data, $request->getHeader('Content-Type'))
-            ->setRwType($readerType);
+        $data = (string) $request->getBody();
+
+        $payload = Payload::create($data, $request->getHeader('Content-Type'));
+        if ($readerType !== null) {
+            $payload->setRwType($readerType);
+        }
 
         return $this->processor->read($schema, $payload, new TypeVisitor($validator));
     }

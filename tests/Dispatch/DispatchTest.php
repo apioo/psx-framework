@@ -63,7 +63,7 @@ class DispatchTest extends ControllerTestCase
         ];
 
         $this->assertEquals($expect, $called);
-        $this->assertEquals(null, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('foo', (string) $response->getBody());
     }
 
@@ -85,8 +85,6 @@ class DispatchTest extends ControllerTestCase
             'onRouteMatched',
             'onControllerExecute',
             'onExceptionThrown',
-            'onControllerExecute',
-            'onControllerProcessed',
             'onResponseSend',
         ];
 

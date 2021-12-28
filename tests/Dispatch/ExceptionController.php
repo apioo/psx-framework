@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -33,7 +34,7 @@ use PSX\Http\ResponseInterface;
  */
 class ExceptionController extends ControllerAbstract
 {
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    public function doGet(HttpContextInterface $context): mixed
     {
         throw new \Exception('foo');
     }

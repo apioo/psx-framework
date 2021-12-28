@@ -26,10 +26,14 @@ use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\InvalidPathException;
 use PSX\Framework\Loader\Loader;
+use PSX\Framework\Loader\LoaderInterface;
 use PSX\Framework\Loader\LocationFinder\CallbackMethod;
 use PSX\Framework\Loader\LocationFinderInterface;
+use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Dispatch\DummyController;
 use PSX\Framework\Tests\Dispatch\TestListener;
+use PSX\Framework\Tests\Oauth2\AuthorizationCode\TestCallbackAbstract;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\RequestInterface;
@@ -46,30 +50,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class LoaderTest extends TestCase
+class LoaderTest extends ControllerTestCase
 {
     public function testLoadIndexCall()
     {
-        $controller = new ProbeController();
+        ProbeController::clear();
 
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
-            $this->assertEquals('/foobar', $request->getUri()->getPath());
-
-            $context->setSource($controller);
-
-            return $request;
-        });
-
-        $eventDispatcher = new EventDispatcher();
-
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
+        $eventDispatcher = Environment::getService('event_dispatcher');
         $eventDispatcher->addSubscriber($testListener);
 
         $request  = new Request(new Uri('/foobar'), 'GET');
         $response = new Response();
 
-        $loader = $this->newLoader($locationFinder, $eventDispatcher);
-        $loader->load($request, $response);
+        $this->loadController($request, $response);
 
         $expect = array(
             'PSX\Framework\Tests\Loader\ProbeController::__construct',
@@ -77,18 +71,17 @@ class LoaderTest extends TestCase
             'PSX\Framework\Tests\Loader\ProbeController::getPreFilter',
             'PSX\Framework\Tests\Loader\ProbeController::getPostFilter',
             'PSX\Framework\Tests\Loader\ProbeController::handle',
-            'PSX\Framework\Tests\Loader\ProbeController::onLoad',
-            'PSX\Framework\Tests\Loader\ProbeController::onRequest',
-            'PSX\Framework\Tests\Loader\ProbeController::onGet',
-            'PSX\Framework\Tests\Loader\ProbeController::onFinish',
+            'PSX\Framework\Tests\Loader\ProbeController::doGet',
         );
 
-        $this->assertEquals($expect, $controller->getMethodsCalled());
+        $this->assertEquals($expect, ProbeController::getMethodsCalled());
 
         $expect = array(
+            'onRequestIncoming',
             'onRouteMatched',
             'onControllerExecute',
             'onControllerProcessed',
+            'onResponseSend',
         );
 
         $this->assertEquals($expect, $testListener->getCalled());
@@ -96,27 +89,16 @@ class LoaderTest extends TestCase
 
     public function testLoadDetailCall()
     {
-        $controller = new ProbeController();
+        ProbeController::clear();
 
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
-            $this->assertEquals('/foobar/detail/12', $request->getUri()->getPath());
-
-            $context->setSource($controller);
-            $context->setParameters(['id' => 12]);
-
-            return $request;
-        });
-
-        $eventDispatcher = new EventDispatcher();
-
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
+        $eventDispatcher = Environment::getService('event_dispatcher');
         $eventDispatcher->addSubscriber($testListener);
 
         $request  = new Request(new Uri('/foobar/detail/12'), 'GET');
         $response = new Response();
 
-        $loader = $this->newLoader($locationFinder, $eventDispatcher);
-        $loader->load($request, $response);
+        $this->loadController($request, $response);
 
         $expect = array(
             'PSX\Framework\Tests\Loader\ProbeController::__construct',
@@ -124,18 +106,17 @@ class LoaderTest extends TestCase
             'PSX\Framework\Tests\Loader\ProbeController::getPreFilter',
             'PSX\Framework\Tests\Loader\ProbeController::getPostFilter',
             'PSX\Framework\Tests\Loader\ProbeController::handle',
-            'PSX\Framework\Tests\Loader\ProbeController::onLoad',
-            'PSX\Framework\Tests\Loader\ProbeController::onRequest',
-            'PSX\Framework\Tests\Loader\ProbeController::onGet',
-            'PSX\Framework\Tests\Loader\ProbeController::onFinish',
+            'PSX\Framework\Tests\Loader\ProbeController::doGet',
         );
 
-        $this->assertEquals($expect, $controller->getMethodsCalled());
+        $this->assertEquals($expect, ProbeController::getMethodsCalled());
 
         $expect = array(
+            'onRequestIncoming',
             'onRouteMatched',
             'onControllerExecute',
             'onControllerProcessed',
+            'onResponseSend',
         );
 
         $this->assertEquals($expect, $testListener->getCalled());
@@ -143,93 +124,36 @@ class LoaderTest extends TestCase
 
     public function testLoadUnknownLocation()
     {
-        $this->expectException(InvalidPathException::class);
+        ProbeController::clear();
 
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
-            return null;
-        });
-
-        $eventDispatcher = new EventDispatcher();
-
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
+        $eventDispatcher = Environment::getService('event_dispatcher');
         $eventDispatcher->addSubscriber($testListener);
 
-        $loader   = $this->newLoader($locationFinder, $eventDispatcher);
-        $request  = new Request(new Uri('/foobar'), 'GET');
+        $request  = new Request(new Uri('/baz'), 'GET');
         $response = new Response();
 
-        $loader->load($request, $response);
+        $this->loadController($request, $response);
+
+        $expect = array(
+        );
+
+        $this->assertEquals($expect, ProbeController::getMethodsCalled());
+
+        $expect = array(
+            'onRequestIncoming',
+            'onExceptionThrown',
+            'onResponseSend',
+        );
+
+        $this->assertEquals($expect, $testListener->getCalled());
     }
 
-    public function testFilter()
+    protected function getPaths()
     {
-        $request  = new Request(new Uri('/foobar'), 'GET');
-        $response = new Response();
-        $context  = new Context();
-
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
-            $context->setSource(FilterController::class);
-
-            return $request;
-        });
-
-        $eventDispatcher = new EventDispatcher();
-
-        $loader = $this->newLoader($locationFinder, $eventDispatcher);
-        $loader->load($request, $response, $context);
-
-        $this->assertSame(true, $request->getAttribute('pre_filter'));
-        $this->assertSame(true, $request->getAttribute('post_filter'));
-    }
-
-    public function testGlobalFilter()
-    {
-        $request  = new Request(new Uri('/foobar'), 'GET');
-        $response = new Response();
-        $context  = new Context();
-
-        $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
-            $context->setSource(FilterController::class);
-
-            return $request;
-        });
-
-        $config = Environment::getService('config');
-        $config->set('psx_filter_pre', [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-            $request->setAttribute('global_pre_filter', true);
-
-            $filterChain->handle($request, $response);
-        }]);
-        $config->set('psx_filter_post', [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-            $request->setAttribute('global_post_filter', true);
-
-            $filterChain->handle($request, $response);
-        }]);
-
-        $eventDispatcher = new EventDispatcher();
-
-        $loader = $this->newLoader($locationFinder, $eventDispatcher);
-        $loader->load($request, $response, $context);
-
-        $this->assertSame(true, $request->getAttribute('global_pre_filter'));
-        $this->assertSame(true, $request->getAttribute('global_post_filter'));
-        $this->assertSame(true, $request->getAttribute('pre_filter'));
-        $this->assertSame(true, $request->getAttribute('post_filter'));
-    }
-
-    /**
-     * @param \PSX\Framework\Loader\LocationFinderInterface $locationFinder
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @return \PSX\Framework\Loader\LoaderInterface
-     */
-    private function newLoader(LocationFinderInterface $locationFinder, EventDispatcherInterface $eventDispatcher)
-    {
-        return new Loader(
-            $locationFinder,
-            Environment::getService('controller_factory'),
-            $eventDispatcher,
-            new Logger('psx', [new NullHandler()]),
-            Environment::getService('config')
+        return array(
+            [['GET'], '/foobar', ProbeController::class],
+            [['GET'], '/foobar/detail/12', ProbeController::class],
         );
     }
 }

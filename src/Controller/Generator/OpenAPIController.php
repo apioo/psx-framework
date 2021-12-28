@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Generator;
 
 use PSX\Api\GeneratorFactoryInterface;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * OpenAPIController
@@ -31,7 +32,7 @@ use PSX\Api\GeneratorFactoryInterface;
  */
 class OpenAPIController extends GeneratorControllerAbstract
 {
-    protected function getType()
+    protected function getType(HttpContextInterface $context): string
     {
         return GeneratorFactoryInterface::SPEC_OPENAPI;
     }

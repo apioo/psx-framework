@@ -29,34 +29,6 @@
       "version": "*"
     },
     {
-      "path": "\/population\/openapi",
-      "methods": [
-        "ANY"
-      ],
-      "version": "*"
-    },
-    {
-      "path": "\/population\/openapi\/:id",
-      "methods": [
-        "ANY"
-      ],
-      "version": "*"
-    },
-    {
-      "path": "\/population",
-      "methods": [
-        "ANY"
-      ],
-      "version": "*"
-    },
-    {
-      "path": "\/population\/:id",
-      "methods": [
-        "ANY"
-      ],
-      "version": "*"
-    },
-    {
       "path": "\/tool",
       "methods": [
         "GET"
@@ -86,6 +58,13 @@
     },
     {
       "path": "\/tool\/routing",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
+    },
+    {
+      "path": "\/generator\/:type\/:version\/*path",
       "methods": [
         "GET"
       ],

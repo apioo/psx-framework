@@ -20,40 +20,41 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PHPUnit\Framework\Assert;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
+use PSX\Api\Attribute\QueryParam;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
 use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * PropertyAnnotationController
  *
- * @PathParam(name="id", type="integer")
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyAnnotationController extends SchemaApiAbstract
+#[PathParam(name: "id", type: "integer")]
+class PropertyTypeSchemaController extends ControllerAbstract
 {
     use PropertyControllerTrait;
 
-    /**
-     * @QueryParam(name="type", type="integer")
-     * @Outgoing(code=200, schema="../../Resource/property.json")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[QueryParam(name: 'type', type: 'integer')]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/property.json')]
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(1, $context->getUriFragment('id'));
+        Assert::assertEquals(1, $context->getUriFragment('id'));
 
         return PropertyTestCase::getDataByType($context->getParameter('type'));
     }
 
-    /**
-     * @Incoming(schema="../../Resource/property.json")
-     * @Outgoing(code=200, schema="../../Resource/property.json")
-     */
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: __DIR__ . '/../../Resource/property.json')]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/property.json')]
+    protected function doPost($record, HttpContextInterface $context): mixed
     {
-        PropertyTestCase::assertRecord($this->testCase, $record);
+        PropertyTestCase::assertRecord($record);
 
         return $record;
     }

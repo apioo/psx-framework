@@ -105,27 +105,14 @@ trait Framework
             $this->get('loader'),
             $this->get('controller_factory'),
             $this->get('event_dispatcher'),
-            $this->get('exception_converter')
+            $this->get('exception_converter'),
+            $this->get('response_writer'),
         );
     }
 
     public function getRoutingParser(): Loader\RoutingParserInterface
     {
-        $routingFile = $this->get('config')->get('psx_routing');
-
-        if (substr($routingFile, -4) == '.php') {
-            // for php routing files we dont need a cached parser since PHP can
-            // use its internal opcache
-            return new Loader\RoutingParser\PhpFile($routingFile);
-        } else {
-            $routingParser = new Loader\RoutingParser\RoutingFile($routingFile);
-        }
-
-        if ($this->get('config')->get('psx_debug')) {
-            return $routingParser;
-        } else {
-            return new Loader\RoutingParser\CachedParser($routingParser, $this->get('cache'));
-        }
+        return new Loader\RoutingParser\PhpFile($this->get('config')->get('psx_routing'));
     }
 
     public function getReverseRouter(): Loader\ReverseRouter
@@ -139,7 +126,7 @@ trait Framework
 
     public function getResourceListing(): ListingInterface
     {
-        $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('controller_factory'));
+        $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('schema_manager'));
 
         if ($this->get('config')->get('psx_debug')) {
             return $resourceListing;
@@ -156,7 +143,6 @@ trait Framework
     public function getGeneratorFactory(): GeneratorFactoryInterface
     {
         return new GeneratorFactory(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('config')->get('psx_json_namespace'),
             $this->get('config')->get('psx_url'),
             $this->get('config')->get('psx_dispatch')
@@ -166,7 +152,6 @@ trait Framework
     public function getApiManager(): ApiManagerInterface
     {
         return new ApiManager(
-            $this->get('annotation_reader_factory')->factory('PSX\Api\Annotation'),
             $this->get('schema_manager'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')

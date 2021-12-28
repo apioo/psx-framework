@@ -43,7 +43,7 @@ class ControllerAbstractTest extends ControllerTestCase
         $response = $this->sendRequest('/controller', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals('foobar', $body, $body);
     }
 
@@ -63,7 +63,7 @@ class ControllerAbstractTest extends ControllerTestCase
         $body = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertJsonStringEqualsJsonString('{"bar": "foo"}', $body, $body);
+        $this->assertJsonStringEqualsJsonString($data, $body, $body);
     }
 
     public function testSetArrayBody()
@@ -75,7 +75,7 @@ class ControllerAbstractTest extends ControllerTestCase
 {"foo":["bar"]}
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -89,7 +89,7 @@ JSON;
 {"foo":["bar"]}
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -103,7 +103,7 @@ JSON;
 {"foo":["bar"]}
 JSON;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/json'], 'vary' => ['Accept']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -118,7 +118,7 @@ JSON;
 <foo>bar</foo>
 XML;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/xml']], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
@@ -133,7 +133,7 @@ XML;
 <foo>bar</foo>
 XML;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/xml']], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
@@ -147,7 +147,7 @@ XML;
 foobar
 TEXT;
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals($expect, $body, $body);
     }
 
@@ -156,7 +156,7 @@ TEXT;
         $response = $this->sendRequest('/controller/setbody?type=stream', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/octet-stream'], 'content-disposition' => ['attachment; filename="foo.txt"']], $response->getHeaders(), $body);
         $this->assertEquals('foobar', $body, $body);
     }
@@ -166,7 +166,7 @@ TEXT;
         $response = $this->sendRequest('/controller/setbody?type=body', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals(['content-type' => ['application/json']], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString('{"foo": "bar"}', $body, $body);
     }
@@ -179,9 +179,14 @@ TEXT;
         $response = $this->sendRequest('/controller/methods', $requestMethod);
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        if (in_array($requestMethod, ['TRACE', 'PROPFIND'])) {
+            $this->assertEquals(405, $response->getStatusCode(), $body);
+            return;
+        } else {
+            $this->assertEquals(200, $response->getStatusCode(), $body);
+        }
 
-        if ($requestMethod == 'HEAD') {
+        if (in_array($requestMethod, ['OPTIONS', 'HEAD'])) {
             $this->assertEmpty($body);
         } else {
             $this->assertEquals($requestMethod, $body, $body);
@@ -207,7 +212,7 @@ TEXT;
         $response = $this->sendRequest('/controller/filter', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals('foobar', $body, $body);
     }
 
@@ -226,7 +231,7 @@ TEXT;
 
     public function testSupportedWriter()
     {
-        $response = $this->sendRequest('/controller/supported_writer', 'GET');
+        $response = $this->sendRequest('/controller/supported_writer', 'GET', ['Accept' => 'application/xml']);
         $body     = (string) $response->getBody();
 
         $expect = <<<XML

@@ -20,7 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
+use PHPUnit\Framework\Assert;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -34,34 +37,28 @@ use PSX\Http\ResponseInterface;
  */
 class FilterController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getPreFilter()
+    public function getPreFilter(): array
     {
         return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $stack) {
-            $this->testCase->assertInstanceOf(RequestInterface::class, $request);
-            $this->testCase->assertInstanceOf(ResponseInterface::class, $response);
+            Assert::assertInstanceOf(RequestInterface::class, $request);
+            Assert::assertInstanceOf(ResponseInterface::class, $response);
 
             $stack->handle($request, $response);
         }];
     }
 
-    public function getPostFilter()
+    public function getPostFilter(): array
     {
         return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $stack) {
-            $this->testCase->assertInstanceOf(RequestInterface::class, $request);
-            $this->testCase->assertInstanceOf(ResponseInterface::class, $response);
+            Assert::assertInstanceOf(RequestInterface::class, $request);
+            Assert::assertInstanceOf(ResponseInterface::class, $response);
 
             $stack->handle($request, $response);
         }];
     }
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): string
     {
-        $response->getBody()->write('foobar');
+        return 'foobar';
     }
 }

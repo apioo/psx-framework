@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Oauth2;
 
 use PSX\Framework\Oauth2\AccessRequest;
 use PSX\Framework\Oauth2\AuthorizationAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * TestAuthorizationAbstract
@@ -32,22 +33,22 @@ use PSX\Framework\Oauth2\AuthorizationAbstract;
  */
 class TestAuthorizationAbstract extends AuthorizationAbstract
 {
-    protected function hasGrant(AccessRequest $request)
+    protected function hasGrant(AccessRequest $request, HttpContextInterface $context): bool
     {
         // normally we must check whether the user is authenticated and if not
         // we must redirect them to an login form which redirects the user back
         // if the login was successful. In this case we use the get parameter
         // for testing purpose
 
-        return $this->getParameter('has_grant');
+        return !!$context->getParameter('has_grant');
     }
 
-    protected function generateCode(AccessRequest $request)
+    protected function generateCode(AccessRequest $request, HttpContextInterface $context): string
     {
         // this code must be stored in an database so we can later check whether
         // the code was generated. In this case we use the get parameter for
         // testing purpose
 
-        return $this->getParameter('code');
+        return $context->getParameter('code');
     }
 }

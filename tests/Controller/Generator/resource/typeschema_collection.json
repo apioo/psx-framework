@@ -1,46 +1,65 @@
 {
   "paths": {
+    "\/typeschema\/:version\/*path": {
+      "status": 1,
+      "path": "\/typeschema\/:version\/*path",
+      "methods": {
+        "GET": {
+          "operationId": "PSX_Framework_Controller_Generator_TypeSchemaController_doGet",
+          "tags": [],
+          "responses": []
+        }
+      }
+    },
     "\/api": {
       "status": 1,
       "path": "\/api",
-      "title": "foo",
       "description": "lorem ipsum",
-      "pathParameters": "Path",
+      "pathParameters": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_Path",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet",
           "description": "Returns a collection",
           "tags": [],
-          "queryParameters": "Get_Query",
+          "queryParameters": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_Query",
           "responses": {
-            "200": "Collection"
+            "200": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response"
           }
         },
         "POST": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost",
+          "description": "lorem ipsum",
           "tags": [],
-          "request": "Create",
+          "request": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request",
           "responses": {
-            "201": "Message"
+            "201": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response"
           }
         },
         "PUT": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut",
+          "description": "lorem ipsum",
           "tags": [],
-          "request": "Update",
+          "request": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request",
           "responses": {
-            "200": "Message"
+            "200": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response"
           }
         },
         "DELETE": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete",
+          "description": "lorem ipsum",
           "tags": [],
-          "request": "Delete",
+          "request": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request",
           "responses": {
-            "200": "Message"
+            "200": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response"
           }
         },
         "PATCH": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch",
+          "description": "lorem ipsum",
           "tags": [],
-          "request": "Patch",
+          "request": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request",
           "responses": {
-            "200": "Message"
+            "200": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_200_Response"
           }
         }
       }
@@ -50,10 +69,31 @@
       "path": "\/endpoint",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet",
           "tags": [],
           "responses": {
-            "200": "Collection"
+            "200": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet_GET_200_Response"
           }
+        },
+        "POST": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPost",
+          "tags": [],
+          "responses": []
+        },
+        "PUT": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPut",
+          "tags": [],
+          "responses": []
+        },
+        "DELETE": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doDelete",
+          "tags": [],
+          "responses": []
+        },
+        "PATCH": {
+          "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doPatch",
+          "tags": [],
+          "responses": []
         }
       }
     }
@@ -140,7 +180,27 @@
         }
       }
     },
-    "Get_Query": {
+    "Message": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request": {
+      "$ref": "Delete"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response": {
+      "$ref": "Collection"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_Query": {
       "type": "object",
       "properties": {
         "startIndex": {
@@ -156,25 +216,52 @@
           "type": "boolean"
         },
         "date": {
-          "format": "date",
           "type": "string"
         },
         "datetime": {
-          "format": "date-time",
           "type": "string"
         }
       }
     },
-    "Message": {
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_Path": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
+        "name": {
+          "description": "Name parameter",
+          "type": "string",
+          "pattern": "[A-z]+",
+          "minLength": 0,
+          "maxLength": 16
         },
-        "message": {
+        "type": {
+          "enum": [
+            "foo",
+            "bar"
+          ],
           "type": "string"
         }
       }
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_200_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request": {
+      "$ref": "Patch"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request": {
+      "$ref": "Create"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request": {
+      "$ref": "Update"
+    },
+    "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiV2Controller_doGet_GET_200_Response": {
+      "$ref": "Collection"
     },
     "Patch": {
       "type": "object",
@@ -199,25 +286,6 @@
       "required": [
         "id"
       ]
-    },
-    "Path": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "description": "Name parameter",
-          "type": "string",
-          "pattern": "[A-z]+",
-          "minLength": 0,
-          "maxLength": 16
-        },
-        "type": {
-          "enum": [
-            "foo",
-            "bar"
-          ],
-          "type": "string"
-        }
-      }
     },
     "Update": {
       "type": "object",

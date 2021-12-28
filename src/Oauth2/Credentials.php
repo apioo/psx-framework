@@ -29,31 +29,31 @@ namespace PSX\Framework\Oauth2;
  */
 class Credentials
 {
-    protected $clientId;
-    protected $clientSecret;
+    private string $clientId;
+    private string $clientSecret;
 
-    public function __construct($clientId, $clientSecret)
+    public function __construct(string $clientId, string $clientSecret)
     {
-        $this->clientId     = $clientId;
+        $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
 
-    public function setClientId($clientId)
+    public function setClientId(string $clientId): void
     {
         $this->clientId = $clientId;
     }
     
-    public function getClientId()
+    public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    public function setClientSecret($clientSecret)
+    public function setClientSecret(string $clientSecret): void
     {
         $this->clientSecret = $clientSecret;
     }
     
-    public function getClientSecret()
+    public function getClientSecret(): string
     {
         return $this->clientSecret;
     }

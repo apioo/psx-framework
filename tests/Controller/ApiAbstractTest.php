@@ -37,7 +37,7 @@ class ApiAbstractTest extends ControllerTestCase
         $response = $this->sendRequest('/api', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertJsonStringEqualsJsonString(json_encode(array('bar' => 'foo')), $body, $body);
     }
 
@@ -46,7 +46,7 @@ class ApiAbstractTest extends ControllerTestCase
         $response = $this->sendRequest('/api/insert', 'POST', ['Content-Type' => 'application/json'], json_encode(['title' => 'foo', 'user' => 'bar']));
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertJsonStringEqualsJsonString(json_encode(array('title' => 'foo', 'user' => 'bar')), $body);
     }
 
@@ -55,7 +55,7 @@ class ApiAbstractTest extends ControllerTestCase
         $response = $this->sendRequest('/api/inspect?format=json&fields=foo,bar&updatedSince=2014-01-26&count=8&filterBy=id&filterOp=equals&filterValue=12&sortBy=id&sortOrder=desc&startIndex=4', 'GET');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(null, $response->getStatusCode(), $body);
+        $this->assertEquals(204, $response->getStatusCode(), $body);
     }
 
     protected function getPaths()

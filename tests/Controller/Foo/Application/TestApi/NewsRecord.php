@@ -29,43 +29,24 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
  */
 class NewsRecord
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
+    private ?string $user = null;
 
-    /**
-     * @var string
-     */
-    private $user;
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getUser(): string
+    public function getUser(): ?string
     {
         return $this->user;
     }
 
-    /**
-     * @param string $user
-     */
     public function setUser(string $user): void
     {
         $this->user = $user;

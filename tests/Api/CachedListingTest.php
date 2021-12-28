@@ -26,6 +26,7 @@ use PSX\Api\Listing\CachedListing;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * CachedListingTest
@@ -67,30 +68,25 @@ class CachedListingTest extends ControllerDbTestCase
         $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resource->getAllowedMethods());
 
         $this->assertEmpty($resource->getMethod('GET')->getRequest());
-        $this->assertEquals('Collection', $resource->getMethod('GET')->getResponse(200));
-        $this->assertEquals('Create', $resource->getMethod('POST')->getRequest());
-        $this->assertEquals('Message', $resource->getMethod('POST')->getResponse(201));
-        $this->assertEquals('Update', $resource->getMethod('PUT')->getRequest());
-        $this->assertEquals('Message', $resource->getMethod('PUT')->getResponse(200));
-        $this->assertEquals('Delete', $resource->getMethod('DELETE')->getRequest());
-        $this->assertEquals('Message', $resource->getMethod('DELETE')->getResponse(200));
-        $this->assertEquals('Patch', $resource->getMethod('PATCH')->getRequest());
-        $this->assertEquals('Message', $resource->getMethod('PATCH')->getResponse(200));
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response', $resource->getMethod('GET')->getResponse(200));
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request', $resource->getMethod('POST')->getRequest());
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response', $resource->getMethod('POST')->getResponse(201));
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request', $resource->getMethod('PUT')->getRequest());
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response', $resource->getMethod('PUT')->getResponse(200));
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request', $resource->getMethod('DELETE')->getRequest());
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response', $resource->getMethod('DELETE')->getResponse(200));
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request', $resource->getMethod('PATCH')->getRequest());
+        $this->assertEquals('PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_200_Response', $resource->getMethod('PATCH')->getResponse(200));
     }
 
     public function testInvalidateResource()
     {
-        $cache = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['deleteItem'])
-            ->getMock();
-
-        $cache->expects($this->once())
-            ->method('deleteItem')
-            ->with($this->equalTo('api-resource-1effb2475fcfba4f-0'));
+        $cache = new ArrayAdapter();
 
         $listing = new CachedListing(Environment::getService('resource_listing'), $cache);
         $listing->invalidateResource('/foo');
+
+        $this->assertEmpty($cache->getValues());
     }
 
     protected function getPaths()

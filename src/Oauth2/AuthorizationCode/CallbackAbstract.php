@@ -25,6 +25,8 @@ use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant;
+use PSX\Oauth2\Authorization\AuthorizationCode;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\AuthorizationAbstract;
 use RuntimeException;
@@ -38,64 +40,52 @@ use RuntimeException;
  */
 abstract class CallbackAbstract extends ControllerAbstract
 {
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function doGet(HttpContextInterface $context): mixed
     {
-        $context = $this->newContext($request);
-        
-        try {
-            $error = $request->getUri()->getParameter('error');
+        return $this->execute($context);
+    }
 
-            // error detection
+    public function doPost(mixed $record, HttpContextInterface $context): mixed
+    {
+        return $this->execute($context);
+    }
+
+    private function execute(HttpContextInterface $context)
+    {
+        try {
+            $error = $context->getParameter('error');
+
             if (!empty($error)) {
-                AuthorizationAbstract::throwErrorException($request->getUri()->getParameters());
+                AuthorizationAbstract::throwErrorException($context->getParameters());
             }
 
-            $code  = $request->getUri()->getParameter('code');
-            $state = $request->getUri()->getParameter('state');
+            $code  = $context->getParameter('code');
+            $state = $context->getParameter('state');
 
             if (empty($code)) {
                 throw new RuntimeException('Code not available');
             }
 
-            $redirectUri = '';
+            $accessToken = $this->getAuthorizationCode($code, $state)->getAccessToken(new Grant\AuthorizationCode($code));
 
-            // get access token
-            $accessToken = $this->getAuthorizationCode($code, $state)->getAccessToken($code, $redirectUri);
-
-            $data = $this->onAccessToken($accessToken, $context);
+            return $this->onAccessToken($accessToken, $context);
         } catch (ErrorExceptionAbstract $e) {
-            $data = $this->onError($e, $context);
+            return $this->onError($e, $context);
         }
-
-        $this->responseWriter->setBody($response, $data);
     }
 
     /**
-     * Should return the authorization code object containing the endpoint url
-     * and the client id and secret
-     *
-     * @param string $code
-     * @param string $state
-     * @return \PSX\Oauth2\Authorization\AuthorizationCode
+     * Should return the authorization code object containing the endpoint url and the client id and secret
      */
-    abstract protected function getAuthorizationCode($code, $state);
+    abstract protected function getAuthorizationCode(string $code, string $state): AuthorizationCode;
 
     /**
-     * Is called if we have obtained an access token from the authorization
-     * server
-     *
-     * @param \PSX\Oauth2\AccessToken $accessToken
-     * @param \PSX\Http\Environment\HttpContextInterface $context
-     * @return mixed
+     * Is called if we have obtained an access token from the authorization server
      */
-    abstract protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context);
+    abstract protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context): mixed;
 
     /**
      * Is called if the client was redirected with an GET error parameter
-     *
-     * @param \Throwable $e
-     * @param \PSX\Http\Environment\HttpContextInterface $context
-     * @return mixed
      */
-    abstract protected function onError(\Throwable $e, HttpContextInterface $context);
+    abstract protected function onError(\Throwable $e, HttpContextInterface $context): mixed;
 }

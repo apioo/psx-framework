@@ -21,8 +21,6 @@
 namespace PSX\Framework\Dispatch;
 
 use Psr\Container\ContainerInterface;
-use PSX\Api\DocumentedInterface;
-use PSX\Api\SpecificationInterface;
 use PSX\Dependency\ObjectBuilderInterface;
 use PSX\Framework\Loader\Context;
 use PSX\Http\FilterInterface;
@@ -36,32 +34,16 @@ use PSX\Http\FilterInterface;
  */
 class ControllerFactory implements ControllerFactoryInterface
 {
-    /**
-     * @var \PSX\Dependency\ObjectBuilderInterface
-     */
-    protected $objectBuilder;
+    private ObjectBuilderInterface $objectBuilder;
+    private ContainerInterface $container;
 
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param \PSX\Dependency\ObjectBuilderInterface $objectBuilder
-     * @param \Psr\Container\ContainerInterface $container
-     */
     public function __construct(ObjectBuilderInterface $objectBuilder, ContainerInterface $container)
     {
         $this->objectBuilder = $objectBuilder;
         $this->container     = $container;
     }
 
-    /**
-     * @param string $source
-     * @param \PSX\Framework\Loader\Context $context
-     * @return array
-     */
-    public function getController($source, Context $context = null)
+    public function getController(mixed $source, ?Context $context = null): array
     {
         if (is_string($source)) {
             // through the object builder the class can access all services
@@ -78,7 +60,7 @@ class ControllerFactory implements ControllerFactoryInterface
             // resolve those only in case of an actual array
             $controller = [];
             foreach ($source as $value) {
-                $controller = array_merge($controller, $this->getController($value, $context));
+                $controller[] = $this->getController($value, $context);
             }
 
             return $controller;
@@ -97,32 +79,5 @@ class ControllerFactory implements ControllerFactoryInterface
         } else {
             return [];
         }
-    }
-
-    /**
-     * @param string $className
-     * @param Context|null $context
-     * @param string|null $version
-     * @return SpecificationInterface|null
-     */
-    public function getDocumentation(string $className, Context $context = null, ?string $version = null): ?SpecificationInterface
-    {
-        try {
-            $controller = $this->getController($className, $context);
-
-            if (empty($controller)) {
-                return null;
-            }
-
-            foreach ($controller as $con) {
-                if ($con instanceof DocumentedInterface) {
-                    return $con->getDocumentation($version);
-                }
-            }
-        } catch (\Throwable $e) {
-            throw $e;
-        }
-
-        return null;
     }
 }

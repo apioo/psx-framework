@@ -60,10 +60,6 @@ class ApiTestCase extends ControllerDbTestCase
             [['ANY'], '/population/popo/:id', Population\EntityPopo::class],
             [['ANY'], '/population/typeschema', Population\CollectionTypeSchema::class],
             [['ANY'], '/population/typeschema/:id', Population\EntityTypeSchema::class],
-            [['ANY'], '/population/openapi', Population\CollectionOpenAPI::class],
-            [['ANY'], '/population/openapi/:id', Population\EntityOpenAPI::class],
-            [['ANY'], '/population', Population\Collection::class],
-            [['ANY'], '/population/:id', Population\Entity::class],
 
             [['GET'], '/tool', Tool\DefaultController::class],
             [['GET'], '/tool/discovery', Tool\DiscoveryController::class],

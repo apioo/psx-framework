@@ -33,8 +33,8 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class RouteMatchedEvent extends SymfonyEvent
 {
-    protected $request;
-    protected $context;
+    private RequestInterface $request;
+    private Context $context;
 
     public function __construct(RequestInterface $request, Context $context)
     {
@@ -42,12 +42,12 @@ class RouteMatchedEvent extends SymfonyEvent
         $this->context = $context;
     }
 
-    public function getRequest()
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
-    public function getContext()
+    public function getContext(): Context
     {
         return $this->context;
     }

@@ -20,8 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Http\Body;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\FileStream;
@@ -36,15 +38,9 @@ use PSX\Record\Record;
  */
 class SetBodyController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $type = $request->getUri()->getParameter('type');
+        $type = $context->getParameter('type');
         $data = null;
         
         switch ($type) {
@@ -60,7 +56,7 @@ class SetBodyController extends ControllerAbstract
                 break;
 
             case 'record':
-                $data = new Record('record', ['foo' => ['bar']]);
+                $data = new Record(['foo' => ['bar']]);
                 break;
 
             case 'dom':
@@ -87,6 +83,6 @@ class SetBodyController extends ControllerAbstract
                 break;
         }
 
-        $this->responseWriter->setBody($response, $data, $request);
+        return $data;
     }
 }

@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Exception;
 
+use PSX\Model\Common\Error;
+
 /**
  * ConverterInterface
  *
@@ -30,11 +32,7 @@ namespace PSX\Framework\Exception;
 interface ConverterInterface
 {
     /**
-     * Converts an arbitrary exception into an record which gets displayed to
-     * the user
-     *
-     * @param \Throwable $e
-     * @return \PSX\Record\RecordInterface
+     * Converts an arbitrary exception into a record which gets displayed to the user
      */
-    public function convert(\Throwable $e);
+    public function convert(\Throwable $e): Error;
 }

@@ -79,7 +79,14 @@ JSON;
         $response = $this->sendRequest('/api', 'DELETE', ['Content-Type' => 'application/json']);
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $expect = <<<JSON
+{
+    "foo": "bar"
+}
+JSON;
+
+        $this->assertEquals(200, $response->getStatusCode(), $body);
+        $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
     public function testPatch()

@@ -21,9 +21,12 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestApi;
 
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
+use PSX\Record\RecordInterface;
 
 /**
  * IndexController
@@ -32,12 +35,10 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class IndexController extends ApiAbstract
+class IndexController extends ControllerAbstract
 {
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): RecordInterface
     {
-        $data = new Record('foo', ['bar' => 'foo']);
-
-        $this->responseWriter->setBody($response, $data, $request);
+        return new Record(['bar' => 'foo']);
     }
 }

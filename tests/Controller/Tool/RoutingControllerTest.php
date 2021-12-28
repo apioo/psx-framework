@@ -44,13 +44,17 @@ class RoutingControllerTest extends ControllerTestCase
     "path": "\/routing",
     "methods": {
         "GET": {
+            "operationId": "PSX_Framework_Controller_Tool_RoutingController_doGet",
             "tags": [],
             "responses": {
-                "200": "Routing_Collection"
+                "200": "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response"
             }
         }
     },
     "definitions": {
+        "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response": {
+            "$ref": "Routing_Collection"
+        },
         "Routing_Collection": {
             "type": "object",
             "properties": {

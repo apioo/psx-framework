@@ -12,7 +12,8 @@
   "paths": {
     "\/population\/popo": {
       "get": {
-        "operationId": "doGet",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -37,7 +38,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response"
                 }
               }
             }
@@ -45,13 +46,14 @@
         }
       },
       "post": {
-        "operationId": "doPost",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doPost",
         "requestBody": {
           "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPostRequest"
+                "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request"
               }
             }
           }
@@ -62,7 +64,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response"
                 }
               }
             }
@@ -72,14 +74,15 @@
     },
     "\/population\/popo\/{id}": {
       "get": {
-        "operationId": "doGet",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoGet200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response"
                 }
               }
             }
@@ -87,13 +90,14 @@
         }
       },
       "put": {
-        "operationId": "doPut",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doPut",
         "requestBody": {
           "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoPutRequest"
+                "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_Request"
               }
             }
           }
@@ -104,7 +108,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoPut200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response"
                 }
               }
             }
@@ -112,14 +116,15 @@
         }
       },
       "delete": {
-        "operationId": "doDelete",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doDelete",
         "responses": {
           "200": {
             "description": "DELETE 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityPopoDelete200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response"
                 }
               }
             }
@@ -139,7 +144,8 @@
     },
     "\/population\/typeschema": {
       "get": {
-        "operationId": "doGet",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -164,7 +170,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response"
                 }
               }
             }
@@ -172,13 +178,14 @@
         }
       },
       "post": {
-        "operationId": "doPost",
+        "description": "Collection endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost",
         "requestBody": {
           "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest"
+                "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_Request"
               }
             }
           }
@@ -189,7 +196,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response"
                 }
               }
             }
@@ -199,14 +206,15 @@
     },
     "\/population\/typeschema\/{id}": {
       "get": {
-        "operationId": "doGet",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response"
                 }
               }
             }
@@ -214,13 +222,14 @@
         }
       },
       "put": {
-        "operationId": "doPut",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut",
         "requestBody": {
           "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest"
+                "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_Request"
               }
             }
           }
@@ -231,7 +240,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response"
                 }
               }
             }
@@ -239,14 +248,15 @@
         }
       },
       "delete": {
-        "operationId": "doDelete",
+        "description": "Entity endpoint",
+        "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete",
         "responses": {
           "200": {
             "description": "DELETE 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response"
                 }
               }
             }
@@ -264,156 +274,16 @@
         }
       ]
     },
-    "\/population\/openapi": {
-      "get": {
-        "operationId": "doGet",
-        "parameters": [
-          {
-            "name": "startIndex",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "count",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "GET 200 Response",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "requestBody": {
-          "description": "POST Request",
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "POST 201 Response",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "\/population\/openapi\/{id}": {
-      "get": {
-        "parameters": [
-          {
-            "name": "startIndex",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "count",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "GET 200 Response",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "requestBody": {
-          "description": "PUT Request",
-          "content": {
-            "application\/json": {
-              "schema": {
-                "$ref": "#\/components\/schemas\/Entity"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "PUT 200 Response",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "DELETE 200 Response",
-            "content": {
-              "application\/json": {
-                "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": false,
-          "schema": {
-            "type": "integer"
-          }
-        }
-      ]
-    },
     "\/tool": {
       "get": {
+        "operationId": "PSX_Framework_Controller_Tool_DefaultController_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Welcome"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response"
                 }
               }
             }
@@ -423,13 +293,14 @@
     },
     "\/tool\/discovery": {
       "get": {
+        "operationId": "PSX_Framework_Controller_Tool_DiscoveryController_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Discovery_Collection"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response"
                 }
               }
             }
@@ -439,13 +310,14 @@
     },
     "\/tool\/doc": {
       "get": {
+        "operationId": "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Documentation_Index"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response"
                 }
               }
             }
@@ -455,13 +327,14 @@
     },
     "\/tool\/doc\/{version}\/{path}": {
       "get": {
+        "operationId": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Documentation_Detail"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response"
                 }
               }
             }
@@ -489,25 +362,31 @@
     },
     "\/tool\/routing": {
       "get": {
+        "operationId": "PSX_Framework_Controller_Tool_RoutingController_doGet",
         "responses": {
           "200": {
             "description": "GET 200 Response",
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Routing_Collection"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response"
                 }
               }
             }
           }
         }
       }
+    },
+    "\/generator\/{type}\/{version}\/{path}": {
+      "get": {
+        "operationId": "PSX_Framework_Controller_Generator_GeneratorController_doGet",
+        "responses": {}
+      }
     }
   },
   "components": {
     "schemas": {
       "Collection": {
-        "description": "Collection result",
         "type": "object",
         "properties": {
           "totalResults": {
@@ -643,98 +522,91 @@
         "additionalProperties": true
       },
       "Entity": {
-        "description": "Represents an internet population entity",
         "type": "object",
         "properties": {
           "id": {
-            "description": "Unique id for each entry",
             "type": "integer"
           },
           "place": {
-            "description": "Position in the top list",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 64
+            "type": "integer"
           },
           "region": {
-            "description": "Name of the region",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 3,
-            "maxLength": 64
+            "type": "string"
           },
           "population": {
-            "description": "Complete number of population",
             "type": "integer"
           },
           "users": {
-            "description": "Number of internet users",
             "type": "integer"
           },
           "worldUsers": {
-            "description": "Percentage users of the world",
             "type": "number"
           },
           "datetime": {
-            "description": "Date when the entity was created",
             "format": "date-time",
             "type": "string"
           }
-        },
-        "required": [
-          "place",
-          "region",
-          "population",
-          "users",
-          "worldUsers"
-        ]
+        }
       },
       "Message": {
-        "title": "message",
-        "description": "Operation message",
         "type": "object"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Collection"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+      "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request": {
         "$ref": "#\/components\/schemas\/Entity"
       },
-      "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response": {
+      "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Collection"
       },
-      "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response": {
+      "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest": {
+      "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_Request": {
         "$ref": "#\/components\/schemas\/Entity"
       },
-      "PSXFrameworkAppApiPopulationEntityPopoDelete200Response": {
+      "PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationEntityPopoGet200Response": {
+      "PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Entity"
       },
-      "PSXFrameworkAppApiPopulationEntityPopoPut200Response": {
+      "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationEntityPopoPutRequest": {
+      "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_Request": {
         "$ref": "#\/components\/schemas\/Entity"
       },
-      "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response": {
+      "PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response": {
+      "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Entity"
       },
-      "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response": {
+      "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
-      "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest": {
+      "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_Request": {
         "$ref": "#\/components\/schemas\/Entity"
+      },
+      "PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Welcome"
+      },
+      "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Discovery_Collection"
+      },
+      "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Documentation_Detail"
+      },
+      "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Documentation_Index"
+      },
+      "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Routing_Collection"
       },
       "Routing_Collection": {
         "type": "object",

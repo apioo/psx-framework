@@ -31,70 +31,45 @@ use PSX\Uri\Url;
  */
 class AccessRequest
 {
-    protected $clientId;
-    protected $redirectUri;
-    protected $scope;
-    protected $state;
+    private string $clientId;
+    private ?Url $redirectUri;
+    private ?string $scope;
+    private ?string $state;
 
-    public function __construct($clientId, $redirectUri = null, $scope = null, $state = null)
+    public function __construct(string $clientId, ?Url $redirectUri = null, ?string $scope = null, ?string $state = null)
     {
         $this->clientId = $clientId;
-        $this->scope    = $scope;
-        $this->state    = $state;
-
-        $this->setRedirectUri($redirectUri);
+        $this->redirectUri = $redirectUri;
+        $this->scope = $scope;
+        $this->state = $state;
     }
 
-    public function setClientId($clientId)
-    {
-        $this->clientId = $clientId;
-    }
-    
-    public function getClientId()
+    public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    public function setRedirectUri($redirectUri)
-    {
-        if (!empty($redirectUri)) {
-            $this->redirectUri = new Url($redirectUri);
-        } else {
-            $this->redirectUri = null;
-        }
-    }
-    
-    public function getRedirectUri()
+    public function getRedirectUri(): ?Url
     {
         return $this->redirectUri;
     }
 
-    public function hasRedirectUri()
+    public function hasRedirectUri(): bool
     {
         return $this->redirectUri instanceof Url;
     }
 
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-    }
-    
-    public function getScope()
+    public function getScope(): ?string
     {
         return $this->scope;
     }
 
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-    
-    public function getState()
+    public function getState(): ?string
     {
         return $this->state;
     }
 
-    public function hasState()
+    public function hasState(): bool
     {
         return !empty($this->state);
     }

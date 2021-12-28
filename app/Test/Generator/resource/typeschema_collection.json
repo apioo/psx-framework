@@ -3,23 +3,24 @@
     "\/population\/popo": {
       "status": 1,
       "path": "\/population\/popo",
-      "title": "Population",
       "description": "Collection endpoint",
       "methods": {
         "GET": {
-          "operationId": "doGet",
+          "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doGet",
+          "description": "Collection endpoint",
           "tags": [],
-          "queryParameters": "DogetQuery",
+          "queryParameters": "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query",
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationCollectionPopoGet200Response"
+            "200": "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response"
           }
         },
         "POST": {
-          "operationId": "doPost",
+          "operationId": "PSX_Framework_App_Api_Population_CollectionPopo_doPost",
+          "description": "Collection endpoint",
           "tags": [],
-          "request": "PSXFrameworkAppApiPopulationCollectionPopoPostRequest",
+          "request": "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request",
           "responses": {
-            "201": "PSXFrameworkAppApiPopulationCollectionPopoPost201Response"
+            "201": "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response"
           }
         }
       }
@@ -27,30 +28,32 @@
     "\/population\/popo\/:id": {
       "status": 1,
       "path": "\/population\/popo\/:id",
-      "title": "Population",
       "description": "Entity endpoint",
-      "pathParameters": "Path",
+      "pathParameters": "PSX_Framework_App_Api_Population_EntityPopo_doGet_Path",
       "methods": {
         "GET": {
-          "operationId": "doGet",
+          "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doGet",
+          "description": "Entity endpoint",
           "tags": [],
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityPopoGet200Response"
+            "200": "PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response"
           }
         },
         "PUT": {
-          "operationId": "doPut",
+          "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doPut",
+          "description": "Entity endpoint",
           "tags": [],
-          "request": "PSXFrameworkAppApiPopulationEntityPopoPutRequest",
+          "request": "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_Request",
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityPopoPut200Response"
+            "200": "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response"
           }
         },
         "DELETE": {
-          "operationId": "doDelete",
+          "operationId": "PSX_Framework_App_Api_Population_EntityPopo_doDelete",
+          "description": "Entity endpoint",
           "tags": [],
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityPopoDelete200Response"
+            "200": "PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response"
           }
         }
       }
@@ -58,23 +61,24 @@
     "\/population\/typeschema": {
       "status": 1,
       "path": "\/population\/typeschema",
-      "title": "Population",
       "description": "Collection endpoint",
       "methods": {
         "GET": {
-          "operationId": "doGet",
+          "operationId": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet",
+          "description": "Collection endpoint",
           "tags": [],
-          "queryParameters": "DogetQuery",
+          "queryParameters": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_Query",
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response"
+            "200": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response"
           }
         },
         "POST": {
-          "operationId": "doPost",
+          "operationId": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost",
+          "description": "Collection endpoint",
           "tags": [],
-          "request": "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest",
+          "request": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_Request",
           "responses": {
-            "201": "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response"
+            "201": "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response"
           }
         }
       }
@@ -82,80 +86,32 @@
     "\/population\/typeschema\/:id": {
       "status": 1,
       "path": "\/population\/typeschema\/:id",
-      "title": "Population",
       "description": "Entity endpoint",
-      "pathParameters": "Path",
+      "pathParameters": "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_Path",
       "methods": {
         "GET": {
-          "operationId": "doGet",
+          "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet",
+          "description": "Entity endpoint",
           "tags": [],
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response"
+            "200": "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response"
           }
         },
         "PUT": {
-          "operationId": "doPut",
+          "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut",
+          "description": "Entity endpoint",
           "tags": [],
-          "request": "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest",
+          "request": "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_Request",
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response"
+            "200": "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response"
           }
         },
         "DELETE": {
-          "operationId": "doDelete",
+          "operationId": "PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete",
+          "description": "Entity endpoint",
           "tags": [],
           "responses": {
-            "200": "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response"
-          }
-        }
-      }
-    },
-    "\/population\/openapi": {
-      "status": 1,
-      "path": "\/population\/openapi",
-      "title": "Returns a collection of population entries",
-      "methods": {
-        "GET": {
-          "operationId": "doGet",
-          "tags": [],
-          "queryParameters": "PopulationOpenapiGetQuery",
-          "responses": {
-            "200": "Collection"
-          }
-        },
-        "POST": {
-          "tags": [],
-          "request": "Entity",
-          "responses": {
-            "201": "Message"
-          }
-        }
-      }
-    },
-    "\/population\/openapi\/:id": {
-      "status": 1,
-      "path": "\/population\/openapi\/:id",
-      "title": "Returns a collection of population entries",
-      "pathParameters": "PopulationOpenapiIdPath",
-      "methods": {
-        "GET": {
-          "tags": [],
-          "queryParameters": "PopulationOpenapiIdGetQuery",
-          "responses": {
-            "200": "Collection"
-          }
-        },
-        "PUT": {
-          "tags": [],
-          "request": "Entity",
-          "responses": {
-            "200": "Message"
-          }
-        },
-        "DELETE": {
-          "tags": [],
-          "responses": {
-            "200": "Message"
+            "200": "PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response"
           }
         }
       }
@@ -165,9 +121,10 @@
       "path": "\/tool",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Controller_Tool_DefaultController_doGet",
           "tags": [],
           "responses": {
-            "200": "Welcome"
+            "200": "PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response"
           }
         }
       }
@@ -177,9 +134,10 @@
       "path": "\/tool\/discovery",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Controller_Tool_DiscoveryController_doGet",
           "tags": [],
           "responses": {
-            "200": "Discovery_Collection"
+            "200": "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response"
           }
         }
       }
@@ -189,9 +147,10 @@
       "path": "\/tool\/doc",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet",
           "tags": [],
           "responses": {
-            "200": "Documentation_Index"
+            "200": "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response"
           }
         }
       }
@@ -199,12 +158,13 @@
     "\/tool\/doc\/:version\/*path": {
       "status": 1,
       "path": "\/tool\/doc\/:version\/*path",
-      "pathParameters": "Documentation_Path",
+      "pathParameters": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_Path",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet",
           "tags": [],
           "responses": {
-            "200": "Documentation_Detail"
+            "200": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response"
           }
         }
       }
@@ -214,17 +174,28 @@
       "path": "\/tool\/routing",
       "methods": {
         "GET": {
+          "operationId": "PSX_Framework_Controller_Tool_RoutingController_doGet",
           "tags": [],
           "responses": {
-            "200": "Routing_Collection"
+            "200": "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response"
           }
+        }
+      }
+    },
+    "\/generator\/:type\/:version\/*path": {
+      "status": 1,
+      "path": "\/generator\/:type\/:version\/*path",
+      "methods": {
+        "GET": {
+          "operationId": "PSX_Framework_Controller_Generator_GeneratorController_doGet",
+          "tags": [],
+          "responses": []
         }
       }
     }
   },
   "definitions": {
     "Collection": {
-      "description": "Collection result",
       "type": "object",
       "properties": {
         "totalResults": {
@@ -338,17 +309,6 @@
         "$ref": "Documentation_Method"
       }
     },
-    "Documentation_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
     "Documentation_Route": {
       "type": "object",
       "properties": {
@@ -370,7 +330,40 @@
       "type": "object",
       "additionalProperties": true
     },
-    "DogetQuery": {
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "place": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "users": {
+          "type": "integer"
+        },
+        "worldUsers": {
+          "type": "number"
+        },
+        "datetime": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Message": {
+      "type": "object"
+    },
+    "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_200_Response": {
+      "$ref": "Collection"
+    },
+    "PSX_Framework_App_Api_Population_CollectionPopo_doGet_GET_Query": {
       "type": "object",
       "properties": {
         "startIndex": {
@@ -379,104 +372,41 @@
         "count": {
           "type": "integer"
         }
-      },
-      "required": []
+      }
     },
-    "Entity": {
-      "description": "Represents an internet population entity",
+    "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_201_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_App_Api_Population_CollectionPopo_doPost_POST_Request": {
+      "$ref": "Entity"
+    },
+    "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_200_Response": {
+      "$ref": "Collection"
+    },
+    "PSX_Framework_App_Api_Population_CollectionTypeSchema_doGet_GET_Query": {
       "type": "object",
       "properties": {
-        "id": {
-          "description": "Unique id for each entry",
+        "startIndex": {
           "type": "integer"
         },
-        "place": {
-          "description": "Position in the top list",
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64
-        },
-        "region": {
-          "description": "Name of the region",
-          "type": "string",
-          "pattern": "[A-z]+",
-          "minLength": 3,
-          "maxLength": 64
-        },
-        "population": {
-          "description": "Complete number of population",
+        "count": {
           "type": "integer"
-        },
-        "users": {
-          "description": "Number of internet users",
-          "type": "integer"
-        },
-        "worldUsers": {
-          "description": "Percentage users of the world",
-          "type": "number"
-        },
-        "datetime": {
-          "description": "Date when the entity was created",
-          "format": "date-time",
-          "type": "string"
         }
-      },
-      "required": [
-        "place",
-        "region",
-        "population",
-        "users",
-        "worldUsers"
-      ]
+      }
     },
-    "Message": {
-      "title": "message",
-      "description": "Operation message",
-      "type": "object"
-    },
-    "PSXFrameworkAppApiPopulationCollectionPopoGet200Response": {
-      "$ref": "Collection"
-    },
-    "PSXFrameworkAppApiPopulationCollectionPopoPost201Response": {
+    "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_201_Response": {
       "$ref": "Message"
     },
-    "PSXFrameworkAppApiPopulationCollectionPopoPostRequest": {
+    "PSX_Framework_App_Api_Population_CollectionTypeSchema_doPost_POST_Request": {
       "$ref": "Entity"
     },
-    "PSXFrameworkAppApiPopulationCollectionTypeSchemaGet200Response": {
-      "$ref": "Collection"
-    },
-    "PSXFrameworkAppApiPopulationCollectionTypeSchemaPost201Response": {
+    "PSX_Framework_App_Api_Population_EntityPopo_doDelete_DELETE_200_Response": {
       "$ref": "Message"
     },
-    "PSXFrameworkAppApiPopulationCollectionTypeSchemaPostRequest": {
+    "PSX_Framework_App_Api_Population_EntityPopo_doGet_GET_200_Response": {
       "$ref": "Entity"
     },
-    "PSXFrameworkAppApiPopulationEntityPopoDelete200Response": {
-      "$ref": "Message"
-    },
-    "PSXFrameworkAppApiPopulationEntityPopoGet200Response": {
-      "$ref": "Entity"
-    },
-    "PSXFrameworkAppApiPopulationEntityPopoPut200Response": {
-      "$ref": "Message"
-    },
-    "PSXFrameworkAppApiPopulationEntityPopoPutRequest": {
-      "$ref": "Entity"
-    },
-    "PSXFrameworkAppApiPopulationEntityTypeSchemaDelete200Response": {
-      "$ref": "Message"
-    },
-    "PSXFrameworkAppApiPopulationEntityTypeSchemaGet200Response": {
-      "$ref": "Entity"
-    },
-    "PSXFrameworkAppApiPopulationEntityTypeSchemaPut200Response": {
-      "$ref": "Message"
-    },
-    "PSXFrameworkAppApiPopulationEntityTypeSchemaPutRequest": {
-      "$ref": "Entity"
-    },
-    "Path": {
+    "PSX_Framework_App_Api_Population_EntityPopo_doGet_Path": {
       "type": "object",
       "properties": {
         "id": {
@@ -487,38 +417,60 @@
         "id"
       ]
     },
-    "PopulationOpenapiGetQuery": {
-      "type": "object",
-      "properties": {
-        "startIndex": {
-          "type": "integer"
-        },
-        "count": {
-          "type": "integer"
-        }
-      },
-      "required": []
+    "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_200_Response": {
+      "$ref": "Message"
     },
-    "PopulationOpenapiIdGetQuery": {
-      "type": "object",
-      "properties": {
-        "startIndex": {
-          "type": "integer"
-        },
-        "count": {
-          "type": "integer"
-        }
-      },
-      "required": []
+    "PSX_Framework_App_Api_Population_EntityPopo_doPut_PUT_Request": {
+      "$ref": "Entity"
     },
-    "PopulationOpenapiIdPath": {
+    "PSX_Framework_App_Api_Population_EntityTypeSchema_doDelete_DELETE_200_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_GET_200_Response": {
+      "$ref": "Entity"
+    },
+    "PSX_Framework_App_Api_Population_EntityTypeSchema_doGet_Path": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer"
         }
       },
-      "required": []
+      "required": [
+        "id"
+      ]
+    },
+    "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_200_Response": {
+      "$ref": "Message"
+    },
+    "PSX_Framework_App_Api_Population_EntityTypeSchema_doPut_PUT_Request": {
+      "$ref": "Entity"
+    },
+    "PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response": {
+      "$ref": "Welcome"
+    },
+    "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response": {
+      "$ref": "Discovery_Collection"
+    },
+    "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response": {
+      "$ref": "Documentation_Detail"
+    },
+    "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_Path": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response": {
+      "$ref": "Documentation_Index"
+    },
+    "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response": {
+      "$ref": "Routing_Collection"
     },
     "Routing_Collection": {
       "type": "object",

@@ -20,11 +20,14 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
+use PSX\Api\Attribute\Incoming;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Http\Environment\HttpContextInterface;
+use PSX\Schema\SchemaManagerInterface;
 
 /**
  * NoResponseController
@@ -33,61 +36,45 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class NoResponseController extends SchemaApiAbstract
+class NoResponseController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManager
-     */
-    protected $schemaManager;
-
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $builder->addMethod('GET');
-
-        $post = $builder->addMethod('POST');
-        $post->setRequest(Schema\Create::class);
-
-        $put = $builder->addMethod('PUT');
-        $put->setRequest(Schema\Update::class);
-
-        $delete = $builder->addMethod('DELETE');
-        $delete->setRequest(Schema\Delete::class);
-
-        $patch = $builder->addMethod('PATCH');
-        $patch->setRequest(Schema\Patch::class);
-
-        return $builder->getSpecification();
+        return null;
     }
 
-    protected function doGet(HttpContextInterface $context)
+    #[Incoming(schema: Schema\Create::class)]
+    protected function doPost($record, HttpContextInterface $context): mixed
     {
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('test', $record->title);
+        Assert::assertInstanceOf('DateTime', $record->date);
+
+        return null;
     }
 
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Update::class)]
+    protected function doPut($record, HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(3, $record->userId);
-        $this->testCase->assertEquals('test', $record->title);
-        $this->testCase->assertInstanceOf('DateTime', $record->date);
+        Assert::assertEquals(1, $record->id);
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('foobar', $record->title);
+
+        return null;
     }
 
-    protected function doPut($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Patch::class)]
+    protected function doPatch($record, HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(1, $record->id);
-        $this->testCase->assertEquals(3, $record->userId);
-        $this->testCase->assertEquals('foobar', $record->title);
+        Assert::assertEquals(1, $record->id);
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('foobar', $record->title);
+
+        return null;
     }
 
-    protected function doDelete($record, HttpContextInterface $context)
+    protected function doDelete(HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(1, $record->id);
+        return null;
     }
 }

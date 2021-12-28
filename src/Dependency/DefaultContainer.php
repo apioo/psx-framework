@@ -20,14 +20,12 @@
 
 namespace PSX\Framework\Dependency;
 
-use Doctrine\Common\Annotations;
-use Doctrine\Common\Cache as DoctrineCache;
 use Doctrine\DBAL;
 use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
-use PSX\Cache;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
@@ -43,7 +41,6 @@ use PSX\Dependency\TagResolver;
 use PSX\Dependency\TagResolverInterface;
 use PSX\Dependency\TypeResolver;
 use PSX\Dependency\TypeResolverInterface;
-use PSX\Framework\Annotation\ReaderFactory;
 use PSX\Framework\Log\ErrorFormatter;
 use PSX\Framework\Log\LogListener;
 use PSX\Http;
@@ -53,6 +50,8 @@ use PSX\Sql\Logger as SqlLogger;
 use PSX\Sql\TableManager;
 use PSX\Sql\TableManagerInterface;
 use PSX\Validate\Validate;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,17 +68,9 @@ class DefaultContainer extends Container
     use Framework;
     use Console;
 
-    public function getAnnotationReaderFactory(): ReaderFactory
-    {
-        return new ReaderFactory(
-            $this->newDoctrineCacheImpl('annotations/psx'),
-            $this->get('config')->get('psx_debug')
-        );
-    }
-
     public function getCache(): CacheItemPoolInterface
     {
-        return new Cache\Pool($this->newDoctrineCacheImpl('psx'));
+        return $this->newSymfonyCacheImpl('psx');
     }
 
     public function getConnection(): DBAL\Connection
@@ -108,7 +99,6 @@ class DefaultContainer extends Container
     public function getIo(): Processor
     {
         $config = Configuration::createDefault(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('schema_manager')
         );
 
@@ -126,7 +116,6 @@ class DefaultContainer extends Container
     public function getSchemaManager(): SchemaManagerInterface
     {
         return new SchemaManager(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
@@ -152,8 +141,7 @@ class DefaultContainer extends Container
     public function getContainerInspector(): InspectorInterface
     {
         $inspector = new ContainerInspector(
-            $this,
-            $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation')
+            $this
         );
 
         if (!$this->get('config')->get('psx_debug')) {
@@ -166,8 +154,7 @@ class DefaultContainer extends Container
     public function getObjectBuilder(): ObjectBuilderInterface
     {
         return new ObjectBuilder(
-            $this,
-            $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation'),
+            $this->get('container_type_resolver'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')
         );
@@ -256,12 +243,7 @@ class DefaultContainer extends Container
         $eventDispatcher->addSubscriber(new LogListener($this->get('logger')));
     }
 
-    /**
-     * Returns the default log handler
-     * 
-     * @return \Monolog\Handler\HandlerInterface
-     */
-    protected function newLoggerHandlerImpl()
+    protected function newLoggerHandlerImpl(): HandlerInterface
     {
         $config  = $this->get('config');
         $factory = $config->get('psx_logger_factory');
@@ -279,13 +261,7 @@ class DefaultContainer extends Container
         }
     }
 
-    /**
-     * Returns the default doctrine cache
-     * 
-     * @param string $namespace
-     * @return \Doctrine\Common\Cache\Cache
-     */
-    protected function newDoctrineCacheImpl($namespace)
+    protected function newSymfonyCacheImpl(string $namespace): AdapterInterface
     {
         $config  = $this->get('config');
         $factory = $config->get('psx_cache_factory');
@@ -293,30 +269,7 @@ class DefaultContainer extends Container
         if ($factory instanceof \Closure) {
             return $factory($config, $namespace);
         } else {
-            return new DoctrineCache\FilesystemCache($this->get('config')->get('psx_path_cache') . '/' . $namespace);
+            return new FilesystemAdapter($namespace, 0, $this->get('config')->get('psx_path_cache') . '/' . $namespace);
         }
-    }
-
-    /**
-     * @param array $namespaces
-     * @return \Doctrine\Common\Annotations\Reader
-     */
-    protected function newDoctrineAnnotationImpl(array $namespaces)
-    {
-        $reader = new Annotations\SimpleAnnotationReader();
-
-        foreach ($namespaces as $namespace) {
-            $reader->addNamespace($namespace);
-        }
-
-        if (!$this->get('config')->get('psx_debug')) {
-            $reader = new Annotations\CachedReader(
-                $reader,
-                $this->newDoctrineCacheImpl('annotations/psx'),
-                $this->get('config')->get('psx_debug')
-            );
-        }
-
-        return $reader;
     }
 }

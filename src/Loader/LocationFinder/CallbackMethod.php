@@ -34,14 +34,14 @@ use PSX\Http\RequestInterface;
  */
 class CallbackMethod implements LocationFinderInterface
 {
-    protected $callback;
+    private \Closure $callback;
 
     public function __construct(Closure $callback)
     {
         $this->callback = $callback;
     }
 
-    public function resolve(RequestInterface $request, Context $context)
+    public function resolve(RequestInterface $request, Context $context): ?RequestInterface
     {
         return call_user_func_array($this->callback, array($request, $context));
     }

@@ -20,10 +20,9 @@
 
 namespace PSX\Framework\Tests\Loader\RoutingParser;
 
-use Doctrine\Common\Cache\ArrayCache;
-use PSX\Cache\Pool;
 use PSX\Framework\Loader\RoutingParser\CachedParser;
-use PSX\Framework\Loader\RoutingParser\RoutingFile;
+use PSX\Framework\Loader\RoutingParser\PhpFile;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * CachedParserTest
@@ -36,8 +35,8 @@ class CachedParserTest extends RoutingParserTestCase
 {
     public function getRoutingCollection()
     {
-        $cache   = new Pool(new ArrayCache());
-        $routing = new RoutingFile(__DIR__ . '/../routes');
+        $cache   = new ArrayAdapter();
+        $routing = new PhpFile(__DIR__ . '/../routes.php');
         $cached  = new CachedParser($routing, $cache);
 
         return $cached->getCollection();
@@ -45,8 +44,8 @@ class CachedParserTest extends RoutingParserTestCase
 
     public function testGetCollection()
     {
-        $cache         = new Pool(new ArrayCache());
-        $routing       = new RoutingFile(__DIR__ . '/../routes');
+        $cache         = new ArrayAdapter();
+        $routing       = new PhpFile(__DIR__ . '/../routes.php');
         $routingParser = new CachedParser($routing, $cache);
 
         // we remove previous cache
@@ -56,12 +55,12 @@ class CachedParserTest extends RoutingParserTestCase
         $collection = $routingParser->getCollection();
 
         $this->assertInstanceOf('PSX\Framework\Loader\RoutingCollection', $collection);
-        $this->assertEquals(15, count($collection));
+        $this->assertEquals(16, count($collection));
 
         // get collection from the cache
         $collection = $routingParser->getCollection();
 
         $this->assertInstanceOf('PSX\Framework\Loader\RoutingCollection', $routingParser->getCollection());
-        $this->assertEquals(15, count($collection));
+        $this->assertEquals(16, count($collection));
     }
 }

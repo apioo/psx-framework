@@ -29,85 +29,50 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
  */
 class TestBody
 {
-    /**
-     * @var string
-     */
-    private $foo;
+    private ?string $foo = null;
+    private ?string $title = null;
+    private ?TestBody $bar = null;
 
     /**
-     * @var string
+     * @var array<TestBody>
      */
-    private $title;
+    private ?array $entries = null;
 
-    /**
-     * @var \PSX\Framework\Tests\Controller\Foo\Application\TestController\TestBody
-     */
-    protected $bar;
-
-    /**
-     * @var array<\PSX\Framework\Tests\Controller\Foo\Application\TestController\TestBody>
-     */
-    protected $entries;
-
-    /**
-     * @return string
-     */
-    public function getFoo(): string
+    public function getFoo(): ?string
     {
         return $this->foo;
     }
 
-    /**
-     * @param string $foo
-     */
     public function setFoo(string $foo): void
     {
         $this->foo = $foo;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return TestBody
-     */
-    public function getBar(): TestBody
+    public function getBar(): ?TestBody
     {
         return $this->bar;
     }
 
-    /**
-     * @param TestBody $bar
-     */
     public function setBar(TestBody $bar): void
     {
         $this->bar = $bar;
     }
 
-    /**
-     * @return array
-     */
-    public function getEntries(): array
+    public function getEntries(): ?array
     {
         return $this->entries;
     }
 
-    /**
-     * @param array $entries
-     */
     public function setEntries(array $entries): void
     {
         $this->entries = $entries;

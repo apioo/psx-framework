@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
 use PSX\Api\Resource;
 use PSX\Api\SpecificationInterface;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
 
 /**
@@ -31,10 +32,6 @@ use PSX\Framework\Controller\SchemaApiAbstract;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class NoViewController extends SchemaApiAbstract
+class NoViewController extends ControllerAbstract
 {
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
-    {
-        return $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, '/')->getSpecification();
-    }
 }

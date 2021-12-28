@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -33,8 +34,8 @@ use PSX\Http\ResponseInterface;
  */
 class IndexController extends ControllerAbstract
 {
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): string
     {
-        $response->getBody()->write('foobar');
+        return 'foobar';
     }
 }

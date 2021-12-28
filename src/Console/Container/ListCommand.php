@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ListCommand extends Command
 {
-    protected $inspector;
+    private InspectorInterface $inspector;
 
     public function __construct(InspectorInterface $inspector)
     {

@@ -20,9 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader\RoutingParser;
 
-use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParser\PhpFile;
-use PSX\Framework\Loader\RoutingParser\RoutingFile;
 
 /**
  * PhpFileTest

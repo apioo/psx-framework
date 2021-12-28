@@ -20,15 +20,24 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
+use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
+use PSX\Api\Attribute\QueryParam;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Schema;
 use PSX\Framework\Tests\TestTable;
 use PSX\Http\Environment\HttpContextInterface;
-use PSX\Schema\Property;
-use PSX\Framework\Tests\Controller\Foo\Schema;
+use PSX\Http\Environment\HttpResponse;
+use PSX\Schema\SchemaManager;
+use PSX\Schema\SchemaManagerInterface;
+use PSX\Sql\TableManagerInterface;
 
 /**
  * TestSchemaApiController
@@ -37,92 +46,51 @@ use PSX\Framework\Tests\Controller\Foo\Schema;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestSchemaApiController extends SchemaApiAbstract
+#[Description('lorem ipsum')]
+#[PathParam(name: 'name', type: 'string', description: 'Name parameter', minLength: 0, maxLength: 16, pattern: '[A-z]+')]
+#[PathParam(name: 'type', type: 'string', enum: ['foo', 'bar'])]
+class TestSchemaApiController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManager
-     */
-    protected $schemaManager;
+    #[Inject]
+    private TableManagerInterface $tableManager;
 
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation(?string $version = null): SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-        $builder->setTitle('foo');
-        $builder->setDescription('lorem ipsum');
-
-        $path = $builder->setPathParameters('Path');
-        $path->addString('name')
-            ->setDescription('Name parameter')
-            ->setMinLength(0)
-            ->setMaxLength(16)
-            ->setPattern('[A-z]+');
-        $path->addString('type')
-            ->setEnum(['foo', 'bar']);
-
-        $get = $builder->addMethod('GET');
-        $get->setDescription('Returns a collection');
-        $get->addResponse(200, Schema\Collection::class);
-
-        $query = $get->setQueryParameters('Get_Query');
-        $query->addInteger('startIndex')
-                ->setDescription('startIndex parameter')
-                ->setMinimum(0)
-                ->setMaximum(32);
-        $query->addNumber('float');
-        $query->addBoolean('boolean');
-        $query->addDate('date');
-        $query->addDateTime('datetime');
-
-        $post = $builder->addMethod('POST');
-        $post->setRequest(Schema\Create::class);
-        $post->addResponse(201, Schema\SuccessMessage::class);
-
-        $put = $builder->addMethod('PUT');
-        $put->setRequest(Schema\Update::class);
-        $put->addResponse(200, Schema\SuccessMessage::class);
-
-        $delete = $builder->addMethod('DELETE');
-        $delete->setRequest(Schema\Delete::class);
-        $delete->addResponse(200, Schema\SuccessMessage::class);
-
-        $patch = $builder->addMethod('PATCH');
-        $patch->setRequest(Schema\Patch::class);
-        $patch->addResponse(200, Schema\SuccessMessage::class);
-
-        return $builder->getSpecification();
-    }
-
-    protected function doGet(HttpContextInterface $context)
+    #[Description('Returns a collection')]
+    #[QueryParam(name: 'startIndex', type: 'integer', description: 'startIndex parameter', minimum: 0, maximum: 32)]
+    #[QueryParam(name: 'float', type: 'number')]
+    #[QueryParam(name: 'boolean', type: 'boolean')]
+    #[QueryParam(name: 'date', type: 'date')]
+    #[QueryParam(name: 'datetime', type: 'datetime')]
+    #[Outgoing(code: 200, schema: Schema\Collection::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         return array(
-            'entry' => Environment::getService('table_manager')->getTable(TestTable::class)->getAll()
+            'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
         );
     }
 
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Create::class)]
+    #[Outgoing(code: 201, schema: Schema\SuccessMessage::class)]
+    protected function doPost($record, HttpContextInterface $context): HttpResponse
     {
-        $this->testCase->assertEquals(3, $record->userId);
-        $this->testCase->assertEquals('test', $record->title);
-        $this->testCase->assertInstanceOf('DateTime', $record->date);
+        Assert::assertEquals('', $context->getUriFragment('name'));
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('test', $record->title);
+        Assert::assertInstanceOf('DateTime', $record->date);
 
-        return array(
+        return new HttpResponse(201, [], [
             'success' => true,
             'message' => 'You have successful post a record'
-        );
+        ]);
     }
 
-    protected function doPut($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Update::class)]
+    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
+    protected function doPut($record, HttpContextInterface $context): array
     {
-        $this->testCase->assertEquals(1, $record->id);
-        $this->testCase->assertEquals(3, $record->userId);
-        $this->testCase->assertEquals('foobar', $record->title);
+        Assert::assertEquals('', $context->getUriFragment('name'));
+        Assert::assertEquals(1, $record->id);
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('foobar', $record->title);
 
         return array(
             'success' => true,
@@ -130,9 +98,11 @@ class TestSchemaApiController extends SchemaApiAbstract
         );
     }
 
-    protected function doDelete($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Delete::class)]
+    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
+    protected function doDelete(HttpContextInterface $context): array
     {
-        $this->testCase->assertEquals(1, $record->id);
+        Assert::assertEquals('', $context->getUriFragment('name'));
 
         return array(
             'success' => true,
@@ -140,11 +110,13 @@ class TestSchemaApiController extends SchemaApiAbstract
         );
     }
 
-    protected function doPatch($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Patch::class)]
+    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
+    protected function doPatch($record, HttpContextInterface $context): array
     {
-        $this->testCase->assertEquals(1, $record->id);
-        $this->testCase->assertEquals(3, $record->userId);
-        $this->testCase->assertEquals('foobar', $record->title);
+        Assert::assertEquals(1, $record->id);
+        Assert::assertEquals(3, $record->userId);
+        Assert::assertEquals('foobar', $record->title);
 
         return array(
             'success' => true,

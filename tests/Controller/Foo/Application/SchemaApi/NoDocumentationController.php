@@ -20,8 +20,11 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
-use PSX\Api\SpecificationInterface;
+use PHPUnit\Framework\TestCase;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Schema\SchemaManagerInterface;
 
 /**
  * NoDocumentationController
@@ -30,22 +33,6 @@ use PSX\Framework\Controller\SchemaApiAbstract;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class NoDocumentationController extends SchemaApiAbstract
+class NoDocumentationController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Schema\SchemaManager
-     */
-    protected $schemaManager;
-
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
-    {
-        return null;
-    }
 }

@@ -20,19 +20,19 @@
 
 namespace PSX\Framework\Api;
 
-use PSX\Api\DocumentedInterface;
 use PSX\Api\Listing\FilterInterface;
 use PSX\Api\Listing\Route;
 use PSX\Api\ListingInterface;
-use PSX\Api\Resource;
+use PSX\Api\Parser\Attribute;
 use PSX\Api\ResourceCollection;
 use PSX\Api\Specification;
 use PSX\Api\SpecificationInterface;
-use PSX\Framework\Dispatch\ControllerFactoryInterface;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\PathMatcher;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Schema\Definitions;
+use PSX\Schema\SchemaManagerInterface;
 
 /**
  * The documentation how a request and response looks is provided in the
@@ -44,24 +44,13 @@ use PSX\Schema\Definitions;
  */
 class ControllerDocumentation implements ListingInterface
 {
-    /**
-     * @var \PSX\Framework\Loader\RoutingParserInterface
-     */
-    protected $routingParser;
+    private RoutingParserInterface $routingParser;
+    private Attribute $attributeParser;
 
-    /**
-     * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
-     */
-    protected $controllerFactory;
-
-    /**
-     * @param \PSX\Framework\Loader\RoutingParserInterface $routingParser
-     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
-     */
-    public function __construct(RoutingParserInterface $routingParser, ControllerFactoryInterface $controllerFactory)
+    public function __construct(RoutingParserInterface $routingParser, SchemaManagerInterface $schemaManager)
     {
-        $this->routingParser     = $routingParser;
-        $this->controllerFactory = $controllerFactory;
+        $this->routingParser   = $routingParser;
+        $this->attributeParser = new Attribute($schemaManager);
     }
 
     /**
@@ -79,13 +68,10 @@ class ControllerDocumentation implements ListingInterface
                 continue;
             }
 
-            $parts     = explode('::', $source, 2);
-            $className = isset($parts[0]) ? $parts[0] : null;
+            $parts = explode('::', $source, 2);
+            $className = $parts[0] ?? null;
 
-            // because creating a new instance of a controller is expensive
-            // since we resolve all dependencies we use class_implements to
-            // check whether this is a documented API endpoint
-            if (class_exists($className) && in_array(DocumentedInterface::class, class_implements($className))) {
+            if (is_a($className, ControllerAbstract::class, true)) {
                 $result[] = new Route($path, $methods, '*');
             }
         }
@@ -104,14 +90,11 @@ class ControllerDocumentation implements ListingInterface
         foreach ($collection as $route) {
             [$methods, $path, $source] = $route;
 
-            $parts     = explode('::', $source, 2);
-            $className = isset($parts[0]) ? $parts[0] : null;
+            $parts = explode('::', $source, 2);
+            $className = $parts[0] ?? null;
 
             if (class_exists($className) && $matcher->match($path)) {
-                $context    = $this->newContext($route);
-                $controller = $this->controllerFactory->getDocumentation($className, $context, $version);
-
-                return $controller;
+                return $this->attributeParser->parse($className, $path);
             }
         }
 

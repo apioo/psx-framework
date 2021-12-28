@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
@@ -79,7 +80,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/any/foo must be of type string', substr($data->message, 0, 31), $body);
     }
 
@@ -95,7 +96,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/array must be of type array', substr($data->message, 0, 28), $body);
     }
 
@@ -111,7 +112,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/arrayComplex must be of type array', substr($data->message, 0, 35), $body);
     }
 
@@ -133,7 +134,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/arrayChoice/1 must match one required schema', substr($data->message, 0, 45), $body);
     }
 
@@ -149,7 +150,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/boolean must be of type boolean', substr($data->message, 0, 32), $body);
     }
 
@@ -167,7 +168,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/choice must match one required schema', substr($data->message, 0, 38), $body);
     }
 
@@ -183,7 +184,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/dateTime must be a valid date-time format [RFC3339]', substr($data->message, 0, 52), $body);
     }
 
@@ -199,7 +200,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/date must be a valid full-date format [RFC3339]', substr($data->message, 0, 48), $body);
     }
 
@@ -215,7 +216,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/duration must be a valid duration format [ISO8601]', substr($data->message, 0, 51), $body);
     }
 
@@ -231,7 +232,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/float must be of type float', substr($data->message, 0, 28), $body);
     }
 
@@ -247,7 +248,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/integer must be of type integer', substr($data->message, 0, 32), $body);
     }
 
@@ -263,7 +264,7 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/string must be of type string', substr($data->message, 0, 30), $body);
     }
 
@@ -279,58 +280,54 @@ JSON;
         $body     = (string) $response->getBody();
         $data     = json_decode($body);
 
-        $this->assertEquals(500, $response->getStatusCode(), $body);
+        $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/time must be a valid full-time format [RFC3339]', substr($data->message, 0, 48), $body);
     }
 
     /**
-     * Checks whether the data we received as post is converted to the right
-     * types
-     *
-     * @param \PHPUnit\Framework\TestCase $testCase
-     * @param \PSX\Record\RecordInterface $record
+     * Checks whether the data we received as post is converted to the right types
      */
-    public static function assertRecord(TestCase $testCase, RecordInterface $record)
+    public static function assertRecord(RecordInterface $record)
     {
-        $testCase->assertInstanceOf(RecordInterface::class, $record->any);
-        $testCase->assertEquals(['foo' => 'bar'], $record->any->getProperties());
-        $testCase->assertIsArray($record->array);
-        $testCase->assertEquals(1, count($record->array));
-        $testCase->assertEquals(['bar'], $record->array);
-        $testCase->assertIsArray($record->arrayComplex);
-        $testCase->assertEquals(2, count($record->arrayComplex));
-        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayComplex[0]);
-        $testCase->assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getProperties());
-        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
-        $testCase->assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getProperties());
-        $testCase->assertIsArray($record->arrayChoice);
-        $testCase->assertEquals(3, count($record->arrayChoice));
-        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[0]);
-        $testCase->assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getProperties());
-        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[1]);
-        $testCase->assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getProperties());
-        $testCase->assertInstanceOf(RecordInterface::class, $record->arrayChoice[2]);
-        $testCase->assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getProperties());
-        $testCase->assertIsBool($record->boolean);
-        $testCase->assertEquals(true, $record->boolean);
-        $testCase->assertInstanceOf(RecordInterface::class, $record->choice);
-        $testCase->assertEquals(['bar' => 'test'], $record->choice->getProperties());
-        $testCase->assertInstanceOf(RecordInterface::class, $record->complex);
-        $testCase->assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        $testCase->assertInstanceOf(Date::class, $record->date);
-        $testCase->assertEquals('2015-05-01', $record->date->format('Y-m-d'));
-        $testCase->assertInstanceOf(DateTime::class, $record->dateTime);
-        $testCase->assertEquals('2015-05-01T13:37:14Z', $record->dateTime->format('Y-m-d\TH:i:s\Z'));
-        $testCase->assertInstanceOf(Duration::class, $record->duration);
-        $testCase->assertEquals('000100000000', $record->duration->format('%Y%M%D%H%I%S'));
-        $testCase->assertIsFloat($record->float);
-        $testCase->assertEquals(13.37, $record->float);
-        $testCase->assertIsInt($record->integer);
-        $testCase->assertEquals(7, $record->integer);
-        $testCase->assertIsString($record->string);
-        $testCase->assertEquals('bar', $record->string);
-        $testCase->assertInstanceOf(Time::class, $record->time);
-        $testCase->assertEquals('13:37:14', $record->time->format('H:i:s'));
+        Assert::assertInstanceOf(RecordInterface::class, $record->any);
+        Assert::assertEquals(['foo' => 'bar'], $record->any->getProperties());
+        Assert::assertIsArray($record->array);
+        Assert::assertEquals(1, count($record->array));
+        Assert::assertEquals(['bar'], $record->array);
+        Assert::assertIsArray($record->arrayComplex);
+        Assert::assertEquals(2, count($record->arrayComplex));
+        Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[0]);
+        Assert::assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getProperties());
+        Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
+        Assert::assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getProperties());
+        Assert::assertIsArray($record->arrayChoice);
+        Assert::assertEquals(3, count($record->arrayChoice));
+        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[0]);
+        Assert::assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getProperties());
+        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[1]);
+        Assert::assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getProperties());
+        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[2]);
+        Assert::assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getProperties());
+        Assert::assertIsBool($record->boolean);
+        Assert::assertEquals(true, $record->boolean);
+        Assert::assertInstanceOf(RecordInterface::class, $record->choice);
+        Assert::assertEquals(['bar' => 'test'], $record->choice->getProperties());
+        Assert::assertInstanceOf(RecordInterface::class, $record->complex);
+        Assert::assertEquals(['foo' => 'bar'], $record->complex->getProperties());
+        Assert::assertInstanceOf(Date::class, $record->date);
+        Assert::assertEquals('2015-05-01', $record->date->format('Y-m-d'));
+        Assert::assertInstanceOf(DateTime::class, $record->dateTime);
+        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->format('Y-m-d\TH:i:s\Z'));
+        Assert::assertInstanceOf(Duration::class, $record->duration);
+        Assert::assertEquals('000100000000', $record->duration->format('%Y%M%D%H%I%S'));
+        Assert::assertIsFloat($record->float);
+        Assert::assertEquals(13.37, $record->float);
+        Assert::assertIsInt($record->integer);
+        Assert::assertEquals(7, $record->integer);
+        Assert::assertIsString($record->string);
+        Assert::assertEquals('bar', $record->string);
+        Assert::assertInstanceOf(Time::class, $record->time);
+        Assert::assertEquals('13:37:14', $record->time->format('H:i:s'));
     }
 
     /**
@@ -349,13 +346,9 @@ JSON;
     }
 
     /**
-     * Returns different responses. The assimilator should convert all these
-     * types to the same response format
-     *
-     * @param integer $type
-     * @return mixed
+     * Returns different responses. The assimilator should convert all these types to the same response format
      */
-    public static function getDataByType($type)
+    public static function getDataByType(int $type): array|\stdClass|RecordInterface|Property
     {
         switch ($type) {
             case 1:
@@ -370,6 +363,8 @@ JSON;
             case 4:
                 return self::getPopoStructure();
         }
+
+        throw new \InvalidArgumentException('Provided an invalid type');
     }
 
     private static function getArrayStructure(): array
@@ -398,13 +393,13 @@ JSON;
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => new Date(2015, 5, 1),
-            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'date' => Date::create(2015, 5, 1),
+            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => new Time(13, 37, 14),
+            'time' => Time::create(13, 37, 14),
         ];
     }
 
@@ -434,13 +429,13 @@ JSON;
             'complex' => (object) [
                 'foo' => 'bar'
             ],
-            'date' => new Date(2015, 5, 1),
-            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'date' => Date::create(2015, 5, 1),
+            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => new Time(13, 37, 14),
+            'time' => Time::create(13, 37, 14),
         ];
     }
 
@@ -477,13 +472,13 @@ JSON;
             'complex' => Record::fromArray([
                 'foo' => 'bar'
             ]),
-            'date' => new Date(2015, 5, 1),
-            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'date' => Date::create(2015, 5, 1),
+            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => new Time(13, 37, 14),
+            'time' => Time::create(13, 37, 14),
         ]);
     }
 
@@ -500,13 +495,13 @@ JSON;
         $object->setBoolean(true);
         $object->setChoice(new ChoiceB('test'));
         $object->setComplex(new Complex('bar'));
-        $object->setDate(new Date(2015, 5, 1));
-        $object->setDateTime(new DateTime(2015, 5, 1, 13, 37, 14));
+        $object->setDate(Date::create(2015, 5, 1));
+        $object->setDateTime(DateTime::create(2015, 5, 1, 13, 37, 14));
         $object->setDuration(new Duration('P1M'));
         $object->setFloat(13.37);
         $object->setInteger(7);
         $object->setString('bar');
-        $object->setTime(new Time(13, 37, 14));
+        $object->setTime(Time::create(13, 37, 14));
 
         return $object;
     }

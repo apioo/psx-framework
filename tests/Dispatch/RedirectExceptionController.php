@@ -21,6 +21,8 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\Exception\TemporaryRedirectException;
 
 /**
  * RedirectExceptionController
@@ -31,8 +33,8 @@ use PSX\Framework\Controller\ControllerAbstract;
  */
 class RedirectExceptionController extends ControllerAbstract
 {
-    public function onLoad()
+    public function doGet(HttpContextInterface $context): mixed
     {
-        $this->redirect('http://localhost.com/foobar');
+        throw new TemporaryRedirectException('http://localhost.com/foobar');
     }
 }

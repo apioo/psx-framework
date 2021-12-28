@@ -37,7 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ServeCommand extends Command
 {
-    protected $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

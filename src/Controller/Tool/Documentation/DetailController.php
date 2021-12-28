@@ -20,18 +20,19 @@
 
 namespace PSX\Framework\Controller\Tool\Documentation;
 
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
 use PSX\Api\Generator;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\Resource;
 use PSX\Api\SpecificationInterface;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Generator\OpenAPIController;
-use PSX\Framework\Controller\Generator\RamlController;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
-use PSX\Schema\TypeFactory;
 
 /**
  * DetailController
@@ -40,38 +41,15 @@ use PSX\Schema\TypeFactory;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DetailController extends SchemaApiAbstract
+#[PathParam(name: 'version', type: 'string')]
+#[PathParam(name: 'path', type: 'string')]
+class DetailController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Api\ListingInterface
-     */
-    protected $resourceListing;
+    #[Inject]
+    private ReverseRouter $reverseRouter;
 
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\ReverseRouter
-     */
-    protected $reverseRouter;
-
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $path = $builder->setPathParameters('Documentation_Path');
-        $path->addString('version');
-        $path->addString('path');
-
-        $get = $builder->addMethod('GET');
-        $get->addResponse(200, Schema\Documentation\Detail::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
+    #[Outgoing(code: 200, schema: Schema\Documentation\Detail::class)]
+    protected function doGet(HttpContextInterface $context): \stdClass
     {
         $version = $this->context->getParameter('version');
         $path    = $this->context->getParameter('path') ?: '/';
@@ -92,6 +70,9 @@ class DetailController extends SchemaApiAbstract
 
         $generator = new Generator\Spec\TypeSchema();
         $api = \json_decode($generator->generate($specification));
+        if (!$api instanceof \stdClass) {
+            throw new StatusCode\InternalServerErrorException('Could not generate specification');
+        }
 
         // links
         $links = $this->getLinks($version, $resource->getPath());
@@ -102,7 +83,7 @@ class DetailController extends SchemaApiAbstract
         return $api;
     }
 
-    protected function getLinks($version, $path)
+    private function getLinks(string $version, string $path): array
     {
         $path   = ltrim($path, '/');
         $result = [];

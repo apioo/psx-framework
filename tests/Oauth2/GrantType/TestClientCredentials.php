@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Oauth2\GrantType;
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantType\ClientCredentialsAbstract;
 use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant\ClientCredentials;
 
 /**
  * TestClientCredentials
@@ -33,14 +34,13 @@ use PSX\Oauth2\AccessToken;
  */
 class TestClientCredentials extends ClientCredentialsAbstract
 {
-    protected function generate(Credentials $credentials, $scope)
+    protected function generate(Credentials $credentials, ClientCredentials $grant): AccessToken
     {
-        $accessToken = new AccessToken();
-        $accessToken->setAccessToken('2YotnFZFEjr1zCsicMWpAA');
-        $accessToken->setTokenType('example');
-        $accessToken->setExpires(3600);
-        $accessToken->setRefreshToken('tGzv3JOkF0XG5Qx2TlKWIA');
-
-        return $accessToken;
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'example',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
     }
 }

@@ -34,26 +34,14 @@ use PSX\Http\ResponseInterface;
 interface LoaderInterface
 {
     /**
-     * Loads the controller instance based on the provided request. Usually this 
-     * means we use a router to find the fitting controller class name. Then we
-     * execute this instance through the execute method
-     * 
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @param \PSX\Framework\Loader\Context $context
-     * @return void
+     * Loads the controller instance based on the provided request. Usually this means we use a router to find the
+     * fitting controller class name. Then we execute this instance through the execute method
      */
-    public function load(RequestInterface $request, ResponseInterface $response, Context $context = null);
+    public function load(RequestInterface $request, ResponseInterface $response, ?Context $context = null): void;
 
     /**
-     * Executes a specific controller instance. This means that we determine the 
-     * middleware stack based on the controller and execute it. Note the load 
-     * method also calls this method after the controller was loaded
-     *
-     * @param mixed $controller
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @return void
+     * Executes a specific controller instance. This means that we determine the middleware stack based on the
+     * controller and execute it. Note the load method also calls this method after the controller was loaded
      */
-    public function execute($controller, RequestInterface $request, ResponseInterface $response);
+    public function execute(array $controller, RequestInterface $request, ResponseInterface $response): void;
 }

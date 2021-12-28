@@ -20,11 +20,17 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Framework\Schema\Passthru;
 use PSX\Http\Environment\HttpContextInterface;
 
 /**
@@ -34,18 +40,10 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PassthruController extends SchemaApiAbstract
+class PassthruController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    /**
-     * @Outgoing(code=200, schema="PSX\Framework\Schema\Passthru")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[Outgoing(code: 200, schema: Passthru::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         return [
             'any' => [
@@ -71,57 +69,55 @@ class PassthruController extends SchemaApiAbstract
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => new Date(2015, 5, 1),
-            'dateTime' => new DateTime(2015, 5, 1, 13, 37, 14),
+            'date' => new Date('2015-05-01'),
+            'dateTime' => new DateTime('2015-05-01T13:37:14'),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => new Time(13, 37, 14),
+            'time' => new Time('13:37:14'),
         ];
     }
 
-    /**
-     * @Incoming(schema="PSX\Framework\Schema\Passthru")
-     * @Outgoing(code=200, schema="PSX\Framework\Schema\Passthru")
-     */
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Passthru::class)]
+    #[Outgoing(code: 200, schema: Passthru::class)]
+    protected function doPost($record, HttpContextInterface $context): \stdClass
     {
-        $this->testCase->assertInstanceOf('stdClass', $record->any);
-        $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->any);
-        $this->testCase->assertIsArray($record->array);
-        $this->testCase->assertEquals(1, count($record->array));
-        $this->testCase->assertEquals(['bar'], $record->array);
-        $this->testCase->assertIsArray($record->arrayComplex);
-        $this->testCase->assertEquals(2, count($record->arrayComplex));
-        $this->testCase->assertInstanceOf('stdClass', $record->arrayComplex[0]);
-        $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->arrayComplex[0]);
-        $this->testCase->assertInstanceOf('stdClass', $record->arrayComplex[1]);
-        $this->testCase->assertEquals(['foo' => 'foo'], (array) $record->arrayComplex[1]);
-        $this->testCase->assertIsArray($record->arrayChoice);
-        $this->testCase->assertEquals(3, count($record->arrayChoice));
-        $this->testCase->assertInstanceOf('stdClass', $record->arrayChoice[0]);
-        $this->testCase->assertEquals(['foo' => 'baz'], (array) $record->arrayChoice[0]);
-        $this->testCase->assertInstanceOf('stdClass', $record->arrayChoice[1]);
-        $this->testCase->assertEquals(['bar' => 'bar'], (array) $record->arrayChoice[1]);
-        $this->testCase->assertInstanceOf('stdClass', $record->arrayChoice[2]);
-        $this->testCase->assertEquals(['foo' => 'foo'], (array) $record->arrayChoice[2]);
-        $this->testCase->assertIsBool($record->boolean);
-        $this->testCase->assertEquals(true, $record->boolean);
-        $this->testCase->assertInstanceOf('stdClass', $record->choice);
-        $this->testCase->assertEquals(['bar' => 'test'], (array) $record->choice);
-        $this->testCase->assertInstanceOf('stdClass', $record->complex);
-        $this->testCase->assertEquals(['foo' => 'bar'], (array) $record->complex);
-        $this->testCase->assertEquals('2015-05-01', $record->date);
-        $this->testCase->assertEquals('2015-05-01T13:37:14Z', $record->dateTime);
-        $this->testCase->assertEquals('P1M', $record->duration);
-        $this->testCase->assertIsFloat($record->float);
-        $this->testCase->assertEquals(13.37, $record->float);
-        $this->testCase->assertIsInt($record->integer);
-        $this->testCase->assertEquals(7, $record->integer);
-        $this->testCase->assertIsString($record->string);
-        $this->testCase->assertEquals('bar', $record->string);
-        $this->testCase->assertEquals('13:37:14', $record->time);
+        Assert::assertInstanceOf('stdClass', $record->any);
+        Assert::assertEquals(['foo' => 'bar'], (array) $record->any);
+        Assert::assertIsArray($record->array);
+        Assert::assertEquals(1, count($record->array));
+        Assert::assertEquals(['bar'], $record->array);
+        Assert::assertIsArray($record->arrayComplex);
+        Assert::assertEquals(2, count($record->arrayComplex));
+        Assert::assertInstanceOf('stdClass', $record->arrayComplex[0]);
+        Assert::assertEquals(['foo' => 'bar'], (array) $record->arrayComplex[0]);
+        Assert::assertInstanceOf('stdClass', $record->arrayComplex[1]);
+        Assert::assertEquals(['foo' => 'foo'], (array) $record->arrayComplex[1]);
+        Assert::assertIsArray($record->arrayChoice);
+        Assert::assertEquals(3, count($record->arrayChoice));
+        Assert::assertInstanceOf('stdClass', $record->arrayChoice[0]);
+        Assert::assertEquals(['foo' => 'baz'], (array) $record->arrayChoice[0]);
+        Assert::assertInstanceOf('stdClass', $record->arrayChoice[1]);
+        Assert::assertEquals(['bar' => 'bar'], (array) $record->arrayChoice[1]);
+        Assert::assertInstanceOf('stdClass', $record->arrayChoice[2]);
+        Assert::assertEquals(['foo' => 'foo'], (array) $record->arrayChoice[2]);
+        Assert::assertIsBool($record->boolean);
+        Assert::assertEquals(true, $record->boolean);
+        Assert::assertInstanceOf('stdClass', $record->choice);
+        Assert::assertEquals(['bar' => 'test'], (array) $record->choice);
+        Assert::assertInstanceOf('stdClass', $record->complex);
+        Assert::assertEquals(['foo' => 'bar'], (array) $record->complex);
+        Assert::assertEquals('2015-05-01', $record->date);
+        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime);
+        Assert::assertEquals('P1M', $record->duration);
+        Assert::assertIsFloat($record->float);
+        Assert::assertEquals(13.37, $record->float);
+        Assert::assertIsInt($record->integer);
+        Assert::assertEquals(7, $record->integer);
+        Assert::assertIsString($record->string);
+        Assert::assertEquals('bar', $record->string);
+        Assert::assertEquals('13:37:14', $record->time);
 
         return $record;
     }

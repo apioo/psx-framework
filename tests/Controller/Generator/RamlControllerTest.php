@@ -41,7 +41,7 @@ class RamlControllerTest extends ControllerTestCase
         $expect   = file_get_contents(__DIR__ . '/resource/raml.yaml');
         $expect   = str_replace(array("\r\n", "\r"), "\n", $expect);
 
-        $this->assertEquals(null, $response->getStatusCode(), $raml);
+        $this->assertEquals(200, $response->getStatusCode(), $raml);
         $this->assertEquals('application/raml+yaml', $response->getHeader('Content-Type'), $raml);
         $this->assertEquals($expect, $raml, $raml);
     }
@@ -52,7 +52,7 @@ class RamlControllerTest extends ControllerTestCase
         $raml     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/raml_collection.yaml');
 
-        $this->assertEquals(null, $response->getStatusCode(), $raml);
+        $this->assertEquals(200, $response->getStatusCode(), $raml);
         $this->assertEquals('application/raml+yaml', $response->getHeader('Content-Type'), $raml);
         $this->assertEquals(str_replace(array("\r\n", "\r"), "\n", $expect), $raml, $raml);
     }

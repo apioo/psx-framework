@@ -45,38 +45,12 @@ use UnexpectedValueException;
  */
 class Loader implements LoaderInterface
 {
-    /**
-     * @var \PSX\Framework\Loader\LocationFinderInterface
-     */
-    protected $locationFinder;
+    private LocationFinderInterface $locationFinder;
+    private ControllerFactoryInterface $controllerFactory;
+    private EventDispatcherInterface $eventDispatcher;
+    private LoggerInterface $logger;
+    private Config $config;
 
-    /**
-     * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
-     */
-    protected $controllerFactory;
-
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @var \PSX\Framework\Config\Config
-     */
-    protected $config;
-
-    /**
-     * @param \PSX\Framework\Loader\LocationFinderInterface $locationFinder
-     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \PSX\Framework\Config\Config $config
-     */
     public function __construct(LocationFinderInterface $locationFinder, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, Config $config)
     {
         $this->locationFinder    = $locationFinder;
@@ -86,10 +60,7 @@ class Loader implements LoaderInterface
         $this->config            = $config;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function load(RequestInterface $request, ResponseInterface $response, Context $context = null)
+    public function load(RequestInterface $request, ResponseInterface $response, ?Context $context = null): void
     {
         $context = $context ?? new Context();
         $result  = $this->locationFinder->resolve($request, $context);
@@ -105,10 +76,7 @@ class Loader implements LoaderInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function execute($controller, RequestInterface $request, ResponseInterface $response)
+    public function execute(array $controller, RequestInterface $request, ResponseInterface $response): void
     {
         $this->eventDispatcher->dispatch(new ControllerExecuteEvent($controller, $request, $response), Event::CONTROLLER_EXECUTE);
 

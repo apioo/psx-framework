@@ -24,6 +24,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Assert;
 use PSX\Framework\Oauth2\AuthorizationCode\CallbackAbstract;
 use PSX\Framework\Tests\Oauth2\AuthorizationAbstractTest;
 use PSX\Http\Client\Client;
@@ -44,13 +45,7 @@ use PSX\Uri\Url;
  */
 class TestCallbackAbstract extends CallbackAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    protected function getAuthorizationCode($code, $state)
+    protected function getAuthorizationCode(string $code, string $state): AuthorizationCode
     {
         $payload = <<<JSON
 {
@@ -79,17 +74,17 @@ JSON;
         return $oauth;
     }
 
-    protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context)
+    protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals('2YotnFZFEjr1zCsicMWpAA', $accessToken->getAccessToken());
-        $this->testCase->assertEquals('example', $accessToken->getTokenType());
-        $this->testCase->assertEquals(3600, $accessToken->getExpiresIn());
-        $this->testCase->assertEquals('tGzv3JOkF0XG5Qx2TlKWIA', $accessToken->getRefreshToken());
+        Assert::assertEquals('2YotnFZFEjr1zCsicMWpAA', $accessToken->getAccessToken());
+        Assert::assertEquals('example', $accessToken->getTokenType());
+        Assert::assertEquals(3600, $accessToken->getExpiresIn());
+        Assert::assertEquals('tGzv3JOkF0XG5Qx2TlKWIA', $accessToken->getRefreshToken());
 
         return new HttpResponse(200, [], 'SUCCESS');
     }
 
-    protected function onError(\Throwable $e, HttpContextInterface $context)
+    protected function onError(\Throwable $e, HttpContextInterface $context): mixed
     {
         return new HttpResponse(500, [], get_class($e));
     }
