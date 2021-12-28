@@ -33,7 +33,7 @@ interface TemplateInterface
     /**
      * Sets the dir from where to load the template file
      */
-    public function setDir(string $dir);
+    public function setDir(string $dir): void;
 
     /**
      * Returns the dir

@@ -35,7 +35,7 @@ abstract class EngineAbstract implements TemplateInterface
     protected ?string $file = null;
     protected array $data = [];
 
-    public function setDir(string $dir)
+    public function setDir(string $dir): void
     {
         $this->dir = $dir;
     }
@@ -45,7 +45,7 @@ abstract class EngineAbstract implements TemplateInterface
         return $this->dir;
     }
 
-    public function set(string $file)
+    public function set(string $file): void
     {
         $this->file = $file;
     }

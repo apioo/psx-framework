@@ -46,7 +46,7 @@ class Twig extends EngineAbstract
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\LoaderError
      */
-    public function transform()
+    public function transform(): string
     {
         $loader = new FilesystemLoader($this->dir);
         $twig   = new Environment($loader, array(

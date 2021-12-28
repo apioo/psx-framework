@@ -52,7 +52,7 @@ class RoutingCollection implements \IteratorAggregate, Countable
         return $this->routings;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->routings);
     }
