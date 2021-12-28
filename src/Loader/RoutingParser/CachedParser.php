@@ -36,18 +36,18 @@ class CachedParser implements RoutingParserInterface
 {
     const CACHE_KEY = 'routing-collection';
 
-    protected $routingParser;
-    protected $cache;
-    protected $expire;
+    private RoutingParserInterface $routingParser;
+    private CacheItemPoolInterface $cache;
+    private ?int $expire;
 
-    public function __construct(RoutingParserInterface $routingParser, CacheItemPoolInterface $cache, $expire = null)
+    public function __construct(RoutingParserInterface $routingParser, CacheItemPoolInterface $cache, ?int $expire = null)
     {
         $this->routingParser = $routingParser;
         $this->cache         = $cache;
         $this->expire        = $expire;
     }
 
-    public function getCollection(?FilterInterface $filter = null)
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         $item = $this->cache->getItem(self::CACHE_KEY);
 

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -33,8 +34,8 @@ use PSX\Http\ResponseInterface;
  */
 class DummyController extends ControllerAbstract
 {
-    public function onRequest(RequestInterface $request, ResponseInterface $response): void
+    public function doGet(HttpContextInterface $context): mixed
     {
-        $response->getBody()->write('foo');
+        return 'foo';
     }
 }

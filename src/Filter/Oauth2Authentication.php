@@ -37,20 +37,16 @@ use PSX\Http\ResponseInterface;
 class Oauth2Authentication implements FilterInterface
 {
     private \Closure $accessCallback;
-    private string $realm;
+    private ?string $realm = null;
     private ?\Closure $successCallback = null;
     private ?\Closure $failureCallback = null;
     private ?\Closure $missingCallback = null;
 
     /**
-     * The accessCallback is called with the provided access token. At the
-     * moment this class supports only Bearer authentication. If the
-     * accessCallback explicit return true the authorization was successful
-     *
-     * @param \Closure $accessCallback
-     * @param string $realm
+     * The accessCallback is called with the provided access token. At the moment this class supports only Bearer
+     * authentication. If the accessCallback explicit return true the authorization was successful
      */
-    public function __construct(Closure $accessCallback, string $realm = null)
+    public function __construct(Closure $accessCallback, ?string $realm = null)
     {
         $this->accessCallback = $accessCallback;
         $this->realm = $realm;

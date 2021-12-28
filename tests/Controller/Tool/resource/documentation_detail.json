@@ -1,7 +1,7 @@
 {
   "status": 1,
   "path": "\/doc\/:version\/*path",
-  "pathParameters": "PSX_Framework_Controller_Tool_Documentation_DetailController_parseRequest_Path",
+  "pathParameters": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_Path",
   "methods": {
     "GET": {
       "operationId": "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet",
@@ -88,87 +88,10 @@
       "type": "object",
       "additionalProperties": true
     },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController___construct_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
     "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_GET_200_Response": {
       "$ref": "Documentation_Detail"
     },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_getIterator_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_getLinks_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_getPostFilter_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_getPreFilter_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_handle_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_newContext_Path": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
-      }
-    },
-    "PSX_Framework_Controller_Tool_Documentation_DetailController_parseRequest_Path": {
+    "PSX_Framework_Controller_Tool_Documentation_DetailController_doGet_Path": {
       "type": "object",
       "properties": {
         "version": {

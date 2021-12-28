@@ -55,14 +55,15 @@ class LoaderTest extends TestCase
         $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
             $this->assertEquals('/foobar', $request->getUri()->getPath());
 
-            $context->setSource($controller);
+            $context->setSource(get_class($controller));
+            $context->setPath('/foobar');
 
             return $request;
         });
 
         $eventDispatcher = new EventDispatcher();
 
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
         $eventDispatcher->addSubscriber($testListener);
 
         $request  = new Request(new Uri('/foobar'), 'GET');
@@ -101,7 +102,8 @@ class LoaderTest extends TestCase
         $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) use ($controller) {
             $this->assertEquals('/foobar/detail/12', $request->getUri()->getPath());
 
-            $context->setSource($controller);
+            $context->setSource(get_class($controller));
+            $context->setPath('/foobar/detail/12');
             $context->setParameters(['id' => 12]);
 
             return $request;
@@ -109,7 +111,7 @@ class LoaderTest extends TestCase
 
         $eventDispatcher = new EventDispatcher();
 
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
         $eventDispatcher->addSubscriber($testListener);
 
         $request  = new Request(new Uri('/foobar/detail/12'), 'GET');
@@ -151,7 +153,7 @@ class LoaderTest extends TestCase
 
         $eventDispatcher = new EventDispatcher();
 
-        $testListener = new TestListener($this);
+        $testListener = new TestListener();
         $eventDispatcher->addSubscriber($testListener);
 
         $loader   = $this->newLoader($locationFinder, $eventDispatcher);
@@ -169,6 +171,7 @@ class LoaderTest extends TestCase
 
         $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
             $context->setSource(FilterController::class);
+            $context->setPath('/foobar');
 
             return $request;
         });
@@ -190,6 +193,7 @@ class LoaderTest extends TestCase
 
         $locationFinder = new CallbackMethod(function (RequestInterface $request, Context $context) {
             $context->setSource(FilterController::class);
+            $context->setPath('/foobar');
 
             return $request;
         });

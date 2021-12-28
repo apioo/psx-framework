@@ -32,39 +32,24 @@ use PSX\Uri\Url;
 class AccessRequest
 {
     private string $clientId;
-    private ?string $redirectUri;
+    private ?Url $redirectUri;
     private ?string $scope;
     private ?string $state;
 
-    public function __construct(string $clientId, ?string $redirectUri = null, ?string $scope = null, ?string $state = null)
+    public function __construct(string $clientId, ?Url $redirectUri = null, ?string $scope = null, ?string $state = null)
     {
         $this->clientId = $clientId;
+        $this->redirectUri = $redirectUri;
         $this->scope = $scope;
         $this->state = $state;
-
-        $this->setRedirectUri($redirectUri);
     }
 
-    public function setClientId(string $clientId): void
-    {
-        $this->clientId = $clientId;
-    }
-    
     public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    public function setRedirectUri(?string $redirectUri): void
-    {
-        if (!empty($redirectUri)) {
-            $this->redirectUri = new Url($redirectUri);
-        } else {
-            $this->redirectUri = null;
-        }
-    }
-    
-    public function getRedirectUri(): ?string
+    public function getRedirectUri(): ?Url
     {
         return $this->redirectUri;
     }
@@ -74,21 +59,11 @@ class AccessRequest
         return $this->redirectUri instanceof Url;
     }
 
-    public function setScope(string $scope): void
-    {
-        $this->scope = $scope;
-    }
-    
     public function getScope(): ?string
     {
         return $this->scope;
     }
 
-    public function setState(string $state): void
-    {
-        $this->state = $state;
-    }
-    
     public function getState(): ?string
     {
         return $this->state;

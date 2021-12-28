@@ -20,18 +20,18 @@
 
 namespace PSX\Framework\Oauth2;
 
+use PSX\Oauth2\Error;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Schema\Passthru;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
-use PSX\Oauth2\Grant;
 use PSX\Oauth2\GrantFactory;
 
 /**
@@ -48,16 +48,13 @@ abstract class TokenAbstract extends ControllerAbstract
 
     public function getPreFilter(): array
     {
-        return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
+        return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void {
             try {
                 // the endpoint must return a specific error response see:
                 // https://tools.ietf.org/html/rfc6749#section-5.2
                 $filterChain->handle($request, $response);
             } catch (ErrorExceptionAbstract $e) {
-                $error = new Error();
-                $error->setError($e->getType());
-                $error->setErrorDescription($e->getMessage());
-                $error->setState(null);
+                $error = new Error($e->getType(), $e->getMessage());
 
                 if ($e->getType() == 'invalid_client') {
                     $response->setStatus(401);
@@ -71,10 +68,7 @@ abstract class TokenAbstract extends ControllerAbstract
 
                 $this->responseWriter->setBody($response, $error);
             } catch (\Throwable $e) {
-                $error = new Error();
-                $error->setError('server_error');
-                $error->setErrorDescription($e->getMessage());
-                $error->setState(null);
+                $error = new Error('server_error', $e->getMessage());
 
                 $response->setStatus(400);
                 $this->responseWriter->setBody($response, $error);
@@ -82,13 +76,12 @@ abstract class TokenAbstract extends ControllerAbstract
         }];
     }
 
-    #[Incoming(schema: Schema\Request::class)]
+    #[Incoming(schema: Passthru::class)]
     #[Outgoing(code: 200, schema: AccessToken::class)]
     #[Outgoing(code: 400, schema: Error::class)]
     public function doPost(mixed $record, HttpContextInterface $context): AccessToken
     {
-        $parameters  = $record->getProperties();
-        $grant       = GrantFactory::factory($parameters);
+        $grant       = GrantFactory::factory((array) $record);
         $credentials = null;
 
         $auth  = $context->getHeader('Authorization');

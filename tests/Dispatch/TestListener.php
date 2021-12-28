@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Event\ContextInterface;
 use PSX\Framework\Event\ControllerExecuteEvent;
@@ -43,83 +44,52 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class TestListener implements EventSubscriberInterface
 {
-    /**
-     * @var array
-     */
-    private $called = [];
+    private array $called = [];
 
-    /**
-     * @var \PHPUnit\Framework\TestCase
-     */
-    private $testCase;
-
-    public function __construct(TestCase $testCase)
-    {
-        $this->testCase = $testCase;
-    }
-
-    /**
-     * @param \PSX\Framework\Event\ControllerExecuteEvent $event
-     */
     public function onControllerExecute(ControllerExecuteEvent $event)
     {
-        $this->testCase->assertTrue(is_array($event->getController()));
-        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
-        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+        Assert::assertTrue(is_array($event->getController()));
+        Assert::assertInstanceOf(RequestInterface::class, $event->getRequest());
+        Assert::assertInstanceOf(ResponseInterface::class, $event->getResponse());
 
         $this->called[] = 'onControllerExecute';
     }
 
-    /**
-     * @param \PSX\Framework\Event\ControllerProcessedEvent $event
-     */
     public function onControllerProcessed(ControllerProcessedEvent $event)
     {
-        $this->testCase->assertTrue(is_array($event->getController()));
-        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
-        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+        Assert::assertTrue(is_array($event->getController()));
+        Assert::assertInstanceOf(RequestInterface::class, $event->getRequest());
+        Assert::assertInstanceOf(ResponseInterface::class, $event->getResponse());
 
         $this->called[] = 'onControllerProcessed';
     }
 
-    /**
-     * @param \PSX\Framework\Event\ExceptionThrownEvent $event
-     */
     public function onExceptionThrown(ExceptionThrownEvent $event)
     {
-        $this->testCase->assertInstanceOf(\Throwable::class, $event->getException());
-        $this->testCase->assertInstanceOf(ContextInterface::class, $event->getContext());
+        Assert::assertInstanceOf(\Throwable::class, $event->getException());
+        Assert::assertInstanceOf(ContextInterface::class, $event->getContext());
 
         $this->called[] = 'onExceptionThrown';
     }
 
-    /**
-     * @param \PSX\Framework\Event\RequestIncomingEvent $event
-     */
     public function onRequestIncoming(RequestIncomingEvent $event)
     {
-        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
+        Assert::assertInstanceOf(RequestInterface::class, $event->getRequest());
 
         $this->called[] = 'onRequestIncoming';
     }
 
-    /**
-     * @param \PSX\Framework\Event\ResponseSendEvent $event
-     */
     public function onResponseSend(ResponseSendEvent $event)
     {
-        $this->testCase->assertInstanceOf(ResponseInterface::class, $event->getResponse());
+        Assert::assertInstanceOf(ResponseInterface::class, $event->getResponse());
 
         $this->called[] = 'onResponseSend';
     }
 
-    /**
-     * @param \PSX\Framework\Event\RouteMatchedEvent $event
-     */
     public function onRouteMatched(RouteMatchedEvent $event)
     {
-        $this->testCase->assertInstanceOf(RequestInterface::class, $event->getRequest());
-        $this->testCase->assertInstanceOf(Context::class, $event->getContext());
+        Assert::assertInstanceOf(RequestInterface::class, $event->getRequest());
+        Assert::assertInstanceOf(Context::class, $event->getContext());
 
         $this->called[] = 'onRouteMatched';
     }

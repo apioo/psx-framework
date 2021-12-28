@@ -269,7 +269,7 @@ class DefaultContainer extends Container
         if ($factory instanceof \Closure) {
             return $factory($config, $namespace);
         } else {
-            return new FilesystemAdapter($this->get('config')->get('psx_path_cache') . '/' . $namespace);
+            return new FilesystemAdapter($namespace, 0, $this->get('config')->get('psx_path_cache') . '/' . $namespace);
         }
     }
 }

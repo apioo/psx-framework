@@ -25,6 +25,7 @@ use PSX\Framework\Filter\Oauth2Authentication;
 use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
+use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Oauth2\AccessToken;
@@ -55,7 +56,7 @@ class Oauth2AuthenticationTest extends TestCase
         });
 
         $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->getAccessToken());
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
         $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => $value));
         $response = new Response();
@@ -79,7 +80,7 @@ class Oauth2AuthenticationTest extends TestCase
         });
 
         $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->getAccessToken());
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
         $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => $value));
         $response = new Response();
@@ -123,7 +124,7 @@ class Oauth2AuthenticationTest extends TestCase
         });
 
         $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->getAccessToken());
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
         $request  = new Request(new Url('http://localhost/index.php'), 'GET');
         $response = new Response();
@@ -152,7 +153,7 @@ class Oauth2AuthenticationTest extends TestCase
         });
 
         $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->getAccessToken());
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
         $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => 'Foo'));
         $response = new Response();
@@ -172,21 +173,17 @@ class Oauth2AuthenticationTest extends TestCase
         }
     }
 
-    protected function getAccessToken()
+    protected function newAccessToken(): AccessToken
     {
-        $accessToken = new AccessToken();
-        $accessToken->setAccessToken('2YotnFZFEjr1zCsicMWpAA');
-        $accessToken->setTokenType('bearer');
-        $accessToken->setExpiresIn(3600);
-        $accessToken->setRefreshToken('tGzv3JOkF0XG5Qx2TlKWIA');
-
-        return $accessToken;
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'bearer',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
     }
 
-    /**
-     * @return \PSX\Http\FilterChainInterface
-     */
-    protected function getMockFilterChain()
+    protected function getMockFilterChain(): FilterChainInterface
     {
         return $this->getMockBuilder(FilterChain::class)
             ->setConstructorArgs(array(array()))

@@ -22,9 +22,8 @@ namespace PSX\Framework\Oauth2;
 
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 use PSX\Oauth2\Authorization\Exception\ServerErrorException;
@@ -44,43 +43,51 @@ abstract class AuthorizationAbstract extends ControllerAbstract
     #[Inject('oauth2_grant_type_factory')]
     protected GrantTypeFactory $grantTypeFactory;
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response): void
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        if (!in_array($request->getMethod(), ['GET', 'POST'])) {
-            throw new StatusCode\MethodNotAllowedException('Invalid request method', ['GET', 'POST']);
-        }
+        return $this->execute($context);
+    }
 
-        $responseType = $request->getUri()->getParameter('response_type');
-        $clientId     = $request->getUri()->getParameter('client_id');
-        $redirectUri  = $request->getUri()->getParameter('redirect_uri');
-        $scope        = $request->getUri()->getParameter('scope');
-        $state        = $request->getUri()->getParameter('state');
+    protected function doPost(mixed $record, HttpContextInterface $context): mixed
+    {
+        return $this->execute($context);
+    }
+
+    protected function execute(HttpContextInterface $context): mixed
+    {
+        $responseType = $context->getParameter('response_type');
+        $clientId     = $context->getParameter('client_id');
+        $redirectUri  = $context->getParameter('redirect_uri');
+        $scope        = $context->getParameter('scope');
+        $state        = $context->getParameter('state');
 
         try {
-            $request = new AccessRequest($clientId, $redirectUri, $scope, $state);
-
             if (empty($responseType) || empty($clientId) || empty($state)) {
                 throw new InvalidRequestException('Missing parameters');
             }
 
-            if (!$this->hasGrant($request)) {
+            if (empty($redirectUri)) {
+                // in case we have no redirect uri we can get the redirect uri from the app
+                $redirectUri = $this->getCallback($clientId);
+            } else {
+                $redirectUri = new Url($redirectUri);
+            }
+
+            $request = new AccessRequest($clientId, $redirectUri, $scope, $state);
+
+            if (!$this->hasGrant($request, $context)) {
                 throw new UnauthorizedClientException('Client is not authenticated');
             }
 
             switch ($responseType) {
                 case 'code':
-                    $this->handleCode($request);
-
-                case 'token':
-                    $this->handleToken($request);
+                    $this->handleCode($request, $context);
 
                 default:
                     throw new UnsupportedResponseTypeException('Invalid response type');
             }
         } catch (ErrorExceptionAbstract $e) {
-            if (!empty($redirectUri)) {
-                $redirectUri = new Url($redirectUri);
-
+            if ($redirectUri instanceof Url) {
                 $parameters = $redirectUri->getParameters();
                 $parameters['error'] = $e->getType();
                 $parameters['error_description'] = $e->getMessage();
@@ -94,13 +101,13 @@ abstract class AuthorizationAbstract extends ControllerAbstract
         }
     }
 
-    protected function handleCode(AccessRequest $request)
+    private function handleCode(AccessRequest $request, HttpContextInterface $context)
     {
-        $redirectUri = $this->getRedirectUri($request);
+        if ($request->hasRedirectUri()) {
+            $redirectUri = $request->getRedirectUri();
 
-        if ($redirectUri instanceof Url) {
             $parameters = $redirectUri->getParameters();
-            $parameters['code'] = $this->generateCode($request);
+            $parameters['code'] = $this->generateCode($request, $context);
 
             if ($request->hasState()) {
                 $parameters['state'] = $request->getState();
@@ -111,43 +118,6 @@ abstract class AuthorizationAbstract extends ControllerAbstract
             throw new StatusCode\TemporaryRedirectException($location);
         } else {
             throw new ServerErrorException('No redirect uri available');
-        }
-    }
-
-    protected function handleToken(AccessRequest $request)
-    {
-        $redirectUri = $this->getRedirectUri($request);
-
-        if ($redirectUri instanceof Url) {
-            // we must create an access token and append it to the redirect_uri
-            // fragment or display an redirect form
-            $accessToken = $this->grantTypeFactory->get(GrantTypeInterface::TYPE_IMPLICIT)->generateAccessToken(null, array(
-                'scope' => $request->getScope()
-            ));
-
-            $fields = array(
-                'access_token' => $accessToken->getAccessToken(),
-                'token_type'   => $accessToken->getTokenType(),
-            );
-
-            if ($request->hasState()) {
-                $fields['state'] = $request->getState();
-            }
-
-            $location = $redirectUri->withFragment(http_build_query($fields, '', '&'))->toString();
-
-            throw new StatusCode\TemporaryRedirectException($location);
-        } else {
-            throw new ServerErrorException('No redirect uri available');
-        }
-    }
-
-    protected function getRedirectUri(AccessRequest $request)
-    {
-        if ($request->hasRedirectUri()) {
-            return $request->getRedirectUri();
-        } else {
-            return $this->getCallback($request->getClientId());
         }
     }
 
@@ -165,10 +135,10 @@ abstract class AuthorizationAbstract extends ControllerAbstract
      * redirect the user to an login form and display an form where the user can
      * grant the authorization request
      */
-    abstract protected function hasGrant(AccessRequest $request): bool;
+    abstract protected function hasGrant(AccessRequest $request, HttpContextInterface $context): bool;
 
     /**
      * Generates an authorization code which is assigned to the request
      */
-    abstract protected function generateCode(AccessRequest $request): string;
+    abstract protected function generateCode(AccessRequest $request, HttpContextInterface $context): string;
 }

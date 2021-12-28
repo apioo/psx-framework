@@ -46,7 +46,6 @@ class TokenAbstractTest extends ControllerTestCase
         $grantTypeFactory = new GrantTypeFactory();
         $grantTypeFactory->add(new TestAuthorizationCode());
         $grantTypeFactory->add(new TestClientCredentials());
-        $grantTypeFactory->add(new TestImplicit());
         $grantTypeFactory->add(new TestPassword());
         $grantTypeFactory->add(new TestRefreshToken());
 
@@ -306,8 +305,8 @@ JSON;
 
         $expect = <<<JSON
 {
-  "error":"server_error",
-  "error_description":"/grant_type must match one required schema"
+  "error": "server_error",
+  "error_description": "Provided an invalid grant type"
 }
 JSON;
 

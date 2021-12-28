@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 use PSX\Framework;
 use PSX\Framework\Test\ContainerTestCaseTrait;
 use PSX\Framework\Test\Environment;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * Check whether all default classes are available. We want fix this here 
@@ -62,7 +63,6 @@ class DefaultContainerTest extends TestCase
         $this->assertInstanceOf(\PSX\Api\ApiManager::class, $container->get('api_manager'));
 
         // default container
-        $this->assertInstanceOf(Framework\Annotation\ReaderFactory::class, $container->get('annotation_reader_factory'));
         $this->assertInstanceOf(\Psr\Cache\CacheItemPoolInterface::class, $container->get('cache'));
         $this->assertInstanceOf(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class, $container->get('event_dispatcher'));
         $this->assertInstanceOf(\PSX\Http\Client\ClientInterface::class, $container->get('http_client'));
@@ -79,7 +79,7 @@ class DefaultContainerTest extends TestCase
 
     public function testCacheFactory()
     {
-        $handler = new ArrayCache();
+        $handler = new ArrayAdapter();
         Environment::getService('config')->set('psx_cache_factory', function() use ($handler){
             return $handler;
         });
@@ -94,7 +94,7 @@ class DefaultContainerTest extends TestCase
 
         Environment::getContainer()->get('cache')->save($item);
 
-        $this->assertEquals('foobar', $handler->fetch('foo'));
+        $this->assertEquals('foobar', $handler->getItem('foo')->get());
     }
 
     public function testLogFactory()

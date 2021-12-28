@@ -23,7 +23,7 @@ namespace PSX\Framework\Tests\Loader\LocationFinder;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\LocationFinder\RoutingParser;
-use PSX\Framework\Loader\RoutingParser\RoutingFile;
+use PSX\Framework\Loader\RoutingParser\PhpFile;
 use PSX\Http\Request;
 use PSX\Uri\Uri;
 
@@ -118,12 +118,12 @@ class RoutingParserTest extends TestCase
         $this->assertEquals([], $context->getParameters());
     }
 
-    protected function resolve($method, $path)
+    protected function resolve(string $method, string $path)
     {
         $context = new Context();
         $request = new Request(new Uri($path), $method);
 
-        $locationFinder = new RoutingParser(new RoutingFile(__DIR__ . '/../routes'));
+        $locationFinder = new RoutingParser(new PhpFile(__DIR__ . '/../routes.php'));
         $locationFinder->resolve($request, $context);
 
         return $context;

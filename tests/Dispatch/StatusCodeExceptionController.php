@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Dispatch;
 
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -34,9 +35,9 @@ use PSX\Http\ResponseInterface;
  */
 class StatusCodeExceptionController extends ControllerAbstract
 {
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    public function doGet(HttpContextInterface $context): mixed
     {
-        switch ($request->getUri()->getParameter('code')) {
+        switch ($context->getParameter('code')) {
             case 301:
                 throw new StatusCode\MovedPermanentlyException('http://google.com');
             case 302:

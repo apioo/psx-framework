@@ -123,22 +123,20 @@ class Dispatch implements DispatchInterface
         return $response;
     }
 
-    protected function handleException(\Throwable $e, ResponseInterface $response)
+    protected function handleException(\Throwable $e, ResponseInterface $response): void
     {
         if ($e instanceof StatusCode\StatusCodeException) {
             $this->handleStatusCodeException($e, $response);
         } elseif ($e instanceof ValidationException) {
             $response->setStatus(400);
-        } elseif ($response->getStatusCode() == null) {
-            if (isset(Http::CODES[$e->getCode()])) {
-                $response->setStatus($e->getCode());
-            } else {
-                $response->setStatus(500);
-            }
+        } elseif (isset(Http::CODES[$e->getCode()])) {
+            $response->setStatus($e->getCode());
+        } else {
+            $response->setStatus(500);
         }
     }
 
-    protected function handleStatusCodeException(StatusCode\StatusCodeException $e, ResponseInterface $response)
+    protected function handleStatusCodeException(StatusCode\StatusCodeException $e, ResponseInterface $response): void
     {
         $response->setStatus($e->getStatusCode());
 

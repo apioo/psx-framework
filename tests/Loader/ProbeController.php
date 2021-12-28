@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Loader;
 
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\Context;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -37,16 +38,13 @@ class ProbeController extends ControllerAbstract
 {
     private array $methodsCalled = array();
 
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         parent::__construct($context);
 
         $this->methodsCalled[] = __METHOD__;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIterator(): \Traversable
     {
         $this->methodsCalled[] = __METHOD__;
@@ -75,56 +73,34 @@ class ProbeController extends ControllerAbstract
         return parent::getPostFilter();
     }
 
-    public function onLoad(): void
+    public function doGet(HttpContextInterface $context): mixed
     {
         $this->methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response): void
+    public function doPost(mixed $record, HttpContextInterface $context): mixed
     {
         $this->methodsCalled[] = __METHOD__;
-
-        parent::onRequest($request, $response);
+        return null;
     }
 
-    public function onGet(RequestInterface $request, ResponseInterface $response): void
+    public function doPut(mixed $record, HttpContextInterface $context): mixed
     {
         $this->methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onHead(RequestInterface $request, ResponseInterface $response): void
+    public function doPatch(mixed $record, HttpContextInterface $context): mixed
     {
         $this->methodsCalled[] = __METHOD__;
+        return null;
     }
 
-    public function onPost(RequestInterface $request, ResponseInterface $response): void
+    public function doDelete(HttpContextInterface $context): mixed
     {
         $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onPut(RequestInterface $request, ResponseInterface $response): void
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onDelete(RequestInterface $request, ResponseInterface $response): void
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onOptions(RequestInterface $request, ResponseInterface $response): void
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onPatch(RequestInterface $request, ResponseInterface $response): void
-    {
-        $this->methodsCalled[] = __METHOD__;
-    }
-
-    public function onFinish(): void
-    {
-        $this->methodsCalled[] = __METHOD__;
+        return null;
     }
 
     public function getMethodsCalled(): array

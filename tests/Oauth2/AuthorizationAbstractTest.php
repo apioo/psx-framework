@@ -43,7 +43,6 @@ class AuthorizationAbstractTest extends ControllerTestCase
         parent::setUp();
 
         $grantTypeFactory = new GrantTypeFactory();
-        $grantTypeFactory->add(new TestImplicit());
 
         Environment::getContainer()->set('oauth2_grant_type_factory', $grantTypeFactory);
     }
@@ -99,7 +98,8 @@ class AuthorizationAbstractTest extends ControllerTestCase
         ));
 
         $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('http://foo.com#access_token=2YotnFZFEjr1zCsicMWpAA&token_type=example&state=random', $response->getHeader('Location'));
+        // we have removed support for the implicit grant which is deprecated
+        $this->assertEquals('http://foo.com?error=unsupported_response_type&error_description=Invalid+response+type', $response->getHeader('Location'));
     }
 
     public function testHandleTokenNoGrant()

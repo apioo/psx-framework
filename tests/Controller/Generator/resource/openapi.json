@@ -300,49 +300,11 @@
           }
         }
       },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController___construct_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request": {
         "$ref": "#\/components\/schemas\/Delete"
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
       },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response": {
         "$ref": "#\/components\/schemas\/Collection"
@@ -353,169 +315,17 @@
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request": {
         "$ref": "#\/components\/schemas\/Patch"
       },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request": {
         "$ref": "#\/components\/schemas\/Create"
       },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response": {
         "$ref": "#\/components\/schemas\/Message"
       },
       "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request": {
         "$ref": "#\/components\/schemas\/Update"
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getIterator_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getPostFilter_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getPreFilter_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_handle_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
-      },
-      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_newContext_Path": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
-          },
-          "type": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
-            "type": "string"
-          }
-        }
       },
       "Patch": {
         "type": "object",
