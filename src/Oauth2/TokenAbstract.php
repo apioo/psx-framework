@@ -99,6 +99,7 @@ abstract class TokenAbstract extends ControllerAbstract
             }
         }
 
+        $parameters = $context->getParameters();
         if ($credentials === null && isset($parameters['client_id']) && isset($parameters['client_secret'])) {
             $credentials = new Credentials($parameters['client_id'], $parameters['client_secret']);
         }

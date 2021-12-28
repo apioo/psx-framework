@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Template\Engine;
 
-use Twig_Environment;
-use Twig_Loader_Filesystem;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * Twig
@@ -32,19 +32,24 @@ use Twig_Loader_Filesystem;
  */
 class Twig extends EngineAbstract
 {
-    protected $cache;
-    protected $debug;
+    private bool $cache;
+    private bool $debug;
 
-    public function __construct($cache = false, $debug = false)
+    public function __construct(bool $cache = false, bool $debug = false)
     {
         $this->cache = $cache;
         $this->debug = $debug;
     }
 
+    /**
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\LoaderError
+     */
     public function transform()
     {
-        $loader = new Twig_Loader_Filesystem($this->dir);
-        $twig   = new Twig_Environment($loader, array(
+        $loader = new FilesystemLoader($this->dir);
+        $twig   = new Environment($loader, array(
             'cache' => $this->cache,
             'debug' => $this->debug,
         ));

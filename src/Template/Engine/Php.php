@@ -31,7 +31,7 @@ use PSX\Framework\Template\ErrorException;
  */
 class Php extends EngineAbstract
 {
-    public function transform()
+    public function transform(): string
     {
         $file = $this->getFile();
 
@@ -52,11 +52,8 @@ class Php extends EngineAbstract
 
 /**
  * Includes the file without exposing the properties of the template object
- *
- * @param array $data
- * @param string $file
  */
-function includeTemplateScope(array $data, $file)
+function includeTemplateScope(array $data, string $file)
 {
     // populate the data vars in the scope of the template
     extract($data, EXTR_SKIP);

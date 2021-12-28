@@ -31,51 +31,51 @@ use PSX\Framework\Template\TemplateInterface;
  */
 abstract class EngineAbstract implements TemplateInterface
 {
-    protected $dir;
-    protected $file;
-    protected $data = array();
+    protected ?string $dir = null;
+    protected ?string $file = null;
+    protected array $data = [];
 
-    public function setDir($dir)
+    public function setDir(string $dir)
     {
         $this->dir = $dir;
     }
 
-    public function getDir()
+    public function getDir(): ?string
     {
         return $this->dir;
     }
 
-    public function set($file)
+    public function set(string $file)
     {
         $this->file = $file;
     }
 
-    public function get()
+    public function get(): ?string
     {
         return $this->file;
     }
 
-    public function hasFile()
+    public function hasFile(): bool
     {
         return !empty($this->file);
     }
 
-    public function getFile()
+    public function getFile(): ?string
     {
         return $this->dir != null ? $this->dir . '/' . $this->file : $this->file;
     }
 
-    public function isFileAvailable()
+    public function isFileAvailable(): bool
     {
         return is_file($this->getFile());
     }
 
-    public function isAbsoluteFile()
+    public function isAbsoluteFile(): bool
     {
         return is_file($this->file);
     }
 
-    public function assign($key, $value)
+    public function assign(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }

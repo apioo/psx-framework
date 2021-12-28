@@ -32,74 +32,51 @@ interface TemplateInterface
 {
     /**
      * Sets the dir from where to load the template file
-     *
-     * @param string $dir
      */
-    public function setDir($dir);
+    public function setDir(string $dir);
 
     /**
      * Returns the dir
-     *
-     * @return string
      */
-    public function getDir();
+    public function getDir(): ?string;
 
     /**
      * Sets the current template file
-     *
-     * @param string $file
-     * @return void
      */
-    public function set($file);
+    public function set(string $file): void;
 
     /**
      * Returns the template file wich was set
-     *
-     * @return string
      */
-    public function get();
+    public function get(): ?string;
 
     /**
-     * Returns whether an template file was set or not
-     *
-     * @return boolean
+     * Returns whether a template file was set or not
      */
-    public function hasFile();
+    public function hasFile(): bool;
 
     /**
      * Returns the path of the template dir and file
-     *
-     * @return string
      */
-    public function getFile();
+    public function getFile(): ?string;
 
     /**
-     * Returns true if the template engine can resolve an template file with the
-     * given dir and file parameters
-     *
-     * @return boolean
+     * Returns true if the template engine can resolve a template file with the given dir and file parameters
      */
-    public function isFileAvailable();
+    public function isFileAvailable(): bool;
 
     /**
      * Returns true if the given file is an absolute file path
-     *
-     * @return boolean
      */
-    public function isAbsoluteFile();
+    public function isAbsoluteFile(): bool;
 
     /**
-     * Assigns an variable to the template
-     *
-     * @param string $key
-     * @param mixed $value
+     * Assigns a variable to the template
      */
-    public function assign($key, $value);
+    public function assign(string $key, mixed $value): void;
 
     /**
      * Transforms the template file
-     *
-     * @return string
      */
-    public function transform();
+    public function transform(): string;
 }
