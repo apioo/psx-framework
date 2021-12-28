@@ -244,7 +244,7 @@ abstract class ControllerAbstract implements FilterInterface, FilterCollectionIn
 
         $specification = $this->resourceListing->find($this->context->getPath(), $this->context->getVersion());
         if (!$specification instanceof SpecificationInterface) {
-            throw new StatusCode\InternalServerErrorException('No specification available');
+            throw new StatusCode\InternalServerErrorException('No specification available for path ' . $this->context->getPath());
         }
 
         $resource = $specification->getResourceCollection()->get($this->context->getPath());

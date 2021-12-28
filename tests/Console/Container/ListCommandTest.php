@@ -94,13 +94,14 @@ class ListCommandTest extends ControllerTestCase
             'PSX\\Framework\\Http\\ResponseWriter' => 'response_writer',
             'PSX\\Framework\\Loader\\ReverseRouter' => 'reverse_router',
             'PSX\\Framework\\Loader\\RoutingParserInterface' => 'routing_parser',
-            'PSX\\Framework\\Loader\\RoutingParser\\RoutingFile' => 'routing_parser',
+            'PSX\\Framework\\Loader\\RoutingParser\\PhpFile' => 'routing_parser',
             'PSX\\Schema\\SchemaManager' => 'schema_manager',
             'PSX\\Schema\\SchemaManagerInterface' => 'schema_manager',
             'PSX\\Framework\\Session\\Session' => 'session',
             'PSX\\Sql\\TableManagerInterface' => 'table_manager',
             'PSX\\Sql\\TableManager' => 'table_manager',
             'PSX\\Validate\\Validate' => 'validate',
+            'Symfony\\Component\\Cache\\Adapter\\ArrayAdapter' => 'cache',
         ];
 
         $this->assertEquals($expect, $actual);

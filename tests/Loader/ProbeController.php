@@ -36,75 +36,80 @@ use PSX\Http\ResponseInterface;
  */
 class ProbeController extends ControllerAbstract
 {
-    private array $methodsCalled = array();
+    private static array $methodsCalled = [];
 
     public function __construct(?Context $context = null)
     {
         parent::__construct($context);
 
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
     }
 
     public function getIterator(): \Traversable
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getIterator();
     }
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         parent::handle($request, $response, $filterChain);
     }
 
     public function getPreFilter(): array
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getPreFilter();
     }
 
     public function getPostFilter(): array
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
 
         return parent::getPostFilter();
     }
 
     public function doGet(HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
         return null;
     }
 
     public function doPost(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
         return null;
     }
 
     public function doPut(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
         return null;
     }
 
     public function doPatch(mixed $record, HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
         return null;
     }
 
     public function doDelete(HttpContextInterface $context): mixed
     {
-        $this->methodsCalled[] = __METHOD__;
+        self::$methodsCalled[] = __METHOD__;
         return null;
     }
 
-    public function getMethodsCalled(): array
+    public static function getMethodsCalled(): array
     {
-        return $this->methodsCalled;
+        return self::$methodsCalled;
+    }
+
+    public static function clear(): void
+    {
+        self::$methodsCalled = [];
     }
 }

@@ -79,7 +79,7 @@ class FilterParameterTest extends TestCase
 
         $condition = FilterParameter::getCondition($filter);
 
-        $this->assertEquals('WHERE (foo LIKE ?)', $condition->getStatment());
+        $this->assertEquals('WHERE (foo LIKE ?)', $condition->getStatement());
         $this->assertEquals(['%bar%'], $condition->getValues());
     }
 
@@ -92,7 +92,7 @@ class FilterParameterTest extends TestCase
 
         $condition = FilterParameter::getCondition($filter);
 
-        $this->assertEquals('WHERE (foo = ?)', $condition->getStatment());
+        $this->assertEquals('WHERE (foo = ?)', $condition->getStatement());
         $this->assertEquals(['bar'], $condition->getValues());
     }
 
@@ -105,7 +105,7 @@ class FilterParameterTest extends TestCase
 
         $condition = FilterParameter::getCondition($filter);
 
-        $this->assertEquals('WHERE (foo LIKE ?)', $condition->getStatment());
+        $this->assertEquals('WHERE (foo LIKE ?)', $condition->getStatement());
         $this->assertEquals(['bar%'], $condition->getValues());
     }
 
@@ -118,7 +118,7 @@ class FilterParameterTest extends TestCase
 
         $condition = FilterParameter::getCondition($filter);
 
-        $this->assertEquals('WHERE (foo IS NOT NULL AND foo != ?)', $condition->getStatment());
+        $this->assertEquals('WHERE (foo IS NOT NULL AND foo != ?)', $condition->getStatement());
         $this->assertEquals([''], $condition->getValues());
     }
 
@@ -130,7 +130,7 @@ class FilterParameterTest extends TestCase
 
         $condition = FilterParameter::getCondition($filter);
 
-        $this->assertEquals('WHERE (date > ?)', $condition->getStatment());
+        $this->assertEquals('WHERE (date > ?)', $condition->getStatement());
         $this->assertEquals(['2015-08-19 18:44:04'], $condition->getValues());
     }
 }

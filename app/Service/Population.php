@@ -33,21 +33,21 @@ use PSX\Framework\App\Table\Population as TablePopulation;
  */
 class Population
 {
-    protected $populationTable;
+    private TablePopulation $populationTable;
 
     public function __construct(TablePopulation $populationTable)
     {
         $this->populationTable = $populationTable;
     }
 
-    public function getAll($startIndex = 0, $count = 16)
+    public function getAll(int $startIndex = 0, int $count = 16)
     {
-        return $this->populationTable->getCollection((int) $startIndex, (int) $count);
+        return $this->populationTable->getCollection($startIndex, $count);
     }
 
-    public function get($id)
+    public function get(int $id)
     {
-        $population = $this->populationTable->getEntity((int) $id);
+        $population = $this->populationTable->getEntity($id);
 
         if (empty($population)) {
             throw new StatusCode\NotFoundException('Internet population not found');

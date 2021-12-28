@@ -63,16 +63,17 @@ class TokenAbstractTest extends ControllerTestCase
     "path": "\/token",
     "methods": {
         "POST": {
+            "operationId": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost",
             "tags": [],
-            "request": "OAuth2_Request",
+            "request": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_Request",
             "responses": {
-                "200": "OAuth2_Access_Token",
-                "400": "OAuth2_Error"
+                "200": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_200_Response",
+                "400": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_400_Response"
             }
         }
     },
     "definitions": {
-        "OAuth2_Access_Token": {
+        "AccessToken": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -82,51 +83,20 @@ class TokenAbstractTest extends ControllerTestCase
                     "type": "string"
                 },
                 "expires_in": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "refresh_token": {
-                    "type": "string"
-                }
-            }
-        },
-        "OAuth2_Authorization_Code": {
-            "type": "object",
-            "properties": {
-                "grant_type": {
-                    "const": "authorization_code",
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "redirect_uri": {
-                    "type": "string"
-                },
-                "client_id": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "grant_type",
-                "code"
-            ]
-        },
-        "OAuth2_Client_Credentials": {
-            "type": "object",
-            "properties": {
-                "grant_type": {
-                    "const": "client_credentials",
                     "type": "string"
                 },
                 "scope": {
                     "type": "string"
+                },
+                "state": {
+                    "type": "string"
                 }
-            },
-            "required": [
-                "grant_type"
-            ]
+            }
         },
-        "OAuth2_Error": {
+        "Error": {
             "type": "object",
             "properties": {
                 "error": {
@@ -137,69 +107,21 @@ class TokenAbstractTest extends ControllerTestCase
                 },
                 "error_uri": {
                     "type": "string"
-                },
-                "state": {
-                    "type": "string"
                 }
             }
         },
-        "OAuth2_Password": {
-            "type": "object",
-            "properties": {
-                "grant_type": {
-                    "const": "password",
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "grant_type",
-                "username",
-                "password"
-            ]
+        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_200_Response": {
+            "$ref": "AccessToken"
         },
-        "OAuth2_Refresh_Token": {
-            "type": "object",
-            "properties": {
-                "grant_type": {
-                    "const": "refresh_token",
-                    "type": "string"
-                },
-                "refresh_token": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "grant_type",
-                "refresh_token"
-            ]
+        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_400_Response": {
+            "$ref": "Error"
         },
-        "OAuth2_Request": {
-            "oneOf": [
-                {
-                    "$ref": "OAuth2_Authorization_Code"
-                },
-                {
-                    "$ref": "OAuth2_Password"
-                },
-                {
-                    "$ref": "OAuth2_Client_Credentials"
-                },
-                {
-                    "$ref": "OAuth2_Refresh_Token"
-                }
-            ]
+        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_Request": {
+            "$ref": "Passthru"
+        },
+        "Passthru": {
+            "description": "No schema information available",
+            "type": "object"
         }
     }
 }

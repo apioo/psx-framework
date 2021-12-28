@@ -48,9 +48,9 @@ class ServeCommandTest extends ControllerTestCase
         $actual = $commandTester->getDisplay();
         $expect = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
-<foo type="object">
+<record type="object">
   <bar type="string">foo</bar>
-</foo>
+</record>
 XML;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
