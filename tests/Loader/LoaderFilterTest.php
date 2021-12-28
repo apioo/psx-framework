@@ -34,7 +34,7 @@ use PSX\Http\ResponseInterface;
  */
 class LoaderFilterTest implements FilterInterface
 {
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
         $response->addHeader('X-Middleware', __CLASS__);
 

@@ -36,22 +36,10 @@ use PSX\Http\Writer\Writer;
  */
 class Template extends Writer
 {
-    /**
-     * @var string
-     */
-    protected $templateFile;
+    private string $templateFile;
+    private ReverseRouter $reverseRouter;
 
-    /**
-     * @var \PSX\Framework\Loader\ReverseRouter
-     */
-    protected $reverseRouter;
-
-    /**
-     * @param mixed $data
-     * @param string $templateFile
-     * @param \PSX\Framework\Loader\ReverseRouter $reverseRouter
-     */
-    public function __construct($data, $templateFile, ReverseRouter $reverseRouter)
+    public function __construct(mixed $data, string $templateFile, ReverseRouter $reverseRouter)
     {
         parent::__construct($data);
 
@@ -59,10 +47,7 @@ class Template extends Writer
         $this->reverseRouter = $reverseRouter;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function writeTo(ResponseInterface $response)
+    public function writeTo(ResponseInterface $response): void
     {
         $path = pathinfo($this->templateFile, PATHINFO_DIRNAME);
 

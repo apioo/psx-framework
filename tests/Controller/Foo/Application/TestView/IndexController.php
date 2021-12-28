@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestView;
 
 use PSX\Framework\Controller\ViewAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -33,9 +34,9 @@ use PSX\Http\ResponseInterface;
  */
 class IndexController extends ViewAbstract
 {
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $this->render($response, __DIR__ . '/../../Resource/test_view/index.html', [
+        return $this->render(__DIR__ . '/../../Resource/test_view/index.html', [
             'foo' => 'bar'
         ]);
     }

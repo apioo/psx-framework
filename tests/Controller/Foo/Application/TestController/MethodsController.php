@@ -21,8 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
  * MethodsController
@@ -33,14 +32,28 @@ use PSX\Http\ResponseInterface;
  */
 class MethodsController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): string
     {
-        $response->getBody()->write($request->getMethod());
+        return 'GET';
+    }
+
+    protected function doPost(mixed $record, HttpContextInterface $context): string
+    {
+        return 'POST';
+    }
+
+    protected function doPut(mixed $record, HttpContextInterface $context): string
+    {
+        return 'PUT';
+    }
+
+    protected function doPatch(mixed $record, HttpContextInterface $context): string
+    {
+        return 'PATCH';
+    }
+
+    protected function doDelete(HttpContextInterface $context): string
+    {
+        return 'DELETE';
     }
 }

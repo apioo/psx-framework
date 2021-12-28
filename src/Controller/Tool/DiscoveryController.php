@@ -20,12 +20,16 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Resource;
 use PSX\Api\SpecificationInterface;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\Generator\OpenAPIController;
 use PSX\Framework\Controller\Generator\RamlController;
 use PSX\Framework\Controller\Generator\SwaggerController;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -36,28 +40,13 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DiscoveryController extends SchemaApiAbstract
+class DiscoveryController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\ReverseRouter
-     */
-    protected $reverseRouter;
+    #[Inject]
+    private ReverseRouter $reverseRouter;
 
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation(string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $get = $builder->addMethod('GET');
-        $get->addResponse(200, Schema\Discovery\Collection::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
+    #[Outgoing(code: 200, schema: Schema\Discovery\Collection::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         $links = [];
 

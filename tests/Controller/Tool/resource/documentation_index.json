@@ -3,9 +3,10 @@
   "path": "\/doc",
   "methods": {
     "GET": {
+      "operationId": "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet",
       "tags": [],
       "responses": {
-        "200": "Documentation_Index"
+        "200": "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response"
       }
     }
   },
@@ -54,6 +55,9 @@
           "type": "string"
         }
       }
+    },
+    "PSX_Framework_Controller_Tool_Documentation_IndexController_doGet_GET_200_Response": {
+      "$ref": "Documentation_Index"
     }
   },
   "links": [

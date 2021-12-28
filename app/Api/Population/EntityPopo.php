@@ -20,37 +20,35 @@
 
 namespace PSX\Framework\App\Api\Population;
 
+use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\App\Service\Population;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\App\Model;
 
-/**
- * @Title("Population")
- * @Description("Entity endpoint")
- * @PathParam(name="id", type="integer", required=true)
- */
-class EntityPopo extends SchemaApiAbstract
+#[Description('Entity endpoint')]
+#[PathParam(name: "id", type: "integer", required: true)]
+class EntityPopo extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\App\Service\Population
-     */
-    protected $populationService;
+    #[Inject]
+    private Population $populationService;
 
-    /**
-     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Entity")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[Outgoing(code: 200, schema: Model\Entity::class)]
+    protected function doGet(HttpContextInterface $context): mixed
     {
         return $this->populationService->get(
             $context->getUriFragment('id')
         );
     }
 
-    /**
-     * @Incoming(schema="PSX\Framework\App\Model\Entity")
-     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Message")
-     */
-    protected function doPut($record, HttpContextInterface $context)
+    #[Incoming(schema: Model\Entity::class)]
+    #[Outgoing(code: 200, schema: Model\Message::class)]
+    protected function doPut(mixed $record, HttpContextInterface $context): array
     {
         $this->populationService->update(
             $context->getUriFragment('id'),
@@ -67,10 +65,8 @@ class EntityPopo extends SchemaApiAbstract
         ];
     }
 
-    /**
-     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Message")
-     */
-    protected function doDelete($record, HttpContextInterface $context)
+    #[Outgoing(code: 200, schema: Model\Message::class)]
+    protected function doDelete(HttpContextInterface $context): array
     {
         $this->populationService->delete(
             $context->getUriFragment('id')

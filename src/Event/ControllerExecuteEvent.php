@@ -33,28 +33,28 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class ControllerExecuteEvent extends SymfonyEvent
 {
-    protected $controller;
-    protected $request;
-    protected $response;
+    private mixed $controller;
+    private RequestInterface $request;
+    private ResponseInterface $response;
 
-    public function __construct($controller, RequestInterface $request, ResponseInterface $response)
+    public function __construct(mixed $controller, RequestInterface $request, ResponseInterface $response)
     {
         $this->controller = $controller;
         $this->request    = $request;
         $this->response   = $response;
     }
 
-    public function getController()
+    public function getController(): mixed
     {
         return $this->controller;
     }
 
-    public function getRequest()
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }

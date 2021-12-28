@@ -20,15 +20,19 @@
 
 namespace PSX\Framework\Oauth2;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
-use PSX\Schema\Definitions;
+use PSX\Oauth2\Grant;
+use PSX\Oauth2\GrantFactory;
 
 /**
  * TokenAbstract
@@ -37,31 +41,12 @@ use PSX\Schema\Definitions;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class TokenAbstract extends SchemaApiAbstract
+abstract class TokenAbstract extends ControllerAbstract
 {
-    /**
-     * @Inject("oauth2_grant_type_factory")
-     * @var \PSX\Framework\Oauth2\GrantTypeFactory
-     */
-    protected $grantTypeFactory;
+    #[Inject('oauth2_grant_type_factory')]
+    protected GrantTypeFactory $grantTypeFactory;
 
-    /**
-     * @param integer $version
-     * @return \PSX\Api\Resource
-     */
-    public function getDocumentation(string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $post = $builder->addMethod('POST');
-        $post->setRequest(Schema\Request::class);
-        $post->addResponse(200, Schema\AccessToken::class);
-        $post->addResponse(400, Schema\Error::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function getPreFilter()
+    public function getPreFilter(): array
     {
         return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
             try {
@@ -97,22 +82,24 @@ abstract class TokenAbstract extends SchemaApiAbstract
         }];
     }
 
-    public function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Schema\Request::class)]
+    #[Outgoing(code: 200, schema: AccessToken::class)]
+    #[Outgoing(code: 400, schema: Error::class)]
+    public function doPost(mixed $record, HttpContextInterface $context): AccessToken
     {
         $parameters  = $record->getProperties();
-        $grantType   = isset($parameters['grant_type']) ? $parameters['grant_type'] : null;
-        $scope       = isset($parameters['scope']) ? $parameters['scope'] : null;
+        $grant       = GrantFactory::factory($parameters);
         $credentials = null;
 
         $auth  = $context->getHeader('Authorization');
         $parts = explode(' ', $auth, 2);
-        $type  = isset($parts[0]) ? $parts[0] : null;
-        $data  = isset($parts[1]) ? $parts[1] : null;
+        $type  = $parts[0] ?? null;
+        $data  = $parts[1] ?? null;
 
         if ($type == 'Basic' && !empty($data)) {
-            $data         = explode(':', base64_decode($data), 2);
-            $clientId     = isset($data[0]) ? $data[0] : null;
-            $clientSecret = isset($data[1]) ? $data[1] : null;
+            $data = explode(':', base64_decode($data), 2);
+            $clientId = $data[0] ?? null;
+            $clientSecret = $data[1] ?? null;
 
             if (!empty($clientId) && !empty($clientSecret)) {
                 $credentials = new Credentials($clientId, $clientSecret);
@@ -123,8 +110,6 @@ abstract class TokenAbstract extends SchemaApiAbstract
             $credentials = new Credentials($parameters['client_id'], $parameters['client_secret']);
         }
 
-        // we get the grant type factory from the DI container the factory
-        // contains the available grant types
-        return $this->grantTypeFactory->get($grantType)->generateAccessToken($credentials, $parameters);
+        return $this->grantTypeFactory->get($grant->getGrantType())->generateAccessToken($credentials, $grant);
     }
 }

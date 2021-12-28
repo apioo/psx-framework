@@ -21,8 +21,7 @@
 namespace PSX\Framework\Loader;
 
 /**
- * Contains context parameters which are passed from the framework to the 
- * controller
+ * Contains context parameters which are passed from the framework to the controller
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -30,116 +29,63 @@ namespace PSX\Framework\Loader;
  */
 class Context
 {
-    /**
-     * @var string
-     */
-    protected $path;
+    private ?string $path = null;
+    private array $parameters = [];
+    private ?string $source = null;
+    private ?\Throwable $exception = null;
+    private ?string $version = null;
 
-    /**
-     * @var array
-     */
-    protected $parameters = [];
-
-    /**
-     * @var string
-     */
-    protected $source;
-
-    /**
-     * @var \Throwable
-     */
-    protected $exception;
-
-    /**
-     * @var string
-     */
-    protected $version;
-
-    /**
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }
 
-    /**
-     * @param string $path
-     */
-    public function setPath($path)
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @param string $name
-     * @return mixed|null
-     */
-    public function getParameter($name)
+    public function getParameter(string $name): mixed
     {
         return $this->parameters[$name] ?? null;
     }
 
-    /**
-     * @param array $parameters
-     */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getSource()
+    public function getSource(): ?string
     {
         return $this->source;
     }
 
-    /**
-     * @param string $source
-     */
-    public function setSource($source)
+    public function setSource(string $source): void
     {
         $this->source = $source;
     }
 
-    /**
-     * @return \Throwable
-     */
-    public function getException()
+    public function getException(): ?\Throwable
     {
         return $this->exception;
     }
 
-    /**
-     * @param \Throwable $exception
-     */
-    public function setException(\Throwable $exception)
+    public function setException(\Throwable $exception): void
     {
         $this->exception = $exception;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     */
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->version = $version;
     }

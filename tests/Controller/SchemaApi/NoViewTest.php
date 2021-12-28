@@ -39,7 +39,7 @@ class NoViewTest extends ControllerTestCase
         $response = $this->sendRequest('/api', 'HEAD');
         $body     = (string) $response->getBody();
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(405, $response->getStatusCode());
         $this->assertEmpty($body);
     }
 
@@ -85,8 +85,10 @@ class NoViewTest extends ControllerTestCase
     public function testOptions()
     {
         $response = $this->sendRequest('/api', 'OPTIONS');
+        $body     = (string) $response->getBody();
 
-        $this->assertErrorResponse($response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEmpty($body);
     }
 
     protected function getPaths()
@@ -101,7 +103,7 @@ class NoViewTest extends ControllerTestCase
         $body = (string) $response->getBody();
         $data = Parser::decode($body, true);
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(405, $response->getStatusCode());
 
         $this->assertArrayHasKey('success', $data);
         $this->assertArrayHasKey('title', $data);
@@ -110,6 +112,6 @@ class NoViewTest extends ControllerTestCase
         $this->assertArrayHasKey('context', $data);
 
         $this->assertEquals(false, $data['success']);
-        $this->assertEquals('Resource is not available', substr($data['message'], 0, 25));
+        $this->assertEquals('Method is not allowed', substr($data['message'], 0, 21));
     }
 }

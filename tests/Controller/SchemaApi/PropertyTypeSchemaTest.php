@@ -20,21 +20,21 @@
 
 namespace PSX\Framework\Tests\Controller\SchemaApi;
 
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyOpenAPIController;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaApi\PropertyTypeSchemaController;
 
 /**
- * PropertyOpenAPITest
+ * PropertyAnnotationTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyOpenAPITest extends PropertyTestCase
+class PropertyTypeSchemaTest extends PropertyTestCase
 {
     protected function getPaths()
     {
         return array(
-            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyOpenAPIController::class],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/api/:id', PropertyTypeSchemaController::class],
         );
     }
 }

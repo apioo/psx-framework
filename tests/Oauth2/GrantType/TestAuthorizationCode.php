@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Oauth2\GrantType;
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantType\AuthorizationCodeAbstract;
 use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant\AuthorizationCode;
 
 /**
  * TestAuthorizationCode
@@ -33,14 +34,13 @@ use PSX\Oauth2\AccessToken;
  */
 class TestAuthorizationCode extends AuthorizationCodeAbstract
 {
-    protected function generate(Credentials $credentials, $code, $redirectUri, $clientId)
+    protected function generate(Credentials $credentials, AuthorizationCode $grant): AccessToken
     {
-        $accessToken = new AccessToken();
-        $accessToken->setAccessToken('2YotnFZFEjr1zCsicMWpAA');
-        $accessToken->setTokenType('example');
-        $accessToken->setExpiresIn(3600);
-        $accessToken->setRefreshToken('tGzv3JOkF0XG5Qx2TlKWIA');
-
-        return $accessToken;
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'example',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
     }
 }

@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Oauth2;
 
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
@@ -40,13 +41,10 @@ use PSX\Uri\Url;
  */
 abstract class AuthorizationAbstract extends ControllerAbstract
 {
-    /**
-     * @Inject("oauth2_grant_type_factory")
-     * @var \PSX\Framework\Oauth2\GrantTypeFactory
-     */
-    protected $grantTypeFactory;
+    #[Inject('oauth2_grant_type_factory')]
+    protected GrantTypeFactory $grantTypeFactory;
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function onRequest(RequestInterface $request, ResponseInterface $response): void
     {
         if (!in_array($request->getMethod(), ['GET', 'POST'])) {
             throw new StatusCode\MethodNotAllowedException('Invalid request method', ['GET', 'POST']);
@@ -72,15 +70,12 @@ abstract class AuthorizationAbstract extends ControllerAbstract
             switch ($responseType) {
                 case 'code':
                     $this->handleCode($request);
-                    break;
 
                 case 'token':
                     $this->handleToken($request);
-                    break;
 
                 default:
                     throw new UnsupportedResponseTypeException('Invalid response type');
-                    break;
             }
         } catch (ErrorExceptionAbstract $e) {
             if (!empty($redirectUri)) {
@@ -159,11 +154,8 @@ abstract class AuthorizationAbstract extends ControllerAbstract
     /**
      * This method is called if no redirect_uri was set you can overwrite this
      * method if its possible to get an callback from another source
-     *
-     * @param string $clientId
-     * @return \PSX\Uri\Url
      */
-    protected function getCallback($clientId)
+    protected function getCallback(string $clientId): ?Url
     {
         return null;
     }
@@ -172,17 +164,11 @@ abstract class AuthorizationAbstract extends ControllerAbstract
      * Returns whether the user has authorized the client_id. This method must
      * redirect the user to an login form and display an form where the user can
      * grant the authorization request
-     *
-     * @param \PSX\Framework\Oauth2\AccessRequest $request
-     * @return boolean
      */
-    abstract protected function hasGrant(AccessRequest $request);
+    abstract protected function hasGrant(AccessRequest $request): bool;
 
     /**
      * Generates an authorization code which is assigned to the request
-     *
-     * @param \PSX\Framework\Oauth2\AccessRequest $request
-     * @return string
      */
-    abstract protected function generateCode(AccessRequest $request);
+    abstract protected function generateCode(AccessRequest $request): string;
 }

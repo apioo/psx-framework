@@ -36,30 +36,11 @@ use PSX\Http\ResponseInterface;
  */
 class Oauth2Authentication implements FilterInterface
 {
-    /**
-     * @var \Closure
-     */
-    protected $accessCallback;
-
-    /**
-     * @var string
-     */
-    protected $realm;
-
-    /**
-     * @var \Closure
-     */
-    protected $successCallback;
-
-    /**
-     * @var \Closure
-     */
-    protected $failureCallback;
-
-    /**
-     * @var \Closure
-     */
-    protected $missingCallback;
+    private \Closure $accessCallback;
+    private string $realm;
+    private ?\Closure $successCallback = null;
+    private ?\Closure $failureCallback = null;
+    private ?\Closure $missingCallback = null;
 
     /**
      * The accessCallback is called with the provided access token. At the
@@ -69,7 +50,7 @@ class Oauth2Authentication implements FilterInterface
      * @param \Closure $accessCallback
      * @param string $realm
      */
-    public function __construct(Closure $accessCallback, $realm = null)
+    public function __construct(Closure $accessCallback, string $realm = null)
     {
         $this->accessCallback = $accessCallback;
         $this->realm = $realm;
@@ -95,16 +76,16 @@ class Oauth2Authentication implements FilterInterface
         });
     }
 
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
         $authorization = $request->getHeader('Authorization');
 
         if (!empty($authorization)) {
             $parts       = explode(' ', $authorization, 2);
-            $type        = isset($parts[0]) ? $parts[0] : null;
-            $accessToken = isset($parts[1]) ? $parts[1] : null;
+            $type        = $parts[0] ?? null;
+            $accessToken = $parts[1] ?? null;
 
-            if ($type == 'Bearer' && !empty($accessToken)) {
+            if ($type === 'Bearer' && !empty($accessToken)) {
                 $result = call_user_func_array($this->accessCallback, array($accessToken));
 
                 if ($result === true) {

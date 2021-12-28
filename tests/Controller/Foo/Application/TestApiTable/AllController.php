@@ -20,10 +20,14 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestApiTable;
 
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\TestTable;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Sql\TableManager;
 
 /**
  * AllController
@@ -32,26 +36,15 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class AllController extends ApiAbstract
+class AllController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
+    #[Inject]
+    private TableManager $tableManager;
 
-    /**
-     * @Inject
-     * @var \PSX\Sql\TableManager
-     */
-    protected $tableManager;
-
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): array
     {
-        $data = [
-            'entry' => $this->tableManager->getTable(TestTable::class)->getAll()
+        return [
+            'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
         ];
-
-        $this->responseWriter->setBody($response, $data, $request);
     }
 }

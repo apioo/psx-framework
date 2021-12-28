@@ -35,20 +35,6 @@ interface ControllerFactoryInterface
 {
     /**
      * Returns an array of middleware instances based on the provided source
-     *
-     * @param string $source
-     * @param \PSX\Framework\Loader\Context $context
-     * @return array
      */
-    public function getController($source, Context $context = null);
-
-    /**
-     * Returns a documentation resource for the provided controller
-     * 
-     * @param string $className
-     * @param Context|null $context
-     * @param string|null $version
-     * @return SpecificationInterface|null
-     */
-    public function getDocumentation(string $className, Context $context = null, ?string $version = null): ?SpecificationInterface;
+    public function getController(mixed $source, ?Context $context = null): array;
 }

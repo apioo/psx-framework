@@ -40,7 +40,7 @@ class ArrayCollection implements RoutingParserInterface
         $this->routings = $routings;
     }
 
-    public function getCollection(?FilterInterface $filter = null)
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
         $collection = new RoutingCollection();
 

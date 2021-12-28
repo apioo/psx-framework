@@ -13,6 +13,7 @@
     "\/api": {
       "get": {
         "description": "Returns a collection",
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet",
         "parameters": [
           {
             "name": "startIndex",
@@ -47,7 +48,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "format": "date",
               "type": "string"
             }
           },
@@ -56,7 +56,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           }
@@ -67,7 +66,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Collection"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response"
                 }
               }
             }
@@ -75,12 +74,14 @@
         }
       },
       "put": {
+        "description": "lorem ipsum",
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut",
         "requestBody": {
           "description": "PUT Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Update"
+                "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request"
               }
             }
           }
@@ -91,7 +92,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response"
                 }
               }
             }
@@ -99,12 +100,14 @@
         }
       },
       "post": {
+        "description": "lorem ipsum",
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost",
         "requestBody": {
           "description": "POST Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Create"
+                "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request"
               }
             }
           }
@@ -115,7 +118,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response"
                 }
               }
             }
@@ -123,12 +126,14 @@
         }
       },
       "delete": {
+        "description": "lorem ipsum",
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete",
         "requestBody": {
           "description": "DELETE Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Delete"
+                "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request"
               }
             }
           }
@@ -139,7 +144,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response"
                 }
               }
             }
@@ -147,12 +152,14 @@
         }
       },
       "patch": {
+        "description": "lorem ipsum",
+        "operationId": "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch",
         "requestBody": {
           "description": "PATCH Request",
           "content": {
             "application\/json": {
               "schema": {
-                "$ref": "#\/components\/schemas\/Patch"
+                "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request"
               }
             }
           }
@@ -163,7 +170,7 @@
             "content": {
               "application\/json": {
                 "schema": {
-                  "$ref": "#\/components\/schemas\/Message"
+                  "$ref": "#\/components\/schemas\/PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_200_Response"
                 }
               }
             }
@@ -289,6 +296,223 @@
             "type": "boolean"
           },
           "message": {
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController___construct_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_200_Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_DELETE_Request": {
+        "$ref": "#\/components\/schemas\/Delete"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doDelete_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doGet_GET_200_Response": {
+        "$ref": "#\/components\/schemas\/Collection"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_200_Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_PATCH_Request": {
+        "$ref": "#\/components\/schemas\/Patch"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPatch_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_201_Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_POST_Request": {
+        "$ref": "#\/components\/schemas\/Create"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPost_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_200_Response": {
+        "$ref": "#\/components\/schemas\/Message"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_PUT_Request": {
+        "$ref": "#\/components\/schemas\/Update"
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_doPut_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getIterator_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getPostFilter_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_getPreFilter_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_handle_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "PSX_Framework_Tests_Controller_Foo_Application_TestSchemaApiController_newContext_Path": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          },
+          "type": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
             "type": "string"
           }
         }

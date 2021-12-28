@@ -36,7 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RouteCommand extends Command
 {
-    protected $routingParser;
+    private RoutingParserInterface $routingParser;
 
     public function __construct(RoutingParserInterface $routingParser)
     {

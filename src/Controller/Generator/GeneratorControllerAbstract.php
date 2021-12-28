@@ -20,11 +20,15 @@
 
 namespace PSX\Framework\Controller\Generator;
 
+use PSX\Api\GeneratorFactoryInterface;
+use PSX\Api\Listing\FilterFactoryInterface;
+use PSX\Api\ListingInterface;
 use PSX\Api\SpecificationInterface;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\Environment\HttpResponse;
 use PSX\Http\Exception as StatusCode;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 use PSX\Http\Writer\File;
 use PSX\Schema\Generator\Code\Chunks;
 
@@ -37,34 +41,25 @@ use PSX\Schema\Generator\Code\Chunks;
  */
 abstract class GeneratorControllerAbstract extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Api\ListingInterface
-     */
-    protected $resourceListing;
+    #[Inject]
+    protected ListingInterface $resourceListing;
 
-    /**
-     * @Inject
-     * @var \PSX\Api\Listing\FilterFactoryInterface
-     */
-    protected $listingFilterFactory;
+    #[Inject]
+    protected FilterFactoryInterface $listingFilterFactory;
 
-    /**
-     * @Inject
-     * @var \PSX\Api\GeneratorFactoryInterface
-     */
-    protected $generatorFactory;
+    #[Inject]
+    protected GeneratorFactoryInterface $generatorFactory;
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $version = $this->context->getParameter('version');
-        $path    = $this->context->getParameter('path');
-        $type    = $this->getType();
+        $version = $context->getUriFragment('version');
+        $path    = $context->getUriFragment('path');
+        $type    = $this->getType($context);
 
         $generator = $this->generatorFactory->getGenerator($type);
 
         if ($path == '*') {
-            $filter = $this->listingFilterFactory->getFilter($request->getUri()->getParameter('filter') ?? '');
+            $filter = $this->listingFilterFactory->getFilter($context->getParameter('filter') ?? '');
 
             $spec = $this->resourceListing->findAll($version, $filter);
         } else {
@@ -77,6 +72,7 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
 
         $result = $generator->generate($spec);
 
+        $headers = [];
         if ($result instanceof Chunks) {
             // write chunks to zip file
             $file = tempnam($this->config->get('psx_path_cache'), 'sdk');
@@ -84,14 +80,11 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
 
             $result = new File($file, 'sdk.zip', 'application/zip');
         } else {
-            $response->setHeader('Content-Type', $this->generatorFactory->getMime($type));
+            $headers['Content-Type'] = $this->generatorFactory->getMime($type);
         }
 
-        $this->responseWriter->setBody($response, $result, $request);
+        return new HttpResponse(200, $headers, $result);
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getType();
+    abstract protected function getType(HttpContextInterface $context): string;
 }

@@ -39,20 +39,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Engine implements EngineInterface
 {
-    /**
-     * @var \Symfony\Component\Console\Input\InputInterface
-     */
-    protected $input;
+    private InputInterface $input;
+    private OutputInterface $output;
 
-    /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
-     */
-    protected $output;
-
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input  = $input;
@@ -72,13 +61,7 @@ class Engine implements EngineInterface
         $this->output->write($response->getBody()->__toString());
     }
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param string $rawHeaders
-     * @return \PSX\Http\RequestInterface
-     */
-    private function createRequest($method, $uri, $rawHeaders = null)
+    private function createRequest(string $method, string $uri, ?string $rawHeaders = null)
     {
         $headers = [];
         if (!empty($rawHeaders)) {
@@ -98,11 +81,7 @@ class Engine implements EngineInterface
         );
     }
 
-    /**
-     * @param resource $handle
-     * @return string
-     */
-    private function readStdin($handle)
+    private function readStdin($handle): string
     {
         $body = '';
 

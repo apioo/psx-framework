@@ -33,18 +33,17 @@ use PSX\Framework\Loader\RoutingParserInterface;
  */
 class PhpFile implements RoutingParserInterface
 {
-    protected $file;
+    private string $file;
+    private ?RoutingCollection $collection = null;
 
-    protected $_collection;
-
-    public function __construct($file)
+    public function __construct(string $file)
     {
         $this->file = $file;
     }
 
-    public function getCollection(?FilterInterface $filter = null)
+    public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
-        if ($this->_collection === null) {
+        if ($this->collection === null) {
             $collection = new RoutingCollection();
             $routes     = include $this->file;
 
@@ -54,9 +53,9 @@ class PhpFile implements RoutingParserInterface
                 $collection->add($allowed, $path, $class);
             }
 
-            $this->_collection = $collection;
+            $this->collection = $collection;
         }
 
-        return $this->_collection;
+        return $this->collection;
     }
 }

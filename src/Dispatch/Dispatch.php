@@ -29,6 +29,7 @@ use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Event\RequestIncomingEvent;
 use PSX\Framework\Event\ResponseSendEvent;
 use PSX\Framework\Exception\ConverterInterface;
+use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\LoaderInterface;
 use PSX\Http\Authentication;
@@ -38,6 +39,7 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Json\Parser;
+use PSX\Schema\Exception\ValidationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -50,61 +52,28 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Dispatch implements DispatchInterface
 {
-    /**
-     * @var \PSX\Framework\Config\Config
-     */
-    protected $config;
+    private Config $config;
+    private LoaderInterface $loader;
+    private ControllerFactoryInterface $controllerFactory;
+    private EventDispatcherInterface $eventDispatcher;
+    private ConverterInterface $exceptionConverter;
+    private ResponseWriter $responseWriter;
+    private int $level;
 
-    /**
-     * @var \PSX\Framework\Loader\LoaderInterface
-     */
-    protected $loader;
-
-    /**
-     * @var \PSX\Framework\Dispatch\ControllerFactoryInterface
-     */
-    protected $controllerFactory;
-
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var \PSX\Framework\Exception\ConverterInterface
-     */
-    protected $exceptionConverter;
-
-    /**
-     * @var integer
-     */
-    protected $level;
-
-    /**
-     * @param \PSX\Framework\Config\Config $config
-     * @param \PSX\Framework\Loader\LoaderInterface $loader
-     * @param \PSX\Framework\Dispatch\ControllerFactoryInterface $controllerFactory
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \PSX\Framework\Exception\ConverterInterface $exceptionConverter
-     */
-    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter)
+    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter, ResponseWriter $responseWriter)
     {
         $this->config             = $config;
         $this->loader             = $loader;
         $this->controllerFactory  = $controllerFactory;
         $this->eventDispatcher    = $eventDispatcher;
         $this->exceptionConverter = $exceptionConverter;
+        $this->responseWriter     = $responseWriter;
 
         $this->level = 0;
     }
 
     /**
      * Routes the request to the fitting controller and returns the response
-     *
-     * @param \PSX\Http\RequestInterface $request
-     * @param \PSX\Http\ResponseInterface $response
-     * @param \PSX\Framework\Loader\Context $context
-     * @return \PSX\Http\ResponseInterface
      */
     public function route(RequestInterface $request, ResponseInterface $response, Context $context = null): ResponseInterface
     {
@@ -136,25 +105,9 @@ class Dispatch implements DispatchInterface
 
             $this->handleException($e, $response);
 
-            try {
-                $context->setException($e);
+            $response->setBody(new StringStream(''));
 
-                $class      = isset($this->config['psx_error_controller']) ? $this->config['psx_error_controller'] : ErrorController::class;
-                $controller = $this->controllerFactory->getController($class, $context);
-
-                $this->loader->execute($controller, $request, $response);
-            } catch (\Throwable $e) {
-                // in this case the error controller has thrown an exception.
-                // This can happen i.e. if we can not represent the error in an
-                // fitting media type. In this case we send json to the client
-
-                $this->handleException($e, $response);
-
-                $record = $this->exceptionConverter->convert($e);
-
-                $response->setHeader('Content-Type', 'application/json');
-                $response->setBody(new StringStream(Parser::encode($record, JSON_PRETTY_PRINT)));
-            }
+            $this->responseWriter->setBody($response, $this->exceptionConverter->convert($e), $request);
         }
 
         // for HEAD requests we never return a response body
@@ -174,8 +127,10 @@ class Dispatch implements DispatchInterface
     {
         if ($e instanceof StatusCode\StatusCodeException) {
             $this->handleStatusCodeException($e, $response);
+        } elseif ($e instanceof ValidationException) {
+            $response->setStatus(400);
         } elseif ($response->getStatusCode() == null) {
-            if (isset(Http::$codes[$e->getCode()])) {
+            if (isset(Http::CODES[$e->getCode()])) {
                 $response->setStatus($e->getCode());
             } else {
                 $response->setStatus(500);

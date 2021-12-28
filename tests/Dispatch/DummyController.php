@@ -33,7 +33,7 @@ use PSX\Http\ResponseInterface;
  */
 class DummyController extends ControllerAbstract
 {
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function onRequest(RequestInterface $request, ResponseInterface $response): void
     {
         $response->getBody()->write('foo');
     }

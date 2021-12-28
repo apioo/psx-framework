@@ -22,7 +22,10 @@ namespace PSX\Framework\Oauth2\GrantType;
 
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantTypeInterface;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
+use PSX\Oauth2\GrantInterface;
 
 /**
  * AuthorizationCodeAbstract
@@ -33,23 +36,23 @@ use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
  */
 abstract class AuthorizationCodeAbstract implements GrantTypeInterface
 {
-    public function getType()
+    public function getType(): string
     {
         return self::TYPE_AUTHORIZATION_CODE;
     }
 
-    public function generateAccessToken(Credentials $credentials = null, array $parameters)
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
     {
         if ($credentials === null) {
             throw new InvalidRequestException('Credentials not available');
         }
 
-        $code        = isset($parameters['code']) ? $parameters['code'] : null;
-        $redirectUri = isset($parameters['redirect_uri']) ? $parameters['redirect_uri'] : null;
-        $clientId    = isset($parameters['client_id']) ? $parameters['client_id'] : null;
+        if (!$grant instanceof Grant\AuthorizationCode) {
+            throw new InvalidRequestException('Provided an invalid grant');
+        }
 
-        return $this->generate($credentials, $code, $redirectUri, $clientId);
+        return $this->generate($credentials, $grant);
     }
 
-    abstract protected function generate(Credentials $credentials, $code, $redirectUri, $clientId);
+    abstract protected function generate(Credentials $credentials, Grant\AuthorizationCode $grant);
 }

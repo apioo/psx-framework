@@ -33,12 +33,12 @@ use PSX\Sql\TableInterface;
  */
 class TestTable extends TableAbstract
 {
-    public function getName()
+    public function getName(): string
     {
         return 'psx_handler_comment';
     }
 
-    public function getColumns()
+    public function getColumns(): array
     {
         return array(
             'id'     => TableInterface::TYPE_INT | 10 | TableInterface::PRIMARY_KEY | TableInterface::AUTO_INCREMENT,
@@ -58,11 +58,11 @@ class TestTable extends TableAbstract
                 ORDER BY id DESC';
 
         $definition = $this->doCollection($sql, [], [
-            'id' => $this->type('id', TableInterface::TYPE_INT),
+            'id' => $this->fieldInteger('id'),
             'title' => 'title',
             'author' => [
-                'userId' => $this->type('userId', TableInterface::TYPE_INT),
-                'date' => $this->dateTime('date'),
+                'userId' => $this->fieldInteger('userId'),
+                'date' => $this->fieldDateTime('date'),
             ],
         ]);
 

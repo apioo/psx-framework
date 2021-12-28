@@ -20,9 +20,14 @@
 
 namespace PSX\Framework\Controller\Tool\Documentation;
 
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Listing\FilterFactoryInterface;
 use PSX\Api\Resource;
 use PSX\Api\SpecificationInterface;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -33,43 +38,19 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class IndexController extends SchemaApiAbstract
+class IndexController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Api\ListingInterface
-     */
-    protected $resourceListing;
+    #[Inject]
+    private FilterFactoryInterface $listingFilterFactory;
 
-    /**
-     * @Inject
-     * @var \PSX\Api\Listing\FilterFactoryInterface
-     */
-    protected $listingFilterFactory;
+    #[Inject]
+    private ReverseRouter $reverseRouter;
 
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\ReverseRouter
-     */
-    protected $reverseRouter;
-
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation(?string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $get = $builder->addMethod('GET');
-        $get->addResponse(200, Schema\Documentation\Index::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
+    #[Outgoing(code: 200, schema: Schema\Documentation\Index::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         return [
-            'routings' => $this->getRoutings($httpContext->getParameter('filter') ?? ''),
+            'routings' => $this->getRoutings($context->getParameter('filter') ?? ''),
             'links'    => [
                 [
                     'rel'  => 'self',
@@ -87,7 +68,7 @@ class IndexController extends SchemaApiAbstract
         ];
     }
 
-    protected function getRoutings($filter)
+    private function getRoutings(string $filter): array
     {
         $filter    = $this->listingFilterFactory->getFilter($filter);
         $routings  = array();

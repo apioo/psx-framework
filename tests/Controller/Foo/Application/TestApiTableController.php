@@ -20,8 +20,14 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use PHPUnit\Framework\TestCase;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\TestTable;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Record\Record;
+use PSX\Sql\TableManagerInterface;
 
 /**
  * TestApiTableController
@@ -30,25 +36,16 @@ use PSX\Framework\Tests\TestTable;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiTableController extends ApiAbstract
+class TestApiTableController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
+    #[Inject]
+    private TableManagerInterface $tableManager;
 
-    /**
-     * @Inject
-     * @var \PSX\Sql\TableManager
-     */
-    protected $tableManager;
-
-    public function doAll()
+    protected function doGet(HttpContextInterface $context): array
     {
-        $this->setBody(array(
+        return [
             'entry' => $this->tableManager->getTable(TestTable::class)->getAll()
-        ));
+        ];
     }
 
     public function doRow()

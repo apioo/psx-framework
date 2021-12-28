@@ -20,32 +20,31 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
+use PSX\Schema\Attribute\Required;
+
 /**
  * ChoiceA
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @Required({"foo"})
  */
+#[Required(['foo'])]
 class ChoiceA
 {
-    /**
-     * @var string
-     */
-    protected $foo;
+    private ?string $foo;
 
-    public function __construct($foo = null)
+    public function __construct(?string $foo = null)
     {
         $this->foo = $foo;
     }
     
-    public function getFoo()
+    public function getFoo(): ?string
     {
         return $this->foo;
     }
 
-    public function setFoo($foo)
+    public function setFoo(string $foo)
     {
         $this->foo = $foo;
     }

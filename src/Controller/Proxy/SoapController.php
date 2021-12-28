@@ -20,7 +20,9 @@
 
 namespace PSX\Framework\Controller\Proxy;
 
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Framework\Dispatch\Dispatch;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -35,13 +37,10 @@ use PSX\Uri\Uri;
  */
 class SoapController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\Dispatch\Dispatch
-     */
-    protected $dispatch;
+    #[Inject]
+    private Dispatch $dispatch;
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function onRequest(RequestInterface $request, ResponseInterface $response): void
     {
         // set correct accept header so that we always return a soap xml
         // response

@@ -48,9 +48,10 @@ class DiscoveryControllerTest extends ControllerTestCase
     "path": "\/discovery",
     "methods": {
         "GET": {
+            "operationId": "PSX_Framework_Controller_Tool_DiscoveryController_doGet",
             "tags": [],
             "responses": {
-                "200": "Discovery_Collection"
+                "200": "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response"
             }
         }
     },
@@ -76,6 +77,9 @@ class DiscoveryControllerTest extends ControllerTestCase
                     "type": "string"
                 }
             }
+        },
+        "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response": {
+            "$ref": "Discovery_Collection"
         }
     }
 }
@@ -128,7 +132,6 @@ JSON;
             [['GET'], '/doc', Documentation\IndexController::class],
             [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
             [['GET'], '/openapi', OpenAPIController::class],
-            [['GET'], '/swagger', SwaggerController::class],
             [['GET'], '/raml', RamlController::class],
         );
     }

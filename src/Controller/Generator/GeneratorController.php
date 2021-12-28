@@ -21,6 +21,8 @@
 namespace PSX\Framework\Controller\Generator;
 
 use PSX\Api\GeneratorFactory;
+use PSX\Http\Environment\HttpContextInterface;
+use PSX\Http\Exception\BadRequestException;
 
 /**
  * Generator controller which supports automatically every type from the
@@ -32,9 +34,9 @@ use PSX\Api\GeneratorFactory;
  */
 class GeneratorController extends GeneratorControllerAbstract
 {
-    protected function getType()
+    protected function getType(HttpContextInterface $context): string
     {
-        $type = $this->context->getParameter('type');
+        $type = $context->getUriFragment('type');
 
         $types = GeneratorFactory::getPossibleTypes();
         if (in_array($type, $types)) {
@@ -50,6 +52,6 @@ class GeneratorController extends GeneratorControllerAbstract
             }
         }
 
-        return null;
+        throw new BadRequestException('Provided an invalid type');
     }
 }

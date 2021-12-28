@@ -105,7 +105,8 @@ trait Framework
             $this->get('loader'),
             $this->get('controller_factory'),
             $this->get('event_dispatcher'),
-            $this->get('exception_converter')
+            $this->get('exception_converter'),
+            $this->get('response_writer'),
         );
     }
 
@@ -139,7 +140,7 @@ trait Framework
 
     public function getResourceListing(): ListingInterface
     {
-        $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('controller_factory'));
+        $resourceListing = new ControllerDocumentation($this->get('routing_parser'), $this->get('schema_manager'));
 
         if ($this->get('config')->get('psx_debug')) {
             return $resourceListing;
@@ -156,7 +157,6 @@ trait Framework
     public function getGeneratorFactory(): GeneratorFactoryInterface
     {
         return new GeneratorFactory(
-            $this->get('annotation_reader_factory')->factory('PSX\Schema\Annotation'),
             $this->get('config')->get('psx_json_namespace'),
             $this->get('config')->get('psx_url'),
             $this->get('config')->get('psx_dispatch')
@@ -166,7 +166,6 @@ trait Framework
     public function getApiManager(): ApiManagerInterface
     {
         return new ApiManager(
-            $this->get('annotation_reader_factory')->factory('PSX\Api\Annotation'),
             $this->get('schema_manager'),
             $this->get('cache'),
             $this->get('config')->get('psx_debug')

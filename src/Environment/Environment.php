@@ -36,26 +36,10 @@ use PSX\Framework\Config\Config;
  */
 class Environment
 {
-    /**
-     * @var \PSX\Engine\DispatchInterface
-     */
-    protected $dispatch;
+    private DispatchInterface $dispatch;
+    private EngineInterface $engine;
+    private Config $config;
 
-    /**
-     * @var \PSX\Engine\EngineInterface
-     */
-    protected $engine;
-
-    /**
-     * @var \PSX\Framework\Config\Config
-     */
-    protected $config;
-
-    /**
-     * @param \PSX\Engine\DispatchInterface $dispatch
-     * @param \PSX\Engine\EngineInterface $engine
-     * @param \PSX\Framework\Config\Config $config
-     */
     public function __construct(DispatchInterface $dispatch, EngineInterface $engine, Config $config)
     {
         $this->dispatch = $dispatch;

@@ -31,31 +31,31 @@ use PSX\Uri\Url;
  */
 class AccessRequest
 {
-    protected $clientId;
-    protected $redirectUri;
-    protected $scope;
-    protected $state;
+    private string $clientId;
+    private ?string $redirectUri;
+    private ?string $scope;
+    private ?string $state;
 
-    public function __construct($clientId, $redirectUri = null, $scope = null, $state = null)
+    public function __construct(string $clientId, ?string $redirectUri = null, ?string $scope = null, ?string $state = null)
     {
         $this->clientId = $clientId;
-        $this->scope    = $scope;
-        $this->state    = $state;
+        $this->scope = $scope;
+        $this->state = $state;
 
         $this->setRedirectUri($redirectUri);
     }
 
-    public function setClientId($clientId)
+    public function setClientId(string $clientId): void
     {
         $this->clientId = $clientId;
     }
     
-    public function getClientId()
+    public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    public function setRedirectUri($redirectUri)
+    public function setRedirectUri(?string $redirectUri): void
     {
         if (!empty($redirectUri)) {
             $this->redirectUri = new Url($redirectUri);
@@ -64,37 +64,37 @@ class AccessRequest
         }
     }
     
-    public function getRedirectUri()
+    public function getRedirectUri(): ?string
     {
         return $this->redirectUri;
     }
 
-    public function hasRedirectUri()
+    public function hasRedirectUri(): bool
     {
         return $this->redirectUri instanceof Url;
     }
 
-    public function setScope($scope)
+    public function setScope(string $scope): void
     {
         $this->scope = $scope;
     }
     
-    public function getScope()
+    public function getScope(): ?string
     {
         return $this->scope;
     }
 
-    public function setState($state)
+    public function setState(string $state): void
     {
         $this->state = $state;
     }
     
-    public function getState()
+    public function getState(): ?string
     {
         return $this->state;
     }
 
-    public function hasState()
+    public function hasState(): bool
     {
         return !empty($this->state);
     }

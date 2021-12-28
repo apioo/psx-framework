@@ -41,20 +41,9 @@ use PSX\Http\Writer as HttpWriter;
  */
 class ResponseWriter
 {
-    /**
-     * @var \PSX\Data\Processor
-     */
-    protected $processor;
+    private Processor $processor;
+    private array $supportedWriter;
 
-    /**
-     * @var array
-     */
-    protected $supportedWriter;
-
-    /**
-     * @param \PSX\Data\Processor $processor
-     * @param array $supportedWriter
-     */
     public function __construct(Processor $processor, array $supportedWriter = [])
     {
         $this->processor       = $processor;
@@ -62,18 +51,12 @@ class ResponseWriter
     }
 
     /**
-     * Uses the internal response writer to serialize arbitrary PHP data to
-     * string representation. If writer type is a HTTP request object the write
-     * will look at the provided header to send the fitting data format which
-     * the client has requested. If writer type is a writer class name the
-     * specified writer will be used. Otherwise we use JSON as default data
-     * format
-     *
-     * @param \PSX\Http\ResponseInterface $response
-     * @param mixed $data
-     * @param \PSX\Framework\Http\WriterOptions|\PSX\Http\RequestInterface|string|null $writerType
+     * Uses the internal response writer to serialize arbitrary PHP data to string representation. If writer type is an
+     * HTTP request object the write will look at the provided header to send the fitting data format which the client
+     * has requested. If writer type is a writer class name the specified writer will be used. Otherwise we use JSON as
+     * default data format
      */
-    public function setBody(ResponseInterface $response, $data, $writerType = null)
+    public function setBody(ResponseInterface $response, mixed $data, mixed $writerType = null)
     {
         if ($data instanceof HttpResponseInterface) {
             $statusCode = $data->getStatusCode();
@@ -133,15 +116,10 @@ class ResponseWriter
     }
 
     /**
-     * Writes the $record with the writer $writerType or depending on the get
-     * parameter format or of the mime type of the Accept header
-     *
-     * @param \PSX\Http\ResponseInterface $response
-     * @param mixed $data
-     * @param \PSX\Framework\Http\WriterOptions $options
-     * @return void
+     * Writes the $record with the writer $writerType or depending on the get parameter format or of the mime type of
+     * the Accept header
      */
-    private function setResponse(ResponseInterface $response, $data, WriterOptions $options)
+    private function setResponse(ResponseInterface $response, mixed $data, WriterOptions $options): void
     {
         $format     = $options->getFormat();
         $writerType = $options->getWriterType();
@@ -160,8 +138,10 @@ class ResponseWriter
         }
 
         // write the response
-        $payload = Payload::create($data, $options->getContentType())
-            ->setRwType($writerType);
+        $payload = Payload::create($data, $options->getContentType());
+        if ($writerType !== null) {
+            $payload->setRwType($writerType);
+        }
 
         if (!empty($supported)) {
             $payload->setRwSupported($supported);
@@ -188,13 +168,9 @@ class ResponseWriter
     }
 
     /**
-     * Returns the writer options for the provided request and the current
-     * context of the controller
-     *
-     * @param \PSX\Http\RequestInterface $request
-     * @return \PSX\Framework\Http\WriterOptions
+     * Returns the writer options for the provided request and the current context of the controller
      */
-    protected function getWriterOptions(RequestInterface $request)
+    protected function getWriterOptions(RequestInterface $request): WriterOptions
     {
         $options = new WriterOptions();
         $options->setContentType($request->getHeader('Accept'));

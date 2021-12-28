@@ -152,7 +152,6 @@ JSON;
         return [
             ['population/popo/:id'],
             ['population/typeschema/:id'],
-            ['population/openapi/:id'],
         ];
     }
 }

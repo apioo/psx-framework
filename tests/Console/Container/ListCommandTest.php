@@ -51,10 +51,8 @@ class ListCommandTest extends ControllerTestCase
         }
 
         $expect = [
-            'PSX\\Framework\\Annotation\\ReaderFactory' => 'annotation_reader_factory',
             'PSX\\Api\\ApiManager' => 'api_manager',
             'PSX\\Api\\ApiManagerInterface' => 'api_manager',
-            'PSX\\Cache\\Pool' => 'cache',
             'Psr\\Cache\\CacheItemPoolInterface' => 'cache',
             'PSX\\Framework\\Config\\Config' => 'config',
             'Doctrine\\DBAL\\Connection' => 'connection',

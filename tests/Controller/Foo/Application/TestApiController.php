@@ -20,7 +20,11 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use PHPUnit\Framework\TestCase;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Record\Record;
@@ -32,18 +36,10 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestApiController extends ApiAbstract
+class TestApiController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    protected function doGet(HttpContextInterface $context): Record
     {
-        $record = new Record('foo', array('bar' => 'foo'));
-
-        $this->responseWriter->setBody($response, $record, $request);
+        return new Record(array('bar' => 'foo'));
     }
 }

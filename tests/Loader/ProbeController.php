@@ -35,7 +35,7 @@ use PSX\Http\ResponseInterface;
  */
 class ProbeController extends ControllerAbstract
 {
-    protected $methodsCalled = array();
+    private array $methodsCalled = array();
 
     public function __construct(Context $context = null)
     {
@@ -47,96 +47,88 @@ class ProbeController extends ControllerAbstract
     /**
      * @inheritdoc
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         $this->methodsCalled[] = __METHOD__;
 
         return parent::getIterator();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain)
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
         $this->methodsCalled[] = __METHOD__;
 
         parent::handle($request, $response, $filterChain);
     }
 
-    public function getPreFilter()
+    public function getPreFilter(): array
     {
         $this->methodsCalled[] = __METHOD__;
 
         return parent::getPreFilter();
     }
 
-    public function getPostFilter()
+    public function getPostFilter(): array
     {
         $this->methodsCalled[] = __METHOD__;
 
         return parent::getPostFilter();
     }
 
-    public function onLoad()
+    public function onLoad(): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onRequest(RequestInterface $request, ResponseInterface $response)
+    public function onRequest(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
 
         parent::onRequest($request, $response);
     }
 
-    public function onGet(RequestInterface $request, ResponseInterface $response)
+    public function onGet(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onHead(RequestInterface $request, ResponseInterface $response)
+    public function onHead(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onPost(RequestInterface $request, ResponseInterface $response)
+    public function onPost(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onPut(RequestInterface $request, ResponseInterface $response)
+    public function onPut(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onDelete(RequestInterface $request, ResponseInterface $response)
+    public function onDelete(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onOptions(RequestInterface $request, ResponseInterface $response)
+    public function onOptions(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onPatch(RequestInterface $request, ResponseInterface $response)
+    public function onPatch(RequestInterface $request, ResponseInterface $response): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function onFinish()
+    public function onFinish(): void
     {
         $this->methodsCalled[] = __METHOD__;
     }
 
-    public function getMethodsCalled()
+    public function getMethodsCalled(): array
     {
         return $this->methodsCalled;
-    }
-
-    public function getFragments()
-    {
-        return $this->uriFragments;
     }
 }

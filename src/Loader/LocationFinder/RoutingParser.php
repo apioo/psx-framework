@@ -37,14 +37,14 @@ use PSX\Uri\Uri;
  */
 class RoutingParser implements LocationFinderInterface
 {
-    protected $routingParser;
+    private RoutingParserInterface $routingParser;
 
     public function __construct(RoutingParserInterface $routingParser)
     {
         $this->routingParser = $routingParser;
     }
 
-    public function resolve(RequestInterface $request, Context $context)
+    public function resolve(RequestInterface $request, Context $context): ?RequestInterface
     {
         $routingCollection = $this->routingParser->getCollection();
         $method            = $request->getMethod();

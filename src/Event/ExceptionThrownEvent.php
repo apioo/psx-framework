@@ -31,8 +31,8 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class ExceptionThrownEvent extends SymfonyEvent
 {
-    protected $exception;
-    protected $context;
+    private \Throwable $exception;
+    private ContextInterface $context;
 
     public function __construct(\Throwable $exception, ContextInterface $context)
     {
@@ -40,12 +40,12 @@ class ExceptionThrownEvent extends SymfonyEvent
         $this->context   = $context;
     }
 
-    public function getException()
+    public function getException(): \Throwable
     {
         return $this->exception;
     }
 
-    public function getContext()
+    public function getContext(): ContextInterface
     {
         return $this->context;
     }

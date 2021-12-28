@@ -44,13 +44,17 @@ class DefaultControllerTest extends ControllerTestCase
     "path": "\/",
     "methods": {
         "GET": {
+            "operationId": "PSX_Framework_Controller_Tool_DefaultController_doGet",
             "tags": [],
             "responses": {
-                "200": "Welcome"
+                "200": "PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response"
             }
         }
     },
     "definitions": {
+        "PSX_Framework_Controller_Tool_DefaultController_doGet_GET_200_Response": {
+            "$ref": "Welcome"
+        },
         "Welcome": {
             "type": "object",
             "properties": {
@@ -77,7 +81,7 @@ JSON;
         $expect = <<<'JSON'
 {
     "message": "This is the default controller of PSX",
-    "url": "http:\/\/phpsx.org"
+    "url": "https:\/\/phpsx.org"
 }
 JSON;
 

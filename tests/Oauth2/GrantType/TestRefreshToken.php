@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Oauth2\GrantType;
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantType\RefreshTokenAbstract;
 use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant\RefreshToken;
 
 /**
  * TestRefreshToken
@@ -33,14 +34,13 @@ use PSX\Oauth2\AccessToken;
  */
 class TestRefreshToken extends RefreshTokenAbstract
 {
-    protected function generate(Credentials $credentials, $refreshToken, $scope)
+    protected function generate(Credentials $credentials, RefreshToken $grant): AccessToken
     {
-        $accessToken = new AccessToken();
-        $accessToken->setAccessToken('2YotnFZFEjr1zCsicMWpAA');
-        $accessToken->setTokenType('example');
-        $accessToken->setExpires(3600);
-        $accessToken->setRefreshToken('tGzv3JOkF0XG5Qx2TlKWIA');
-
-        return $accessToken;
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'example',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
     }
 }

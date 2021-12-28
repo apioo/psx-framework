@@ -20,37 +20,34 @@
 
 namespace PSX\Framework\App\Api\Population;
 
+use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\App\Service\Population;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
-/**
- * @Title("Population")
- * @Description("Entity endpoint")
- * @PathParam(name="id", type="integer", required=true)
- */
-class EntityTypeSchema extends SchemaApiAbstract
+#[Description('Entity endpoint')]
+#[PathParam(name: "id", type: "integer", required: true)]
+class EntityTypeSchema extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\App\Service\Population
-     */
-    protected $populationService;
+    #[Inject]
+    private Population $populationService;
 
-    /**
-     * @Outgoing(code=200, schema="../../Resource/schema/population/entity.json")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    protected function doGet(HttpContextInterface $context): mixed
     {
         return $this->populationService->get(
             $context->getUriFragment('id')
         );
     }
 
-    /**
-     * @Incoming(schema="../../Resource/schema/population/entity.json")
-     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
-     */
-    protected function doPut($record, HttpContextInterface $context)
+    #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    protected function doPut(mixed $record, HttpContextInterface $context): array
     {
         $this->populationService->update(
             $context->getUriFragment('id'),
@@ -67,10 +64,8 @@ class EntityTypeSchema extends SchemaApiAbstract
         ];
     }
 
-    /**
-     * @Outgoing(code=200, schema="../../Resource/schema/population/message.json")
-     */
-    protected function doDelete($record, HttpContextInterface $context)
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    protected function doDelete(HttpContextInterface $context): array
     {
         $this->populationService->delete(
             $context->getUriFragment('id')

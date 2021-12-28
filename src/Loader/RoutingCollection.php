@@ -31,11 +31,11 @@ use Countable;
  */
 class RoutingCollection implements \IteratorAggregate, Countable
 {
-    const ROUTING_METHODS = 0;
-    const ROUTING_PATH    = 1;
-    const ROUTING_SOURCE  = 2;
+    public const ROUTING_METHODS = 0;
+    public const ROUTING_PATH    = 1;
+    public const ROUTING_SOURCE  = 2;
 
-    protected $routings;
+    private array $routings;
 
     public function __construct(array $routings = [])
     {
@@ -47,7 +47,7 @@ class RoutingCollection implements \IteratorAggregate, Countable
         $this->routings[] = array($methods, $path, $source);
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->routings;
     }
@@ -57,7 +57,7 @@ class RoutingCollection implements \IteratorAggregate, Countable
         return new \ArrayIterator($this->routings);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->routings);
     }

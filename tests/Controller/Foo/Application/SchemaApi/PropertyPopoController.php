@@ -20,86 +20,87 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
+use PHPUnit\Framework\Assert;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\PathParam;
+use PSX\Api\Attribute\QueryParam;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
 use PSX\Http\Environment\HttpContextInterface;
-use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Record\RecordInterface;
 
 /**
  * PropertyPopoController
  *
- * @PathParam(name="id", type="integer")
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PropertyPopoController extends SchemaApiAbstract
+#[PathParam(name: 'id', type: 'integer')]
+class PropertyPopoController extends ControllerAbstract
 {
     use PropertyControllerTrait;
 
-    /**
-     * @QueryParam(name="type", type="integer")
-     * @Outgoing(code=200, schema="PSX\Framework\Tests\Controller\Foo\Model\Property")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[QueryParam(name: 'type', type: 'integer')]
+    #[Outgoing(code: 200, schema: Model\Property::class)]
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(1, $context->getUriFragment('id'));
+        Assert::assertEquals(1, $context->getUriFragment('id'));
 
         return PropertyTestCase::getDataByType($context->getParameter('type'));
     }
 
-    /**
-     * @Incoming(schema="PSX\Framework\Tests\Controller\Foo\Model\Property")
-     * @Outgoing(code=200, schema="PSX\Framework\Tests\Controller\Foo\Model\Property")
-     */
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Model\Property::class)]
+    #[Outgoing(code: 200, schema: Model\Property::class)]
+    protected function doPost($record, HttpContextInterface $context): mixed
     {
         /** @var \PSX\Framework\Tests\Controller\Foo\Model\Property $record */
-        $this->testCase->assertInstanceOf(Model\Property::class, $record);
-        $this->testCase->assertInstanceOf(RecordInterface::class, $record->getAny());
-        $this->testCase->assertEquals('bar', $record->getAny()['foo']);
-        $this->testCase->assertIsArray($record->getArray());
-        $this->testCase->assertEquals(1, count($record->getArray()));
-        $this->testCase->assertEquals(['bar'], $record->getArray());
-        $this->testCase->assertIsArray($record->getArrayComplex());
-        $this->testCase->assertEquals(2, count($record->getArrayComplex()));
-        $this->testCase->assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[0]);
-        $this->testCase->assertEquals('bar', $record->getArrayComplex()[0]->getFoo());
-        $this->testCase->assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[1]);
-        $this->testCase->assertEquals('foo', $record->getArrayComplex()[1]->getFoo());
-        $this->testCase->assertIsArray($record->getArrayChoice());
-        $this->testCase->assertEquals(3, count($record->getArrayChoice()));
-        $this->testCase->assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[0]);
-        $this->testCase->assertEquals('baz', $record->getArrayChoice()[0]->getFoo());
-        $this->testCase->assertInstanceOf(Model\ChoiceB::class, $record->getArrayChoice()[1]);
-        $this->testCase->assertEquals('bar', $record->getArrayChoice()[1]->getBar());
-        $this->testCase->assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[2]);
-        $this->testCase->assertEquals('foo', $record->getArrayChoice()[2]->getFoo());
-        $this->testCase->assertIsBool($record->getBoolean());
-        $this->testCase->assertEquals(true, $record->getBoolean());
-        $this->testCase->assertInstanceOf(Model\ChoiceB::class, $record->getChoice());
-        $this->testCase->assertEquals('test', $record->getChoice()->getBar());
-        $this->testCase->assertInstanceOf(Model\Complex::class, $record->getComplex());
-        $this->testCase->assertEquals('bar', $record->getComplex()->getFoo());
-        $this->testCase->assertInstanceOf(Date::class, $record->getDate());
-        $this->testCase->assertEquals('2015-05-01', $record->getDate()->format('Y-m-d'));
-        $this->testCase->assertInstanceOf(DateTime::class, $record->getDateTime());
-        $this->testCase->assertEquals('2015-05-01T13:37:14Z', $record->getDateTime()->format('Y-m-d\TH:i:s\Z'));
-        $this->testCase->assertInstanceOf(Duration::class, $record->getDuration());
-        $this->testCase->assertEquals('000100000000', $record->getDuration()->format('%Y%M%D%H%I%S'));
-        $this->testCase->assertIsFloat($record->getFloat());
-        $this->testCase->assertEquals(13.37, $record->getFloat());
-        $this->testCase->assertIsInt($record->getInteger());
-        $this->testCase->assertEquals(7, $record->getInteger());
-        $this->testCase->assertIsString($record->getString());
-        $this->testCase->assertEquals('bar', $record->getString());
-        $this->testCase->assertInstanceOf(Time::class, $record->getTime());
-        $this->testCase->assertEquals('13:37:14', $record->getTime()->format('H:i:s'));
+        Assert::assertInstanceOf(Model\Property::class, $record);
+        Assert::assertInstanceOf(RecordInterface::class, $record->getAny());
+        Assert::assertEquals('bar', $record->getAny()['foo']);
+        Assert::assertIsArray($record->getArray());
+        Assert::assertEquals(1, count($record->getArray()));
+        Assert::assertEquals(['bar'], $record->getArray());
+        Assert::assertIsArray($record->getArrayComplex());
+        Assert::assertEquals(2, count($record->getArrayComplex()));
+        Assert::assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[0]);
+        Assert::assertEquals('bar', $record->getArrayComplex()[0]->getFoo());
+        Assert::assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[1]);
+        Assert::assertEquals('foo', $record->getArrayComplex()[1]->getFoo());
+        Assert::assertIsArray($record->getArrayChoice());
+        Assert::assertEquals(3, count($record->getArrayChoice()));
+        Assert::assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[0]);
+        Assert::assertEquals('baz', $record->getArrayChoice()[0]->getFoo());
+        Assert::assertInstanceOf(Model\ChoiceB::class, $record->getArrayChoice()[1]);
+        Assert::assertEquals('bar', $record->getArrayChoice()[1]->getBar());
+        Assert::assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[2]);
+        Assert::assertEquals('foo', $record->getArrayChoice()[2]->getFoo());
+        Assert::assertIsBool($record->getBoolean());
+        Assert::assertEquals(true, $record->getBoolean());
+        Assert::assertInstanceOf(Model\ChoiceB::class, $record->getChoice());
+        Assert::assertEquals('test', $record->getChoice()->getBar());
+        Assert::assertInstanceOf(Model\Complex::class, $record->getComplex());
+        Assert::assertEquals('bar', $record->getComplex()->getFoo());
+        Assert::assertInstanceOf(Date::class, $record->getDate());
+        Assert::assertEquals('2015-05-01', $record->getDate()->format('Y-m-d'));
+        Assert::assertInstanceOf(DateTime::class, $record->getDateTime());
+        Assert::assertEquals('2015-05-01T13:37:14Z', $record->getDateTime()->format('Y-m-d\TH:i:s\Z'));
+        Assert::assertInstanceOf(Duration::class, $record->getDuration());
+        Assert::assertEquals('000100000000', $record->getDuration()->format('%Y%M%D%H%I%S'));
+        Assert::assertIsFloat($record->getFloat());
+        Assert::assertEquals(13.37, $record->getFloat());
+        Assert::assertIsInt($record->getInteger());
+        Assert::assertEquals(7, $record->getInteger());
+        Assert::assertIsString($record->getString());
+        Assert::assertEquals('bar', $record->getString());
+        Assert::assertInstanceOf(Time::class, $record->getTime());
+        Assert::assertEquals('13:37:14', $record->getTime()->format('H:i:s'));
 
         return $record;
     }

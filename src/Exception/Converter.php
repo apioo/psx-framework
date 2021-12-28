@@ -36,18 +36,18 @@ use PSX\Validate;
  */
 class Converter implements ConverterInterface
 {
-    const CONTEXT_SIZE = 4;
+    public const CONTEXT_SIZE = 4;
 
-    protected $isDebug;
-    protected $contextSize;
+    private bool $isDebug;
+    private int $contextSize;
 
-    public function __construct($isDebug, $contextSize = self::CONTEXT_SIZE)
+    public function __construct(bool $isDebug, int $contextSize = self::CONTEXT_SIZE)
     {
         $this->isDebug     = $isDebug;
         $this->contextSize = $contextSize;
     }
 
-    public function convert(\Throwable $exception)
+    public function convert(\Throwable $exception): Error
     {
         if ($this->isDebug === true) {
             if ($exception instanceof ErrorException) {

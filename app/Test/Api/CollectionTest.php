@@ -134,7 +134,6 @@ JSON;
         return [
             ['population/popo'],
             ['population/typeschema'],
-            ['population/openapi'],
         ];
     }
 }

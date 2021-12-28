@@ -20,9 +20,11 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Record\Record;
@@ -34,35 +36,20 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RoutingController extends SchemaApiAbstract
+class RoutingController extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\Loader\RoutingParserInterface
-     */
-    protected $routingParser;
+    #[Inject]
+    private RoutingParserInterface $routingParser;
 
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation(string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $get = $builder->addMethod('GET');
-        $get->addResponse(200, Schema\Routing\Collection::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
+    #[Outgoing(code: 200, schema: Schema\Routing\Collection::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         return [
             'routings' => $this->getRoutings(),
         ];
     }
 
-    protected function getRoutings()
+    private function getRoutings(): array
     {
         $result   = array();
         $routings = $this->routingParser->getCollection()->getAll();

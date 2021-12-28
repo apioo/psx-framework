@@ -20,27 +20,25 @@
 
 namespace PSX\Framework\App\Api\Population;
 
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\QueryParam;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\App\Service\Population;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
-/**
- * @Title("Population")
- * @Description("Collection endpoint")
- */
-class CollectionTypeSchema extends SchemaApiAbstract
+#[Description('Collection endpoint')]
+class CollectionTypeSchema extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\App\Service\Population
-     */
-    protected $populationService;
+    #[Inject]
+    private Population $populationService;
 
-    /**
-     * @QueryParam(name="startIndex", type="integer")
-     * @QueryParam(name="count", type="integer")
-     * @Outgoing(code=200, schema="../../Resource/schema/population/collection.json")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[QueryParam(name: "startIndex", type: "integer")]
+    #[QueryParam(name: "count", type: "integer")]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
+    protected function doGet(HttpContextInterface $context): mixed
     {
         return $this->populationService->getAll(
             $context->getParameter('startIndex'),
@@ -48,11 +46,9 @@ class CollectionTypeSchema extends SchemaApiAbstract
         );
     }
 
-    /**
-     * @Incoming(schema="../../Resource/schema/population/entity.json")
-     * @Outgoing(code=201, schema="../../Resource/schema/population/message.json")
-     */
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    #[Outgoing(code: 201, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    protected function doPost($record, HttpContextInterface $context): array
     {
         $this->populationService->create(
             $record['place'],

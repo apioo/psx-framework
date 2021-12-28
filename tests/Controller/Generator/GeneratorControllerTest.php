@@ -41,7 +41,7 @@ class GeneratorControllerTest extends ControllerTestCase
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
@@ -52,7 +52,7 @@ class GeneratorControllerTest extends ControllerTestCase
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/openapi_collection.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }
@@ -63,7 +63,7 @@ class GeneratorControllerTest extends ControllerTestCase
         $json     = (string) $response->getBody();
         $expect   = file_get_contents(__DIR__ . '/resource/openapi.json');
 
-        $this->assertEquals(null, $response->getStatusCode(), $json);
+        $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertEquals('application/json', $response->getHeader('Content-Type'), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
     }

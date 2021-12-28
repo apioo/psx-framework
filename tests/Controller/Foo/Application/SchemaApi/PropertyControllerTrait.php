@@ -20,6 +20,9 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\SchemaApi;
 
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
+use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -32,22 +35,16 @@ use PSX\Http\Environment\HttpContextInterface;
  */
 trait PropertyControllerTrait
 {
-    /**
-     * @Inject
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected $testCase;
-
-    protected function doGet(HttpContextInterface $context)
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $this->testCase->assertEquals(1, $context->getUriFragment('id'));
+        Assert::assertEquals(1, $context->getUriFragment('id'));
 
         return PropertyTestCase::getDataByType($context->getParameter('type'));
     }
 
-    protected function doPost($record, HttpContextInterface $context)
+    protected function doPost($record, HttpContextInterface $context): mixed
     {
-        PropertyTestCase::assertRecord($this->testCase, $record);
+        PropertyTestCase::assertRecord($record);
 
         return $record;
     }

@@ -24,6 +24,13 @@
         "PATCH"
       ],
       "version": "*"
+    },
+    {
+      "path": "\/generate\/:type\/:version\/*path",
+      "methods": [
+        "GET"
+      ],
+      "version": "*"
     }
   ],
   "links": [

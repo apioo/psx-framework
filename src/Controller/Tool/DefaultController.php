@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
-use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
 
@@ -33,26 +32,14 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DefaultController extends SchemaApiAbstract
+class DefaultController extends ControllerAbstract
 {
-    /**
-     * @inheritdoc
-     */
-    public function getDocumentation(string $version = null): ?SpecificationInterface
-    {
-        $builder = $this->apiManager->getBuilder(Resource::STATUS_ACTIVE, $this->context->getPath());
-
-        $get = $builder->addMethod('GET');
-        $get->addResponse(200, Schema\Welcome::class);
-
-        return $builder->getSpecification();
-    }
-
-    public function doGet(HttpContextInterface $httpContext)
+    #[Outgoing(code: 200, schema: Schema\Welcome::class)]
+    protected function doGet(HttpContextInterface $context): array
     {
         return [
             'message' => 'This is the default controller of PSX',
-            'url'     => 'http://phpsx.org',
+            'url'     => 'https://phpsx.org',
         ];
     }
 }

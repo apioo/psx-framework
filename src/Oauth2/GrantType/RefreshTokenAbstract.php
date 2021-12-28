@@ -22,7 +22,10 @@ namespace PSX\Framework\Oauth2\GrantType;
 
 use PSX\Framework\Oauth2\Credentials;
 use PSX\Framework\Oauth2\GrantTypeInterface;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
+use PSX\Oauth2\GrantInterface;
 
 /**
  * RefreshTokenAbstract
@@ -33,22 +36,23 @@ use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
  */
 abstract class RefreshTokenAbstract implements GrantTypeInterface
 {
-    public function getType()
+    public function getType(): string
     {
         return self::TYPE_REFRESH_TOKEN;
     }
 
-    public function generateAccessToken(Credentials $credentials = null, array $parameters)
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
     {
         if ($credentials === null) {
             throw new InvalidRequestException('Credentials not available');
         }
 
-        $refreshToken = isset($parameters['refresh_token']) ? $parameters['refresh_token'] : null;
-        $scope        = isset($parameters['scope']) ? $parameters['scope'] : null;
+        if (!$grant instanceof Grant\RefreshToken) {
+            throw new InvalidRequestException('Provided an invalid grant');
+        }
 
-        return $this->generate($credentials, $refreshToken, $scope);
+        return $this->generate($credentials, $grant);
     }
 
-    abstract protected function generate(Credentials $credentials, $refreshToken, $scope);
+    abstract protected function generate(Credentials $credentials, Grant\RefreshToken $grant);
 }

@@ -20,27 +20,29 @@
 
 namespace PSX\Framework\App\Api\Population;
 
+use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\QueryParam;
+use PSX\Dependency\Attribute\Inject;
+use PSX\Framework\App\Service\Population;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\App\Model\Collection;
+use PSX\Framework\App\Model\Entity;
+use PSX\Framework\App\Model\Message;
 use PSX\Http\Environment\HttpContextInterface;
 
-/**
- * @Title("Population")
- * @Description("Collection endpoint")
- */
-class CollectionPopo extends SchemaApiAbstract
+#[Description('Collection endpoint')]
+class CollectionPopo extends ControllerAbstract
 {
-    /**
-     * @Inject
-     * @var \PSX\Framework\App\Service\Population
-     */
-    protected $populationService;
+    #[Inject]
+    protected Population $populationService;
 
-    /**
-     * @QueryParam(name="startIndex", type="integer")
-     * @QueryParam(name="count", type="integer")
-     * @Outgoing(code=200, schema="PSX\Framework\App\Model\Collection")
-     */
-    protected function doGet(HttpContextInterface $context)
+    #[QueryParam(name: "startIndex", type: "integer")]
+    #[QueryParam(name: "count", type: "integer")]
+    #[Outgoing(code: 200, schema: Collection::class)]
+    protected function doGet(HttpContextInterface $context): mixed
     {
         return $this->populationService->getAll(
             $context->getParameter('startIndex'),
@@ -48,11 +50,9 @@ class CollectionPopo extends SchemaApiAbstract
         );
     }
 
-    /**
-     * @Incoming(schema="PSX\Framework\App\Model\Entity")
-     * @Outgoing(code=201, schema="PSX\Framework\App\Model\Message")
-     */
-    protected function doPost($record, HttpContextInterface $context)
+    #[Incoming(schema: Entity::class)]
+    #[Outgoing(code: 201, schema: Message::class)]
+    protected function doPost($record, HttpContextInterface $context): mixed
     {
         $this->populationService->create(
             $record->getPlace(),
@@ -62,9 +62,9 @@ class CollectionPopo extends SchemaApiAbstract
             $record->getWorldUsers()
         );
 
-        return [
-            'success' => true,
-            'message' => 'Create population successful',
-        ];
+        $message = new Message();
+        $message->setSuccess(true);
+        $message->setMessage('Create population successful');
+        return $message;
     }
 }

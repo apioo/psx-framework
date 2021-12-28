@@ -50,15 +50,14 @@ trait Console
         return $application;
     }
 
-    protected function appendConsoleCommands(Application $application)
+    protected function appendConsoleCommands(Application $application): void
     {
         $application->add(new FrameworkConsole\RouteCommand($this->get('routing_parser')));
         $application->add(new FrameworkConsole\ServeCommand($this));
         $application->add(new FrameworkConsole\Container\ListCommand($this->get('container_inspector')));
-        $application->add(new FrameworkConsole\Container\BuildCommand($this, $this->get('annotation_reader_factory')->factory('PSX\Dependency\Annotation'), $this->get('config')));
+        $application->add(new FrameworkConsole\Container\BuildCommand($this, $this->get('config')));
 
         $application->add(new ApiConsole\ParseCommand($this->get('api_manager'), $this->get('generator_factory')));
-        $application->add(new ApiConsole\ResourceCommand($this->get('resource_listing'), $this->get('generator_factory')));
         $application->add(new ApiConsole\GenerateCommand($this->get('resource_listing'), $this->get('generator_factory')));
 
         $application->add(new SchemaConsole\ParseCommand($this->get('schema_manager')));
@@ -73,7 +72,7 @@ trait Console
         $application->add(new DBALCommand\RunSqlCommand());
     }
 
-    protected function appendConsoleHelpers()
+    protected function appendConsoleHelpers(): array
     {
         return array(
             'db' => new ConnectionHelper($this->get('connection')),
