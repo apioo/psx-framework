@@ -2,11 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(function ($class) {
-    spl_autoload_call($class);
-    return class_exists($class, false);
-});
-
 \PSX\Framework\Test\Environment::setup(__DIR__, function(\Doctrine\DBAL\Schema\Schema $fromSchema){
     // create the database schema if not available
     if (!$fromSchema->hasTable('psx_handler_comment')) {
