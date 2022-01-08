@@ -187,13 +187,6 @@ class DefaultContainer extends Container
                 'memory'              => true,
                 'driver'              => 'pdo_sqlite',
             ],
-            'psx_annotation_autoload' => [
-                'PSX\Api\Annotation',
-                'PSX\Schema\Annotation',
-                'PSX\Dependency\Annotation',
-                'JMS\Serializer\Annotation',
-                'Doctrine\ORM\Mapping'
-            ],
             'psx_entity_paths'        => [],
             'psx_soap_namespace'      => 'http://phpsx.org/2014/data',
             'psx_json_namespace'      => 'urn:schema.phpsx.org#',

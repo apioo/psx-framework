@@ -60,12 +60,6 @@ class Bootstrap
             error_reporting($errorReporting);
             set_error_handler('\PSX\Framework\Bootstrap::errorHandler');
 
-            // annotation autoload
-            $namespaces = $config->get('psx_annotation_autoload');
-            if (!empty($namespaces) && is_array($namespaces)) {
-                self::registerAnnotationLoader($namespaces);
-            }
-
             // ini settings
             ini_set('date.timezone', $config['psx_timezone']);
             ini_set('session.use_only_cookies', '1');
@@ -90,21 +84,5 @@ class Bootstrap
         } else {
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
-    }
-
-    protected static function registerAnnotationLoader(array $namespaces)
-    {
-        AnnotationRegistry::reset();
-        AnnotationRegistry::registerLoader(function ($class) use ($namespaces) {
-
-            foreach ($namespaces as $namespace) {
-                if (strpos($class, $namespace) === 0) {
-                    spl_autoload_call($class);
-
-                    return class_exists($class, false);
-                }
-            }
-
-        });
     }
 }
