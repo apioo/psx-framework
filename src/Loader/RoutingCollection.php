@@ -42,9 +42,9 @@ class RoutingCollection implements \IteratorAggregate, Countable
         $this->routings = $routings;
     }
 
-    public function add(array $methods, $path, $source)
+    public function add(array $methods, string $path, string $source, ...$args)
     {
-        $this->routings[] = array($methods, $path, $source);
+        $this->routings[] = [$methods, $path, $source, ...$args];
     }
 
     public function getAll(): array
