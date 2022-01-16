@@ -46,7 +46,7 @@ class RequestReader
     /**
      * Returns the result of the reader for the request
      */
-    public function getBody(RequestInterface $request, ?string $readerType = null): \stdClass
+    public function getBody(RequestInterface $request, ?string $readerType = null): mixed
     {
         $data = (string) $request->getBody();
 
