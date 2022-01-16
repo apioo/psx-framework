@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\App\Service;
 
+use PSX\Framework\App\Table\Generated\PopulationRow;
 use PSX\Http\Exception as StatusCode;
 use PSX\Model\Common\ResultSet;
 use PSX\Framework\App\Table\Population as TablePopulation;
@@ -58,36 +59,36 @@ class Population
 
     public function create($place, $region, $count, $users, $worldUsers)
     {
-        $this->populationTable->create([
+        $this->populationTable->create(new PopulationRow([
             'place'       => $place,
             'region'      => $region,
             'population'  => $count,
             'users'       => $users,
             'world_users' => $worldUsers,
             'insert_date' => new \DateTime(),
-        ]);
+        ]));
     }
 
     public function update($id, $place, $region, $count, $users, $worldUsers)
     {
         $population = $this->get($id);
 
-        $this->populationTable->update([
+        $this->populationTable->update(new PopulationRow([
             'id'          => $population['id'],
             'place'       => $place,
             'region'      => $region,
             'population'  => $count,
             'users'       => $users,
             'world_users' => $worldUsers,
-        ]);
+        ]));
     }
 
     public function delete($id)
     {
         $population = $this->get($id);
 
-        $this->populationTable->delete([
+        $this->populationTable->delete(new PopulationRow([
             'id' => $population['id']
-        ]);
+        ]));
     }
 }

@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\App\Table;
 
+use PSX\Framework\App\Table\Generated\PopulationTable;
 use PSX\Sql\Condition;
 use PSX\Sql\Sql;
 use PSX\Sql\TableAbstract;
@@ -31,41 +32,8 @@ use PSX\Sql\TableAbstract;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Population extends TableAbstract
+class Population extends PopulationTable
 {
-    public function getName(): string
-    {
-        return 'population';
-    }
-
-    public function getColumns(): array
-    {
-        return array(
-            'id'          => self::TYPE_INT | 10 | self::AUTO_INCREMENT | self::PRIMARY_KEY,
-            'place'       => self::TYPE_INT | 10,
-            'region'      => self::TYPE_VARCHAR | 64,
-            'population'  => self::TYPE_INT | 10,
-            'users'       => self::TYPE_INT | 10,
-            'world_users' => self::TYPE_FLOAT,
-            'insert_date' => self::TYPE_DATETIME,
-        );
-    }
-
-    public function getEntity(int $id)
-    {
-        $definition = $this->doEntity([$this, 'find'], [$id], [
-            'id' => $this->fieldInteger('id'),
-            'place' => $this->fieldInteger('place'),
-            'region' => 'region',
-            'population' => $this->fieldInteger('population'),
-            'users' => $this->fieldInteger('users'),
-            'worldUsers' => $this->fieldNumber('world_users'),
-            'datetime' => $this->fieldDateTime('insert_date'),
-        ]);
-
-        return $this->build($definition);
-    }
-
     public function getCollection(?int $startIndex = null, ?int $count = null)
     {
         if (empty($startIndex) || $startIndex < 0) {
@@ -92,6 +60,21 @@ class Population extends TableAbstract
                 'datetime' => $this->fieldDateTime('insert_date'),
             ]),
         ];
+
+        return $this->build($definition);
+    }
+
+    public function getEntity(int $id)
+    {
+        $definition = $this->doEntity([$this, 'find'], [$id], [
+            'id' => $this->fieldInteger('id'),
+            'place' => $this->fieldInteger('place'),
+            'region' => 'region',
+            'population' => $this->fieldInteger('population'),
+            'users' => $this->fieldInteger('users'),
+            'worldUsers' => $this->fieldNumber('world_users'),
+            'datetime' => $this->fieldDateTime('insert_date'),
+        ]);
 
         return $this->build($definition);
     }
