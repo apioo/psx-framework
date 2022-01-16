@@ -20,13 +20,9 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application\TestController;
 
-use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Http\Body;
 use PSX\Http\Environment\HttpContextInterface;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
-use PSX\Http\Stream\FileStream;
+use PSX\Http\Writer;
 use PSX\Record\Record;
 
 /**
@@ -75,11 +71,11 @@ class SetBodyController extends ControllerAbstract
                 break;
 
             case 'stream':
-                $data = new Body\File(__DIR__ . '/../../Resource/test_file', 'foo.txt', 'application/octet-stream');
+                $data = new Writer\File(__DIR__ . '/../../Resource/test_file', 'foo.txt', 'application/octet-stream');
                 break;
 
             case 'body':
-                $data = new Body\Json(['foo' => 'bar']);
+                $data = new Writer\Json(['foo' => 'bar']);
                 break;
         }
 
