@@ -20,8 +20,7 @@
 
 namespace PSX\Framework\Tests;
 
-use PSX\Sql\NestRule;
-use PSX\Sql\TableAbstract;
+use PSX\Framework\Tests\Table\HandlerCommentTable;
 use PSX\Sql\TableInterface;
 
 /**
@@ -31,23 +30,8 @@ use PSX\Sql\TableInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestTable extends TableAbstract
+class TestTable extends HandlerCommentTable
 {
-    public function getName(): string
-    {
-        return 'psx_handler_comment';
-    }
-
-    public function getColumns(): array
-    {
-        return array(
-            'id'     => TableInterface::TYPE_INT | 10 | TableInterface::PRIMARY_KEY | TableInterface::AUTO_INCREMENT,
-            'userId' => TableInterface::TYPE_INT | 10,
-            'title'  => TableInterface::TYPE_VARCHAR | 32,
-            'date'   => TableInterface::TYPE_DATETIME,
-        );
-    }
-
     public function getNestedResult()
     {
         $sql = '  SELECT id,
