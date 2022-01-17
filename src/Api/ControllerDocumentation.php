@@ -35,8 +35,7 @@ use PSX\Schema\Definitions;
 use PSX\Schema\SchemaManagerInterface;
 
 /**
- * The documentation how a request and response looks is provided in the
- * controller
+ * The documentation how a request and response looks is provided in the controller
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -53,10 +52,7 @@ class ControllerDocumentation implements ListingInterface
         $this->attributeParser = new Attribute($schemaManager);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAvailableRoutes(FilterInterface $filter = null): iterable
+    public function getAvailableRoutes(?FilterInterface $filter = null): iterable
     {
         $collections = $this->routingParser->getCollection($filter);
         $result      = array();
@@ -79,9 +75,6 @@ class ControllerDocumentation implements ListingInterface
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function find(string $path, ?string $version = null): ?SpecificationInterface
     {
         $matcher    = new PathMatcher($path);
@@ -101,10 +94,7 @@ class ControllerDocumentation implements ListingInterface
         return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function findAll(?string $version = null, FilterInterface $filter = null): SpecificationInterface
+    public function findAll(?string $version = null, ?FilterInterface $filter = null): SpecificationInterface
     {
         $spec  = new Specification(new ResourceCollection(), new Definitions());
         $index = $this->getAvailableRoutes($filter);
@@ -119,11 +109,7 @@ class ControllerDocumentation implements ListingInterface
         return $spec;
     }
 
-    /**
-     * @param array $route
-     * @return \PSX\Framework\Loader\Context
-     */
-    protected function newContext(array $route)
+    protected function newContext(array $route): Context
     {
         $context = new Context();
         $context->setPath($route[1]);
