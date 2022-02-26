@@ -56,11 +56,15 @@ abstract class GeneratorControllerAbstract extends ControllerAbstract
         $path    = $context->getUriFragment('path');
         $type    = $this->getType($context);
 
-        $generator = $this->generatorFactory->getGenerator($type);
-
-        if ($path == '*') {
+        if ($path === '*') {
             $filter = $this->listingFilterFactory->getFilter($context->getParameter('filter') ?? '');
+        } else {
+            $filter = null;
+        }
 
+        $generator = $this->generatorFactory->getGenerator($type, null, $filter);
+
+        if ($path === '*') {
             $spec = $this->resourceListing->findAll($version, $filter);
         } else {
             $spec = $this->resourceListing->find($path, $version);
