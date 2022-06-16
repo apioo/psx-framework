@@ -48,7 +48,9 @@ abstract class TokenAbstract extends ControllerAbstract
 
     public function getPreFilter(): array
     {
-        return [function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void {
+        $filter = parent::getPreFilter();
+
+        $filter[] = function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void {
             try {
                 // the endpoint must return a specific error response see:
                 // https://tools.ietf.org/html/rfc6749#section-5.2
@@ -73,7 +75,9 @@ abstract class TokenAbstract extends ControllerAbstract
                 $response->setStatus(400);
                 $this->responseWriter->setBody($response, $error);
             }
-        }];
+        };
+
+        return $filter;
     }
 
     #[Incoming(schema: Passthru::class)]
