@@ -33,11 +33,8 @@ class Annotation
 {
     /**
      * Parses the annotations from the given doc block
-     *
-     * @param string $doc
-     * @return \PSX\Framework\Util\Annotation\DocBlock
      */
-    public static function parse($doc)
+    public static function parse(string $doc): Annotation\DocBlock
     {
         $block = new DocBlock();
         $lines = explode("\n", $doc);
@@ -46,6 +43,7 @@ class Annotation
         unset($lines[0]);
 
         foreach ($lines as $line) {
+            $line = (string) $line;
             $line = trim($line);
             $line = substr($line, 2);
 
@@ -91,20 +89,17 @@ class Annotation
 
     /**
      * Parses the constructor values from an doctrine annotation
-     *
-     * @param string $values
-     * @return array
      */
-    public static function parseAttributes($values)
+    public static function parseAttributes(string $values): array
     {
-        $result = array();
+        $result = [];
         $values = trim($values, " \t\n\r\0\x0B()");
         $parts  = explode(',', $values);
 
         foreach ($parts as $part) {
             $kv    = explode('=', $part, 2);
             $key   = trim($kv[0]);
-            $value = isset($kv[1]) ? $kv[1] : '';
+            $value = $kv[1] ?? '';
             $value = trim($value, " \t\n\r\0\x0B\"");
 
             if (!empty($key)) {
