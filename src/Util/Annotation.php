@@ -43,7 +43,6 @@ class Annotation
         unset($lines[0]);
 
         foreach ($lines as $line) {
-            $line = (string) $line;
             $line = trim($line);
             $line = substr($line, 2);
 
@@ -69,11 +68,10 @@ class Annotation
                 }
 
                 $key   = trim($key);
-                $value = trim($value);
+                $value = trim('' . $value);
 
                 if (!empty($key)) {
-                    // if key contains backslashes its a namespace use only the
-                    // short name
+                    // if key contains backslashes its a namespace use only the short name
                     $pos = strrpos($key, '\\');
                     if ($pos !== false) {
                         $key = substr($key, $pos + 1);
