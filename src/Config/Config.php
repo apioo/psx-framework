@@ -42,32 +42,35 @@ class Config extends ArrayIterator
         parent::__construct($config);
     }
 
-    public function set($key, $value)
+    public function set(string $key, mixed $value): void
     {
         $this->offsetSet($key, $value);
     }
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         return $this->offsetGet($key);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->offsetExists($key);
     }
 
-    public function merge(Config $config)
+    public function merge(Config $config): self
     {
         return new static(array_merge($this->getArrayCopy(), $config->getArrayCopy()));
     }
 
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         return $this->offsetExists($key) ? parent::offsetGet($key) : null;
     }
 
-    public static function fromFile($file)
+    /**
+     * @throws NotFoundException
+     */
+    public static function fromFile(string $file): self
     {
         $config = include($file);
 
