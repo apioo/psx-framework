@@ -106,6 +106,10 @@
       "href": "http:\/\/127.0.0.1\/generator\/client-typescript\/*\/population\/popo"
     },
     {
+      "rel": "markup-client",
+      "href": "http:\/\/127.0.0.1\/generator\/markup-client\/*\/population\/popo"
+    },
+    {
       "rel": "markup-html",
       "href": "http:\/\/127.0.0.1\/generator\/markup-html\/*\/population\/popo"
     },

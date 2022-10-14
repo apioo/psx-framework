@@ -279,6 +279,10 @@
       "href": "http:\/\/127.0.0.1\/generate\/client-typescript\/1\/api"
     },
     {
+      "rel": "markup-client",
+      "href": "http:\/\/127.0.0.1\/generate\/markup-client\/1\/api"
+    },
+    {
       "rel": "markup-html",
       "href": "http:\/\/127.0.0.1\/generate\/markup-html\/1\/api"
     },

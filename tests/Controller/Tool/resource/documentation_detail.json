@@ -121,6 +121,10 @@
       "href": "http:\/\/127.0.0.1\/generate\/client-typescript\/*\/doc\/:version\/*path"
     },
     {
+      "rel": "markup-client",
+      "href": "http:\/\/127.0.0.1\/generate\/markup-client\/*\/doc\/:version\/*path"
+    },
+    {
       "rel": "markup-html",
       "href": "http:\/\/127.0.0.1\/generate\/markup-html\/*\/doc\/:version\/*path"
     },
