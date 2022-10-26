@@ -66,7 +66,9 @@ class ResponseWriter
 
             $headers = $data->getHeaders();
             if (!empty($headers)) {
-                $response->setHeaders($headers);
+                foreach ($headers as $name => $header) {
+                    $response->addHeader($name, $header);
+                }
             }
 
             $body = $data->getBody();
@@ -107,7 +109,7 @@ class ResponseWriter
             if ($writer instanceof HttpWriter\WriterInterface) {
                 $writer->writeTo($response);
             } else {
-                $this->setResponse($response, $body, $options ?? new WriterOptions());
+                $this->setResponse($response, $body, $options);
             }
         } else {
             $response->setStatus(204);
