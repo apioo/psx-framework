@@ -35,7 +35,7 @@ use PSX\Http\Environment\HttpContextInterface;
 class DefaultController extends ControllerAbstract
 {
     #[Outgoing(code: 200, schema: Schema\Welcome::class)]
-    protected function doGet(HttpContextInterface $context): array
+    protected function show(): array
     {
         return [
             'message' => 'This is the default controller of PSX',

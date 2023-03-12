@@ -18,30 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Loader;
+namespace PSX\Framework\Log;
 
-use PSX\Framework\Loader\Context;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\HandlerInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
- * LoaderInterface
+ * LoggerFactory
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-interface LoaderInterface
+class LoggerFactory
 {
-    /**
-     * Loads the controller instance based on the provided request. Usually this means we use a router to find the
-     * fitting controller class name. Then we execute this instance through the execute method
-     */
-    public function load(RequestInterface $request, ResponseInterface $response, Context $context): void;
+    private string $logDir;
+    private int $logLevel;
 
-    /**
-     * Executes a specific controller instance. This means that we determine the middleware stack based on the
-     * controller and execute it. Note the load method also calls this method after the controller was loaded
-     */
-    public function execute(mixed $source, RequestInterface $request, ResponseInterface $response, Context $context): void;
+    public function __construct(string $logDir, int $logLevel)
+    {
+        $this->logDir = $logDir;
+        $this->logLevel = $logLevel;
+    }
+
+    public function factory(string $namespace = 'psx'): LoggerInterface
+    {
+        $logger = new Logger($namespace);
+        $logger->pushHandler($this->newHandler());
+
+        return $logger;
+    }
+
+    protected function newHandler(): HandlerInterface
+    {
+        return new StreamHandler($this->logDir . '/app.log', $this->logLevel);
+    }
 }

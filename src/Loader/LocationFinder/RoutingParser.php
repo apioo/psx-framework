@@ -51,7 +51,7 @@ class RoutingParser implements LocationFinderInterface
         $pathMatcher       = new PathMatcher($request->getUri()->getPath());
 
         foreach ($routingCollection as $routing) {
-            $parameters = array();
+            $parameters = [];
 
             $methodMatch = $routing[RoutingCollection::ROUTING_METHODS] === ['ANY'] ||
                 in_array($method, $routing[RoutingCollection::ROUTING_METHODS]);

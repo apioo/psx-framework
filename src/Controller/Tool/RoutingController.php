@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Parser\Attribute;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
@@ -58,9 +59,9 @@ class RoutingController extends ControllerAbstract
             [$methods, $path, $source] = $routing;
 
             $result[] = Record::fromArray([
-                'methods' => $methods,
-                'path'    => $path,
-                'source'  => $source,
+                'method' => $methods[0],
+                'path' => $path,
+                'operationId' => Attribute::buildOperationId($source[0], $source[1]),
             ]);
         }
 

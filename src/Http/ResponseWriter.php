@@ -25,6 +25,7 @@ use PSX\Data\Payload;
 use PSX\Data\Writer;
 use PSX\Data\Processor;
 use PSX\Data\WriterInterface;
+use PSX\Framework\Config\Config;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
@@ -44,7 +45,7 @@ class ResponseWriter
     private Processor $processor;
     private array $supportedWriter;
 
-    public function __construct(Processor $processor, array $supportedWriter = [])
+    public function __construct(Processor $processor, array $supportedWriter)
     {
         $this->processor       = $processor;
         $this->supportedWriter = $supportedWriter;

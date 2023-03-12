@@ -21,15 +21,10 @@
 namespace PSX\Framework\Config;
 
 use ArrayIterator;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
- * Simple config class which uses a simple array to store all values. Here an
- * example howto use the class
- * <code>
- * $config = Config::fromFile('configuration.php');
- *
- * echo $config['psx_url'];
- * </code>
+ * Config
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -79,5 +74,10 @@ class Config extends ArrayIterator
         } else {
             throw new NotFoundException('Config file must return an array');
         }
+    }
+
+    public static function fromParameterBag(ParameterBagInterface $parameterBag): self
+    {
+        return new static($parameterBag->all());
     }
 }

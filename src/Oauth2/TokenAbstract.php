@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Oauth2;
 
+use PSX\Framework\Loader\Context;
 use PSX\Oauth2\Error;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
@@ -43,8 +44,12 @@ use PSX\Oauth2\GrantFactory;
  */
 abstract class TokenAbstract extends ControllerAbstract
 {
-    #[Inject('oauth2_grant_type_factory')]
-    protected GrantTypeFactory $grantTypeFactory;
+    private GrantTypeFactory $grantTypeFactory;
+
+    public function __construct(GrantTypeFactory $grantTypeFactory)
+    {
+        $this->grantTypeFactory = $grantTypeFactory;
+    }
 
     public function getPreFilter(): array
     {

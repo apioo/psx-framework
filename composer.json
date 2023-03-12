@@ -17,10 +17,9 @@
     "psr/cache": "^1.0|^2.0|^3.0",
     "psr/log": "^1.0|^2.0|^3.0",
     "psr/container": "^1.0|^2.0",
-    "psx/api": "^4.0",
+    "psx/api": "^5.0",
     "psx/data": "^4.0",
     "psx/engine": "^1.0",
-    "psx/dependency": "^2.0",
     "psx/http": "^3.0",
     "psx/json": "^2.0",
     "psx/oauth2": "^3.0",
@@ -30,12 +29,14 @@
     "psx/validate": "^2.0",
     "symfony/cache": "^5.0|^6.0",
     "symfony/console": "^5.0|^6.0",
-    "symfony/event-dispatcher": "^5.0|^6.0"
+    "symfony/event-dispatcher": "^5.0|^6.0",
+    "symfony/dependency-injection": "^5.0|^6.0",
+    "symfony/config": "^5.0|^6.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.0",
+    "phpunit/phpunit": "^9.0",
     "guzzlehttp/guzzle": "^7.0",
-    "vimeo/psalm": "^4.0"
+    "vimeo/psalm": "^5.0"
   },
   "autoload": {
     "psr-4": {

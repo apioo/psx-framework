@@ -18,50 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Loader\RoutingParser;
+namespace PSX\Framework\Api;
 
 use Psr\Cache\CacheItemPoolInterface;
-use PSX\Api\Listing\FilterInterface;
-use PSX\Framework\Loader\RoutingCollection;
+use PSX\Api\Listing\CachedScanner;
+use PSX\Api\ScannerInterface;
 use PSX\Framework\Loader\RoutingParserInterface;
+use PSX\Schema\SchemaManagerInterface;
 
 /**
- * CachedParser
- *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class CachedParser implements RoutingParserInterface
+class ScannerFactory
 {
-    public const CACHE_KEY = 'psx-routing-collection';
-
     private RoutingParserInterface $routingParser;
+    private SchemaManagerInterface $schemaManager;
+    private bool $debug;
     private CacheItemPoolInterface $cache;
-    private ?int $expire;
 
-    public function __construct(RoutingParserInterface $routingParser, CacheItemPoolInterface $cache, ?int $expire = null)
+    public function __construct(RoutingParserInterface $routingParser, SchemaManagerInterface $schemaManager, bool $debug, CacheItemPoolInterface $cache)
     {
         $this->routingParser = $routingParser;
-        $this->cache         = $cache;
-        $this->expire        = $expire;
+        $this->schemaManager = $schemaManager;
+        $this->debug = $debug;
+        $this->cache = $cache;
     }
 
-    public function getCollection(?FilterInterface $filter = null): RoutingCollection
+    public function factory(): ScannerInterface
     {
-        $item = $this->cache->getItem(self::CACHE_KEY);
+        $resourceListing = new ControllerAttribute($this->routingParser, $this->schemaManager);
 
-        if ($item->isHit()) {
-            return $item->get();
+        if ($this->debug) {
+            return $resourceListing;
         } else {
-            $collection = $this->routingParser->getCollection();
-
-            $item->set($collection);
-            $item->expiresAfter($this->expire);
-
-            $this->cache->save($item);
-
-            return $collection;
+            return new CachedScanner($resourceListing, $this->cache);
         }
     }
 }

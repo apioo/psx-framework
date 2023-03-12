@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Console;
 
-use PSX\Framework\Command\ParameterParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -55,10 +54,10 @@ class RouteCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $collection = $this->routingParser->getCollection();
-        $rows       = array();
+        $rows       = [];
 
         foreach ($collection as $route) {
-            $rows[] = array(implode('|', $route[0]), $route[1], $route[2]);
+            $rows[] = [implode('|', $route[0]), $route[1], implode('::', $route[2])];
         }
 
         $table = new Table($output);

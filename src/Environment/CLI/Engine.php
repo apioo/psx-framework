@@ -32,7 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Reads and writes HTTP requests to and from symfony console interfaces
  *
- * @see     https://github.com/amphp/aerys/
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org

@@ -55,18 +55,15 @@ class Environment
     }
 
     /**
-     * Creates a new PSX environment based on a DI container. You can optional provide
-     * a different engine to support different web servers
+     * Creates a new PSX environment based on a DI container. You can optional provide a different engine to support
+     * different web servers
      * 
      * @link https://github.com/apioo/psx-engine
-     * @param ContainerInterface $container
-     * @param EngineInterface|null $engine
-     * @return Environment
      */
     public static function fromContainer(ContainerInterface $container, ?EngineInterface $engine = null): Environment
     {
-        $dispatch = $container->get('dispatch');
-        $config   = $container->get('config');
+        $dispatch = $container->get(DispatchInterface::class);
+        $config   = $container->get(Config::class);
 
         if ($engine === null) {
             $engine = new Engine($config->get('psx_url'));

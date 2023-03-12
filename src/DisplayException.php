@@ -21,10 +21,8 @@
 namespace PSX\Framework;
 
 /**
- * All exceptions which inherit from this exception will be displayed to the
- * user also in the live environment. For all other exceptions we display an
- * general error message. Also these errors are logged with an notice and not
- * error level
+ * All exceptions which inherit from this exception will be displayed to the user also in the live environment. For all
+ * other exceptions we display an general error message. Also these errors are logged with an notice and not error level
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0

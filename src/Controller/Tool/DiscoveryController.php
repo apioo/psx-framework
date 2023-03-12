@@ -21,14 +21,14 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Resource;
 use PSX\Api\SpecificationInterface;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\Generator\OpenAPIController;
-use PSX\Framework\Controller\Generator\RamlController;
-use PSX\Framework\Controller\Generator\SwaggerController;
+use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Schema;
 use PSX\Http\Environment\HttpContextInterface;
@@ -40,18 +40,23 @@ use PSX\Http\Environment\HttpContextInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DiscoveryController extends ControllerAbstract
+class DiscoveryController implements ControllerInterface
 {
-    #[Inject]
     private ReverseRouter $reverseRouter;
 
-    #[Outgoing(code: 200, schema: Schema\Discovery\Collection::class)]
-    protected function doGet(HttpContextInterface $context): array
+    public function __construct(ReverseRouter $reverseRouter)
     {
-        $links = [];
+        $this->reverseRouter = $reverseRouter;
+    }
+
+    #[Path('/system/discovery')]
+    protected function show(): Schema\Discovery\Collection
+    {
+        $links = new Schema\Discovery\Collection();
 
         $apiPath = $this->reverseRouter->getDispatchUrl();
         if ($apiPath !== null) {
+            $links->addLink(new Schema\Discovery\Link());
             $links[] = [
                 'rel'  => 'api',
                 'href' => $apiPath,

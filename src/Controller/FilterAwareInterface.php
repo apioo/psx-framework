@@ -20,32 +20,31 @@
 
 namespace PSX\Framework\Controller;
 
-use PSX\Http\Filter\CORS;
-
 /**
- * ControllerAbstract
+ * A controller can implement this interface to add a middleware before or after the controller invocation. It receives
+ * the raw HTTP request and response and can add specific behaviour to it. Those middlewares are only attached to the
+ * local controller, if you want to add a global middleware you can register a service with the "psx.pre_filter" or
+ * "psx.post_filter" tag, those middlewares are then globally applied to every controller
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ControllerAbstract implements FilterAwareInterface
+interface FilterAwareInterface
 {
     /**
-     * @inheritDoc
+     * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
+     * service is invoked before the controller
+     *
+     * @return string[]
      */
-    public function getPreFilter(): array
-    {
-        return [
-            CORS::class
-        ];
-    }
+    public function getPreFilter(): array;
 
     /**
-     * @inheritDoc
+     * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
+     * service is invoked after the controller
+     *
+     * @return string[]
      */
-    public function getPostFilter(): array
-    {
-        return [];
-    }
+    public function getPostFilter(): array;
 }

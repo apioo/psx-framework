@@ -1,0 +1,101 @@
+{
+  "definitions": {
+    "Discovery_Collection": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "Discovery_Link"
+          }
+        }
+      }
+    },
+    "Discovery_Link": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "Routing_Collection": {
+      "type": "object",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "Routing_Route"
+          }
+        }
+      }
+    },
+    "Routing_Route": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        }
+      }
+    },
+    "Welcome": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Passthru": {
+      "description": "No schema information available",
+      "type": "object",
+      "additionalProperties": {
+        "type": "any"
+      }
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "File": {
+      "description": "File upload provided through a multipart/form-data post",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "tmp_name": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

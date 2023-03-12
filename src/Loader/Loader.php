@@ -20,21 +20,14 @@
 
 namespace PSX\Framework\Loader;
 
-use Closure;
-use Psr\Log\LoggerInterface;
-use PSX\Framework\Config\Config;
-use PSX\Framework\Dispatch\ControllerFactoryInterface;
-use PSX\Framework\Event\ControllerExecuteEvent;
-use PSX\Framework\Event\ControllerProcessedEvent;
-use PSX\Framework\Event\Event;
-use PSX\Framework\Event\RouteMatchedEvent;
+use Psr\Container\ContainerInterface;
+use PSX\Framework\Controller\FilterAwareInterface;
+use PSX\Framework\Filter\ControllerExecutorFactory;
+use PSX\Framework\Filter\PostFilterChain;
+use PSX\Framework\Filter\PreFilterChain;
 use PSX\Http\Filter\FilterChain;
-use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
-use RuntimeException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use UnexpectedValueException;
 
 /**
  * Loader
@@ -46,50 +39,57 @@ use UnexpectedValueException;
 class Loader implements LoaderInterface
 {
     private LocationFinderInterface $locationFinder;
-    private ControllerFactoryInterface $controllerFactory;
-    private EventDispatcherInterface $eventDispatcher;
-    private LoggerInterface $logger;
-    private Config $config;
+    private ControllerExecutorFactory $controllerExecutorFactory;
+    private PreFilterChain $preFilterChain;
+    private PostFilterChain $postFilterChain;
+    private ContainerInterface $container;
 
-    public function __construct(LocationFinderInterface $locationFinder, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, Config $config)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterChain $preFilterChain, PostFilterChain $postFilterChain, ContainerInterface $container)
     {
-        $this->locationFinder    = $locationFinder;
-        $this->controllerFactory = $controllerFactory;
-        $this->eventDispatcher   = $eventDispatcher;
-        $this->logger            = $logger;
-        $this->config            = $config;
+        $this->locationFinder = $locationFinder;
+        $this->controllerExecutorFactory = $controllerExecutorFactory;
+        $this->preFilterChain = $preFilterChain;
+        $this->postFilterChain = $postFilterChain;
+        $this->container = $container;
     }
 
-    public function load(RequestInterface $request, ResponseInterface $response, ?Context $context = null): void
+    public function load(RequestInterface $request, ResponseInterface $response, Context $context): void
     {
-        $context = $context ?? new Context();
-        $result  = $this->locationFinder->resolve($request, $context);
+        $result = $this->locationFinder->resolve($request, $context);
 
         if ($result instanceof RequestInterface) {
-            $this->eventDispatcher->dispatch(new RouteMatchedEvent($result, $context), Event::ROUTE_MATCHED);
-
-            $controller = $this->controllerFactory->getController($context->getSource(), $context);
-
-            $this->execute($controller, $result, $response);
+            $this->execute($context->getSource(), $result, $response, $context);
         } else {
             throw new InvalidPathException('Unknown location', $request);
         }
     }
 
-    public function execute(array $controller, RequestInterface $request, ResponseInterface $response): void
+    public function execute(mixed $source, RequestInterface $request, ResponseInterface $response, Context $context): void
     {
-        $this->eventDispatcher->dispatch(new ControllerExecuteEvent($controller, $request, $response), Event::CONTROLLER_EXECUTE);
+        if (is_array($source) && count($source) === 2) {
+            $controller = $this->container->get($source[0]);
+            $methodName = $source[1];
+        } else {
+            throw new \RuntimeException('Provided an invalid source');
+        }
 
-        $filters = array_merge(
-            $this->controllerFactory->getController($this->config->get('psx_filter_pre')),
-            $controller,
-            $this->controllerFactory->getController($this->config->get('psx_filter_post'))
-        );
+        if ($controller instanceof FilterAwareInterface) {
+            $preFilterChain = new FilterChain($controller->getPreFilter());
+            $postFilterChain = new FilterChain($controller->getPostFilter());
+        } else {
+            $preFilterChain = new FilterChain([]);
+            $postFilterChain = new FilterChain([]);
+        }
+
+        $filters = [
+            $this->preFilterChain,
+            $preFilterChain,
+            $this->controllerExecutorFactory->factory($controller, $methodName, $context),
+            $postFilterChain,
+            $this->postFilterChain,
+        ];
 
         $filterChain = new FilterChain($filters);
-        $filterChain->setLogger($this->logger);
         $filterChain->handle($request, $response);
-
-        $this->eventDispatcher->dispatch(new ControllerProcessedEvent($controller, $request, $response), Event::CONTROLLER_PROCESSED);
     }
 }

@@ -22,16 +22,9 @@ namespace PSX\Framework\Log;
 
 use Psr\Log\LoggerInterface;
 use PSX\Framework\DisplayException;
-use PSX\Framework\Event\ControllerExecuteEvent;
-use PSX\Framework\Event\ControllerProcessedEvent;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
-use PSX\Framework\Event\RequestIncomingEvent;
-use PSX\Framework\Event\ResponseSendEvent;
-use PSX\Framework\Event\RouteMatchedEvent;
-use PSX\Framework\Loader\Context;
 use PSX\Http\Exception\StatusCodeException;
-use PSX\Http\Http;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -48,37 +41,6 @@ class LogListener implements EventSubscriberInterface
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-    }
-
-    public function onRequestIncomming(RequestIncomingEvent $event)
-    {
-        $this->logger->info('Incoming request ' . $event->getRequest()->getMethod() . ' ' . $event->getRequest()->getRequestTarget());
-    }
-
-    public function onRouteMatched(RouteMatchedEvent $event)
-    {
-        $request = $event->getRequest();
-        $path    = $request->getUri()->getPath() ?: '/';
-
-        $this->logger->info('Route matched ' . $request->getMethod() . ' ' . $path);
-    }
-
-    public function onControllerExecute(ControllerExecuteEvent $event)
-    {
-        $this->logger->info('Controller execute');
-    }
-
-    public function onControllerProcessed(ControllerProcessedEvent $event)
-    {
-        $this->logger->info('Controller processed');
-    }
-
-    public function onResponseSend(ResponseSendEvent $event)
-    {
-        $code = $event->getResponse()->getStatusCode();
-        $code = isset(Http::CODES[$code]) ? $code : 200;
-
-        $this->logger->info('Send response ' . $code);
     }
 
     public function onExceptionThrown(ExceptionThrownEvent $event)
@@ -108,15 +70,10 @@ class LogListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        return array(
-            Event::REQUEST_INCOMING     => 'onRequestIncomming',
-            Event::ROUTE_MATCHED        => 'onRouteMatched',
-            Event::CONTROLLER_EXECUTE   => 'onControllerExecute',
-            Event::CONTROLLER_PROCESSED => 'onControllerProcessed',
-            Event::RESPONSE_SEND        => 'onResponseSend',
-            Event::EXCEPTION_THROWN     => 'onExceptionThrown',
-        );
+        return [
+            Event::EXCEPTION_THROWN => 'onExceptionThrown',
+        ];
     }
 }

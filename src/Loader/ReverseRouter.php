@@ -21,6 +21,7 @@
 namespace PSX\Framework\Loader;
 
 use InvalidArgumentException;
+use PSX\Framework\Config\Config;
 
 /**
  * ReverseRouter
@@ -33,15 +34,15 @@ class ReverseRouter
 {
     private RoutingParserInterface $routingParser;
     private string $url;
-    private ?string $basePath;
     private string $dispatch;
+    private ?string $basePath;
 
     public function __construct(RoutingParserInterface $routingParser, string $url, string $dispatch)
     {
         $this->routingParser = $routingParser;
         $this->url           = $url;
-        $this->basePath      = parse_url($this->url, PHP_URL_PATH);
         $this->dispatch      = $dispatch;
+        $this->basePath      = parse_url($this->url, PHP_URL_PATH);
     }
 
     public function getPath($source, array $parameters = array(), $leadingPath = true)

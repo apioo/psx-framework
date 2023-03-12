@@ -20,48 +20,43 @@
 
 namespace PSX\Framework\Loader\RoutingParser;
 
-use Psr\Cache\CacheItemPoolInterface;
-use PSX\Api\Listing\FilterInterface;
+use PSX\Api\Scanner\FilterInterface;
+use PSX\Api\Parser\Attribute\Meta;
 use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 
 /**
- * CachedParser
+ * Uses the attributes at a controller to define the routing
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class CachedParser implements RoutingParserInterface
+class AttributeParser implements RoutingParserInterface
 {
-    public const CACHE_KEY = 'psx-routing-collection';
+    private iterable $controllerCollection;
 
-    private RoutingParserInterface $routingParser;
-    private CacheItemPoolInterface $cache;
-    private ?int $expire;
-
-    public function __construct(RoutingParserInterface $routingParser, CacheItemPoolInterface $cache, ?int $expire = null)
+    public function __construct(iterable $controllerCollection)
     {
-        $this->routingParser = $routingParser;
-        $this->cache         = $cache;
-        $this->expire        = $expire;
+        $this->controllerCollection = $controllerCollection;
     }
 
     public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
-        $item = $this->cache->getItem(self::CACHE_KEY);
+        $result = new RoutingCollection();
 
-        if ($item->isHit()) {
-            return $item->get();
-        } else {
-            $collection = $this->routingParser->getCollection();
+        foreach ($this->controllerCollection as $controller) {
+            $rootMeta = Meta::fromAttributes($controller->getAttributes());
+            $reflection = new \ReflectionClass(get_class($controller));
 
-            $item->set($collection);
-            $item->expiresAfter($this->expire);
+            foreach ($reflection->getMethods() as $method) {
+                $meta = Meta::fromAttributes($method->getAttributes());
+                $meta->merge($rootMeta);
 
-            $this->cache->save($item);
-
-            return $collection;
+                $result->add([$meta->getMethod()], $meta->getPath(), [get_class($controller), $method->getName()]);
+            }
         }
+
+        return $result;
     }
 }

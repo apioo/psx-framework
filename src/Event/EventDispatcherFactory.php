@@ -18,30 +18,40 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Loader;
+namespace PSX\Framework\Event;
 
-use PSX\Framework\Loader\Context;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use PSX\Framework\Config\Config;
+use PSX\Framework\Log\LogListener;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * LoaderInterface
+ * EventDispatcherFactory
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-interface LoaderInterface
+class EventDispatcherFactory
 {
-    /**
-     * Loads the controller instance based on the provided request. Usually this means we use a router to find the
-     * fitting controller class name. Then we execute this instance through the execute method
-     */
-    public function load(RequestInterface $request, ResponseInterface $response, Context $context): void;
+    private iterable $eventSubscribers;
 
-    /**
-     * Executes a specific controller instance. This means that we determine the middleware stack based on the
-     * controller and execute it. Note the load method also calls this method after the controller was loaded
-     */
-    public function execute(mixed $source, RequestInterface $request, ResponseInterface $response, Context $context): void;
+    public function __construct(iterable $eventSubscribers)
+    {
+        $this->eventSubscribers = $eventSubscribers;
+    }
+
+    public function factory(): EventDispatcherInterface
+    {
+        $eventDispatcher = new EventDispatcher();
+
+        foreach ($this->eventSubscribers as $eventSubscriber) {
+            $eventDispatcher->addSubscriber($eventSubscriber);
+        }
+
+        return $eventDispatcher;
+    }
 }

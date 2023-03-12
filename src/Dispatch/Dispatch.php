@@ -21,8 +21,6 @@
 namespace PSX\Framework\Dispatch;
 
 use PSX\Engine\DispatchInterface;
-use PSX\Framework\Config\Config;
-use PSX\Framework\Controller\ErrorController;
 use PSX\Framework\Event\Context\ControllerContext;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
@@ -31,6 +29,7 @@ use PSX\Framework\Event\ResponseSendEvent;
 use PSX\Framework\Exception\ConverterInterface;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Loader\ContextFactoryInterface;
 use PSX\Framework\Loader\LoaderInterface;
 use PSX\Http\Authentication;
 use PSX\Http\Exception as StatusCode;
@@ -38,13 +37,12 @@ use PSX\Http\Http;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
-use PSX\Json\Parser;
 use PSX\Schema\Exception\ValidationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * The dispatcher routes the request to the fitting controller. The route method
- * contains the global try catch for the application
+ * The dispatcher routes the request to the fitting controller. The route method contains the global try catch for the
+ * application
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -52,19 +50,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Dispatch implements DispatchInterface
 {
-    private Config $config;
+    private ContextFactoryInterface $contextFactory;
     private LoaderInterface $loader;
-    private ControllerFactoryInterface $controllerFactory;
     private EventDispatcherInterface $eventDispatcher;
     private ConverterInterface $exceptionConverter;
     private ResponseWriter $responseWriter;
     private int $level;
 
-    public function __construct(Config $config, LoaderInterface $loader, ControllerFactoryInterface $controllerFactory, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter, ResponseWriter $responseWriter)
+    public function __construct(ContextFactoryInterface $contextFactory, LoaderInterface $loader, EventDispatcherInterface $eventDispatcher, ConverterInterface $exceptionConverter, ResponseWriter $responseWriter)
     {
-        $this->config             = $config;
+        $this->contextFactory     = $contextFactory;
         $this->loader             = $loader;
-        $this->controllerFactory  = $controllerFactory;
         $this->eventDispatcher    = $eventDispatcher;
         $this->exceptionConverter = $exceptionConverter;
         $this->responseWriter     = $responseWriter;
@@ -83,12 +79,7 @@ class Dispatch implements DispatchInterface
 
         // load controller
         if ($context === null) {
-            $factory = $this->config->get('psx_context_factory');
-            if ($factory instanceof \Closure) {
-                $context = $factory();
-            } else {
-                $context = new Context();
-            }
+            $context = $this->contextFactory->factory();
         }
 
         try {
