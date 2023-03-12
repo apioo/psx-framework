@@ -23,6 +23,7 @@ namespace PSX\Framework\App\Api\Population;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\App\Service\Population;
@@ -32,26 +33,29 @@ use PSX\Http\Environment\HttpContextInterface;
 use PSX\Framework\App\Model;
 
 #[Description('Entity endpoint')]
+#[Path('/population/popo/:id')]
 #[PathParam(name: "id", type: "integer", required: true)]
 class EntityPopo extends ControllerAbstract
 {
-    #[Inject]
     private Population $populationService;
 
-    #[Outgoing(code: 200, schema: Model\Entity::class)]
-    protected function doGet(HttpContextInterface $context): mixed
+    public function __construct(Population $populationService)
     {
-        return $this->populationService->get(
-            $context->getUriFragment('id')
-        );
+        $this->populationService = $populationService;
+    }
+
+    #[Outgoing(code: 200, schema: Model\Entity::class)]
+    protected function doGet(int $id): mixed
+    {
+        return $this->populationService->get($id);
     }
 
     #[Incoming(schema: Model\Entity::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    protected function doPut(mixed $record, HttpContextInterface $context): array
+    protected function doPut(int $id, mixed $record): array
     {
         $this->populationService->update(
-            $context->getUriFragment('id'),
+            $id,
             $record->getPlace(),
             $record->getRegion(),
             $record->getPopulation(),
@@ -66,11 +70,9 @@ class EntityPopo extends ControllerAbstract
     }
 
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    protected function doDelete(HttpContextInterface $context): array
+    protected function doDelete(int $id): array
     {
-        $this->populationService->delete(
-            $context->getUriFragment('id')
-        );
+        $this->populationService->delete($id);
 
         return [
             'success' => true,

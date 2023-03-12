@@ -21,7 +21,7 @@
 namespace PSX\Framework\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
-use PSX\Framework\Filter\Oauth2Authentication;
+use PSX\Framework\Filter\OAuth2AuthenticationAbstract;
 use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
@@ -45,7 +45,7 @@ class Oauth2AuthenticationTest extends TestCase
 
     public function testSuccessful()
     {
-        $handle = new Oauth2Authentication(function ($accessToken) {
+        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
 
             return $accessToken == self::ACCESS_TOKEN;
 
@@ -73,7 +73,7 @@ class Oauth2AuthenticationTest extends TestCase
     {
         $this->expectException(UnauthorizedException::class);
 
-        $handle = new Oauth2Authentication(function ($accessToken) {
+        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
 
             return false;
 
@@ -96,7 +96,7 @@ class Oauth2AuthenticationTest extends TestCase
     {
         $this->expectException(UnauthorizedException::class);
 
-        $handle = new Oauth2Authentication(function ($accessToken) {
+        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
             
             return $accessToken == self::ACCESS_TOKEN;
 
@@ -117,7 +117,7 @@ class Oauth2AuthenticationTest extends TestCase
 
     public function testMissing()
     {
-        $handle = new Oauth2Authentication(function ($accessToken) {
+        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
             
             return $accessToken == self::ACCESS_TOKEN;
 
@@ -146,7 +146,7 @@ class Oauth2AuthenticationTest extends TestCase
 
     public function testMissingWrongType()
     {
-        $handle = new Oauth2Authentication(function ($accessToken) {
+        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
             
             return $accessToken == self::ACCESS_TOKEN;
 

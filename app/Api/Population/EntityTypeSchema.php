@@ -23,6 +23,7 @@ namespace PSX\Framework\App\Api\Population;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\App\Service\Population;
@@ -31,26 +32,29 @@ use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Http\Environment\HttpContextInterface;
 
 #[Description('Entity endpoint')]
+#[Path('/population/typeschema/:id')]
 #[PathParam(name: "id", type: "integer", required: true)]
 class EntityTypeSchema extends ControllerAbstract
 {
-    #[Inject]
     private Population $populationService;
 
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    protected function doGet(HttpContextInterface $context): mixed
+    public function __construct(Population $populationService)
     {
-        return $this->populationService->get(
-            $context->getUriFragment('id')
-        );
+        $this->populationService = $populationService;
+    }
+
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    protected function doGet(int $id): mixed
+    {
+        return $this->populationService->get($id);
     }
 
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doPut(mixed $record, HttpContextInterface $context): array
+    protected function doPut(int $id, mixed $record): array
     {
         $this->populationService->update(
-            $context->getUriFragment('id'),
+            $id,
             $record['place'],
             $record['region'],
             $record['population'],
@@ -65,11 +69,9 @@ class EntityTypeSchema extends ControllerAbstract
     }
 
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doDelete(HttpContextInterface $context): array
+    protected function doDelete(int $id): array
     {
-        $this->populationService->delete(
-            $context->getUriFragment('id')
-        );
+        $this->populationService->delete($id);
 
         return [
             'success' => true,

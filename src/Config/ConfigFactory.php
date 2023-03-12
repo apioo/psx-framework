@@ -20,11 +20,8 @@
 
 namespace PSX\Framework\Config;
 
-use ArrayIterator;
 use PSX\Data\WriterInterface;
-use PSX\Framework\Connection\CacheFactory;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Loader\ContextFactory;
 use PSX\Framework\Log\LoggerFactory;
 
 /**
@@ -37,13 +34,13 @@ class ConfigFactory
     /**
      * @throws NotFoundException
      */
-    public function factory(string $configFile): Config
+    public static function factory(string $configFile): Config
     {
-        $config = new Config($this->getDefaultConfig());
+        $config = new Config(self::getDefaultConfig());
         return $config->merge(Config::fromFile($configFile));
     }
 
-    private function getDefaultConfig(): array
+    private static function getDefaultConfig(): array
     {
         return [
             'psx_dispatch'            => 'index.php/',

@@ -22,7 +22,7 @@ namespace PSX\Framework\Tests\Api;
 
 use PSX\Api\SpecificationInterface;
 use PSX\Cache\Pool;
-use PSX\Api\Listing\CachedListing;
+use PSX\Api\Listing\CachedScanner;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
@@ -44,8 +44,8 @@ class CachedListingTest extends ControllerDbTestCase
 
     public function testGetResourceIndex()
     {
-        $listing   = new CachedListing(Environment::getService('resource_listing'), Environment::getService('cache'));
-        $resources = $listing->getAvailableRoutes();
+        $listing   = new CachedScanner(Environment::getService('resource_listing'), Environment::getService('cache'));
+        $resources = $listing->getNames();
 
         $this->assertEquals(2, count($resources));
 
@@ -58,12 +58,12 @@ class CachedListingTest extends ControllerDbTestCase
 
     public function testGetDocumentation()
     {
-        $listing = new CachedListing(Environment::getService('resource_listing'), Environment::getService('cache'));
+        $listing = new CachedScanner(Environment::getService('resource_listing'), Environment::getService('cache'));
         $specification = $listing->find('/foo');
 
         $this->assertInstanceOf(SpecificationInterface::class, $specification);
 
-        $resource = $specification->getResourceCollection()->get('/foo');
+        $resource = $specification->getOperations()->get('/foo');
 
         $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resource->getAllowedMethods());
 
@@ -83,7 +83,7 @@ class CachedListingTest extends ControllerDbTestCase
     {
         $cache = new ArrayAdapter();
 
-        $listing = new CachedListing(Environment::getService('resource_listing'), $cache);
+        $listing = new CachedScanner(Environment::getService('resource_listing'), $cache);
         $listing->invalidateResource('/foo');
 
         $this->assertEmpty($cache->getValues());

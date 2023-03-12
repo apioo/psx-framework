@@ -22,6 +22,7 @@ namespace PSX\Framework\Dependency;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\Config;
+use PSX\Framework\Config\ConfigFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -45,12 +46,12 @@ class ContainerBuilder
 
         require $targetFile;
 
-        return new ProjectServiceContainer();
+        return new \ProjectServiceContainer();
     }
 
     private static function dumpContainer(string $appDir, string $targetFile, array $containerFiles): void
     {
-        $config = Config::fromFile($appDir . '/configuration.php');
+        $config = ConfigFactory::factory($appDir . '/configuration.php');
         $containerBuilder = new SymfonyContainerBuilder();
 
         foreach ($config as $key => $value) {
@@ -61,6 +62,8 @@ class ContainerBuilder
         foreach ($containerFiles as $containerFile) {
             $loader->load($containerFile);
         }
+
+        $containerBuilder->compile();
 
         $dumper = new PhpDumper($containerBuilder);
         file_put_contents($targetFile, $dumper->dump());

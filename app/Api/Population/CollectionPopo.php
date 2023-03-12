@@ -23,36 +23,39 @@ namespace PSX\Framework\App\Api\Population;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\QueryParam;
-use PSX\Dependency\Attribute\Inject;
-use PSX\Framework\App\Service\Population;
-use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\SchemaApiAbstract;
 use PSX\Framework\App\Model\Collection;
 use PSX\Framework\App\Model\Entity;
 use PSX\Framework\App\Model\Message;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\App\Service\Population;
+use PSX\Framework\Controller\ControllerAbstract;
 
 #[Description('Collection endpoint')]
+#[Path('/population/popo')]
 class CollectionPopo extends ControllerAbstract
 {
-    #[Inject]
-    protected Population $populationService;
+    private Population $populationService;
+
+    public function __construct(Population $populationService)
+    {
+        $this->populationService = $populationService;
+    }
 
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: Collection::class)]
-    protected function doGet(HttpContextInterface $context): mixed
+    protected function doGet(int $startIndex, int $count): mixed
     {
         return $this->populationService->getAll(
-            $context->getParameter('startIndex'),
-            $context->getParameter('count')
+            $startIndex,
+            $count
         );
     }
 
     #[Incoming(schema: Entity::class)]
     #[Outgoing(code: 201, schema: Message::class)]
-    protected function doPost($record, HttpContextInterface $context): mixed
+    protected function doPost(Entity $record): Message
     {
         $this->populationService->create(
             $record->getPlace(),

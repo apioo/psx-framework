@@ -5,6 +5,7 @@ use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
@@ -27,7 +28,6 @@ use PSX\Framework\Console\RouteCommand;
 use PSX\Framework\Console\ServeCommand;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Data\ProcessorFactory;
-use PSX\Framework\Dispatch\ControllerFactory;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
@@ -48,12 +48,13 @@ use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Log\LoggerFactory;
 use PSX\Framework\Log\LogListener;
+use PSX\Framework\Test\Environment;
 use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
 use PSX\Http\Filter;
-use PSX\Http\FilterInterface;
 use PSX\Schema\Parser\TypeSchema\ImportResolver;
 use PSX\Schema\SchemaManager;
+use PSX\Schema\SchemaManagerInterface;
 use PSX\Sql\TableManager;
 use PSX\Sql\TableManagerInterface;
 use PSX\Validate\Validate;
@@ -65,6 +66,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container) {
@@ -85,6 +87,8 @@ return static function (ContainerConfigurator $container) {
         ->instanceof(EventSubscriberInterface::class)
         ->tag('psx.event_subscriber');
 
+    $services->alias(ContainerInterface::class, 'service_container');
+
     $services->set(FilesystemAdapter::class)
         ->args(['psx', 0, param('psx_path_cache')]);
     $services->alias(CacheItemPoolInterface::class, FilesystemAdapter::class);
@@ -92,14 +96,16 @@ return static function (ContainerConfigurator $container) {
     $services->set(Config::class)
         ->factory([Config::class, 'fromParameterBag']);
 
-    $services->set(LoggerInterface::class)
-        ->factory([LoggerFactory::class, 'factory'])
+    $services->set(LoggerFactory::class)
         ->arg('$logDir', param('psx_path_log'))
         ->arg('$logLevel', param('psx_log_level'));
+    $services->set(LoggerInterface::class)
+        ->factory([service(LoggerFactory::class), 'factory']);
 
-    $services->set(Connection::class)
-        ->factory([ConnectionFactory::class, 'factory'])
+    $services->set(ConnectionFactory::class)
         ->arg('$params', param('psx_connection'));
+    $services->set(Connection::class)
+        ->factory([service(ConnectionFactory::class), 'factory']);
 
     $services->set(HttpClient::class);
     $services->alias(HttpClientInterface::class, HttpClient::class);
@@ -112,15 +118,17 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(SchemaManager::class)
         ->arg('$debug', param('psx_debug'));
+    $services->alias(SchemaManagerInterface::class, SchemaManager::class);
 
     $services->set(TableManager::class);
     $services->alias(TableManagerInterface::class, TableManager::class);
 
     $services->set(Validate::class);
 
-    $services->set(EventDispatcherInterface::class)
-        ->factory([EventDispatcherFactory::class, 'factory'])
+    $services->set(EventDispatcherFactory::class)
         ->args([tagged_iterator('psx.event_subscriber')]);
+    $services->set(EventDispatcherInterface::class)
+        ->factory([service(EventDispatcherFactory::class), 'factory']);
 
     $services->set(Converter::class)
         ->arg('$debug', param('psx_debug'));
@@ -150,9 +158,10 @@ return static function (ContainerConfigurator $container) {
     $services->set(ControllerAttribute::class);
     $services->alias(ScannerInterface::class, ControllerAttribute::class);
 
-    $services->set(ScannerInterface::class)
-        ->factory([ScannerFactory::class, 'factory'])
+    $services->set(ScannerFactory::class)
         ->arg('$debug', param('psx_debug'));
+    $services->set(ScannerInterface::class)
+        ->factory([service(ScannerFactory::class), 'factory']);
 
     $services->set(FilterFactory::class);
     $services->alias(FilterFactoryInterface::class, FilterFactory::class);
@@ -173,6 +182,12 @@ return static function (ContainerConfigurator $container) {
     $services->set(ApplicationFactory::class)
         ->args([tagged_iterator('psx.command')]);
     $services->set(SingleConnectionProvider::class);
+
+    $services->set(ControllerExecutorFactory::class);
+
+    // test environment
+    $services->set(Environment::class)
+        ->public();
 
     // global filter chain
     $services->set(PreFilterChain::class)

@@ -60,7 +60,7 @@ class ControllerDocumentationTest extends ControllerDbTestCase
 
         $this->assertInstanceOf(SpecificationInterface::class, $specification);
 
-        $resource = $specification->getResourceCollection()->get('/foo');
+        $resource = $specification->getOperations()->get('/foo');
 
         $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $resource->getAllowedMethods());

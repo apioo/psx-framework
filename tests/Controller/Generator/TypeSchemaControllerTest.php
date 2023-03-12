@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Generator;
 
-use PSX\Framework\Controller\Generator\TypeSchemaController;
+use PSX\Framework\Controller\Generator\TypeAPIController;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
@@ -59,7 +59,7 @@ class TypeSchemaControllerTest extends ControllerTestCase
     protected function getPaths()
     {
         return array(
-            [['GET'], '/typeschema/:version/*path', TypeSchemaController::class],
+            [['GET'], '/typeschema/:version/*path', TypeAPIController::class],
             [['ANY'], '/api', TestSchemaApiController::class],
             [['ANY'], '/endpoint', TestSchemaApiV2Controller::class],
         );

@@ -27,6 +27,7 @@ use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\QueryParam;
+use PSX\DateTime\LocalDate;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
@@ -66,6 +67,14 @@ class TestSchemaApiController extends ControllerAbstract
         return array(
             'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
         );
+    }
+
+    #[Method('GET')]
+    #[Return()]
+    #[Throws(500, Message::class)]
+    public function myAction(int $startIndex, float $float, bool $boolean, LocalDate $date, \DateTimeInterface $datetime): array
+    {
+        return [];
     }
 
     #[Incoming(schema: Schema\Create::class)]

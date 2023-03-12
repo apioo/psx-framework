@@ -25,7 +25,7 @@ use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\QueryParam;
-use PSX\DateTime\Date;
+use PSX\DateTime\LocalDate;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
@@ -87,7 +87,7 @@ class PropertyPopoController extends ControllerAbstract
         Assert::assertEquals('test', $record->getChoice()->getBar());
         Assert::assertInstanceOf(Model\Complex::class, $record->getComplex());
         Assert::assertEquals('bar', $record->getComplex()->getFoo());
-        Assert::assertInstanceOf(Date::class, $record->getDate());
+        Assert::assertInstanceOf(LocalDate::class, $record->getDate());
         Assert::assertEquals('2015-05-01', $record->getDate()->format('Y-m-d'));
         Assert::assertInstanceOf(DateTime::class, $record->getDateTime());
         Assert::assertEquals('2015-05-01T13:37:14Z', $record->getDateTime()->format('Y-m-d\TH:i:s\Z'));

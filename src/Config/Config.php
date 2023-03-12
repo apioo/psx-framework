@@ -68,7 +68,6 @@ class Config extends ArrayIterator
     public static function fromFile(string $file): self
     {
         $config = include($file);
-
         if (is_array($config)) {
             return new static($config);
         } else {

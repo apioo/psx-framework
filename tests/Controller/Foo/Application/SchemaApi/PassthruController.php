@@ -24,7 +24,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
-use PSX\DateTime\Date;
+use PSX\DateTime\LocalDate;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
@@ -69,7 +69,7 @@ class PassthruController extends ControllerAbstract
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => new Date('2015-05-01'),
+            'date' => new LocalDate('2015-05-01'),
             'dateTime' => new DateTime('2015-05-01T13:37:14'),
             'duration' => new Duration('P1M'),
             'float' => 13.37,

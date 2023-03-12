@@ -36,7 +36,6 @@ class Bootstrap
      * Setup an environment for PSX according to the provided configuration
      *
      * @codeCoverageIgnore
-     * @param \PSX\Framework\Config\Config $config
      */
     public static function setupEnvironment(Config $config)
     {

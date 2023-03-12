@@ -37,10 +37,7 @@ use PSX\Http\Response;
  */
 class ApiTestCase extends ControllerDbTestCase
 {
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    private static $httpClient;
+    private static Client $httpClient;
 
     /**
      * @inheritdoc
@@ -50,24 +47,13 @@ class ApiTestCase extends ControllerDbTestCase
         return $this->createFromFile(__DIR__ . '/api_fixture.php');
     }
 
-    /**
-     * @return array
-     */
-    protected function getPaths()
+    protected function getPaths(): array
     {
         return [
             [['ANY'], '/population/popo', Population\CollectionPopo::class],
             [['ANY'], '/population/popo/:id', Population\EntityPopo::class],
             [['ANY'], '/population/typeschema', Population\CollectionTypeSchema::class],
             [['ANY'], '/population/typeschema/:id', Population\EntityTypeSchema::class],
-
-            [['GET'], '/tool', Tool\DefaultController::class],
-            [['GET'], '/tool/discovery', Tool\DiscoveryController::class],
-            [['GET'], '/tool/doc', Tool\Documentation\IndexController::class],
-            [['GET'], '/tool/doc/:version/*path', Tool\Documentation\DetailController::class],
-            [['GET'], '/tool/routing', Tool\RoutingController::class],
-
-            [['GET'], '/generator/:type/:version/*path', Generator\GeneratorController::class],
         ];
     }
 

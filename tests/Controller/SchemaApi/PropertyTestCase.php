@@ -22,7 +22,7 @@ namespace PSX\Framework\Tests\Controller\SchemaApi;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use PSX\DateTime\Date;
+use PSX\DateTime\LocalDate;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
@@ -314,7 +314,7 @@ JSON;
         Assert::assertEquals(['bar' => 'test'], $record->choice->getProperties());
         Assert::assertInstanceOf(RecordInterface::class, $record->complex);
         Assert::assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        Assert::assertInstanceOf(Date::class, $record->date);
+        Assert::assertInstanceOf(LocalDate::class, $record->date);
         Assert::assertEquals('2015-05-01', $record->date->format('Y-m-d'));
         Assert::assertInstanceOf(DateTime::class, $record->dateTime);
         Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->format('Y-m-d\TH:i:s\Z'));
@@ -393,7 +393,7 @@ JSON;
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => Date::create(2015, 5, 1),
+            'date' => LocalDate::create(2015, 5, 1),
             'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
@@ -429,7 +429,7 @@ JSON;
             'complex' => (object) [
                 'foo' => 'bar'
             ],
-            'date' => Date::create(2015, 5, 1),
+            'date' => LocalDate::create(2015, 5, 1),
             'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
@@ -472,7 +472,7 @@ JSON;
             'complex' => Record::fromArray([
                 'foo' => 'bar'
             ]),
-            'date' => Date::create(2015, 5, 1),
+            'date' => LocalDate::create(2015, 5, 1),
             'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
             'duration' => new Duration('P1M'),
             'float' => 13.37,
@@ -495,7 +495,7 @@ JSON;
         $object->setBoolean(true);
         $object->setChoice(new ChoiceB('test'));
         $object->setComplex(new Complex('bar'));
-        $object->setDate(Date::create(2015, 5, 1));
+        $object->setDate(LocalDate::create(2015, 5, 1));
         $object->setDateTime(DateTime::create(2015, 5, 1, 13, 37, 14));
         $object->setDuration(new Duration('P1M'));
         $object->setFloat(13.37);
