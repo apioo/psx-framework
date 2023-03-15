@@ -6,6 +6,7 @@ $container = require_once __DIR__ . '/container.php';
 
 /** @var \PSX\Framework\Test\Environment $environment */
 $environment = $container->get(\PSX\Framework\Test\Environment::class);
+
 $environment->setup(function(\Doctrine\DBAL\Schema\Schema $fromSchema){
     // create the database schema if not available
     if (!$fromSchema->hasTable('psx_handler_comment')) {
@@ -27,3 +28,5 @@ $environment->setup(function(\Doctrine\DBAL\Schema\Schema $fromSchema){
         return $schema;
     }
 });
+
+$environment->register();

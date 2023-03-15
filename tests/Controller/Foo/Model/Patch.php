@@ -18,40 +18,18 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment;
+namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use Psr\Container\ContainerInterface;
-use PSX\Engine\DispatchInterface;
-use PSX\Engine\EngineInterface;
-use PSX\Engine\WebServer\Engine;
-use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PSX\Schema\Attribute\Required;
 
 /**
- * Environment
+ * Patch
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Environment
+#[Required(['id'])]
+class Patch extends Entry
 {
-    private DispatchInterface $dispatch;
-    private EngineInterface $engine;
-    private bool $debug;
-
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
-    {
-        $this->dispatch = $dispatch;
-        $this->engine   = $engine;
-        $this->debug    = $debug;
-    }
-
-    public function serve(): void
-    {
-        Bootstrap::setupEnvironment($this->debug);
-
-        $this->engine->serve($this->dispatch);
-    }
 }

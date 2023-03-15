@@ -21,6 +21,7 @@
 namespace PSX\Framework\Console;
 
 use Psr\Container\ContainerInterface;
+use PSX\Engine\DispatchInterface;
 use PSX\Framework\Environment\CLI\Engine;
 use PSX\Framework\Environment\Environment;
 use Symfony\Component\Console\Command\Command;
@@ -37,13 +38,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ServeCommand extends Command
 {
-    private ContainerInterface $container;
+    private DispatchInterface $dispatch;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(DispatchInterface $dispatch)
     {
         parent::__construct();
 
-        $this->container = $container;
+        $this->dispatch = $dispatch;
     }
 
     protected function configure()
@@ -59,6 +60,7 @@ class ServeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $engine      = new Engine($input, $output);
+        $environment = new Environment($this->dispatch, $engine, $params);
         $environment = Environment::fromContainer($this->container, $engine);
 
         $environment->serve();

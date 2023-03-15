@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Test;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use PSX\Sql\Test\DatabaseTestCaseTrait;
 
@@ -34,16 +35,14 @@ abstract class DbTestCase extends TestCase
 {
     use DatabaseTestCaseTrait;
 
-    /**
-     * @return \Doctrine\DBAL\Connection
-     */
-    public function getConnection()
+    public function getConnection(): Connection
     {
-        if (!Environment::hasConnection()) {
+        global $environment;
+        if (!$environment->hasConnection()) {
             $this->markTestSkipped('Database connection not available');
         }
 
-        return Environment::getService('connection');
+        return $environment->getConnection();
     }
 
     protected function setUp(): void
@@ -59,11 +58,7 @@ abstract class DbTestCase extends TestCase
         $this->setUpFixture();
     }
 
-    /**
-     * @param string $file
-     * @return array
-     */
-    protected function createFromFile($file)
+    protected function createFromFile(string $file): array
     {
         return include $file;
     }

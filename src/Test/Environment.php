@@ -23,8 +23,8 @@ namespace PSX\Framework\Test;
 use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
+use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
 
 /**
  * Environment
@@ -35,14 +35,18 @@ use PSX\Framework\Config\Config;
  */
 class Environment
 {
-    private Config $config;
-    private Connection $connection;
-    private bool $hasConnection = false;
+    private static self $instance;
 
-    public function __construct(Config $config, Connection $connection)
+    private bool $hasConnection = false;
+    private Connection $connection;
+    private ContainerInterface $container;
+    private bool $debug;
+
+    public function __construct(Connection $connection, ContainerInterface $container, bool $debug)
     {
-        $this->config = $config;
         $this->connection = $connection;
+        $this->container = $container;
+        $this->debug = $debug;
     }
 
     /**
@@ -50,19 +54,29 @@ class Environment
      */
     public function setup(Closure $schemaSetup = null): void
     {
-        Bootstrap::setupEnvironment($this->config);
+        Bootstrap::setupEnvironment($this->debug);
 
         $this->setupConnection($schemaSetup);
-    }
-
-    public function getBaseUrl(): string
-    {
-        return $this->config->get('psx_url') . '/' . $this->config->get('psx_dispatch');
     }
 
     public function hasConnection(): bool
     {
         return $this->hasConnection;
+    }
+
+    public function getConnection(): Connection
+    {
+        return $this->connection;
+    }
+
+    public static function getContainer(): ContainerInterface
+    {
+        return self::$instance->container;
+    }
+
+    public static function getService(string $id): mixed
+    {
+        return self::$instance->container->get($id);
     }
 
     private function setupConnection(Closure $schemaSetup = null): void
@@ -83,5 +97,10 @@ class Environment
         }
 
         $this->hasConnection = true;
+    }
+
+    public function register(): void
+    {
+        self::$instance = $this;
     }
 }

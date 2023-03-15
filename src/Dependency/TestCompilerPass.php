@@ -18,42 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Api;
+namespace PSX\Framework\Dependency;
 
+use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
-use PSX\Api\Listing\CachedScanner;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use PSX\Api\ScannerInterface;
+use PSX\Framework\Loader\LocationFinderInterface;
 use PSX\Framework\Loader\RoutingParserInterface;
-use PSX\Schema\SchemaManagerInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
+ * TestCompilerPass
+ *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ScannerFactory
+class TestCompilerPass implements CompilerPassInterface
 {
-    private RoutingParserInterface $routingParser;
-    private SchemaManagerInterface $schemaManager;
-    private bool $debug;
-    private CacheItemPoolInterface $cache;
-
-    public function __construct(RoutingParserInterface $routingParser, SchemaManagerInterface $schemaManager, bool $debug, CacheItemPoolInterface $cache)
+    public function process(SymfonyContainerBuilder $container)
     {
-        $this->routingParser = $routingParser;
-        $this->schemaManager = $schemaManager;
-        $this->debug = $debug;
-        $this->cache = $cache;
-    }
-
-    public function factory(): ScannerInterface
-    {
-        $resourceListing = new ControllerAttribute($this->routingParser, $this->schemaManager);
-
-        if ($this->debug) {
-            return $resourceListing;
-        } else {
-            return new CachedScanner($resourceListing, $this->cache);
-        }
+        $container->getAlias(LoggerInterface::class)->setPublic(true);
+        $container->getAlias(CacheItemPoolInterface::class)->setPublic(true);
+        $container->getAlias(EventDispatcherInterface::class)->setPublic(true);
+        $container->getAlias(ScannerInterface::class)->setPublic(true);
+        $container->getAlias(RoutingParserInterface::class)->setPublic(true);
+        $container->getAlias(LocationFinderInterface::class)->setPublic(true);
     }
 }

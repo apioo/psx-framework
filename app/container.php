@@ -12,4 +12,6 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(Service\Population::class);
     $services->set(Table\Population::class);
+
+    $services->load('PSX\\Framework\\App\\Api\\Population\\', __DIR__ . '/Api/Population');
 };

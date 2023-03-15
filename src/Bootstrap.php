@@ -22,6 +22,7 @@ namespace PSX\Framework;
 
 use ErrorException;
 use PSX\Framework\Config\Config;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Bootstrap
@@ -34,14 +35,12 @@ class Bootstrap
 {
     /**
      * Setup an environment for PSX according to the provided configuration
-     *
-     * @codeCoverageIgnore
      */
-    public static function setupEnvironment(Config $config)
+    public static function setupEnvironment(bool $debug): void
     {
         if (!defined('PSX')) {
             // error handling
-            if ($config->get('psx_debug') === true) {
+            if ($debug === true) {
                 $errorReporting = E_ALL | E_STRICT;
             } else {
                 $errorReporting = 0;

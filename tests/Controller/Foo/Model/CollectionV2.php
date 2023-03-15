@@ -18,40 +18,31 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment;
+namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use Psr\Container\ContainerInterface;
-use PSX\Engine\DispatchInterface;
-use PSX\Engine\EngineInterface;
-use PSX\Engine\WebServer\Engine;
-use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PSX\Framework\Tests\Controller\Foo\Schema\Entry;
 
 /**
- * Environment
+ * CollectionV2
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Environment
+class CollectionV2
 {
-    private DispatchInterface $dispatch;
-    private EngineInterface $engine;
-    private bool $debug;
+    /**
+     * @var array<Entry>
+     */
+    private ?array $entries = null;
 
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
+    public function getEntries(): ?array
     {
-        $this->dispatch = $dispatch;
-        $this->engine   = $engine;
-        $this->debug    = $debug;
+        return $this->entries;
     }
 
-    public function serve(): void
+    public function setEntries(?array $entries): void
     {
-        Bootstrap::setupEnvironment($this->debug);
-
-        $this->engine->serve($this->dispatch);
+        $this->entries = $entries;
     }
 }

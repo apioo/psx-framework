@@ -24,6 +24,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Dependency\Attribute\Inject;
@@ -46,6 +47,7 @@ use PSX\Schema\SchemaManagerInterface;
 #[PathParam(name: 'fooId', type: 'integer')]
 class EntityController extends ControllerAbstract
 {
+    #[Path('')]
     #[QueryParam(name: 'startIndex', type: 'integer')]
     #[QueryParam(name: 'count', type: 'integer')]
     #[Outgoing(code: 200, schema: Schema\Collection::class)]

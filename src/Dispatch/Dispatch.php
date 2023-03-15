@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Dispatch;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Event\Context\ControllerContext;
 use PSX\Framework\Event\Event;
@@ -38,7 +39,6 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Schema\Exception\ValidationException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * The dispatcher routes the request to the fitting controller. The route method contains the global try catch for the

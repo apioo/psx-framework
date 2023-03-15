@@ -18,40 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment;
+namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
-use Psr\Container\ContainerInterface;
-use PSX\Engine\DispatchInterface;
-use PSX\Engine\EngineInterface;
-use PSX\Engine\WebServer\Engine;
-use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PSX\Framework\Tests\Controller\Foo\Model\Author;
+use PSX\Framework\Tests\Controller\Foo\Model\Item;
+use PSX\Schema\DefinitionsInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * Environment
+ * NestedEntry
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Environment
+class NestedEntry
 {
-    private DispatchInterface $dispatch;
-    private EngineInterface $engine;
-    private bool $debug;
+    private ?Author $author = null;
+    private ?Item $item = null;
 
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
+    public function getAuthor(): ?Author
     {
-        $this->dispatch = $dispatch;
-        $this->engine   = $engine;
-        $this->debug    = $debug;
+        return $this->author;
     }
 
-    public function serve(): void
+    public function setAuthor(?Author $author): void
     {
-        Bootstrap::setupEnvironment($this->debug);
+        $this->author = $author;
+    }
 
-        $this->engine->serve($this->dispatch);
+    public function getItem(): ?Item
+    {
+        return $this->item;
+    }
+
+    public function setItem(?Item $item): void
+    {
+        $this->item = $item;
     }
 }

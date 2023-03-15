@@ -18,40 +18,40 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Environment;
+namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use Psr\Container\ContainerInterface;
-use PSX\Engine\DispatchInterface;
-use PSX\Engine\EngineInterface;
-use PSX\Engine\WebServer\Engine;
-use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PSX\Schema\DefinitionsInterface;
+use PSX\Schema\SchemaAbstract;
 
 /**
- * Environment
+ * Message
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Environment
+class Message
 {
-    private DispatchInterface $dispatch;
-    private EngineInterface $engine;
-    private bool $debug;
+    private ?bool $success = null;
+    private ?string $message = null;
 
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
+    public function getSuccess(): ?bool
     {
-        $this->dispatch = $dispatch;
-        $this->engine   = $engine;
-        $this->debug    = $debug;
+        return $this->success;
     }
 
-    public function serve(): void
+    public function setSuccess(?bool $success): void
     {
-        Bootstrap::setupEnvironment($this->debug);
+        $this->success = $success;
+    }
 
-        $this->engine->serve($this->dispatch);
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): void
+    {
+        $this->message = $message;
     }
 }

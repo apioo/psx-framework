@@ -23,7 +23,9 @@ namespace PSX\Framework\Dependency;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\Config;
 use PSX\Framework\Config\ConfigFactory;
+use PSX\Framework\Config\NotFoundException;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -49,6 +51,9 @@ class ContainerBuilder
         return new \ProjectServiceContainer();
     }
 
+    /**
+     * @throws NotFoundException
+     */
     private static function dumpContainer(string $appDir, string $targetFile, array $containerFiles): void
     {
         $config = ConfigFactory::factory($appDir . '/configuration.php');
@@ -62,6 +67,8 @@ class ContainerBuilder
         foreach ($containerFiles as $containerFile) {
             $loader->load($containerFile);
         }
+
+        $containerBuilder->addCompilerPass(new TestCompilerPass());
 
         $containerBuilder->compile();
 

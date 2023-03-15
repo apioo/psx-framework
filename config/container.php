@@ -4,8 +4,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider;
+use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
@@ -63,7 +65,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -87,20 +89,19 @@ return static function (ContainerConfigurator $container) {
         ->instanceof(EventSubscriberInterface::class)
         ->tag('psx.event_subscriber');
 
-    $services->alias(ContainerInterface::class, 'service_container');
+    $services->alias(ContainerInterface::class, 'service_container')
+        ->public();
 
     $services->set(FilesystemAdapter::class)
         ->args(['psx', 0, param('psx_path_cache')]);
     $services->alias(CacheItemPoolInterface::class, FilesystemAdapter::class);
 
-    $services->set(Config::class)
-        ->factory([Config::class, 'fromParameterBag']);
-
     $services->set(LoggerFactory::class)
         ->arg('$logDir', param('psx_path_log'))
         ->arg('$logLevel', param('psx_log_level'));
-    $services->set(LoggerInterface::class)
+    $services->set(Logger::class)
         ->factory([service(LoggerFactory::class), 'factory']);
+    $services->alias(LoggerInterface::class, Logger::class);
 
     $services->set(ConnectionFactory::class)
         ->arg('$params', param('psx_connection'));
@@ -127,8 +128,9 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(EventDispatcherFactory::class)
         ->args([tagged_iterator('psx.event_subscriber')]);
-    $services->set(EventDispatcherInterface::class)
+    $services->set(EventDispatcher::class)
         ->factory([service(EventDispatcherFactory::class), 'factory']);
+    $services->alias(EventDispatcherInterface::class, EventDispatcher::class);
 
     $services->set(Converter::class)
         ->arg('$debug', param('psx_debug'));
@@ -158,11 +160,6 @@ return static function (ContainerConfigurator $container) {
     $services->set(ControllerAttribute::class);
     $services->alias(ScannerInterface::class, ControllerAttribute::class);
 
-    $services->set(ScannerFactory::class)
-        ->arg('$debug', param('psx_debug'));
-    $services->set(ScannerInterface::class)
-        ->factory([service(ScannerFactory::class), 'factory']);
-
     $services->set(FilterFactory::class);
     $services->alias(FilterFactoryInterface::class, FilterFactory::class);
 
@@ -187,6 +184,7 @@ return static function (ContainerConfigurator $container) {
 
     // test environment
     $services->set(Environment::class)
+        ->arg('$debug', param('psx_debug'))
         ->public();
 
     // global filter chain

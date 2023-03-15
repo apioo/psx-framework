@@ -21,23 +21,17 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\QueryParam;
-use PSX\DateTime\LocalDate;
-use PSX\Dependency\Attribute\Inject;
+use PSX\DateTime\Date;
+use PSX\DateTime\DateTime;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Schema;
+use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\TestTable;
-use PSX\Http\Environment\HttpContextInterface;
-use PSX\Http\Environment\HttpResponse;
-use PSX\Schema\SchemaManager;
-use PSX\Schema\SchemaManagerInterface;
 use PSX\Sql\TableManagerInterface;
 
 /**
@@ -48,12 +42,17 @@ use PSX\Sql\TableManagerInterface;
  * @link    http://phpsx.org
  */
 #[Description('lorem ipsum')]
+#[Path('/foo/:name/:type')]
 #[PathParam(name: 'name', type: 'string', description: 'Name parameter', minLength: 0, maxLength: 16, pattern: '[A-z]+')]
 #[PathParam(name: 'type', type: 'string', enum: ['foo', 'bar'])]
 class TestSchemaApiController extends ControllerAbstract
 {
-    #[Inject]
     private TableManagerInterface $tableManager;
+
+    public function __construct(TableManagerInterface $tableManager)
+    {
+        $this->tableManager = $tableManager;
+    }
 
     #[Description('Returns a collection')]
     #[QueryParam(name: 'startIndex', type: 'integer', description: 'startIndex parameter', minimum: 0, maximum: 32)]
@@ -61,75 +60,80 @@ class TestSchemaApiController extends ControllerAbstract
     #[QueryParam(name: 'boolean', type: 'boolean')]
     #[QueryParam(name: 'date', type: 'date')]
     #[QueryParam(name: 'datetime', type: 'datetime')]
-    #[Outgoing(code: 200, schema: Schema\Collection::class)]
-    protected function doGet(HttpContextInterface $context): array
+    #[Outgoing(code: 200, schema: Model\Collection::class)]
+    public function doGet(string $name, string $type, ?int $startIndex, ?float $float, ?bool $boolean, ?Date $date, ?DateTime $dateTime): array
     {
+        Assert::assertEquals('', $name);
+        Assert::assertEquals('', $type);
+        Assert::assertNull($startIndex);
+        Assert::assertNull($float);
+        Assert::assertNull($boolean);
+        Assert::assertNull($date);
+        Assert::assertNull($dateTime);
+
         return array(
             'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
         );
     }
 
-    #[Method('GET')]
-    #[Return()]
-    #[Throws(500, Message::class)]
-    public function myAction(int $startIndex, float $float, bool $boolean, LocalDate $date, \DateTimeInterface $datetime): array
+    #[Incoming(schema: Model\Create::class)]
+    #[Outgoing(code: 201, schema: Model\Message::class)]
+    public function doPost(string $name, string $type, Model\Create $record): Model\Message
     {
-        return [];
+        Assert::assertEquals('', $name);
+        Assert::assertEquals('', $type);
+        Assert::assertEquals(3, $record->getUserId());
+        Assert::assertEquals('test', $record->getTitle());
+        Assert::assertInstanceOf('DateTime', $record->getDate());
+
+        $message = new Model\Message();
+        $message->setSuccess(true);
+        $message->setMessage('You have successful post a record');
+        return $message;
     }
 
-    #[Incoming(schema: Schema\Create::class)]
-    #[Outgoing(code: 201, schema: Schema\SuccessMessage::class)]
-    protected function doPost($record, HttpContextInterface $context): HttpResponse
+    #[Incoming(schema: Model\Update::class)]
+    #[Outgoing(code: 200, schema: Model\Message::class)]
+    public function doPut(string $name, string $type, Model\Update $record): Model\Message
     {
-        Assert::assertEquals('', $context->getUriFragment('name'));
-        Assert::assertEquals(3, $record->userId);
-        Assert::assertEquals('test', $record->title);
-        Assert::assertInstanceOf('DateTime', $record->date);
+        Assert::assertEquals('', $name);
+        Assert::assertEquals('', $type);
+        Assert::assertEquals(1, $record->getId());
+        Assert::assertEquals(3, $record->getUserId());
+        Assert::assertEquals('foobar', $record->getTitle());
 
-        return new HttpResponse(201, [], [
-            'success' => true,
-            'message' => 'You have successful post a record'
-        ]);
+        $message = new Model\Message();
+        $message->setSuccess(true);
+        $message->setMessage('You have successful put a record');
+        return $message;
     }
 
-    #[Incoming(schema: Schema\Update::class)]
-    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
-    protected function doPut($record, HttpContextInterface $context): array
+    #[Incoming(schema: Model\Delete::class)]
+    #[Outgoing(code: 200, schema: Model\Message::class)]
+    public function doDelete(string $name, string $type): Model\Message
     {
-        Assert::assertEquals('', $context->getUriFragment('name'));
-        Assert::assertEquals(1, $record->id);
-        Assert::assertEquals(3, $record->userId);
-        Assert::assertEquals('foobar', $record->title);
+        Assert::assertEquals('', $name);
+        Assert::assertEquals('', $type);
 
-        return array(
-            'success' => true,
-            'message' => 'You have successful put a record'
-        );
+        $message = new Model\Message();
+        $message->setSuccess(true);
+        $message->setMessage('You have successful delete a record');
+        return $message;
     }
 
-    #[Incoming(schema: Schema\Delete::class)]
-    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
-    protected function doDelete(HttpContextInterface $context): array
+    #[Incoming(schema: Model\Patch::class)]
+    #[Outgoing(code: 200, schema: Model\Message::class)]
+    public function doPatch(string $name, string $type, Model\Patch $record): Model\Message
     {
-        Assert::assertEquals('', $context->getUriFragment('name'));
+        Assert::assertEquals('', $name);
+        Assert::assertEquals('', $type);
+        Assert::assertEquals(1, $record->getId());
+        Assert::assertEquals(3, $record->getUserId());
+        Assert::assertEquals('foobar', $record->getTitle());
 
-        return array(
-            'success' => true,
-            'message' => 'You have successful delete a record'
-        );
-    }
-
-    #[Incoming(schema: Schema\Patch::class)]
-    #[Outgoing(code: 200, schema: Schema\SuccessMessage::class)]
-    protected function doPatch($record, HttpContextInterface $context): array
-    {
-        Assert::assertEquals(1, $record->id);
-        Assert::assertEquals(3, $record->userId);
-        Assert::assertEquals('foobar', $record->title);
-
-        return array(
-            'success' => true,
-            'message' => 'You have successful patch a record'
-        );
+        $message = new Model\Message();
+        $message->setSuccess(true);
+        $message->setMessage('You have successful patch a record');
+        return $message;
     }
 }

@@ -18,59 +18,67 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Config;
+namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use ArrayIterator;
+use PSX\DateTime\DateTime;
+use PSX\Schema\Attribute\MaxLength;
+use PSX\Schema\Attribute\MinLength;
+use PSX\Schema\Attribute\Pattern;
 
 /**
- * Config
+ * Entry
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Config extends ArrayIterator
+class Entry
 {
-    public function __construct(array $config)
+    private ?int $id = null;
+    private ?int $userId = null;
+    #[MinLength(3)]
+    #[MaxLength(16)]
+    #[Pattern('[A-z]+')]
+    private ?string $title = null;
+    private ?DateTime $date = null;
+
+    public function getId(): ?int
     {
-        parent::__construct($config);
+        return $this->id;
     }
 
-    public function set(string $key, mixed $value): void
+    public function setId(?int $id): void
     {
-        $this->offsetSet($key, $value);
+        $this->id = $id;
     }
 
-    public function get(string $key): mixed
+    public function getUserId(): ?int
     {
-        return $this->offsetGet($key);
+        return $this->userId;
     }
 
-    public function has(string $key): bool
+    public function setUserId(?int $userId): void
     {
-        return $this->offsetExists($key);
+        $this->userId = $userId;
     }
 
-    public function merge(Config $config): self
+    public function getTitle(): ?string
     {
-        return new static(array_merge($this->getArrayCopy(), $config->getArrayCopy()));
+        return $this->title;
     }
 
-    public function offsetGet(mixed $key): mixed
+    public function setTitle(?string $title): void
     {
-        return $this->offsetExists($key) ? parent::offsetGet($key) : null;
+        $this->title = $title;
     }
 
-    /**
-     * @throws NotFoundException
-     */
-    public static function fromFile(string $file): self
+    public function getDate(): ?DateTime
     {
-        $config = include($file);
-        if (is_array($config)) {
-            return new static($config);
-        } else {
-            throw new NotFoundException('Config file must return an array');
-        }
+        return $this->date;
+    }
+
+    public function setDate(?DateTime $date): void
+    {
+        $this->date = $date;
     }
 }
