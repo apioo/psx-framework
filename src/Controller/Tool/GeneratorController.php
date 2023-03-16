@@ -56,18 +56,14 @@ class GeneratorController extends ControllerAbstract
         $this->generatorFactory = $generatorFactory;
     }
 
-    #[Path('/system/export/:type')]
-    protected function generate(string $type, ?string $filter = null): HttpResponse
+    #[Path('/system/generator/:type')]
+    public function generate(string $type, ?string $filter = null): mixed
     {
         $type      = $this->getType($type);
         $filter    = $this->listingFilterFactory->getFilter($filter ?? '');
         $generator = $this->generatorFactory->getGenerator($type, null, $filter);
 
-        $spec = $this->scanner->generate($filter);
-        if (!$spec instanceof SpecificationInterface) {
-            throw new StatusCode\NotFoundException('Invalid resource');
-        }
-
+        $spec   = $this->scanner->generate($filter);
         $result = $generator->generate($spec);
 
         $headers = [];
@@ -84,7 +80,7 @@ class GeneratorController extends ControllerAbstract
         return new HttpResponse(200, $headers, $result);
     }
 
-    protected function getType(string $type): string
+    private function getType(string $type): string
     {
         $types = GeneratorFactory::getPossibleTypes();
         if (in_array($type, $types)) {

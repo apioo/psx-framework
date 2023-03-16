@@ -20,18 +20,11 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
-use PSX\Api\Resource;
-use PSX\Api\SpecificationInterface;
-use PSX\Dependency\Attribute\Inject;
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\ControllerInterface;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\ReverseRouter;
-use PSX\Framework\Schema;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Model\DiscoveryCollection;
+use PSX\Framework\Model\DiscoveryLink;
 
 /**
  * DiscoveryController
@@ -50,52 +43,39 @@ class DiscoveryController implements ControllerInterface
     }
 
     #[Path('/system/discovery')]
-    protected function show(): Schema\Discovery\Collection
+    public function show(): DiscoveryCollection
     {
-        $links = new Schema\Discovery\Collection();
+        $collection = new DiscoveryCollection();
+        $collection->setLinks($this->getLinks());
+        return $collection;
+    }
+
+    private function getLinks(): array
+    {
+        $links = [];
 
         $apiPath = $this->reverseRouter->getDispatchUrl();
         if ($apiPath !== null) {
-            $links->addLink(new Schema\Discovery\Link());
-            $links[] = [
-                'rel'  => 'api',
-                'href' => $apiPath,
-            ];
+            $links[] = $this->newLink('api', $apiPath);
         }
 
         $routingPath = $this->reverseRouter->getUrl(RoutingController::class);
         if ($routingPath !== null) {
-            $links[] = [
-                'rel'  => 'routing',
-                'href' => $routingPath,
-            ];
+            $links[] = $this->newLink('routing', $routingPath);
         }
 
-        $documentationPath = $this->reverseRouter->getUrl(Documentation\IndexController::class);
-        if ($documentationPath !== null) {
-            $links[] = [
-                'rel'  => 'documentation',
-                'href' => $documentationPath,
-            ];
+        $generatorPath = $this->reverseRouter->getUrl(GeneratorController::class);
+        if ($generatorPath !== null) {
+            $links[] = $this->newLink('generator', $generatorPath);
         }
 
-        $generators = [
-            'openapi' => OpenAPIController::class,
-            'raml'    => RamlController::class,
-        ];
+        return $links;
+    }
 
-        foreach ($generators as $rel => $class) {
-            $generatorPath = $this->reverseRouter->getUrl($class, ['{version}', '{path}']);
-            if ($generatorPath !== null) {
-                $links[] = [
-                    'rel'  => $rel,
-                    'href' => $generatorPath,
-                ];
-            }
-        }
-
-        return [
-            'links' => $links,
-        ];
+    private function newLink(string $rel, string $href): DiscoveryLink
+    {
+        $link = new DiscoveryLink();
+        $link->setRel($rel);
+        $link->setHref($href);
     }
 }
