@@ -20,12 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
-use PSX\Framework\Controller\Generator\OpenAPIController;
-use PSX\Framework\Controller\Generator\RamlController;
-use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Framework\Controller\Tool\DiscoveryController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Controller\Tool\RoutingController;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**
@@ -39,7 +33,7 @@ class DiscoveryControllerTest extends ControllerTestCase
 {
     public function testDocumentation()
     {
-        $response = $this->sendRequest('/doc/*/discovery', 'GET');
+        $response = $this->sendRequest('/routing', 'GET');
 
         $actual = (string) $response->getBody();
         $expect = <<<'JSON'
@@ -90,7 +84,7 @@ JSON;
 
     public function testIndex()
     {
-        $response = $this->sendRequest('/discovery', 'GET');
+        $response = $this->sendRequest('/system/discovery', 'GET');
         $json     = (string) $response->getBody();
 
         $expect = <<<'JSON'
@@ -122,17 +116,5 @@ JSON;
 
         $this->assertEquals(200, $response->getStatusCode(), $json);
         $this->assertJsonStringEqualsJsonString($expect, $json, $json);
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/discovery', DiscoveryController::class],
-            [['GET'], '/routing', RoutingController::class],
-            [['GET'], '/doc', Documentation\IndexController::class],
-            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
-            [['GET'], '/openapi', OpenAPIController::class],
-            [['GET'], '/raml', RamlController::class],
-        );
     }
 }

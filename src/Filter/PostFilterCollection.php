@@ -20,21 +20,15 @@
 
 namespace PSX\Framework\Filter;
 
-use Closure;
-use PSX\Http\Exception\UnauthorizedException;
-use PSX\Http\Filter\FilterChain;
-use PSX\Http\FilterChainInterface;
-use PSX\Http\FilterInterface;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Http\Filter\FilterCollection;
 
 /**
- * PreFilterChain
+ * PostFilterCollection
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PreFilterChain extends FilterChain
+class PostFilterCollection extends FilterCollection
 {
 }

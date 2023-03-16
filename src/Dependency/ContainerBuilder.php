@@ -68,8 +68,6 @@ class ContainerBuilder
             $loader->load($containerFile);
         }
 
-        $containerBuilder->addCompilerPass(new TestCompilerPass());
-
         $containerBuilder->compile();
 
         $dumper = new PhpDumper($containerBuilder);

@@ -23,9 +23,12 @@ namespace PSX\Framework\Loader;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Controller\FilterAwareInterface;
 use PSX\Framework\Filter\ControllerExecutorFactory;
-use PSX\Framework\Filter\PostFilterChain;
-use PSX\Framework\Filter\PreFilterChain;
+use PSX\Framework\Filter\PostFilterCollection;
+use PSX\Framework\Filter\PreFilterCollection;
 use PSX\Http\Filter\FilterChain;
+use PSX\Http\Filter\FilterCollection;
+use PSX\Http\FilterCollectionInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
@@ -40,16 +43,16 @@ class Loader implements LoaderInterface
 {
     private LocationFinderInterface $locationFinder;
     private ControllerExecutorFactory $controllerExecutorFactory;
-    private PreFilterChain $preFilterChain;
-    private PostFilterChain $postFilterChain;
+    private FilterCollectionInterface $preFilterCollection;
+    private FilterCollectionInterface $postFilterCollection;
     private ContainerInterface $container;
 
-    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterChain $preFilterChain, PostFilterChain $postFilterChain, ContainerInterface $container)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container)
     {
         $this->locationFinder = $locationFinder;
         $this->controllerExecutorFactory = $controllerExecutorFactory;
-        $this->preFilterChain = $preFilterChain;
-        $this->postFilterChain = $postFilterChain;
+        $this->preFilterCollection = $preFilterCollection;
+        $this->postFilterCollection = $postFilterCollection;
         $this->container = $container;
     }
 
@@ -74,22 +77,41 @@ class Loader implements LoaderInterface
         }
 
         if ($controller instanceof FilterAwareInterface) {
-            $preFilterChain = new FilterChain($controller->getPreFilter());
-            $postFilterChain = new FilterChain($controller->getPostFilter());
+            $preFilterCollection = $this->resolveFilter($controller->getPreFilter());
+            $postFilterCollection = $this->resolveFilter($controller->getPostFilter());
         } else {
-            $preFilterChain = new FilterChain([]);
-            $postFilterChain = new FilterChain([]);
+            $preFilterCollection = [];
+            $postFilterCollection = [];
         }
 
-        $filters = [
-            $this->preFilterChain,
-            $preFilterChain,
-            $this->controllerExecutorFactory->factory($controller, $methodName, $context),
-            $postFilterChain,
-            $this->postFilterChain,
-        ];
+        $filterChain = new FilterChain();
+        $filterChain->addAll($this->preFilterCollection);
+        $filterChain->addAll($preFilterCollection);
+        $filterChain->on($this->controllerExecutorFactory->factory($controller, $methodName, $context));
+        $filterChain->addAll($postFilterCollection);
+        $filterChain->addAll($this->postFilterCollection);
 
-        $filterChain = new FilterChain($filters);
         $filterChain->handle($request, $response);
+    }
+
+    private function resolveFilter(array $filter): FilterCollection
+    {
+        $result = [];
+        foreach ($filter as $value) {
+            if (is_string($value)) {
+                $service = $this->container->get($value);
+                if ($service instanceof FilterInterface) {
+                    $result[] = $service;
+                } else {
+                    throw new \RuntimeException('Provided filter service "' . $value . '" must implement: ' . FilterInterface::class);
+                }
+            } elseif ($value instanceof FilterInterface || $value instanceof \Closure) {
+                $result[] = $value;
+            } else {
+                throw new \RuntimeException('Provided an invalid filter');
+            }
+        }
+
+        return new FilterCollection($result);
     }
 }

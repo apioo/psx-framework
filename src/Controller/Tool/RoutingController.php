@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Parser\Attribute;
@@ -50,6 +51,7 @@ class RoutingController extends ControllerAbstract
     }
 
     #[Path('/system/routing')]
+    #[Get]
     public function show(): RoutingCollection
     {
         $collection = new RoutingCollection();

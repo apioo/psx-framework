@@ -32,7 +32,7 @@ use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DocumentationControllerTest extends ControllerTestCase
+class GeneratorControllerTest extends ControllerTestCase
 {
     public function testDocumentationIndex()
     {

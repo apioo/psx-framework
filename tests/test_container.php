@@ -1,7 +1,5 @@
 <?php
 
-use PSX\Framework\App\Service;
-use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -15,8 +13,6 @@ return static function (ContainerConfigurator $container) {
         ->instanceof(ControllerInterface::class)
         ->tag('psx.controller');
 
-    $services->set(Service\Population::class);
-    $services->set(Table\Population::class);
-
-    $services->load('PSX\\Framework\\App\\Api\\Population\\', __DIR__ . '/Api/Population');
+    $services->load('PSX\\Framework\\Controller\\Tool\\', __DIR__ . '/../src/Controller/Tool')
+        ->public();
 };

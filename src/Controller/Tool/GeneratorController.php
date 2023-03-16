@@ -20,12 +20,14 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
+use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\GeneratorFactoryInterface;
-use PSX\Api\Listing\FilterFactoryInterface;
+use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Api\SpecificationInterface;
 use PSX\Dependency\Attribute\Inject;
@@ -46,21 +48,22 @@ use PSX\Schema\Generator\Code\Chunks;
 class GeneratorController extends ControllerAbstract
 {
     private ScannerInterface $scanner;
-    private FilterFactoryInterface $listingFilterFactory;
+    private FilterFactoryInterface $filterFactory;
     private GeneratorFactoryInterface $generatorFactory;
 
-    public function __construct(ScannerInterface $scanner, FilterFactoryInterface $listingFilterFactory, GeneratorFactoryInterface $generatorFactory)
+    public function __construct(ScannerInterface $scanner, FilterFactoryInterface $filterFactory, GeneratorFactoryInterface $generatorFactory)
     {
         $this->scanner = $scanner;
-        $this->listingFilterFactory = $listingFilterFactory;
+        $this->filterFactory = $filterFactory;
         $this->generatorFactory = $generatorFactory;
     }
 
     #[Path('/system/generator/:type')]
+    #[Post]
     public function generate(string $type, ?string $filter = null): mixed
     {
         $type      = $this->getType($type);
-        $filter    = $this->listingFilterFactory->getFilter($filter ?? '');
+        $filter    = $this->filterFactory->getFilter($filter ?? '');
         $generator = $this->generatorFactory->getGenerator($type, null, $filter);
 
         $spec   = $this->scanner->generate($filter);

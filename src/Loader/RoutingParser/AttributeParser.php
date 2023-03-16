@@ -46,14 +46,19 @@ class AttributeParser implements RoutingParserInterface
         $result = new RoutingCollection();
 
         foreach ($this->controllerCollection as $controller) {
-            $rootMeta = Meta::fromAttributes($controller->getAttributes());
             $reflection = new \ReflectionClass(get_class($controller));
+            $rootMeta = Meta::fromAttributes($reflection->getAttributes());
 
             foreach ($reflection->getMethods() as $method) {
                 $meta = Meta::fromAttributes($method->getAttributes());
                 $meta->merge($rootMeta);
 
-                $result->add([$meta->getMethod()], $meta->getPath(), [get_class($controller), $method->getName()]);
+                $httpMethod = $meta->getMethod()?->method;
+                $httpPath = $meta->getPath()?->path;
+
+                if (!empty($httpMethod) && !empty($httpPath)) {
+                    $result->add([$httpMethod], $httpPath, [get_class($controller), $method->getName()]);
+                }
             }
         }
 

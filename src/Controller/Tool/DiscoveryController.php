@@ -20,8 +20,9 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
-use PSX\Framework\Controller\ControllerInterface;
+use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Model\DiscoveryCollection;
 use PSX\Framework\Model\DiscoveryLink;
@@ -33,7 +34,7 @@ use PSX\Framework\Model\DiscoveryLink;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DiscoveryController implements ControllerInterface
+class DiscoveryController extends ControllerAbstract
 {
     private ReverseRouter $reverseRouter;
 
@@ -43,6 +44,7 @@ class DiscoveryController implements ControllerInterface
     }
 
     #[Path('/system/discovery')]
+    #[Get]
     public function show(): DiscoveryCollection
     {
         $collection = new DiscoveryCollection();
@@ -77,5 +79,6 @@ class DiscoveryController implements ControllerInterface
         $link = new DiscoveryLink();
         $link->setRel($rel);
         $link->setHref($href);
+        return $link;
     }
 }

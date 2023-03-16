@@ -29,7 +29,7 @@ use PSX\Http\Filter\CORS;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ControllerAbstract implements FilterAwareInterface
+abstract class ControllerAbstract implements ControllerInterface, FilterAwareInterface
 {
     /**
      * @inheritDoc

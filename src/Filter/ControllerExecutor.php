@@ -108,13 +108,13 @@ class ControllerExecutor implements FilterInterface
         $operation = $specification->getOperations()->get($operationId);
 
         if ($operation->getStability() === OperationInterface::STABILITY_DEPRECATED) {
-            $response->addHeader('Stability', 'deprecated');
+            $response->setHeader('X-Stability', 'deprecated');
         } elseif ($operation->getStability() === OperationInterface::STABILITY_EXPERIMENTAL) {
-            $response->addHeader('Stability', 'experimental');
+            $response->setHeader('X-Stability', 'experimental');
         } elseif ($operation->getStability() === OperationInterface::STABILITY_STABLE) {
-            $response->addHeader('Stability', 'stable');
+            $response->setHeader('X-Stability', 'stable');
         } elseif ($operation->getStability() === OperationInterface::STABILITY_LEGACY) {
-            $response->addHeader('Stability', 'legacy');
+            $response->setHeader('X-Stability', 'legacy');
         }
 
         $result = [];
@@ -193,7 +193,7 @@ class ControllerExecutor implements FilterInterface
 
     private function getSpecification(\ReflectionClass $controller): SpecificationInterface
     {
-        $item = $this->cache->getItem('psx-spec-' . $controller->getName());
+        $item = $this->cache->getItem('psx-spec-' . str_replace('\\', '-', $controller->getName()));
         if ($item->isHit()) {
             return $item->get();
         }
