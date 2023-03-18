@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
+use PSX\DateTime\Date;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
@@ -54,7 +55,7 @@ class Property
     private ?bool $boolean = null;
     private ChoiceA|ChoiceB|null $choice = null;
     private ?Complex $complex = null;
-    private ?LocalDate $date = null;
+    private ?Date $date = null;
     private ?DateTime $dateTime = null;
     private ?Duration $duration = null;
     private ?float $float = null;
@@ -132,12 +133,12 @@ class Property
         $this->complex = $complex;
     }
 
-    public function getDate(): ?LocalDate
+    public function getDate(): ?Date
     {
         return $this->date;
     }
 
-    public function setDate(LocalDate $date): void
+    public function setDate(Date $date): void
     {
         $this->date = $date;
     }

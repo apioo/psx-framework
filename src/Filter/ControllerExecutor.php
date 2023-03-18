@@ -33,7 +33,7 @@ use PSX\DateTime\Time;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Schema\Passthru;
+use PSX\Framework\Model\Passthru;
 use PSX\Http\Filter\CORS;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
@@ -83,30 +83,13 @@ class ControllerExecutor implements FilterInterface
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $arguments = $this->buildArguments($request, $response);
+        $specification = $this->getSpecification(get_class($this->controller));
 
-        $result = call_user_func_array([$this->controller, $this->methodName], $arguments);
-
-        $this->responseWriter->setBody($response, $result, $request);
-
-        $filterChain->handle($request, $response);
-    }
-
-    /**
-     * @throws TypeNotFoundException
-     * @throws \ReflectionException
-     * @throws OperationNotFoundException
-     * @throws InvalidFormatException
-     */
-    private function buildArguments(RequestInterface $request, ResponseInterface $response): array
-    {
-        $controller = new \ReflectionClass(get_class($this->controller));
-        $method = $controller->getMethod($this->methodName);
-
-        $specification = $this->getSpecification($controller);
-        $operationId = Attribute::buildOperationId($controller->getName(), $method->getName());
+        $operationId = Attribute::buildOperationId(get_class($this->controller), $this->methodName);
         $operation = $specification->getOperations()->get($operationId);
 
+        $response->setStatus($operation->getReturn()->getCode());
+        $response->setHeader('X-Operation-Id', $operationId);
         if ($operation->getStability() === OperationInterface::STABILITY_DEPRECATED) {
             $response->setHeader('X-Stability', 'deprecated');
         } elseif ($operation->getStability() === OperationInterface::STABILITY_EXPERIMENTAL) {
@@ -117,6 +100,27 @@ class ControllerExecutor implements FilterInterface
             $response->setHeader('X-Stability', 'legacy');
         }
 
+        $arguments = $this->buildArguments($operation, $request, $specification->getDefinitions());
+
+        if ($request->getMethod() === 'OPTIONS') {
+            // for OPTIONS requests we dont execute the controller
+        } else {
+            $result = call_user_func_array([$this->controller, $this->methodName], $arguments);
+
+            $this->responseWriter->setBody($response, $result, $request);
+        }
+
+        $filterChain->handle($request, $response);
+    }
+
+    /**
+     * @param OperationInterface $operation
+     * @param RequestInterface $request
+     * @param DefinitionsInterface $definitions
+     * @throws TypeNotFoundException
+     */
+    private function buildArguments(OperationInterface $operation, RequestInterface $request, DefinitionsInterface $definitions): array
+    {
         $result = [];
         foreach ($operation->getArguments()->getAll() as $name => $argument) {
             if ($argument->getIn() === 'path') {
@@ -126,7 +130,7 @@ class ControllerExecutor implements FilterInterface
                 $value = $request->getUri()->getParameter($name);
                 $result[] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'body') {
-                $result[] = $this->parseRequest($argument->getSchema(), $request, $specification->getDefinitions());
+                $result[] = $this->parseRequest($argument->getSchema(), $request, $definitions);
             }
         }
 
@@ -181,7 +185,7 @@ class ControllerExecutor implements FilterInterface
             return null;
         }
 
-        if ($type->getRef() === Passthru::NAME) {
+        if ($type->getRef() === Passthru::class) {
             $data = $this->requestReader->getBody($request);
         } else {
             $schema = new Schema($definitions->getType($type->getRef()), $definitions);
@@ -191,15 +195,15 @@ class ControllerExecutor implements FilterInterface
         return $data;
     }
 
-    private function getSpecification(\ReflectionClass $controller): SpecificationInterface
+    private function getSpecification(string $controllerClass): SpecificationInterface
     {
-        $item = $this->cache->getItem('psx-spec-' . str_replace('\\', '-', $controller->getName()));
+        $item = $this->cache->getItem('psx-spec-' . str_replace('\\', '-', $controllerClass));
         if ($item->isHit()) {
             return $item->get();
         }
 
         $parser = new Attribute($this->schemaManager, true);
-        $spec = $parser->parse($controller->getName());
+        $spec = $parser->parse($controllerClass);
 
         $item->set($spec);
         $this->cache->save($item);

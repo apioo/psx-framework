@@ -22,8 +22,6 @@ use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\ControllerAttribute;
-use PSX\Framework\Api\ScannerFactory;
-use PSX\Framework\Config\Config;
 use PSX\Framework\Connection\ConnectionFactory;
 use PSX\Framework\Console\ApplicationFactory;
 use PSX\Framework\Console\RouteCommand;
@@ -35,10 +33,11 @@ use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
 use PSX\Framework\Exception\ConverterInterface;
 use PSX\Framework\Filter\ControllerExecutorFactory;
-use PSX\Framework\Filter\PostFilterChain;
-use PSX\Framework\Filter\PreFilterChain;
+use PSX\Framework\Filter\PostFilterCollection;
+use PSX\Framework\Filter\PreFilterCollection;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
+use PSX\Framework\Listener\LoggingListener;
 use PSX\Framework\Loader\ContextFactory;
 use PSX\Framework\Loader\ContextFactoryInterface;
 use PSX\Framework\Loader\Loader;
@@ -48,8 +47,7 @@ use PSX\Framework\Loader\LocationFinderInterface;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParserInterface;
-use PSX\Framework\Log\LoggerFactory;
-use PSX\Framework\Log\LogListener;
+use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\Test\Environment;
 use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
@@ -94,35 +92,43 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(FilesystemAdapter::class)
         ->args(['psx', 0, param('psx_path_cache')]);
-    $services->alias(CacheItemPoolInterface::class, FilesystemAdapter::class);
+    $services->alias(CacheItemPoolInterface::class, FilesystemAdapter::class)
+        ->public();
 
     $services->set(LoggerFactory::class)
         ->arg('$logDir', param('psx_path_log'))
         ->arg('$logLevel', param('psx_log_level'));
     $services->set(Logger::class)
         ->factory([service(LoggerFactory::class), 'factory']);
-    $services->alias(LoggerInterface::class, Logger::class);
+    $services->alias(LoggerInterface::class, Logger::class)
+        ->public();
 
     $services->set(ConnectionFactory::class)
         ->arg('$params', param('psx_connection'));
     $services->set(Connection::class)
-        ->factory([service(ConnectionFactory::class), 'factory']);
+        ->factory([service(ConnectionFactory::class), 'factory'])
+        ->public();
 
     $services->set(HttpClient::class);
-    $services->alias(HttpClientInterface::class, HttpClient::class);
+    $services->alias(HttpClientInterface::class, HttpClient::class)
+        ->public();
 
+    $services->set(ProcessorFactory::class);
     $services->set(Processor::class)
-        ->factory([ProcessorFactory::class, 'factory']);
+        ->factory([service(ProcessorFactory::class), 'factory'])
+        ->public();
 
     $services->set(ImportResolver::class)
         ->factory([ImportResolver::class, 'createDefault']);
 
     $services->set(SchemaManager::class)
         ->arg('$debug', param('psx_debug'));
-    $services->alias(SchemaManagerInterface::class, SchemaManager::class);
+    $services->alias(SchemaManagerInterface::class, SchemaManager::class)
+        ->public();
 
     $services->set(TableManager::class);
-    $services->alias(TableManagerInterface::class, TableManager::class);
+    $services->alias(TableManagerInterface::class, TableManager::class)
+        ->public();
 
     $services->set(Validate::class);
 
@@ -130,24 +136,30 @@ return static function (ContainerConfigurator $container) {
         ->args([tagged_iterator('psx.event_subscriber')]);
     $services->set(EventDispatcher::class)
         ->factory([service(EventDispatcherFactory::class), 'factory']);
-    $services->alias(EventDispatcherInterface::class, EventDispatcher::class);
+    $services->alias(EventDispatcherInterface::class, EventDispatcher::class)
+        ->public();
 
     $services->set(Converter::class)
         ->arg('$debug', param('psx_debug'));
-    $services->alias(ConverterInterface::class, Converter::class);
+    $services->alias(ConverterInterface::class, Converter::class)
+        ->public();
 
     $services->set(RoutingParser::class);
-    $services->alias(LocationFinderInterface::class, RoutingParser::class);
+    $services->alias(LocationFinderInterface::class, RoutingParser::class)
+        ->public();
 
     $services->set(AttributeParser::class)
         ->args([tagged_iterator('psx.controller')]);
-    $services->alias(RoutingParserInterface::class, AttributeParser::class);
+    $services->alias(RoutingParserInterface::class, AttributeParser::class)
+        ->public();
 
     $services->set(Loader::class);
-    $services->alias(LoaderInterface::class, Loader::class);
+    $services->alias(LoaderInterface::class, Loader::class)
+        ->public();
 
     $services->set(ContextFactory::class);
-    $services->alias(ContextFactoryInterface::class, ContextFactory::class);
+    $services->alias(ContextFactoryInterface::class, ContextFactory::class)
+        ->public();
 
     $services->set(Dispatch::class);
     $services->alias(DispatchInterface::class, Dispatch::class)
@@ -158,26 +170,31 @@ return static function (ContainerConfigurator $container) {
         ->arg('$dispatch', param('psx_dispatch'));
 
     $services->set(ControllerAttribute::class);
-    $services->alias(ScannerInterface::class, ControllerAttribute::class);
+    $services->alias(ScannerInterface::class, ControllerAttribute::class)
+        ->public();
 
     $services->set(FilterFactory::class);
-    $services->alias(FilterFactoryInterface::class, FilterFactory::class);
+    $services->alias(FilterFactoryInterface::class, FilterFactory::class)
+        ->public();
 
     $services->set(GeneratorFactory::class)
         ->arg('$url', param('psx_url'))
         ->arg('$dispatch', param('psx_dispatch'));
-    $services->alias(GeneratorFactoryInterface::class, GeneratorFactory::class);
+    $services->alias(GeneratorFactoryInterface::class, GeneratorFactory::class)
+        ->public();
 
     $services->set(ApiManager::class)
         ->arg('$debug', param('psx_debug'));
-    $services->alias(ApiManagerInterface::class, ApiManager::class);
+    $services->alias(ApiManagerInterface::class, ApiManager::class)
+        ->public();
 
     $services->set(RequestReader::class);
     $services->set(ResponseWriter::class)
         ->arg('$supportedWriter', param('psx_supported_writer'));
 
     $services->set(ApplicationFactory::class)
-        ->args([tagged_iterator('psx.command')]);
+        ->args([tagged_iterator('psx.command')])
+        ->public();
     $services->set(SingleConnectionProvider::class);
 
     $services->set(ControllerExecutorFactory::class);
@@ -188,9 +205,9 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     // global filter chain
-    $services->set(PreFilterChain::class)
+    $services->set(PreFilterCollection::class)
         ->args([tagged_iterator('psx.pre_filter')]);
-    $services->set(PostFilterChain::class)
+    $services->set(PostFilterCollection::class)
         ->args([tagged_iterator('psx.post_filter')]);
 
     // middlewares
@@ -201,7 +218,7 @@ return static function (ContainerConfigurator $container) {
             param('psx_cors_headers'),
             false
         ])
-        ->tag('psx.pre_filter');
+        ->public();
 
     // commands
     $services->set(RouteCommand::class);
@@ -215,7 +232,5 @@ return static function (ContainerConfigurator $container) {
     $services->set(RunSqlCommand::class);
 
     // event listener
-    $services->set(LogListener::class);
-
-    // controllers
+    $services->set(LoggingListener::class);
 };

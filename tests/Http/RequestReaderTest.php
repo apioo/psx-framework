@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Http;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Request;
@@ -110,10 +111,7 @@ JSON;
         $this->assertEquals(true, $data->getBoolean());
     }
 
-    /**
-     * @return \PSX\Framework\Http\RequestReader
-     */
-    protected function newRequestReader()
+    protected function newRequestReader(): RequestReader
     {
         return Environment::getService('request_reader');
     }

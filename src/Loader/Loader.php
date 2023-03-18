@@ -21,7 +21,10 @@
 namespace PSX\Framework\Loader;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use PSX\Framework\Controller\FilterAwareInterface;
+use PSX\Framework\Event\Event;
+use PSX\Framework\Event\RouteMatchedEvent;
 use PSX\Framework\Filter\ControllerExecutorFactory;
 use PSX\Framework\Filter\PostFilterCollection;
 use PSX\Framework\Filter\PreFilterCollection;
@@ -46,14 +49,16 @@ class Loader implements LoaderInterface
     private FilterCollectionInterface $preFilterCollection;
     private FilterCollectionInterface $postFilterCollection;
     private ContainerInterface $container;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
     {
         $this->locationFinder = $locationFinder;
         $this->controllerExecutorFactory = $controllerExecutorFactory;
         $this->preFilterCollection = $preFilterCollection;
         $this->postFilterCollection = $postFilterCollection;
         $this->container = $container;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function load(RequestInterface $request, ResponseInterface $response, Context $context): void
@@ -61,6 +66,8 @@ class Loader implements LoaderInterface
         $result = $this->locationFinder->resolve($request, $context);
 
         if ($result instanceof RequestInterface) {
+            $this->eventDispatcher->dispatch(new RouteMatchedEvent($result, $context));
+
             $this->execute($context->getSource(), $result, $response, $context);
         } else {
             throw new InvalidPathException('Unknown location', $request);

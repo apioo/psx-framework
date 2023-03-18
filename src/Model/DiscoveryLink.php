@@ -9,6 +9,7 @@ class DiscoveryLink implements \JsonSerializable
 {
     protected ?string $rel = null;
     protected ?string $href = null;
+    protected ?string $method = null;
     public function setRel(?string $rel) : void
     {
         $this->rel = $rel;
@@ -25,9 +26,17 @@ class DiscoveryLink implements \JsonSerializable
     {
         return $this->href;
     }
+    public function setMethod(?string $method) : void
+    {
+        $this->method = $method;
+    }
+    public function getMethod() : ?string
+    {
+        return $this->method;
+    }
     public function jsonSerialize() : object
     {
-        return (object) array_filter(array('rel' => $this->rel, 'href' => $this->href), static function ($value) : bool {
+        return (object) array_filter(array('rel' => $this->rel, 'href' => $this->href, 'method' => $this->method), static function ($value) : bool {
             return $value !== null;
         });
     }

@@ -23,7 +23,7 @@ namespace PSX\Framework\Tests\Console;
 use PSX\Api\GeneratorFactoryInterface;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -55,7 +55,7 @@ class ApiGenerateCommandTest extends ControllerTestCase
     protected function getPaths()
     {
         return [
-            [['GET', 'POST', 'PUT', 'DELETE'], '/controller', TestSchemaApiController::class],
+            [['GET', 'POST', 'PUT', 'DELETE'], '/controller', SchemaController::class],
             [['GET', 'POST', 'PUT', 'DELETE'], '/foo/:bar', TestSchemaApiV2Controller::class],
         ];
     }

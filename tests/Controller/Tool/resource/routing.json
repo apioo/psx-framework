@@ -1,0 +1,19 @@
+{
+  "routings": [
+    {
+      "method": "GET",
+      "path": "\/system\/discovery",
+      "operationId": "PSX.Framework.Controller.Tool.DiscoveryController.show"
+    },
+    {
+      "method": "POST",
+      "path": "\/system\/generator\/:type",
+      "operationId": "PSX.Framework.Controller.Tool.GeneratorController.generate"
+    },
+    {
+      "method": "GET",
+      "path": "\/system\/routing",
+      "operationId": "PSX.Framework.Controller.Tool.RoutingController.show"
+    }
+  ]
+}

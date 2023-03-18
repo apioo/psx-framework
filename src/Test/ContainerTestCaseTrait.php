@@ -20,22 +20,12 @@
 
 namespace PSX\Framework\Test;
 
-use Monolog\Handler\NullHandler;
-use Monolog\Logger;
-use PHPUnit\Framework\Exception;
-use Psr\Cache\CacheItemPoolInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use PSX\Engine\DispatchInterface;
-use PSX\Framework\Event\Event;
-use PSX\Framework\Event\ExceptionThrownEvent;
-use PSX\Framework\Loader;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\Stream;
 use PSX\Uri\Uri;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * ContainerTestCaseTrait
@@ -46,32 +36,6 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
  */
 trait ContainerTestCaseTrait
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // set void logger
-        $logger = new Logger('psx');
-        $logger->pushHandler(new NullHandler());
-
-        Environment::getContainer()->set(LoggerInterface::class, $logger);
-
-        // assign the phpunit test case
-        Environment::getContainer()->set('test_case', $this);
-
-        // use null cache
-        Environment::getContainer()->set(CacheItemPoolInterface::class, new ArrayAdapter());
-
-        // add event listener which redirects PHPUnit exceptions. Because of
-        // this we can make assertions inside an controller
-        $eventDispatcher = Environment::getContainer()->get(EventDispatcherInterface::class);
-        $eventDispatcher->addListener(Event::EXCEPTION_THROWN, function (ExceptionThrownEvent $event) {
-            if ($event->getException() instanceof Exception) {
-                throw $event->getException();
-            }
-        });
-    }
-
     /**
      * Loads a specific controller
      */

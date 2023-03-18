@@ -25,7 +25,7 @@ use PSX\Api\ScannerInterface;
 use PSX\Api\SpecificationInterface;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
 
 /**
  * ControllerAttributeTest
@@ -63,11 +63,11 @@ class ControllerAttributeTest extends ControllerDbTestCase
     protected function getPaths(): array
     {
         return array(
-            [['GET'], '/foo', [TestSchemaApiController::class, 'doGet']],
-            [['POST'], '/foo', [TestSchemaApiController::class, 'doPost']],
-            [['PUT'], '/foo', [TestSchemaApiController::class, 'doPut']],
-            [['DELETE'], '/foo', [TestSchemaApiController::class, 'doDelete']],
-            [['PATCH'], '/foo', [TestSchemaApiController::class, 'doPatch']],
+            [['GET'], '/foo', [SchemaController::class, 'doGet']],
+            [['POST'], '/foo', [SchemaController::class, 'doPost']],
+            [['PUT'], '/foo', [SchemaController::class, 'doPut']],
+            [['DELETE'], '/foo', [SchemaController::class, 'doDelete']],
+            [['PATCH'], '/foo', [SchemaController::class, 'doPatch']],
         );
     }
 }

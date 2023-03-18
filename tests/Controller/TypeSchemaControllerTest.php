@@ -18,30 +18,19 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Tool;
-
-use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
+namespace PSX\Framework\Tests\Controller;
 
 /**
- * DocumentationControllerTest
+ * PropertyAnnotationTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class GeneratorControllerTest extends ControllerTestCase
+class TypeSchemaControllerTest extends PropertyTestCase
 {
-    public function testGenerate()
+    protected function getPath(): string
     {
-        $response = $this->sendRequest('/system/generator/spec-typeapi', 'POST', ['Accept' => 'application/json']);
-
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/generator_typeapi.json');
-
-        $this->assertEquals(200, $response->getStatusCode(), $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+        return '/tests/typeschema';
     }
 }

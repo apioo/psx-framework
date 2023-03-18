@@ -18,30 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Tool;
+namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
+use PHPUnit\Framework\Assert;
+use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
+use PSX\Http\Environment\HttpContextInterface;
 
 /**
- * DocumentationControllerTest
+ * PropertyControllerTrait
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class GeneratorControllerTest extends ControllerTestCase
+trait PropertyControllerTrait
 {
-    public function testGenerate()
+    protected function doGet(HttpContextInterface $context): mixed
     {
-        $response = $this->sendRequest('/system/generator/spec-typeapi', 'POST', ['Accept' => 'application/json']);
+        Assert::assertEquals(1, $context->getUriFragment('id'));
 
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/generator_typeapi.json');
+        return PropertyTestCase::getDataByType($context->getParameter('type'));
+    }
 
-        $this->assertEquals(200, $response->getStatusCode(), $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    protected function doPost($record, HttpContextInterface $context): mixed
+    {
+        PropertyTestCase::assertRecord($record);
+
+        return $record;
     }
 }

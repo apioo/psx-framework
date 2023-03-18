@@ -19,6 +19,9 @@
         },
         "href": {
           "type": "string"
+        },
+        "method": {
+          "type": "string"
         }
       }
     },

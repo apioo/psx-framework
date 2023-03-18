@@ -29,10 +29,10 @@ namespace PSX\Framework\Event;
  */
 class Event
 {
-    const CONTROLLER_EXECUTE   = 'psx.controller_execute';
-    const CONTROLLER_PROCESSED = 'psx.controller_processed';
-    const EXCEPTION_THROWN     = 'psx.exception_thrown';
-    const REQUEST_INCOMING     = 'psx.request_incoming';
-    const RESPONSE_SEND        = 'psx.response_send';
-    const ROUTE_MATCHED        = 'psx.route_matched';
+    const CONTROLLER_EXECUTE   = 'psx.event_listener.controller_execute';
+    const CONTROLLER_PROCESSED = 'psx.event_listener.controller_processed';
+    const EXCEPTION_THROWN     = 'psx.event_listener.exception_thrown';
+    const REQUEST_INCOMING     = 'psx.event_listener.request_incoming';
+    const RESPONSE_SEND        = 'psx.event_listener.response_send';
+    const ROUTE_MATCHED        = 'psx.event_listener.route_matched';
 }

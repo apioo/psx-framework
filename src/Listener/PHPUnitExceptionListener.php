@@ -18,30 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Tool;
+namespace PSX\Framework\Listener;
 
-use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
+use PHPUnit\Framework\Exception;
+use PSX\Framework\Event\Event;
+use PSX\Framework\Event\ExceptionThrownEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * DocumentationControllerTest
+ * In our test cases we sometimes assert a value inside a controller which was called by a test case, this listener
+ * simply redirects all PHPUnit exceptions
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class GeneratorControllerTest extends ControllerTestCase
+class PHPUnitExceptionListener implements EventSubscriberInterface
 {
-    public function testGenerate()
+    public function onExceptionThrown(ExceptionThrownEvent $event)
     {
-        $response = $this->sendRequest('/system/generator/spec-typeapi', 'POST', ['Accept' => 'application/json']);
+        if ($event->getException() instanceof Exception) {
+            throw $event->getException();
+        }
+    }
 
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/generator_typeapi.json');
-
-        $this->assertEquals(200, $response->getStatusCode(), $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            Event::EXCEPTION_THROWN => 'onExceptionThrown',
+        ];
     }
 }

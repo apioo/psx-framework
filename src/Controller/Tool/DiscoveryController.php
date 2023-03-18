@@ -22,6 +22,8 @@ namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
+use PSX\Api\GeneratorFactory;
+use PSX\Api\Parser\Attribute;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Model\DiscoveryCollection;
@@ -55,30 +57,30 @@ class DiscoveryController extends ControllerAbstract
     private function getLinks(): array
     {
         $links = [];
+        $links[] = $this->newLink('api', $this->reverseRouter->getDispatchUrl(), 'GET');
 
-        $apiPath = $this->reverseRouter->getDispatchUrl();
-        if ($apiPath !== null) {
-            $links[] = $this->newLink('api', $apiPath);
-        }
-
-        $routingPath = $this->reverseRouter->getUrl(RoutingController::class);
+        $routingPath = $this->reverseRouter->getUrl([RoutingController::class, 'show']);
         if ($routingPath !== null) {
-            $links[] = $this->newLink('routing', $routingPath);
+            $links[] = $this->newLink('routing', $routingPath, 'GET');
         }
 
-        $generatorPath = $this->reverseRouter->getUrl(GeneratorController::class);
-        if ($generatorPath !== null) {
-            $links[] = $this->newLink('generator', $generatorPath);
+        $types = GeneratorFactory::getPossibleTypes();
+        foreach ($types as $type) {
+            $generatorPath = $this->reverseRouter->getUrl([GeneratorController::class, 'generate'], ['type' => $type]);
+            if ($generatorPath !== null) {
+                $links[] = $this->newLink($type, $generatorPath, 'POST');
+            }
         }
 
         return $links;
     }
 
-    private function newLink(string $rel, string $href): DiscoveryLink
+    private function newLink(string $rel, string $href, string $method): DiscoveryLink
     {
         $link = new DiscoveryLink();
         $link->setRel($rel);
         $link->setHref($href);
+        $link->setMethod($method);
         return $link;
     }
 }

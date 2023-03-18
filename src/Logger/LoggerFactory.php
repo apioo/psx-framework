@@ -18,30 +18,41 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Tool;
+namespace PSX\Framework\Logger;
 
-use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
+use Monolog\Handler\HandlerInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
- * DocumentationControllerTest
+ * LoggerFactory
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class GeneratorControllerTest extends ControllerTestCase
+class LoggerFactory
 {
-    public function testGenerate()
+    private string $logDir;
+    private int $logLevel;
+
+    public function __construct(string $logDir, int $logLevel)
     {
-        $response = $this->sendRequest('/system/generator/spec-typeapi', 'POST', ['Accept' => 'application/json']);
+        $this->logDir = $logDir;
+        $this->logLevel = $logLevel;
+    }
 
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/generator_typeapi.json');
+    public function factory(string $namespace = 'psx'): LoggerInterface
+    {
+        $logger = new Logger($namespace);
+        $logger->pushHandler($this->newHandler());
 
-        $this->assertEquals(200, $response->getStatusCode(), $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+        return $logger;
+    }
+
+    protected function newHandler(): HandlerInterface
+    {
+        return new StreamHandler($this->logDir . '/app.log', $this->logLevel);
     }
 }

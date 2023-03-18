@@ -57,7 +57,11 @@ class AttributeParser implements RoutingParserInterface
                 $httpPath = $meta->getPath()?->path;
 
                 if (!empty($httpMethod) && !empty($httpPath)) {
-                    $result->add([$httpMethod], $httpPath, [get_class($controller), $method->getName()]);
+                    $methods = [$httpMethod, 'OPTIONS'];
+                    if ($httpMethod === 'GET') {
+                        $methods[] = 'HEAD';
+                    }
+                    $result->add($methods, $httpPath, [get_class($controller), $method->getName()]);
                 }
             }
         }

@@ -1,0 +1,59 @@
+{
+  "links": [
+    {
+      "rel": "api",
+      "href": "http:\/\/127.0.0.1\/",
+      "method": "GET"
+    },
+    {
+      "rel": "routing",
+      "href": "http:\/\/127.0.0.1\/system\/routing",
+      "method": "GET"
+    },
+    {
+      "rel": "client-go",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-go",
+      "method": "POST"
+    },
+    {
+      "rel": "client-java",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-java",
+      "method": "POST"
+    },
+    {
+      "rel": "client-php",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-php",
+      "method": "POST"
+    },
+    {
+      "rel": "client-typescript",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-typescript",
+      "method": "POST"
+    },
+    {
+      "rel": "markup-client",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/markup-client",
+      "method": "POST"
+    },
+    {
+      "rel": "markup-html",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/markup-html",
+      "method": "POST"
+    },
+    {
+      "rel": "markup-markdown",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/markup-markdown",
+      "method": "POST"
+    },
+    {
+      "rel": "spec-typeapi",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-typeapi",
+      "method": "POST"
+    },
+    {
+      "rel": "spec-openapi",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-openapi",
+      "method": "POST"
+    }
+  ]
+}
