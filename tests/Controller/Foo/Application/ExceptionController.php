@@ -18,12 +18,11 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Path;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Environment\HttpContextInterface;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 
 /**
  * ExceptionController
@@ -34,7 +33,9 @@ use PSX\Http\ResponseInterface;
  */
 class ExceptionController extends ControllerAbstract
 {
-    public function doGet(HttpContextInterface $context): mixed
+    #[Get]
+    #[Path('/tests/exception')]
+    public function doGet(): mixed
     {
         throw new \Exception('foo');
     }

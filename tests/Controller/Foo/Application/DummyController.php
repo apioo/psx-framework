@@ -18,42 +18,25 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Controller\Foo\Application;
 
-use PHPUnit\Framework\TestCase;
-use PSX\Framework\Loader\Context;
-use PSX\Framework\Test\Environment;
-use PSX\Http\Filter\CORS;
+use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Path;
+use PSX\Framework\Controller\ControllerAbstract;
 
 /**
- * ControllerFactoryTest
+ * DummyController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ControllerFactoryTest extends TestCase
+class DummyController extends ControllerAbstract
 {
-    public function testGetController()
+    #[Get]
+    #[Path('/tests/dummy')]
+    public function doGet(): mixed
     {
-        $controller = $this->getController(DummyController::class);
-
-        $this->assertTrue(is_array($controller));
-        $this->assertInstanceOf(CORS::class, $controller[0]);
-        $this->assertInstanceOf(DummyController::class, $controller[1]);
-    }
-
-    public function testGetControllerInvalid()
-    {
-        $this->expectException(\ReflectionException::class);
-
-        $this->getController('Foo\Bar');
-    }
-
-    protected function getController($className)
-    {
-        $factory = Environment::getService('controller_factory');
-
-        return $factory->getController($className, new Context());
+        return 'foo';
     }
 }

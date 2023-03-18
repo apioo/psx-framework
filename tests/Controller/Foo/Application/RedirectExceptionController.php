@@ -18,24 +18,26 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Path;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Environment\HttpContextInterface;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
+use PSX\Http\Exception\TemporaryRedirectException;
 
 /**
- * DummyController
+ * RedirectExceptionController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DummyController extends ControllerAbstract
+class RedirectExceptionController extends ControllerAbstract
 {
-    public function doGet(HttpContextInterface $context): mixed
+    #[Get]
+    #[Path('/tests/redirect')]
+    public function doGet(): mixed
     {
-        return 'foo';
+        throw new TemporaryRedirectException('http://localhost.com/foobar');
     }
 }

@@ -18,13 +18,13 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Dispatch;
+namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\PathParam;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Exception as StatusCode;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 
 /**
  * StatusCodeExceptionController
@@ -35,9 +35,12 @@ use PSX\Http\ResponseInterface;
  */
 class StatusCodeExceptionController extends ControllerAbstract
 {
-    public function doGet(HttpContextInterface $context): mixed
+    #[Get]
+    #[Path('/tests/status/:code')]
+    #[PathParam('code', 'integer')]
+    public function doGet(int $code): mixed
     {
-        switch ($context->getParameter('code')) {
+        switch ($code) {
             case 301:
                 throw new StatusCode\MovedPermanentlyException('http://google.com');
             case 302:
