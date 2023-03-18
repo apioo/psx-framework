@@ -18,41 +18,26 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Loader;
+namespace PSX\Framework\Tests\Filter;
 
-use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\FilterChainInterface;
+use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 
 /**
- * FilterController
+ * TestFilter
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FilterController extends ControllerAbstract
+class TestFilter implements FilterInterface
 {
-    public function getPreFilter(): array
+    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        return [
-            function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-                $request->setAttribute('pre_filter', true);
+        $response->addHeader('X-Middleware', __CLASS__);
 
-                $filterChain->handle($request, $response);
-            },
-        ];
-    }
-
-    public function getPostFilter(): array
-    {
-        return [
-            function(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain){
-                $request->setAttribute('post_filter', true);
-
-                $filterChain->handle($request, $response);
-            },
-        ];
+        $filterChain->handle($request, $response);
     }
 }

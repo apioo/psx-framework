@@ -38,20 +38,20 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('/', $router->getPath('PSX\Framework\Loader\Foo1Controller'));
-        $this->assertEquals('/foo/bar', $router->getPath('PSX\Framework\Loader\Foo2Controller'));
-        $this->assertEquals('/foo/test', $router->getPath('PSX\Framework\Loader\Foo3Controller', ['test']));
-        $this->assertEquals('/foo/bla/blub', $router->getPath('PSX\Framework\Loader\Foo4Controller', ['bla', 'blub']));
-        $this->assertEquals('/bar', $router->getPath('PSX\Framework\Loader\Foo5Controller'));
-        $this->assertEquals('/bar/foo', $router->getPath('PSX\Framework\Loader\Foo6Controller'));
-        $this->assertEquals('/bar/12', $router->getPath('PSX\Framework\Loader\Foo7Controller', [12]));
-        $this->assertEquals('/bar/37/13', $router->getPath('PSX\Framework\Loader\Foo8Controller', ['bar' => 13, 'foo' => 37]));
-        $this->assertEquals('/bar', $router->getPath('PSX\Framework\Loader\Foo9Controller'));
-        $this->assertEquals('/whitespace', $router->getPath('PSX\Framework\Loader\Foo10Controller'));
-        $this->assertEquals('/test', $router->getPath('PSX\Framework\Loader\Foo11Controller'));
-        $this->assertEquals('/files/foo/bar', $router->getPath('PSX\Framework\Loader\Foo12Controller', ['path' => 'foo/bar']));
-        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getPath('PSX\Framework\Loader\Foo13Controller', ['path' => 'foo/common.js']));
-        $this->assertEquals('/baz', $router->getPath('PSX\Framework\Loader\Foo14Controller', []));
+        $this->assertEquals('/', $router->getPath(['PSX\Framework\Loader\Foo1Controller', 'show']));
+        $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
+        $this->assertEquals('/foo/test', $router->getPath(['PSX\Framework\Loader\Foo3Controller', 'show'], ['test']));
+        $this->assertEquals('/foo/bla/blub', $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['bla', 'blub']));
+        $this->assertEquals('/bar', $router->getPath(['PSX\Framework\Loader\Foo5Controller', 'show']));
+        $this->assertEquals('/bar/foo', $router->getPath(['PSX\Framework\Loader\Foo6Controller', 'show']));
+        $this->assertEquals('/bar/12', $router->getPath(['PSX\Framework\Loader\Foo7Controller', 'show'], [12]));
+        $this->assertEquals('/bar/37/13', $router->getPath(['PSX\Framework\Loader\Foo8Controller', 'show'], ['bar' => 13, 'foo' => 37]));
+        $this->assertEquals('/bar', $router->getPath(['PSX\Framework\Loader\Foo9Controller', 'show']));
+        $this->assertEquals('/whitespace', $router->getPath(['PSX\Framework\Loader\Foo10Controller', 'show']));
+        $this->assertEquals('/test', $router->getPath(['PSX\Framework\Loader\Foo11Controller', 'show']));
+        $this->assertEquals('/files/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo12Controller', 'show'], ['path' => 'foo/bar']));
+        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getPath(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
+        $this->assertEquals('/baz', $router->getPath(['PSX\Framework\Loader\Foo14Controller', 'show'], []));
     }
 
     public function testGetPathNamedParameter()
@@ -59,7 +59,7 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('/foo/bla/blub', $router->getPath('PSX\Framework\Loader\Foo4Controller', ['foo' => 'blub', 'bar' => 'bla']));
+        $this->assertEquals('/foo/bla/blub', $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['foo' => 'blub', 'bar' => 'bla']));
     }
 
     public function testGetPathIndexedParameter()
@@ -67,7 +67,7 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('/foo/bla/blub', $router->getPath('PSX\Framework\Loader\Foo4Controller', ['bla', 'blub']));
+        $this->assertEquals('/foo/bla/blub', $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['bla', 'blub']));
     }
 
     public function testGetPathMissingParameter()
@@ -77,7 +77,7 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $router->getPath('PSX\Framework\Loader\Foo4Controller', ['bla']);
+        $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['bla']);
     }
 
     public function testGetPathRegExpMissingParameter()
@@ -87,7 +87,7 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $router->getPath('PSX\Framework\Loader\Foo8Controller', ['bla']);
+        $router->getPath(['PSX\Framework\Loader\Foo8Controller', 'show'], ['bla']);
     }
 
     public function testGetNotExisting()
@@ -95,9 +95,9 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertNull($router->getPath('Foo\Bar'));
-        $this->assertNull($router->getAbsolutePath('Foo\Bar'));
-        $this->assertNull($router->getUrl('Foo\Bar'));
+        $this->assertNull($router->getPath(['Foo\Bar', 'show']));
+        $this->assertNull($router->getAbsolutePath(['Foo\Bar', 'show']));
+        $this->assertNull($router->getUrl(['Foo\Bar', 'show']));
     }
 
     public function testGetPath()
@@ -105,22 +105,22 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('/foo/bar', $router->getPath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
 
-        $this->assertEquals('/foo/bar', $router->getPath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
 
-        $this->assertEquals('/foo/bar', $router->getPath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getPath('PSX\Framework\Loader\Foo13Controller', ['path' => 'foo/common.js']));
+        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getPath(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
 
     public function testGetAbsolutePath()
@@ -128,22 +128,22 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('/foo/bar', $router->getAbsolutePath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
 
-        $this->assertEquals('/foo/bar/foo/bar', $router->getAbsolutePath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
 
-        $this->assertEquals('/foo/bar/index.php/foo/bar', $router->getAbsolutePath('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('/foo/bar/index.php/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getAbsolutePath('PSX\Framework\Loader\Foo13Controller', ['path' => 'foo/common.js']));
+        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getAbsolutePath(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
 
     public function testGetUrl()
@@ -151,21 +151,21 @@ class ReverseRouterTest extends TestCase
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('http://foo.com/foo/bar', $router->getUrl('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('http://foo.com/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
 
-        $this->assertEquals('http://foo.com/foo/bar/foo/bar', $router->getUrl('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('http://foo.com/foo/bar/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
 
-        $this->assertEquals('http://foo.com/foo/bar/index.php/foo/bar', $router->getUrl('PSX\Framework\Loader\Foo2Controller'));
+        $this->assertEquals('http://foo.com/foo/bar/index.php/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
         $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
 
-        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getUrl('PSX\Framework\Loader\Foo13Controller', ['path' => 'foo/common.js']));
+        $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getUrl(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
 }

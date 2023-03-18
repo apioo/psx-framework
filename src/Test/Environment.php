@@ -79,6 +79,11 @@ class Environment
         return self::$instance->container->get($id);
     }
 
+    public static function getConfig(string $name): mixed
+    {
+        return self::$instance->container->getParameter($name);
+    }
+
     private function setupConnection(Closure $schemaSetup = null): void
     {
         $fromSchema = $this->connection->getSchemaManager()->createSchema();

@@ -39,66 +39,66 @@ class RoutingParserTest extends TestCase
     public function testNormalRoute()
     {
         $context = $this->resolve('GET', '');
-        $this->assertEquals('PSX\Framework\Loader\Foo1Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo1Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/');
-        $this->assertEquals('PSX\Framework\Loader\Foo1Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo1Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/foo/bar');
-        $this->assertEquals('PSX\Framework\Loader\Foo2Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo2Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/foo/test');
-        $this->assertEquals('PSX\Framework\Loader\Foo3Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo3Controller', 'show'], $context->getSource());
         $this->assertEquals(['bar' => 'test'], $context->getParameters());
 
         $context = $this->resolve('GET', '/foo/test/bar');
-        $this->assertEquals('PSX\Framework\Loader\Foo4Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo4Controller', 'show'], $context->getSource());
         $this->assertEquals(['bar' => 'test', 'foo' => 'bar'], $context->getParameters());
 
         $context = $this->resolve('GET', '/bar');
-        $this->assertEquals('PSX\Framework\Loader\Foo5Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo5Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/bar/foo');
-        $this->assertEquals('PSX\Framework\Loader\Foo6Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo6Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/bar/14');
-        $this->assertEquals('PSX\Framework\Loader\Foo7Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo7Controller', 'show'], $context->getSource());
         $this->assertEquals(['foo' => '14'], $context->getParameters());
 
         $context = $this->resolve('GET', '/bar/14/16');
-        $this->assertEquals('PSX\Framework\Loader\Foo8Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo8Controller', 'show'], $context->getSource());
         $this->assertEquals(['foo' => '14', 'bar' => '16'], $context->getParameters());
 
         $context = $this->resolve('POST', '/bar');
-        $this->assertEquals('PSX\Framework\Loader\Foo9Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo9Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/whitespace');
-        $this->assertEquals('PSX\Framework\Loader\Foo10Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo10Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/alias');
-        $this->assertEquals('PSX\Framework\Loader\Foo2Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo2Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('GET', '/files/foo/bar/foo.htm');
-        $this->assertEquals('PSX\Framework\Loader\Foo12Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo12Controller', 'show'], $context->getSource());
         $this->assertEquals(['path' => 'foo/bar/foo.htm'], $context->getParameters());
 
         // we can not resolve controller Foo13Controller since it has a static
         // url this is only useful for the reverse router
 
         $context = $this->resolve('GET', '/baz');
-        $this->assertEquals('PSX\Framework\Loader\Foo14Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo14Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
 
         $context = $this->resolve('PATCH', '/baz');
-        $this->assertEquals('PSX\Framework\Loader\Foo14Controller', $context->getSource());
+        $this->assertEquals(['PSX\Framework\Loader\Foo14Controller', 'show'], $context->getSource());
         $this->assertEquals([], $context->getParameters());
     }
 

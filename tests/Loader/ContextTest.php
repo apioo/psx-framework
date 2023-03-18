@@ -21,7 +21,10 @@
 namespace PSX\Framework\Tests\Loader;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Framework\Config\ConfigFactory;
 use PSX\Framework\Loader\Context;
+use PSX\Framework\Loader\ContextFactoryInterface;
+use PSX\Framework\Test\Environment;
 
 /**
  * ContextTest
@@ -34,18 +37,20 @@ class ContextTest extends TestCase
 {
     public function testContext()
     {
-        $context = new Context();
+        $context = Environment::getService(ContextFactoryInterface::class)->factory();
+
+        $this->assertInstanceOf(Context::class, $context);
 
         $context->setPath('/foo');
         $context->setParameters(['foo' => 'bar']);
-        $context->setSource('foo');
+        $context->setSource([\stdClass::class, 'foo']);
         $context->setException(new \InvalidArgumentException('foo'));
         $context->setVersion('1');
         
         $this->assertEquals('/foo', $context->getPath());
         $this->assertEquals(['foo' => 'bar'], $context->getParameters());
         $this->assertEquals('bar', $context->getParameter('foo'));
-        $this->assertEquals('foo', $context->getSource());
+        $this->assertEquals([\stdClass::class, 'foo'], $context->getSource());
         $this->assertInstanceOf(\InvalidArgumentException::class, $context->getException());
         $this->assertEquals('1', $context->getVersion());
     }

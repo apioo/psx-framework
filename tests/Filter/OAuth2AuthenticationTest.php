@@ -20,9 +20,8 @@
 
 namespace PSX\Framework\Tests\Filter;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PSX\Framework\Filter\OAuth2AuthenticationAbstract;
-use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\Filter\FilterChain;
 use PSX\Http\FilterChainInterface;
@@ -39,26 +38,20 @@ use PSX\Uri\Url;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Oauth2AuthenticationTest extends TestCase
+class OAuth2AuthenticationTest extends TestCase
 {
     const ACCESS_TOKEN = '2YotnFZFEjr1zCsicMWpAA';
 
     public function testSuccessful()
     {
-        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
-
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
             return $accessToken == self::ACCESS_TOKEN;
-
-        });
-
-        $handle->onSuccess(function () {
-            // success
         });
 
         $oauth = new Client();
         $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => $value));
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -73,16 +66,14 @@ class Oauth2AuthenticationTest extends TestCase
     {
         $this->expectException(UnauthorizedException::class);
 
-        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
-
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
             return false;
-
         });
 
         $oauth = new Client();
         $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => $value));
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -96,16 +87,14 @@ class Oauth2AuthenticationTest extends TestCase
     {
         $this->expectException(UnauthorizedException::class);
 
-        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
-            
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
             return $accessToken == self::ACCESS_TOKEN;
-
         });
 
         $oauth = new Client();
         $value = '';
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => $value));
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -117,10 +106,8 @@ class Oauth2AuthenticationTest extends TestCase
 
     public function testMissing()
     {
-        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
-            
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
             return $accessToken == self::ACCESS_TOKEN;
-
         });
 
         $oauth = new Client();
@@ -140,22 +127,20 @@ class Oauth2AuthenticationTest extends TestCase
         } catch (UnauthorizedException $e) {
             $this->assertEquals(401, $e->getStatusCode());
             $this->assertEquals('Bearer', $e->getType());
-            $this->assertEquals(array('realm' => 'psx'), $e->getParameters());
+            $this->assertEquals(['realm' => 'psx'], $e->getParameters());
         }
     }
 
     public function testMissingWrongType()
     {
-        $handle = new OAuth2AuthenticationAbstract(function ($accessToken) {
-            
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
             return $accessToken == self::ACCESS_TOKEN;
-
         });
 
         $oauth = new Client();
         $value = $oauth->getAuthorizationHeader($this->newAccessToken());
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', array('Authorization' => 'Foo'));
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => 'Foo']);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -169,7 +154,7 @@ class Oauth2AuthenticationTest extends TestCase
         } catch (UnauthorizedException $e) {
             $this->assertEquals(401, $e->getStatusCode());
             $this->assertEquals('Bearer', $e->getType());
-            $this->assertEquals(array('realm' => 'psx'), $e->getParameters());
+            $this->assertEquals(['realm' => 'psx'], $e->getParameters());
         }
     }
 
@@ -183,11 +168,11 @@ class Oauth2AuthenticationTest extends TestCase
         );
     }
 
-    protected function getMockFilterChain(): FilterChainInterface
+    protected function getMockFilterChain(): FilterChainInterface&MockObject
     {
         return $this->getMockBuilder(FilterChain::class)
-            ->setConstructorArgs(array(array()))
-            ->setMethods(array('handle'))
+            ->setConstructorArgs([[]])
+            ->setMethods(['handle'])
             ->getMock();
     }
 }

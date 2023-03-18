@@ -22,7 +22,7 @@ namespace PSX\Framework\Config;
 
 use PSX\Data\WriterInterface;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Log\LoggerFactory;
+use PSX\Framework\Logger\LoggerFactory;
 
 /**
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
@@ -50,8 +50,6 @@ class ConfigFactory
             ],
             'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],
-            'psx_context_class'       => Context::class,
-            'psx_logger_factory'      => LoggerFactory::class,
             'psx_supported_writer'    => [
                 WriterInterface::ATOM,
                 WriterInterface::FORM,
