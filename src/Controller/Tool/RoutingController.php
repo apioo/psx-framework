@@ -50,8 +50,8 @@ class RoutingController extends ControllerAbstract
         $this->routingParser = $routingParser;
     }
 
-    #[Path('/system/routing')]
     #[Get]
+    #[Path('/system/routing')]
     public function show(): RoutingCollection
     {
         $collection = new RoutingCollection();

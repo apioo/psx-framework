@@ -20,16 +20,16 @@
 
 namespace PSX\Framework\App\Api\Population;
 
+use PSX\Api\Attribute\Delete;
 use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
-use PSX\Dependency\Attribute\Inject;
+use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
 
 #[Description('Entity endpoint')]
 #[Path('/population/typeschema/:id')]
@@ -43,12 +43,14 @@ class EntityTypeSchema extends ControllerAbstract
         $this->populationService = $populationService;
     }
 
+    #[Get]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     protected function doGet(int $id): mixed
     {
         return $this->populationService->get($id);
     }
 
+    #[Put]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
     protected function doPut(int $id, mixed $record): array
@@ -68,6 +70,7 @@ class EntityTypeSchema extends ControllerAbstract
         ];
     }
 
+    #[Delete]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
     protected function doDelete(int $id): array
     {

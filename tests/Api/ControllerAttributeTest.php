@@ -47,27 +47,16 @@ class ControllerAttributeTest extends ControllerDbTestCase
 
         $this->assertInstanceOf(SpecificationInterface::class, $specification);
 
-        $getOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.TestSchemaApiController.doGet');
-        $postOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.TestSchemaApiController.doPost');
-        $putOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.TestSchemaApiController.doPut');
-        $deleteOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.TestSchemaApiController.doDelete');
-        $patchOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.TestSchemaApiController.doPatch');
+        $getOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet');
+        $postOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost');
+        $putOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut');
+        $deleteOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete');
+        $patchOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch');
 
         $this->assertInstanceOf(OperationInterface::class, $getOperation);
         $this->assertInstanceOf(OperationInterface::class, $postOperation);
         $this->assertInstanceOf(OperationInterface::class, $putOperation);
         $this->assertInstanceOf(OperationInterface::class, $deleteOperation);
         $this->assertInstanceOf(OperationInterface::class, $patchOperation);
-    }
-
-    protected function getPaths(): array
-    {
-        return array(
-            [['GET'], '/foo', [SchemaController::class, 'doGet']],
-            [['POST'], '/foo', [SchemaController::class, 'doPost']],
-            [['PUT'], '/foo', [SchemaController::class, 'doPut']],
-            [['DELETE'], '/foo', [SchemaController::class, 'doDelete']],
-            [['PATCH'], '/foo', [SchemaController::class, 'doPatch']],
-        );
     }
 }

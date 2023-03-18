@@ -25,6 +25,57 @@
       "authorization": true,
       "tags": []
     },
+    "PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet": {
+      "path": "\/tests\/dummy",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet": {
+      "path": "\/tests\/exception",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet": {
+      "path": "\/tests\/filter",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
     "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet": {
       "path": "\/tests\/passthru",
       "method": "GET",
@@ -119,6 +170,23 @@
           }
         }
       },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet": {
+      "path": "\/tests\/redirect",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
       "throws": [],
       "description": "",
       "stability": 1,
@@ -375,6 +443,30 @@
       "authorization": true,
       "tags": []
     },
+    "PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet": {
+      "path": "\/tests\/status\/:code",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "code": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
     "PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet": {
       "path": "\/tests\/table",
       "method": "GET",
@@ -551,6 +643,284 @@
       "security": [],
       "authorization": true,
       "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionPopo.doGet": {
+      "path": "\/population\/popo",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Collection"
+        }
+      },
+      "arguments": {
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "count": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionPopo.doPost": {
+      "path": "\/population\/popo",
+      "method": "POST",
+      "return": {
+        "code": 201,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doGet": {
+      "path": "\/population\/typeschema",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Collection"
+        }
+      },
+      "arguments": {
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "count": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doPost": {
+      "path": "\/population\/typeschema",
+      "method": "POST",
+      "return": {
+        "code": 201,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doGet": {
+      "path": "\/population\/popo\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Entity"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doPut": {
+      "path": "\/population\/popo\/:id",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "record": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doDelete": {
+      "path": "\/population\/popo\/:id",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doGet": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Entity"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doPut": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "record": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doDelete": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
     }
   },
   "definitions": {
@@ -637,6 +1007,33 @@
           "type": "string"
         },
         "method": {
+          "type": "string"
+        }
+      }
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "place": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "users": {
+          "type": "integer"
+        },
+        "worldUsers": {
+          "type": "number"
+        },
+        "datetime": {
+          "format": "date-time",
           "type": "string"
         }
       }

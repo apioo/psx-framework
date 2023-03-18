@@ -22,37 +22,23 @@ namespace PSX\Framework\App\Test\Generator;
 
 use PSX\Framework\App\ApiTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Uri\Uri;
 
 /**
- * OpenAPITest
+ * TypeApiTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class OpenAPITest extends ApiTestCase
+class TypeApiTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/generator/openapi/*/population/popo', 'GET');
-        $baseUrl  = Environment::getBaseUrl();
+        $response = $this->sendRequest('/system/generator/typeapi', 'GET');
 
         $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/openapi.json');
-        $expect = str_replace('"http:\/\/127.0.0.1\/"', json_encode($baseUrl), $expect);
-
-        $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
-    public function testGetCollection()
-    {
-        $response = $this->sendRequest('/generator/openapi/*/*', 'GET');
-        $baseUrl  = Environment::getBaseUrl();
-
-        $actual = (string) $response->getBody();
-        $expect = file_get_contents(__DIR__ . '/resource/openapi_collection.json');
-        $expect = str_replace('"http:\/\/127.0.0.1\/"', json_encode($baseUrl), $expect);
+        $expect = file_get_contents(__DIR__ . '/resource/typeapi.json');
 
         $this->assertEquals(200, $response->getStatusCode() ?: 200, $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);

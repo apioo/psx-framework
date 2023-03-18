@@ -27,6 +27,8 @@ use PSX\Framework\Controller\Generator;
 use PSX\Framework\Controller\Tool;
 use PSX\Framework\Test\Environment;
 use PSX\Http\Response;
+use PSX\Http\ResponseInterface;
+use PSX\Uri\Uri;
 
 /**
  * ApiTestCase
@@ -47,26 +49,10 @@ class ApiTestCase extends ControllerDbTestCase
         return $this->createFromFile(__DIR__ . '/api_fixture.php');
     }
 
-    protected function getPaths(): array
-    {
-        return [
-            [['ANY'], '/population/popo', Population\CollectionPopo::class],
-            [['ANY'], '/population/popo/:id', Population\EntityPopo::class],
-            [['ANY'], '/population/typeschema', Population\CollectionTypeSchema::class],
-            [['ANY'], '/population/typeschema/:id', Population\EntityTypeSchema::class],
-        ];
-    }
-
     /**
      * Send a request either internal or through an actual HTTP request
-     *
-     * @param string $uri
-     * @param string $method
-     * @param array $headers
-     * @param null $body
-     * @return \PSX\Http\ResponseInterface
      */
-    protected function sendRequest($uri, $method, $headers = array(), $body = null)
+    protected function sendRequest(string|Uri $uri, string $method, array $headers = [], ?string $body = null): ResponseInterface
     {
         if (getenv('SEND') == 'external') {
             $response = self::getHttpClient()->request($method, ltrim($uri, '/'), [
@@ -80,10 +66,7 @@ class ApiTestCase extends ControllerDbTestCase
         }
     }
 
-    /**
-     * @return \GuzzleHttp\Client
-     */
-    private static function getHttpClient()
+    private static function getHttpClient(): Client
     {
         if (self::$httpClient) {
             return self::$httpClient;

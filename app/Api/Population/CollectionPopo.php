@@ -21,9 +21,11 @@
 namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\App\Model\Collection;
 use PSX\Framework\App\Model\Entity;
@@ -42,6 +44,7 @@ class CollectionPopo extends ControllerAbstract
         $this->populationService = $populationService;
     }
 
+    #[Get]
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: Collection::class)]
@@ -53,6 +56,7 @@ class CollectionPopo extends ControllerAbstract
         );
     }
 
+    #[Post]
     #[Incoming(schema: Entity::class)]
     #[Outgoing(code: 201, schema: Message::class)]
     protected function doPost(Entity $record): Message

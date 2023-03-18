@@ -45,8 +45,8 @@ class DiscoveryController extends ControllerAbstract
         $this->reverseRouter = $reverseRouter;
     }
 
-    #[Path('/system/discovery')]
     #[Get]
+    #[Path('/system/discovery')]
     public function show(): DiscoveryCollection
     {
         $collection = new DiscoveryCollection();
