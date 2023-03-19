@@ -54,6 +54,7 @@ use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Framework\OAuth2\GrantTypeFactory;
+use PSX\Framework\OAuth2\GrantTypeInterface;
 use PSX\Framework\OAuth2\VoidAuthorizer;
 use PSX\Framework\OAuth2\VoidCallback;
 use PSX\Framework\Test\Environment;
@@ -96,6 +97,10 @@ return static function (ContainerConfigurator $container) {
     $services
         ->instanceof(EventSubscriberInterface::class)
         ->tag('psx.event_subscriber');
+
+    $services
+        ->instanceof(GrantTypeInterface::class)
+        ->tag('psx.oauth2_grant');
 
     $services->alias(ContainerInterface::class, 'service_container')
         ->public();

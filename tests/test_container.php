@@ -38,13 +38,6 @@ return static function (ContainerConfigurator $container) {
     $services->alias(CacheItemPoolInterface::class, ArrayAdapter::class)
         ->public();
 
-    // oauth2
-    $services->set(TestAuthorizationCode::class);
-    $services->set(TestClientCredentials::class);
-    $services->set(TestPassword::class);
-    $services->set(TestRefreshToken::class);
-    $services->set(TestRefreshToken::class);
-
     $services->set(TestAuthorizer::class);
     $services->alias(AuthorizerInterface::class, TestAuthorizer::class);
 
@@ -53,6 +46,10 @@ return static function (ContainerConfigurator $container) {
 
     // event listener
     $services->set(PHPUnitExceptionListener::class);
+
+    // oauth2
+    $services->load('PSX\\Framework\\Tests\\OAuth2\\GrantType\\', __DIR__ . '/OAuth2/GrantType')
+        ->public();
 
     $services->load('PSX\\Framework\\Tests\\Controller\\Foo\\Application\\', __DIR__ . '/Controller/Foo/Application')
         ->public();
