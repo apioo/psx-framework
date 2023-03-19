@@ -28,7 +28,7 @@ use ArrayIterator;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @template-implements \ArrayAccess<mixed>
+ * @template-extends \ArrayIterator<mixed>
  */
 class Config extends ArrayIterator
 {
