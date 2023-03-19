@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Tests\OAuth2\GrantType;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantType\ClientCredentialsAbstract;
+use PSX\Framework\OAuth2\Credentials;
+use PSX\Framework\OAuth2\GrantType\ClientCredentialsAbstract;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Grant\ClientCredentials;
 

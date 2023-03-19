@@ -21,9 +21,7 @@
 namespace PSX\Framework\Tests\OAuth2;
 
 use PSX\Framework\Oauth2\AccessRequest;
-use PSX\Framework\Oauth2\AuthorizationController;
 use PSX\Framework\OAuth2\AuthorizerInterface;
-use PSX\Http\Environment\HttpContextInterface;
 use PSX\Uri\Url;
 
 /**
