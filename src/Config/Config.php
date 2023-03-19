@@ -28,7 +28,7 @@ use ArrayIterator;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @template-extends \ArrayIterator<mixed>
+ * @template-extends \ArrayIterator<string, mixed>
  */
 class Config extends ArrayIterator
 {

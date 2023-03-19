@@ -26,6 +26,7 @@ namespace PSX\Framework\Test;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @template-extends \ArrayObject<string, array>
  */
 class ArrayDataSet extends \ArrayObject
 {

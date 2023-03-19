@@ -46,7 +46,6 @@ abstract class Descriptor implements DescriptorInterface
 
         match (true) {
             $object instanceof ParameterBag => $this->describeContainerParameters($object, $options),
-            $object instanceof ContainerBuilder && !empty($options['env-vars']) => $this->describeContainerEnvVars($this->getContainerEnvVars($object), $options),
             $object instanceof ContainerBuilder && isset($options['group_by']) && 'tags' === $options['group_by'] => $this->describeContainerTags($object, $options),
             $object instanceof ContainerBuilder && isset($options['id']) => $this->describeContainerService($this->resolveServiceDefinition($object, $options['id']), $options, $object),
             $object instanceof ContainerBuilder && isset($options['parameter']) => $this->describeContainerParameter($object->resolveEnvPlaceholders($object->getParameter($options['parameter'])), $options),
@@ -276,54 +275,6 @@ abstract class Descriptor implements DescriptorInterface
         }
 
         return '';
-    }
-
-    private function getContainerEnvVars(ContainerBuilder $container): array
-    {
-        if (!$container->hasParameter('debug.container.dump')) {
-            return [];
-        }
-
-        if (!$container->getParameter('debug.container.dump') || !is_file($container->getParameter('debug.container.dump'))) {
-            return [];
-        }
-
-        $file = file_get_contents($container->getParameter('debug.container.dump'));
-        preg_match_all('{%env\(((?:\w++:)*+\w++)\)%}', $file, $envVars);
-        $envVars = array_unique($envVars[1]);
-
-        $bag = $container->getParameterBag();
-        $getDefaultParameter = fn (string $name) => parent::get($name);
-        $getDefaultParameter = $getDefaultParameter->bindTo($bag, $bag::class);
-
-        $getEnvReflection = new \ReflectionMethod($container, 'getEnv');
-
-        $envs = [];
-
-        foreach ($envVars as $env) {
-            $processor = 'string';
-            if (false !== $i = strrpos($name = $env, ':')) {
-                $name = substr($env, $i + 1);
-                $processor = substr($env, 0, $i);
-            }
-            $defaultValue = ($hasDefault = $container->hasParameter("env($name)")) ? $getDefaultParameter("env($name)") : null;
-            if (false === ($runtimeValue = $_ENV[$name] ?? $_SERVER[$name] ?? getenv($name))) {
-                $runtimeValue = null;
-            }
-            $processedValue = ($hasRuntime = null !== $runtimeValue) || $hasDefault ? $getEnvReflection->invoke($container, $env) : null;
-            $envs["$name$processor"] = [
-                'name' => $name,
-                'processor' => $processor,
-                'default_available' => $hasDefault,
-                'default_value' => $defaultValue,
-                'runtime_available' => $hasRuntime,
-                'runtime_value' => $runtimeValue,
-                'processed_value' => $processedValue,
-            ];
-        }
-        ksort($envs);
-
-        return array_values($envs);
     }
 
     protected function getServiceEdges(ContainerBuilder $builder, string $serviceId): array
