@@ -60,7 +60,7 @@ class ContainerBuilder
             $containerBuilder->setParameter($key, $value);
         }
 
-        $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../config'));
+        $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../resources'));
         foreach ($containerFiles as $containerFile) {
             $loader->load($containerFile);
         }
