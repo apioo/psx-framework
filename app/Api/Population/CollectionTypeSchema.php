@@ -45,7 +45,7 @@ class CollectionTypeSchema extends ControllerAbstract
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
-    protected function doGet(int $startIndex, int $count): mixed
+    public function doGet(int $startIndex, int $count): mixed
     {
         return $this->populationService->getAll(
             $startIndex,
@@ -56,7 +56,7 @@ class CollectionTypeSchema extends ControllerAbstract
     #[Post]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 201, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doPost($record): array
+    public function doPost($record): array
     {
         $this->populationService->create(
             $record['place'],

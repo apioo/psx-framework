@@ -18,37 +18,48 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2;
+namespace PSX\Framework\Tests\OAuth2;
 
 use PSX\Framework\Oauth2\AccessRequest;
-use PSX\Framework\Oauth2\AuthorizationAbstract;
+use PSX\Framework\Oauth2\AuthorizationController;
+use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Http\Environment\HttpContextInterface;
+use PSX\Uri\Url;
 
 /**
- * TestAuthorizationAbstract
+ * TestAuthorizer
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestAuthorizationAbstract extends AuthorizationAbstract
+class TestAuthorizer implements AuthorizerInterface
 {
-    protected function hasGrant(AccessRequest $request, HttpContextInterface $context): bool
-    {
-        // normally we must check whether the user is authenticated and if not
-        // we must redirect them to an login form which redirects the user back
-        // if the login was successful. In this case we use the get parameter
-        // for testing purpose
+    private static bool $hasGrant;
+    private static string $code;
 
-        return !!$context->getParameter('has_grant');
+    public static function setHasGrant(bool $hasGrant): void
+    {
+        self::$hasGrant = $hasGrant;
     }
 
-    protected function generateCode(AccessRequest $request, HttpContextInterface $context): string
+    public static function setCode(string $code): void
     {
-        // this code must be stored in an database so we can later check whether
-        // the code was generated. In this case we use the get parameter for
-        // testing purpose
+        self::$code = $code;
+    }
 
-        return $context->getParameter('code');
+    public function hasGrant(AccessRequest $request): bool
+    {
+        return self::$hasGrant;
+    }
+
+    public function generateCode(AccessRequest $request): string
+    {
+        return self::$code;
+    }
+
+    public function getCallback(string $clientId): ?Url
+    {
+        return null;
     }
 }

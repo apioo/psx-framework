@@ -18,47 +18,41 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\OAuth2\GrantType;
 
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use Symfony\Component\Console\Application;
+use PSX\Framework\OAuth2\Credentials;
+use PSX\Framework\OAuth2\GrantTypeInterface;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
+use PSX\Oauth2\Grant;
+use PSX\Oauth2\GrantInterface;
 
 /**
- * ConsoleTest
+ * PasswordAbstract
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConsoleTest extends ControllerTestCase
+abstract class PasswordAbstract implements GrantTypeInterface
 {
-    public function testCommand()
+    public function getType(): string
     {
-        $application = Environment::getService(Application::class);
-        $commands    = $application->all();
-
-        $keys = array_keys($commands);
-        sort($keys);
-
-        $expect = [
-            '_complete',
-            'api:generate',
-            'api:parse',
-            'api:push',
-            'completion',
-            'dbal:reserved-words',
-            'dbal:run-sql',
-            'debug:autowiring',
-            'debug:container',
-            'debug:event-dispatcher',
-            'help',
-            'list',
-            'route',
-            'schema:parse',
-            'serve',
-        ];
-
-        $this->assertEquals($expect, $keys);
+        return self::TYPE_PASSWORD;
     }
+
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
+    {
+        if ($credentials === null) {
+            throw new InvalidRequestException('Credentials not available');
+        }
+
+        if (!$grant instanceof Grant\Password) {
+            throw new InvalidRequestException('Provided an invalid grant');
+        }
+
+        return $this->generate($credentials, $grant);
+    }
+
+    abstract protected function generate(Credentials $credentials, Grant\Password $grant);
 }

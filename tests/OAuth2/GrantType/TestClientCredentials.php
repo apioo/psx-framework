@@ -18,23 +18,23 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\GrantType;
+namespace PSX\Framework\Tests\OAuth2\GrantType;
 
 use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantType\AuthorizationCodeAbstract;
+use PSX\Framework\Oauth2\GrantType\ClientCredentialsAbstract;
 use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\AuthorizationCode;
+use PSX\Oauth2\Grant\ClientCredentials;
 
 /**
- * TestAuthorizationCode
+ * TestClientCredentials
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestAuthorizationCode extends AuthorizationCodeAbstract
+class TestClientCredentials extends ClientCredentialsAbstract
 {
-    protected function generate(Credentials $credentials, AuthorizationCode $grant): AccessToken
+    protected function generate(Credentials $credentials, ClientCredentials $grant): AccessToken
     {
         return new AccessToken(
             '2YotnFZFEjr1zCsicMWpAA',

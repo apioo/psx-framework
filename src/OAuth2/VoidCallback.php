@@ -18,40 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Oauth2\Authorization\Exception\UnsupportedGrantTypeException;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Authorization\AuthorizationCode;
 
 /**
- * GrantTypeFactory
+ * VoidCallback
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class GrantTypeFactory
+class VoidCallback implements CallbackInterface
 {
-    /**
-     * @var GrantTypeInterface[]
-     */
-    private array $types = [];
-
-    public function add(GrantTypeInterface $grantType): void
+    public function getAuthorizationCode(string $code, string $state): AuthorizationCode
     {
-        $this->types[] = $grantType;
+        // TODO: Implement getAuthorizationCode() method.
     }
 
-    /**
-     * @throws UnsupportedGrantTypeException
-     */
-    public function get(string $type): GrantTypeInterface
+    public function onAccessToken(AccessToken $accessToken): mixed
     {
-        foreach ($this->types as $grantType) {
-            if ($type == $grantType->getType()) {
-                return $grantType;
-            }
-        }
+        return null;
+    }
 
-        throw new UnsupportedGrantTypeException('Invalid grant type');
+    public function onError(\Throwable $e): mixed
+    {
+        return null;
     }
 }

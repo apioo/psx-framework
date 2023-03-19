@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\AuthorizationCode;
+namespace PSX\Framework\Tests\Controller\OAuth2;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Oauth2\Authorization\Exception;
@@ -30,11 +30,11 @@ use PSX\Oauth2\Authorization\Exception;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class CallbackAbstractTest extends ControllerTestCase
+class CallbackControllerTest extends ControllerTestCase
 {
     public function testCallback()
     {
-        $response = $this->sendRequest('/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz', 'GET');
+        $response = $this->sendRequest('/authorization/callback?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz', 'GET');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('SUCCESS', (string) $response->getBody());
@@ -53,17 +53,10 @@ class CallbackAbstractTest extends ControllerTestCase
         );
 
         foreach ($errors as $error => $exceptionType) {
-            $response = $this->sendRequest('/cb?error=' . $error . '&error_description=foobar', 'GET');
+            $response = $this->sendRequest('/authorization/callback?error=' . $error . '&error_description=foobar', 'GET');
 
             $this->assertEquals(500, $response->getStatusCode());
             $this->assertEquals($exceptionType, (string) $response->getBody());
         }
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/cb', TestCallbackAbstract::class],
-        );
     }
 }

@@ -51,7 +51,7 @@ class RouteCommand extends Command
             ->setDescription('Displays all available routes');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $collection = $this->routingParser->getCollection();
         $rows       = [];

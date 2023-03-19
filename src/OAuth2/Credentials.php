@@ -18,47 +18,43 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
-
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use Symfony\Component\Console\Application;
+namespace PSX\Framework\OAuth2;
 
 /**
- * ConsoleTest
+ * Credentials
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConsoleTest extends ControllerTestCase
+class Credentials
 {
-    public function testCommand()
+    private string $clientId;
+    private string $clientSecret;
+
+    public function __construct(string $clientId, string $clientSecret)
     {
-        $application = Environment::getService(Application::class);
-        $commands    = $application->all();
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+    }
 
-        $keys = array_keys($commands);
-        sort($keys);
+    public function setClientId(string $clientId): void
+    {
+        $this->clientId = $clientId;
+    }
+    
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
 
-        $expect = [
-            '_complete',
-            'api:generate',
-            'api:parse',
-            'api:push',
-            'completion',
-            'dbal:reserved-words',
-            'dbal:run-sql',
-            'debug:autowiring',
-            'debug:container',
-            'debug:event-dispatcher',
-            'help',
-            'list',
-            'route',
-            'schema:parse',
-            'serve',
-        ];
-
-        $this->assertEquals($expect, $keys);
+    public function setClientSecret(string $clientSecret): void
+    {
+        $this->clientSecret = $clientSecret;
+    }
+    
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
     }
 }

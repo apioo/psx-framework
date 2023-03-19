@@ -18,41 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2\GrantType;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantTypeInterface;
 use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant;
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
 use PSX\Oauth2\GrantInterface;
 
 /**
- * RefreshTokenAbstract
+ * GrantTypeInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class RefreshTokenAbstract implements GrantTypeInterface
+interface GrantTypeInterface
 {
-    public function getType(): string
-    {
-        return self::TYPE_REFRESH_TOKEN;
-    }
+    public const TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    public const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
+    public const TYPE_IMPLICIT           = 'implicit';
+    public const TYPE_PASSWORD           = 'password';
+    public const TYPE_REFRESH_TOKEN      = 'refresh_token';
 
-    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
-    {
-        if ($credentials === null) {
-            throw new InvalidRequestException('Credentials not available');
-        }
+    /**
+     * Returns the name of this grant type
+     */
+    public function getType(): string;
 
-        if (!$grant instanceof Grant\RefreshToken) {
-            throw new InvalidRequestException('Provided an invalid grant');
-        }
-
-        return $this->generate($credentials, $grant);
-    }
-
-    abstract protected function generate(Credentials $credentials, Grant\RefreshToken $grant);
+    /**
+     * Returns an access token based on the credentials and request parameters.
+     * In some grant types the credentials can be null
+     */
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken;
 }

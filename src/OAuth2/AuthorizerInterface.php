@@ -18,47 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use Symfony\Component\Console\Application;
+use PSX\Uri\Url;
 
 /**
- * ConsoleTest
+ * AuthorizerInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConsoleTest extends ControllerTestCase
+interface AuthorizerInterface
 {
-    public function testCommand()
-    {
-        $application = Environment::getService(Application::class);
-        $commands    = $application->all();
+    /**
+     * Returns whether the user has authorized the client_id
+     */
+    public function hasGrant(AccessRequest $request): bool;
 
-        $keys = array_keys($commands);
-        sort($keys);
+    /**
+     * Generates an authorization code which is assigned to the request
+     */
+    public function generateCode(AccessRequest $request): string;
 
-        $expect = [
-            '_complete',
-            'api:generate',
-            'api:parse',
-            'api:push',
-            'completion',
-            'dbal:reserved-words',
-            'dbal:run-sql',
-            'debug:autowiring',
-            'debug:container',
-            'debug:event-dispatcher',
-            'help',
-            'list',
-            'route',
-            'schema:parse',
-            'serve',
-        ];
-
-        $this->assertEquals($expect, $keys);
-    }
+    /**
+     * This method is called if no redirect_uri was set. You can overwrite this method if it is possible to get a
+     * callback from another source i.e. it was attached to the client or an app
+     */
+    public function getCallback(string $clientId): ?Url;
 }

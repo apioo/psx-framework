@@ -18,34 +18,31 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\AuthorizationCode;
+namespace PSX\Framework\Tests\OAuth2;
 
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
-use PSX\Framework\Oauth2\AuthorizationCode\CallbackAbstract;
-use PSX\Framework\Tests\Oauth2\AuthorizationAbstractTest;
+use PSX\Framework\OAuth2\CallbackInterface;
+use PSX\Framework\Tests\Controller\OAuth2\AuthorizationControllerTest;
 use PSX\Http\Client\Client;
-use PSX\Http\Environment\HttpContextInterface;
 use PSX\Http\Environment\HttpResponse;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\AuthorizationCode;
 use PSX\Uri\Url;
 
 /**
- * TestCallbackAbstract
+ * TestCallback
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestCallbackAbstract extends CallbackAbstract
+class TestCallback implements CallbackInterface
 {
-    protected function getAuthorizationCode(string $code, string $state): AuthorizationCode
+    public function getAuthorizationCode(string $code, string $state): AuthorizationCode
     {
         $payload = <<<JSON
 {
@@ -69,12 +66,12 @@ JSON;
 
         $client = new Client(['handler' => $stack]);
         $oauth  = new AuthorizationCode($client, new Url('http://127.0.0.1/api'));
-        $oauth->setClientPassword(AuthorizationAbstractTest::CLIENT_ID, AuthorizationAbstractTest::CLIENT_SECRET);
+        $oauth->setClientPassword(AuthorizationControllerTest::CLIENT_ID, AuthorizationControllerTest::CLIENT_SECRET);
 
         return $oauth;
     }
 
-    protected function onAccessToken(AccessToken $accessToken, HttpContextInterface $context): mixed
+    public function onAccessToken(AccessToken $accessToken): mixed
     {
         Assert::assertEquals('2YotnFZFEjr1zCsicMWpAA', $accessToken->getAccessToken());
         Assert::assertEquals('example', $accessToken->getTokenType());
@@ -84,7 +81,7 @@ JSON;
         return new HttpResponse(200, [], 'SUCCESS');
     }
 
-    protected function onError(\Throwable $e, HttpContextInterface $context): mixed
+    public function onError(\Throwable $e): mixed
     {
         return new HttpResponse(500, [], get_class($e));
     }

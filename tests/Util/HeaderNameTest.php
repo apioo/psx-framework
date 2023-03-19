@@ -18,29 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\GrantType;
+namespace PSX\Framework\Tests\Util;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantType\ClientCredentialsAbstract;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\ClientCredentials;
+use PHPUnit\Framework\TestCase;
+use PSX\Framework\Util\HeaderName;
+use PSX\Framework\Util\Uuid;
 
 /**
- * TestClientCredentials
+ * HeaderNameTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestClientCredentials extends ClientCredentialsAbstract
+class HeaderNameTest extends TestCase
 {
-    protected function generate(Credentials $credentials, ClientCredentials $grant): AccessToken
+    /**
+     * @dataProvider nameDateProvider
+     */
+    public function testConvert(string $actual, string $expect)
     {
-        return new AccessToken(
-            '2YotnFZFEjr1zCsicMWpAA',
-            'example',
-            3600,
-            'tGzv3JOkF0XG5Qx2TlKWIA'
-        );
+        $this->assertEquals($expect, HeaderName::convert($actual));
+    }
+
+    public function nameDateProvider(): array
+    {
+        return [
+            ['authorization', 'Authorization'],
+            ['contentType', 'Content-Type'],
+        ];
     }
 }

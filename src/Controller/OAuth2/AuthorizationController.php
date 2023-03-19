@@ -18,11 +18,19 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\Controller\OAuth2;
 
-use PSX\Dependency\Attribute\Inject;
+use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\Post;
+use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Model\Passthru;
+use PSX\Framework\OAuth2\AccessRequest;
+use PSX\Framework\OAuth2\AuthorizerInterface;
+use PSX\Framework\OAuth2\GrantTypeFactory;
 use PSX\Http\Exception as StatusCode;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
@@ -32,35 +40,53 @@ use PSX\Oauth2\Authorization\Exception\UnsupportedResponseTypeException;
 use PSX\Uri\Url;
 
 /**
- * AuthorizationAbstract
+ * AuthorizationController
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class AuthorizationAbstract extends ControllerAbstract
+class AuthorizationController extends ControllerAbstract
 {
-    #[Inject('oauth2_grant_type_factory')]
-    protected GrantTypeFactory $grantTypeFactory;
+    private GrantTypeFactory $grantTypeFactory;
+    private AuthorizerInterface $authorizer;
 
-    protected function doGet(HttpContextInterface $context): mixed
+    public function __construct(GrantTypeFactory $grantTypeFactory, AuthorizerInterface $authorizer)
     {
-        return $this->execute($context);
+        $this->grantTypeFactory = $grantTypeFactory;
+        $this->authorizer = $authorizer;
     }
 
-    protected function doPost(mixed $record, HttpContextInterface $context): mixed
+    #[Get]
+    #[Path('/authorization/authorize')]
+    #[QueryParam('response_type', 'string')]
+    #[QueryParam('client_id', 'string')]
+    #[QueryParam('redirect_uri', 'string')]
+    #[QueryParam('scope', 'string')]
+    #[QueryParam('state', 'string')]
+    #[Incoming(schema: Passthru::class)]
+    #[Outgoing(code: 200, schema: Passthru::class)]
+    public function doGet(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
-        return $this->execute($context);
+        return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
     }
 
-    protected function execute(HttpContextInterface $context): mixed
+    #[Post]
+    #[Path('/authorization/authorize')]
+    #[QueryParam('response_type', 'string')]
+    #[QueryParam('client_id', 'string')]
+    #[QueryParam('redirect_uri', 'string')]
+    #[QueryParam('scope', 'string')]
+    #[QueryParam('state', 'string')]
+    #[Incoming(schema: Passthru::class)]
+    #[Outgoing(code: 200, schema: Passthru::class)]
+    public function doPost(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
-        $responseType = $context->getParameter('response_type');
-        $clientId     = $context->getParameter('client_id');
-        $redirectUri  = $context->getParameter('redirect_uri');
-        $scope        = $context->getParameter('scope');
-        $state        = $context->getParameter('state');
+        return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
+    }
 
+    protected function execute(?string $responseType, ?string $clientId, ?string $redirectUri, ?string $scope, ?string $state): mixed
+    {
         try {
             if (empty($responseType) || empty($clientId) || empty($state)) {
                 throw new InvalidRequestException('Missing parameters');
@@ -68,20 +94,20 @@ abstract class AuthorizationAbstract extends ControllerAbstract
 
             if (empty($redirectUri)) {
                 // in case we have no redirect uri we can get the redirect uri from the app
-                $redirectUri = $this->getCallback($clientId);
+                $redirectUri = $this->authorizer->getCallback($clientId);
             } else {
                 $redirectUri = new Url($redirectUri);
             }
 
             $request = new AccessRequest($clientId, $redirectUri, $scope, $state);
 
-            if (!$this->hasGrant($request, $context)) {
+            if (!$this->authorizer->hasGrant($request)) {
                 throw new UnauthorizedClientException('Client is not authenticated');
             }
 
             switch ($responseType) {
                 case 'code':
-                    $this->handleCode($request, $context);
+                    $this->handleCode($request);
 
                 default:
                     throw new UnsupportedResponseTypeException('Invalid response type');
@@ -101,13 +127,13 @@ abstract class AuthorizationAbstract extends ControllerAbstract
         }
     }
 
-    private function handleCode(AccessRequest $request, HttpContextInterface $context)
+    private function handleCode(AccessRequest $request)
     {
         if ($request->hasRedirectUri()) {
             $redirectUri = $request->getRedirectUri();
 
             $parameters = $redirectUri->getParameters();
-            $parameters['code'] = $this->generateCode($request, $context);
+            $parameters['code'] = $this->authorizer->generateCode($request);
 
             if ($request->hasState()) {
                 $parameters['state'] = $request->getState();
@@ -120,25 +146,4 @@ abstract class AuthorizationAbstract extends ControllerAbstract
             throw new ServerErrorException('No redirect uri available');
         }
     }
-
-    /**
-     * This method is called if no redirect_uri was set you can overwrite this
-     * method if its possible to get an callback from another source
-     */
-    protected function getCallback(string $clientId): ?Url
-    {
-        return null;
-    }
-
-    /**
-     * Returns whether the user has authorized the client_id. This method must
-     * redirect the user to an login form and display an form where the user can
-     * grant the authorization request
-     */
-    abstract protected function hasGrant(AccessRequest $request, HttpContextInterface $context): bool;
-
-    /**
-     * Generates an authorization code which is assigned to the request
-     */
-    abstract protected function generateCode(AccessRequest $request, HttpContextInterface $context): string;
 }

@@ -34,7 +34,7 @@ use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Dispatch\DummyController;
 use PSX\Framework\Tests\Dispatch\TestListener;
 use PSX\Framework\Tests\Filter\TestFilter;
-use PSX\Framework\Tests\Oauth2\AuthorizationCode\TestCallbackAbstract;
+use PSX\Framework\Tests\Oauth2\AuthorizationCode\TestCallbackController;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\RequestInterface;

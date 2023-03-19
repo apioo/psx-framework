@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\OAuth2;
 
 use PSX\Uri\Url;
 

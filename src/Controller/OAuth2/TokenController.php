@@ -18,37 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\Controller\OAuth2;
 
-use PSX\Framework\Loader\Context;
-use PSX\Oauth2\Error;
+use PSX\Api\Attribute\HeaderParam;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
-use PSX\Dependency\Attribute\Inject;
+use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\Post;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Schema\Passthru;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Framework\Http\ResponseWriter;
+use PSX\Framework\Model\Passthru;
+use PSX\Framework\OAuth2\Credentials;
+use PSX\Framework\OAuth2\GrantTypeFactory;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Oauth2\AccessToken;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
+use PSX\Oauth2\Error;
 use PSX\Oauth2\GrantFactory;
 
 /**
- * TokenAbstract
+ * OAuth2 token endpoint controller
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @see     https://www.rfc-editor.org/rfc/rfc6749
  */
-abstract class TokenAbstract extends ControllerAbstract
+class TokenController extends ControllerAbstract
 {
     private GrantTypeFactory $grantTypeFactory;
 
-    public function __construct(GrantTypeFactory $grantTypeFactory)
+    public function __construct(GrantTypeFactory $grantTypeFactory, ResponseWriter $responseWriter)
     {
         $this->grantTypeFactory = $grantTypeFactory;
+        $this->responseWriter = $responseWriter;
     }
 
     public function getPreFilter(): array
@@ -85,19 +90,19 @@ abstract class TokenAbstract extends ControllerAbstract
         return $filter;
     }
 
+    #[Post]
+    #[Path('/authorization/token')]
+    #[HeaderParam('authorization', 'string')]
     #[Incoming(schema: Passthru::class)]
     #[Outgoing(code: 200, schema: AccessToken::class)]
-    #[Outgoing(code: 400, schema: Error::class)]
-    public function doPost(mixed $record, HttpContextInterface $context): AccessToken
+    public function doPost(?string $authorization, \stdClass $payload): AccessToken
     {
-        $grant       = GrantFactory::factory((array) $record);
-        $credentials = null;
-
-        $auth  = $context->getHeader('Authorization');
-        $parts = explode(' ', $auth, 2);
+        $grant = GrantFactory::factory((array) $payload);
+        $parts = explode(' ', $authorization ?? '', 2);
         $type  = $parts[0] ?? null;
         $data  = $parts[1] ?? null;
 
+        $credentials = null;
         if ($type == 'Basic' && !empty($data)) {
             $data = explode(':', base64_decode($data), 2);
             $clientId = $data[0] ?? null;
@@ -106,11 +111,6 @@ abstract class TokenAbstract extends ControllerAbstract
             if (!empty($clientId) && !empty($clientSecret)) {
                 $credentials = new Credentials($clientId, $clientSecret);
             }
-        }
-
-        $parameters = $context->getParameters();
-        if ($credentials === null && isset($parameters['client_id']) && isset($parameters['client_secret'])) {
-            $credentials = new Credentials($parameters['client_id'], $parameters['client_secret']);
         }
 
         return $this->grantTypeFactory->get($grant->getGrantType())->generateAccessToken($credentials, $grant);

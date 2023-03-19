@@ -18,29 +18,22 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\GrantType;
-
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantType\PasswordAbstract;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\Password;
+namespace PSX\Framework\Util;
 
 /**
- * TestPassword
+ * Util class to convert header names
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestPassword extends PasswordAbstract
+class HeaderName
 {
-    protected function generate(Credentials $credentials, Password $grant): AccessToken
+    /**
+     * Converts a camelCase variable name to a header name
+     */
+    public static function convert(string $name): string
     {
-        return new AccessToken(
-            '2YotnFZFEjr1zCsicMWpAA',
-            'example',
-            3600,
-            'tGzv3JOkF0XG5Qx2TlKWIA'
-        );
+        return ucfirst(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), ['\\1-\\2', '\\1-\\2'], strtr($name, '-', '-')));
     }
 }

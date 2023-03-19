@@ -74,6 +74,11 @@ class Environment
         return self::$instance->container;
     }
 
+    /**
+     * @template T
+     * @psalm-param class-string<T> $id
+     * @return T
+     */
     public static function getService(string $id): mixed
     {
         return self::$instance->container->get($id);
@@ -107,5 +112,35 @@ class Environment
     public function register(): void
     {
         self::$instance = $this;
+    }
+
+    public static function getConnectionParams(string $type): array
+    {
+        switch ($type) {
+            case 'mysql':
+                return [
+                    'dbname'   => 'psx',
+                    'user'     => 'root',
+                    'password' => 'test1234',
+                    'host'     => 'localhost',
+                    'driver'   => 'pdo_mysql',
+                ];
+
+            case 'pgsql':
+                return [
+                    'dbname'   => 'psx',
+                    'user'     => 'postgres',
+                    'password' => 'test1234',
+                    'host'     => 'localhost',
+                    'driver'   => 'pdo_pgsql',
+                ];
+
+            default:
+            case 'sqlite':
+                return [
+                    'memory' => true,
+                    'driver' => 'pdo_sqlite',
+                ];
+        }
     }
 }

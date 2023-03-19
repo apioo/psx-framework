@@ -24,6 +24,9 @@ use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\ControllerAttribute;
 use PSX\Framework\Connection\ConnectionFactory;
 use PSX\Framework\Console\ApplicationFactory;
+use PSX\Framework\Console\DebugAutowiringCommand;
+use PSX\Framework\Console\DebugContainerCommand;
+use PSX\Framework\Console\DebugEventDispatcherCommand;
 use PSX\Framework\Console\RouteCommand;
 use PSX\Framework\Console\ServeCommand;
 use PSX\Framework\Controller\ControllerInterface;
@@ -48,10 +51,16 @@ use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
+use PSX\Framework\OAuth2\AuthorizerInterface;
+use PSX\Framework\OAuth2\CallbackInterface;
+use PSX\Framework\OAuth2\GrantTypeFactory;
+use PSX\Framework\OAuth2\VoidAuthorizer;
+use PSX\Framework\OAuth2\VoidCallback;
 use PSX\Framework\Test\Environment;
 use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
 use PSX\Http\Filter;
+use PSX\Schema\Console\ParseCommand as SchemaParseCommand;
 use PSX\Schema\Parser\TypeSchema\ImportResolver;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\SchemaManagerInterface;
@@ -59,6 +68,7 @@ use PSX\Sql\TableManager;
 use PSX\Sql\TableManagerInterface;
 use PSX\Validate\Validate;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
@@ -193,11 +203,24 @@ return static function (ContainerConfigurator $container) {
         ->arg('$supportedWriter', param('psx_supported_writer'));
 
     $services->set(ApplicationFactory::class)
-        ->args([tagged_iterator('psx.command')])
+        ->args([tagged_iterator('psx.command')]);
+    $services->set(Application::class)
+        ->factory([service(ApplicationFactory::class), 'factory'])
         ->public();
     $services->set(SingleConnectionProvider::class);
 
     $services->set(ControllerExecutorFactory::class);
+
+    $services->set(GrantTypeFactory::class)
+        ->args([tagged_iterator('psx.oauth2_grant')]);
+
+    $services->set(VoidAuthorizer::class);
+    $services->alias(AuthorizerInterface::class, VoidAuthorizer::class)
+        ->public();
+
+    $services->set(VoidCallback::class);
+    $services->alias(CallbackInterface::class, VoidCallback::class)
+        ->public();
 
     // test environment
     $services->set(Environment::class)
@@ -226,10 +249,14 @@ return static function (ContainerConfigurator $container) {
     $services->set(GenerateCommand::class);
     $services->set(ParseCommand::class);
     $services->set(PushCommand::class);
+    $services->set(DebugContainerCommand::class);
+    $services->set(DebugAutowiringCommand::class);
+    $services->set(DebugEventDispatcherCommand::class);
     $services->set(HelpCommand::class);
     $services->set(ListCommand::class);
     $services->set(ReservedWordsCommand::class);
     $services->set(RunSqlCommand::class);
+    $services->set(SchemaParseCommand::class);
 
     // event listener
     $services->set(LoggingListener::class);

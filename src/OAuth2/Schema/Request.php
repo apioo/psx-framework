@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PSX\Framework\Oauth2\Schema;
+namespace PSX\Framework\OAuth2\Schema;
 
 use PSX\Schema\Property;
 use PSX\Schema\SchemaAbstract;

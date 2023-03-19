@@ -46,7 +46,7 @@ class EntityPopo extends ControllerAbstract
 
     #[Get]
     #[Outgoing(code: 200, schema: Model\Entity::class)]
-    protected function doGet(int $id): mixed
+    public function doGet(int $id): mixed
     {
         return $this->populationService->get($id);
     }
@@ -54,7 +54,7 @@ class EntityPopo extends ControllerAbstract
     #[Put]
     #[Incoming(schema: Model\Entity::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    protected function doPut(int $id, mixed $record): array
+    public function doPut(int $id, mixed $record): array
     {
         $this->populationService->update(
             $id,
@@ -73,7 +73,7 @@ class EntityPopo extends ControllerAbstract
 
     #[Delete]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    protected function doDelete(int $id): array
+    public function doDelete(int $id): array
     {
         $this->populationService->delete($id);
 

@@ -18,41 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2\GrantType;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantTypeInterface;
+use PSX\Http\Environment\HttpContextInterface;
 use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
-use PSX\Oauth2\Grant;
-use PSX\Oauth2\GrantInterface;
+use PSX\Oauth2\Authorization\AuthorizationCode;
+use PSX\Uri\Url;
 
 /**
- * PasswordAbstract
+ * CallbackInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class PasswordAbstract implements GrantTypeInterface
+interface CallbackInterface
 {
-    public function getType(): string
-    {
-        return self::TYPE_PASSWORD;
-    }
+    /**
+     * Should return the authorization code object containing the endpoint url and the client id and secret
+     */
+    public function getAuthorizationCode(string $code, string $state): AuthorizationCode;
 
-    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
-    {
-        if ($credentials === null) {
-            throw new InvalidRequestException('Credentials not available');
-        }
+    /**
+     * Is called if we have obtained an access token from the authorization server
+     */
+    public function onAccessToken(AccessToken $accessToken): mixed;
 
-        if (!$grant instanceof Grant\Password) {
-            throw new InvalidRequestException('Provided an invalid grant');
-        }
-
-        return $this->generate($credentials, $grant);
-    }
-
-    abstract protected function generate(Credentials $credentials, Grant\Password $grant);
+    /**
+     * Is called if the client was redirected with an GET error parameter
+     */
+    public function onError(\Throwable $e): mixed;
 }

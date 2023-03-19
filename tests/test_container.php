@@ -1,15 +1,20 @@
 <?php
 
-use Monolog\Handler\NullHandler;
-use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Log\LoggerInterface;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Listener\PHPUnitExceptionListener;
+use PSX\Framework\OAuth2\AuthorizerInterface;
+use PSX\Framework\OAuth2\CallbackInterface;
+use PSX\Framework\OAuth2\GrantTypeInterface;
+use PSX\Framework\Tests\OAuth2\GrantType\TestAuthorizationCode;
+use PSX\Framework\Tests\OAuth2\GrantType\TestClientCredentials;
+use PSX\Framework\Tests\OAuth2\GrantType\TestPassword;
+use PSX\Framework\Tests\OAuth2\GrantType\TestRefreshToken;
+use PSX\Framework\Tests\OAuth2\TestAuthorizer;
+use PSX\Framework\Tests\OAuth2\TestCallback;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
@@ -25,14 +30,34 @@ return static function (ContainerConfigurator $container) {
         ->instanceof(EventSubscriberInterface::class)
         ->tag('psx.event_subscriber');
 
+    $services
+        ->instanceof(GrantTypeInterface::class)
+        ->tag('psx.oauth2_grant');
+
     $services->set(ArrayAdapter::class);
     $services->alias(CacheItemPoolInterface::class, ArrayAdapter::class)
         ->public();
+
+    // oauth2
+    $services->set(TestAuthorizationCode::class);
+    $services->set(TestClientCredentials::class);
+    $services->set(TestPassword::class);
+    $services->set(TestRefreshToken::class);
+    $services->set(TestRefreshToken::class);
+
+    $services->set(TestAuthorizer::class);
+    $services->alias(AuthorizerInterface::class, TestAuthorizer::class);
+
+    $services->set(TestCallback::class);
+    $services->alias(CallbackInterface::class, TestCallback::class);
 
     // event listener
     $services->set(PHPUnitExceptionListener::class);
 
     $services->load('PSX\\Framework\\Tests\\Controller\\Foo\\Application\\', __DIR__ . '/Controller/Foo/Application')
+        ->public();
+
+    $services->load('PSX\\Framework\\Controller\\OAuth2\\', __DIR__ . '/../src/Controller/OAuth2')
         ->public();
 
     $services->load('PSX\\Framework\\Controller\\Tool\\', __DIR__ . '/../src/Controller/Tool')

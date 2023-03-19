@@ -48,7 +48,7 @@ class CollectionPopo extends ControllerAbstract
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: Collection::class)]
-    protected function doGet(int $startIndex, int $count): mixed
+    public function doGet(int $startIndex, int $count): mixed
     {
         return $this->populationService->getAll(
             $startIndex,
@@ -59,7 +59,7 @@ class CollectionPopo extends ControllerAbstract
     #[Post]
     #[Incoming(schema: Entity::class)]
     #[Outgoing(code: 201, schema: Message::class)]
-    protected function doPost(Entity $record): Message
+    public function doPost(Entity $record): Message
     {
         $this->populationService->create(
             $record->getPlace(),

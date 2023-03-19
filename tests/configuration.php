@@ -22,7 +22,7 @@ return [
 
     // Database parameters which are used for the doctrine DBAL connection
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
-    'psx_connection'          => getConnectionParams(getenv('DB')),
+    'psx_connection'          => \PSX\Framework\Test\Environment::getConnectionParams(getenv('DB')),
 
     'psx_log_level'           => \Monolog\Logger::ERROR,
 
@@ -32,36 +32,3 @@ return [
     'psx_path_src'            => __DIR__,
 
 ];
-
-function getConnectionParams($db)
-{
-    switch ($db) {
-        case 'mysql':
-            return [
-                'dbname'   => 'psx',
-                'user'     => 'root',
-                'password' => 'test1234',
-                'host'     => 'localhost',
-                'driver'   => 'pdo_mysql',
-            ];
-            break;
-
-        case 'pgsql':
-            return [
-                'dbname'   => 'psx',
-                'user'     => 'postgres',
-                'password' => 'test1234',
-                'host'     => 'localhost',
-                'driver'   => 'pdo_pgsql',
-            ];
-            break;
-
-        default:
-        case 'sqlite':
-            return [
-                'memory' => true,
-                'driver' => 'pdo_sqlite',
-            ];
-            break;
-    }
-}

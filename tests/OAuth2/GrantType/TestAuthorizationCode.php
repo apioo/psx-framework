@@ -18,47 +18,29 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\OAuth2\GrantType;
 
-use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use Symfony\Component\Console\Application;
+use PSX\Framework\Oauth2\Credentials;
+use PSX\Framework\Oauth2\GrantType\AuthorizationCodeAbstract;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant\AuthorizationCode;
 
 /**
- * ConsoleTest
+ * TestAuthorizationCode
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ConsoleTest extends ControllerTestCase
+class TestAuthorizationCode extends AuthorizationCodeAbstract
 {
-    public function testCommand()
+    protected function generate(Credentials $credentials, AuthorizationCode $grant): AccessToken
     {
-        $application = Environment::getService(Application::class);
-        $commands    = $application->all();
-
-        $keys = array_keys($commands);
-        sort($keys);
-
-        $expect = [
-            '_complete',
-            'api:generate',
-            'api:parse',
-            'api:push',
-            'completion',
-            'dbal:reserved-words',
-            'dbal:run-sql',
-            'debug:autowiring',
-            'debug:container',
-            'debug:event-dispatcher',
-            'help',
-            'list',
-            'route',
-            'schema:parse',
-            'serve',
-        ];
-
-        $this->assertEquals($expect, $keys);
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'example',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
     }
 }

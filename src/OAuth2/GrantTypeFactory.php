@@ -18,41 +18,40 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2\GrantType;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantTypeInterface;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
-use PSX\Oauth2\Grant;
-use PSX\Oauth2\GrantInterface;
+use PSX\Oauth2\Authorization\Exception\UnsupportedGrantTypeException;
 
 /**
- * ClientCredentialsAbstract
+ * GrantTypeFactory
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ClientCredentialsAbstract implements GrantTypeInterface
+class GrantTypeFactory
 {
-    public function getType(): string
+    /**
+     * @var GrantTypeInterface[]
+     */
+    private iterable $types;
+
+    public function __construct(iterable $types)
     {
-        return self::TYPE_CLIENT_CREDENTIALS;
+        $this->types = $types;
     }
 
-    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
+    /**
+     * @throws UnsupportedGrantTypeException
+     */
+    public function get(string $type): GrantTypeInterface
     {
-        if ($credentials === null) {
-            throw new InvalidRequestException('Credentials not available');
+        foreach ($this->types as $grantType) {
+            if ($type == $grantType->getType()) {
+                return $grantType;
+            }
         }
 
-        if (!$grant instanceof Grant\ClientCredentials) {
-            throw new InvalidRequestException('Provided an invalid grant');
-        }
-
-        return $this->generate($credentials, $grant);
+        throw new UnsupportedGrantTypeException('Invalid grant type');
     }
-
-    abstract protected function generate(Credentials $credentials, Grant\ClientCredentials $grant);
 }

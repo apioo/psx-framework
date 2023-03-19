@@ -34,6 +34,7 @@ use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Model\Passthru;
+use PSX\Framework\Util\HeaderName;
 use PSX\Http\Filter\CORS;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
@@ -100,11 +101,11 @@ class ControllerExecutor implements FilterInterface
             $response->setHeader('X-Stability', 'legacy');
         }
 
-        $arguments = $this->buildArguments($operation, $request, $specification->getDefinitions());
-
         if ($request->getMethod() === 'OPTIONS') {
             // for OPTIONS requests we dont execute the controller
         } else {
+            $arguments = $this->buildArguments($operation, $request, $specification->getDefinitions());
+
             $result = call_user_func_array([$this->controller, $this->methodName], $arguments);
 
             $this->responseWriter->setBody($response, $result, $request);
@@ -125,6 +126,9 @@ class ControllerExecutor implements FilterInterface
         foreach ($operation->getArguments()->getAll() as $name => $argument) {
             if ($argument->getIn() === 'path') {
                 $value = $this->context->getParameter($name);
+                $result[] = $this->castToType($argument->getSchema(), $value);
+            } elseif ($argument->getIn() === 'header') {
+                $value = $request->getHeader(HeaderName::convert($name));
                 $result[] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'query') {
                 $value = $request->getUri()->getParameter($name);
@@ -185,7 +189,7 @@ class ControllerExecutor implements FilterInterface
             return null;
         }
 
-        if ($type->getRef() === Passthru::class) {
+        if ($type->getRef() === 'Passthru') {
             $data = $this->requestReader->getBody($request);
         } else {
             $schema = new Schema($definitions->getType($type->getRef()), $definitions);
@@ -209,19 +213,5 @@ class ControllerExecutor implements FilterInterface
         $this->cache->save($item);
 
         return $spec;
-    }
-
-    protected function getPreFilter(): array
-    {
-        $filter = [];
-
-        $filter[] = new CORS(
-            $this->config->get('psx_cors_origin'),
-            ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-            $this->config->get('psx_cors_headers'),
-            false
-        );
-
-        return $filter;
     }
 }

@@ -18,34 +18,31 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\OAuth2;
 
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\GrantInterface;
+use PSX\Uri\Url;
 
 /**
- * GrantTypeInterface
+ * VoidAuthorizer
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-interface GrantTypeInterface
+class VoidAuthorizer implements AuthorizerInterface
 {
-    public const TYPE_AUTHORIZATION_CODE = 'authorization_code';
-    public const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
-    public const TYPE_IMPLICIT           = 'implicit';
-    public const TYPE_PASSWORD           = 'password';
-    public const TYPE_REFRESH_TOKEN      = 'refresh_token';
+    public function hasGrant(AccessRequest $request): bool
+    {
+        return false;
+    }
 
-    /**
-     * Returns the name of this grant type
-     */
-    public function getType(): string;
+    public function generateCode(AccessRequest $request): string
+    {
+        return '';
+    }
 
-    /**
-     * Returns an access token based on the credentials and request parameters.
-     * In some grant types the credentials can be null
-     */
-    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken;
+    public function getCallback(string $clientId): ?Url
+    {
+        return null;
+    }
 }

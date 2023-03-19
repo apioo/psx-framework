@@ -18,47 +18,35 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2;
+namespace PSX\Framework\Tests\Controller\OAuth2;
 
-use PSX\Framework\Oauth2\GrantTypeFactory;
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Oauth2\GrantType\TestImplicit;
+use PSX\Framework\Tests\OAuth2\TestAuthorizer;
 use PSX\Json\Parser;
 
 /**
- * AuthorizationAbstractTest
+ * AuthorizationControllerTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class AuthorizationAbstractTest extends ControllerTestCase
+class AuthorizationControllerTest extends ControllerTestCase
 {
     const CLIENT_ID     = 's6BhdRkqt3';
     const CLIENT_SECRET = 'gX1fBat3bV';
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $grantTypeFactory = new GrantTypeFactory();
-
-        Environment::getContainer()->set('oauth2_grant_type_factory', $grantTypeFactory);
-    }
-
     public function testHandleCodeGrant()
     {
+        TestAuthorizer::setHasGrant(true);
+        TestAuthorizer::setCode('foobar');
+
         $response = $this->callEndpoint(array(
             'response_type' => 'code',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo.com',
             'scope' => '',
             'state' => 'random',
-
-            // test implementation specific parameters
-            'has_grant' => 1,
-            'code' => 'foobar',
         ));
 
         $this->assertEquals(307, $response->getStatusCode());
@@ -67,16 +55,15 @@ class AuthorizationAbstractTest extends ControllerTestCase
 
     public function testHandleCodeNoGrant()
     {
+        TestAuthorizer::setHasGrant(false);
+        TestAuthorizer::setCode('foobar');
+
         $response = $this->callEndpoint(array(
             'response_type' => 'code',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo.com',
             'scope' => '',
             'state' => 'random',
-
-            // test implementation specific parameters
-            'has_grant' => 0,
-            'code' => 'foobar',
         ));
 
         $this->assertEquals(307, $response->getStatusCode());
@@ -85,16 +72,15 @@ class AuthorizationAbstractTest extends ControllerTestCase
 
     public function testHandleTokenGrant()
     {
+        TestAuthorizer::setHasGrant(true);
+        TestAuthorizer::setCode('foobar');
+
         $response = $this->callEndpoint(array(
             'response_type' => 'token',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo.com',
             'scope' => '',
             'state' => 'random',
-
-            // test implementation specific parameters
-            'has_grant' => 1,
-            'code' => 'foobar',
         ));
 
         $this->assertEquals(307, $response->getStatusCode());
@@ -104,16 +90,15 @@ class AuthorizationAbstractTest extends ControllerTestCase
 
     public function testHandleTokenNoGrant()
     {
+        TestAuthorizer::setHasGrant(false);
+        TestAuthorizer::setCode('foobar');
+
         $response = $this->callEndpoint(array(
             'response_type' => 'token',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo.com',
             'scope' => '',
             'state' => 'random',
-
-            // test implementation specific parameters
-            'has_grant' => 0,
-            'code' => 'foobar',
         ));
 
         $this->assertEquals(307, $response->getStatusCode());
@@ -131,13 +116,6 @@ class AuthorizationAbstractTest extends ControllerTestCase
 
     protected function callEndpoint(array $params)
     {
-        return $this->sendRequest('http://127.0.0.1/auth?' . http_build_query($params, '', '&'), 'GET');
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/auth', 'PSX\Framework\Tests\Oauth2\TestAuthorizationAbstract'],
-        );
+        return $this->sendRequest('/authorization/authorize?' . http_build_query($params, '', '&'), 'GET');
     }
 }

@@ -18,29 +18,41 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2\GrantType;
+namespace PSX\Framework\OAuth2\GrantType;
 
-use PSX\Framework\Oauth2\Credentials;
-use PSX\Framework\Oauth2\GrantType\RefreshTokenAbstract;
+use PSX\Framework\OAuth2\Credentials;
+use PSX\Framework\OAuth2\GrantTypeInterface;
 use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\RefreshToken;
+use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
+use PSX\Oauth2\Grant;
+use PSX\Oauth2\GrantInterface;
 
 /**
- * TestRefreshToken
+ * ClientCredentialsAbstract
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TestRefreshToken extends RefreshTokenAbstract
+abstract class ClientCredentialsAbstract implements GrantTypeInterface
 {
-    protected function generate(Credentials $credentials, RefreshToken $grant): AccessToken
+    public function getType(): string
     {
-        return new AccessToken(
-            '2YotnFZFEjr1zCsicMWpAA',
-            'example',
-            3600,
-            'tGzv3JOkF0XG5Qx2TlKWIA'
-        );
+        return self::TYPE_CLIENT_CREDENTIALS;
     }
+
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
+    {
+        if ($credentials === null) {
+            throw new InvalidRequestException('Credentials not available');
+        }
+
+        if (!$grant instanceof Grant\ClientCredentials) {
+            throw new InvalidRequestException('Provided an invalid grant');
+        }
+
+        return $this->generate($credentials, $grant);
+    }
+
+    abstract protected function generate(Credentials $credentials, Grant\ClientCredentials $grant);
 }

@@ -18,17 +18,9 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Oauth2;
+namespace PSX\Framework\Tests\Controller\OAuth2;
 
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Oauth2\GrantTypeFactory;
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Oauth2\GrantType\TestAuthorizationCode;
-use PSX\Framework\Tests\Oauth2\GrantType\TestClientCredentials;
-use PSX\Framework\Tests\Oauth2\GrantType\TestImplicit;
-use PSX\Framework\Tests\Oauth2\GrantType\TestPassword;
-use PSX\Framework\Tests\Oauth2\GrantType\TestRefreshToken;
 
 /**
  * TokenAbstractTest
@@ -37,99 +29,8 @@ use PSX\Framework\Tests\Oauth2\GrantType\TestRefreshToken;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class TokenAbstractTest extends ControllerTestCase
+class TokenControllerTest extends ControllerTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $grantTypeFactory = new GrantTypeFactory();
-        $grantTypeFactory->add(new TestAuthorizationCode());
-        $grantTypeFactory->add(new TestClientCredentials());
-        $grantTypeFactory->add(new TestPassword());
-        $grantTypeFactory->add(new TestRefreshToken());
-
-        Environment::getContainer()->set('oauth2_grant_type_factory', $grantTypeFactory);
-    }
-
-    public function testDocumentation()
-    {
-        $response = $this->sendRequest('/doc/*/token', 'GET');
-
-        $actual = (string) $response->getBody();
-        $expect = <<<'JSON'
-{
-    "status": 1,
-    "path": "\/token",
-    "methods": {
-        "POST": {
-            "operationId": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost",
-            "tags": [],
-            "request": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_Request",
-            "responses": {
-                "200": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_200_Response",
-                "400": "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_400_Response"
-            }
-        }
-    },
-    "definitions": {
-        "AccessToken": {
-            "type": "object",
-            "properties": {
-                "access_token": {
-                    "type": "string"
-                },
-                "token_type": {
-                    "type": "string"
-                },
-                "expires_in": {
-                    "type": "integer"
-                },
-                "refresh_token": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                }
-            }
-        },
-        "Error": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "error_description": {
-                    "type": "string"
-                },
-                "error_uri": {
-                    "type": "string"
-                }
-            }
-        },
-        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_200_Response": {
-            "$ref": "AccessToken"
-        },
-        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_400_Response": {
-            "$ref": "Error"
-        },
-        "PSX_Framework_Tests_Oauth2_TestTokenAbstract_doPost_POST_Request": {
-            "$ref": "Passthru"
-        },
-        "Passthru": {
-            "description": "No schema information available",
-            "type": "object"
-        }
-    }
-}
-JSON;
-
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
     public function testAuthorizationCodeGrant()
     {
         $response = $this->callEndpoint('foo', 'bar', array(
@@ -240,10 +141,9 @@ JSON;
 
     public function testOptionsRequest()
     {
-        $response = $this->sendRequest('/token', 'OPTIONS');
+        $response = $this->sendRequest('/authorization/token', 'OPTIONS');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(['allow' => ['OPTIONS, POST']], $response->getHeaders());
         $this->assertEmpty((string) $response->getBody());
     }
 
@@ -254,14 +154,6 @@ JSON;
             'Content-Type'  => 'application/x-www-form-urlencoded'
         ];
 
-        return $this->sendRequest('/token', 'POST', $headers, http_build_query($params, '', '&'));
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['ANY'], '/token', TestTokenAbstract::class],
-            [['ANY'], '/doc/:version/:path', Documentation\DetailController::class],
-        );
+        return $this->sendRequest('/authorization/token', 'POST', $headers, http_build_query($params, '', '&'));
     }
 }

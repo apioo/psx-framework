@@ -45,7 +45,7 @@ class EntityTypeSchema extends ControllerAbstract
 
     #[Get]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    protected function doGet(int $id): mixed
+    public function doGet(int $id): mixed
     {
         return $this->populationService->get($id);
     }
@@ -53,7 +53,7 @@ class EntityTypeSchema extends ControllerAbstract
     #[Put]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doPut(int $id, mixed $record): array
+    public function doPut(int $id, mixed $record): array
     {
         $this->populationService->update(
             $id,
@@ -72,7 +72,7 @@ class EntityTypeSchema extends ControllerAbstract
 
     #[Delete]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doDelete(int $id): array
+    public function doDelete(int $id): array
     {
         $this->populationService->delete($id);
 

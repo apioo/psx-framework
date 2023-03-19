@@ -18,43 +18,41 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Oauth2;
+namespace PSX\Framework\OAuth2\GrantType;
+
+use PSX\Framework\OAuth2\Credentials;
+use PSX\Framework\OAuth2\GrantTypeInterface;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Grant;
+use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
+use PSX\Oauth2\GrantInterface;
 
 /**
- * Credentials
+ * RefreshTokenAbstract
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Credentials
+abstract class RefreshTokenAbstract implements GrantTypeInterface
 {
-    private string $clientId;
-    private string $clientSecret;
-
-    public function __construct(string $clientId, string $clientSecret)
+    public function getType(): string
     {
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
+        return self::TYPE_REFRESH_TOKEN;
     }
 
-    public function setClientId(string $clientId): void
+    public function generateAccessToken(?Credentials $credentials, GrantInterface $grant): AccessToken
     {
-        $this->clientId = $clientId;
-    }
-    
-    public function getClientId(): string
-    {
-        return $this->clientId;
+        if ($credentials === null) {
+            throw new InvalidRequestException('Credentials not available');
+        }
+
+        if (!$grant instanceof Grant\RefreshToken) {
+            throw new InvalidRequestException('Provided an invalid grant');
+        }
+
+        return $this->generate($credentials, $grant);
     }
 
-    public function setClientSecret(string $clientSecret): void
-    {
-        $this->clientSecret = $clientSecret;
-    }
-    
-    public function getClientSecret(): string
-    {
-        return $this->clientSecret;
-    }
+    abstract protected function generate(Credentials $credentials, Grant\RefreshToken $grant);
 }
