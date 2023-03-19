@@ -1002,13 +1002,6 @@
             "type": "integer"
           }
         },
-        "record": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "string"
-          }
-        },
         "payload": {
           "in": "body",
           "schema": {
@@ -1085,13 +1078,6 @@
           "in": "path",
           "schema": {
             "type": "integer"
-          }
-        },
-        "record": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "string"
           }
         },
         "payload": {
