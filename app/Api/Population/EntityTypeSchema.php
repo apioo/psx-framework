@@ -30,6 +30,7 @@ use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Record\Record;
 
 #[Description('Entity endpoint')]
 #[Path('/population/typeschema/:id')]
@@ -53,15 +54,15 @@ class EntityTypeSchema extends ControllerAbstract
     #[Put]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    public function doPut(int $id, mixed $record): array
+    public function doPut(int $id, Record $payload): array
     {
         $this->populationService->update(
             $id,
-            $record['place'],
-            $record['region'],
-            $record['population'],
-            $record['users'],
-            $record['worldUsers']
+            $payload['place'],
+            $payload['region'],
+            $payload['population'],
+            $payload['users'],
+            $payload['worldUsers']
         );
 
         return [

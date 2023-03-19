@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\App\Test\Api;
 
+use Doctrine\DBAL\Connection;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\App\ApiTestCase;
 
@@ -67,7 +68,7 @@ class EntityTest extends ApiTestCase
 
         $actual = (string) $response->getBody();
 
-        $this->assertEquals(405, $response->getStatusCode(), $actual);
+        $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
     /**
@@ -98,13 +99,13 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
-        $sql = Environment::getService('connection')->createQueryBuilder()
+        $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('id', 'place', 'region', 'population', 'users', 'world_users')
             ->from('population')
             ->where('id = :id')
             ->getSQL();
 
-        $result = Environment::getService('connection')->fetchAssoc($sql, ['id' => 1]);
+        $result = Environment::getService(Connection::class)->fetchAssoc($sql, ['id' => 1]);
         $expect = [
             'id' => 1,
             'place' => 11,
@@ -136,13 +137,13 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
-        $sql = Environment::getService('connection')->createQueryBuilder()
+        $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('id', 'place', 'region', 'population', 'users', 'world_users')
             ->from('population')
             ->where('id = :id')
             ->getSQL();
 
-        $result = Environment::getService('connection')->fetchAssoc($sql, ['id' => 1]);
+        $result = Environment::getService(Connection::class)->fetchAssoc($sql, ['id' => 1]);
 
         $this->assertEmpty($result);
     }

@@ -35,7 +35,7 @@ class TypeApiTest extends ApiTestCase
 {
     public function testGet()
     {
-        $response = $this->sendRequest('/system/generator/typeapi', 'GET');
+        $response = $this->sendRequest('/system/generator/typeapi', 'POST');
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/typeapi.json');

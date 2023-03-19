@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\App\Test\Api;
 
+use Doctrine\DBAL\Connection;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\App\ApiTestCase;
 
@@ -84,11 +85,11 @@ class CollectionTest extends ApiTestCase
 }
 JSON;
 
-        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertEquals(201, $response->getStatusCode(), $actual);
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
 
         // check database
-        $sql = Environment::getService('connection')->createQueryBuilder()
+        $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('place', 'region', 'population', 'users', 'world_users')
             ->from('population')
             ->orderBy('id', 'DESC')
@@ -96,7 +97,7 @@ JSON;
             ->setMaxResults(2)
             ->getSQL();
 
-        $result = Environment::getService('connection')->fetchAll($sql);
+        $result = Environment::getService(Connection::class)->fetchAllAssociative($sql);
         $expect = [
             ['place' => 11, 'region' => 'Foo', 'population' => 1024, 'users' => 512, 'world_users' => 0.6],
             ['place' => 10, 'region' => 'Korea South', 'population' => 48508972, 'users' => 37475800, 'world_users' => 2.2],
@@ -114,7 +115,7 @@ JSON;
 
         $actual = (string) $response->getBody();
 
-        $this->assertEquals(405, $response->getStatusCode(), $actual);
+        $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
     /**
@@ -126,7 +127,7 @@ JSON;
 
         $actual = (string) $response->getBody();
 
-        $this->assertEquals(405, $response->getStatusCode(), $actual);
+        $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
     public function routeDataProvider()

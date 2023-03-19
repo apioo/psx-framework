@@ -34,7 +34,7 @@ use PSX\Framework\Controller\ControllerAbstract;
 
 #[Description('Entity endpoint')]
 #[Path('/population/popo/:id')]
-#[PathParam(name: "id", type: "integer", required: true)]
+#[PathParam(name: "id", type: "integer")]
 class EntityPopo extends ControllerAbstract
 {
     private Population $populationService;
@@ -54,15 +54,15 @@ class EntityPopo extends ControllerAbstract
     #[Put]
     #[Incoming(schema: Model\Entity::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    public function doPut(int $id, mixed $record): array
+    public function doPut(int $id, Model\Entity $payload): array
     {
         $this->populationService->update(
             $id,
-            $record->getPlace(),
-            $record->getRegion(),
-            $record->getPopulation(),
-            $record->getUsers(),
-            $record->getWorldUsers()
+            $payload->getPlace(),
+            $payload->getRegion(),
+            $payload->getPopulation(),
+            $payload->getUsers(),
+            $payload->getWorldUsers()
         );
 
         return [
