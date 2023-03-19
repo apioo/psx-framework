@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Console;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -36,30 +37,18 @@ class ServeCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService('console')->find('serve');
+        $command = Environment::getService(Application::class)->find('serve');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
             'method'  => 'GET',
-            'uri'     => '/api',
+            'uri'     => '/system/routing',
             'headers' => 'Accept=application/xml',
         ));
 
         $actual = $commandTester->getDisplay();
-        $expect = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<record type="object">
-  <bar type="string">foo</bar>
-</record>
-XML;
+        $expect = file_get_contents(__DIR__ . '/output/routes.xml');
 
         $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/api', TestApiController::class],
-        );
     }
 }

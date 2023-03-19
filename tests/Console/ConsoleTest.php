@@ -22,6 +22,7 @@ namespace PSX\Framework\Tests\Console;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use Symfony\Component\Console\Application;
 
 /**
  * ConsoleTest
@@ -34,8 +35,7 @@ class ConsoleTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        /** @var \Symfony\Component\Console\Application $application */
-        $application = Environment::getService('console');
+        $application = Environment::getService(Application::class);
         $commands    = $application->all();
 
         $keys = array_keys($commands);
@@ -45,10 +45,8 @@ class ConsoleTest extends ControllerTestCase
             '_complete',
             'api:generate',
             'api:parse',
+            'api:push',
             'completion',
-            'container:build',
-            'container:list',
-            'dbal:import',
             'dbal:reserved-words',
             'dbal:run-sql',
             'help',

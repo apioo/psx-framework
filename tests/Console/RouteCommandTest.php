@@ -23,6 +23,7 @@ namespace PSX\Framework\Tests\Console;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -36,21 +37,15 @@ class RouteCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService('console')->find('route');
+        $command = Environment::getService(Application::class)->find('route');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
         ));
 
-        $response = $commandTester->getDisplay();
+        $actual = trim($commandTester->getDisplay());
+        $expect = trim(file_get_contents(__DIR__ . '/output/routes.txt'));
 
-        $this->assertEquals('GET /controller ' . TestApiController::class, trim($response));
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/controller', TestApiController::class],
-        );
+        $this->assertEquals($expect, $actual, $actual);
     }
 }
