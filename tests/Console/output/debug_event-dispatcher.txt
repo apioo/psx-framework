@@ -1,0 +1,12 @@
+Registered Listeners Grouped by Event
+=====================================
+
+"psx.event_listener.exception_thrown" event
+-------------------------------------------
+
+ ------- ---------------------------------------------------------------------- ---------- 
+  Order   Callable                                                               Priority  
+ ------- ---------------------------------------------------------------------- ---------- 
+  #1      PSX\Framework\Listener\LoggingListener::onExceptionThrown()            0         
+  #2      PSX\Framework\Listener\PHPUnitExceptionListener::onExceptionThrown()   0         
+ ------- ---------------------------------------------------------------------- ----------

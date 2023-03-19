@@ -1,0 +1,57 @@
+Autowirable Types
+=================
+
+ The following classes & interfaces can be used as type-hints when autowiring:
+ 
+ ApiManagerInterface
+ PSX\Api\ApiManagerInterface (PSX\Api\ApiManager)
+ 
+ GeneratorFactoryInterface
+ PSX\Api\GeneratorFactoryInterface (PSX\Api\GeneratorFactory)
+ 
+ A scanner knows all available operations and can be used to generate a specification for the system. Through the filter it is possible restrict operations to a specific subset
+ PSX\Api\ScannerInterface (PSX\Framework\Api\ControllerAttribute)
+ 
+ FilterFactoryInterface
+ PSX\Api\Scanner\FilterFactoryInterface (PSX\Api\Scanner\FilterFactory)
+ 
+ DispatchInterface
+ PSX\Engine\DispatchInterface (PSX\Framework\Dispatch\Dispatch)
+ 
+ ConverterInterface
+ PSX\Framework\Exception\ConverterInterface (PSX\Framework\Exception\Converter)
+ 
+ ContextFactoryInterface
+ PSX\Framework\Loader\ContextFactoryInterface (PSX\Framework\Loader\ContextFactory)
+ 
+ LoaderInterface
+ PSX\Framework\Loader\LoaderInterface (PSX\Framework\Loader\Loader)
+ 
+ LocationFinderInterface
+ PSX\Framework\Loader\LocationFinderInterface (PSX\Framework\Loader\LocationFinder\RoutingParser)
+ 
+ RoutingParserInterface
+ PSX\Framework\Loader\RoutingParserInterface (PSX\Framework\Loader\RoutingParser\AttributeParser)
+ 
+ ClientInterface
+ PSX\Http\Client\ClientInterface (PSX\Http\Client\Client)
+ 
+ SchemaManagerInterface
+ PSX\Schema\SchemaManagerInterface (PSX\Schema\SchemaManager)
+ 
+ TableManagerInterface
+ PSX\Sql\TableManagerInterface (PSX\Sql\TableManager)
+ 
+ CacheItemPoolInterface generates CacheItemInterface objects.
+ Psr\Cache\CacheItemPoolInterface (Symfony\Component\Cache\Adapter\ArrayAdapter)
+ 
+ Describes the interface of a container that exposes methods to read its entries.
+ Psr\Container\ContainerInterface (service_container)
+ 
+ Defines a dispatcher for events.
+ Psr\EventDispatcher\EventDispatcherInterface (Symfony\Component\EventDispatcher\EventDispatcher)
+ 
+ Describes a logger instance.
+ Psr\Log\LoggerInterface (Monolog\Logger)
+
+ 71 more concrete services would be displayed when adding the "--all" option.

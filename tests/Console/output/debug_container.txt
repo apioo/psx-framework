@@ -1,0 +1,99 @@
+Symfony Container Services
+==========================
+
+ ------------------------------------------------------------------------------ ---------------------------------------------------------------- 
+  Service ID                                                                     Class name                                                      
+ ------------------------------------------------------------------------------ ---------------------------------------------------------------- 
+  Doctrine\DBAL\Connection                                                                                                                       
+  Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand                                                                                       
+  Doctrine\DBAL\Tools\Console\Command\RunSqlCommand                                                                                              
+  Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider                                                                        
+  Monolog\Logger                                                                                                                                 
+  PSX\Api\ApiManager                                                                                                                             
+  PSX\Api\ApiManagerInterface                                                    alias for "PSX\Api\ApiManager"                                  
+  PSX\Api\Console\GenerateCommand                                                                                                                
+  PSX\Api\Console\ParseCommand                                                                                                                   
+  PSX\Api\Console\PushCommand                                                                                                                    
+  PSX\Api\GeneratorFactory                                                                                                                       
+  PSX\Api\GeneratorFactoryInterface                                              alias for "PSX\Api\GeneratorFactory"                            
+  PSX\Api\ScannerInterface                                                       alias for "PSX\Framework\Api\ControllerAttribute"               
+  PSX\Api\Scanner\FilterFactory                                                                                                                  
+  PSX\Api\Scanner\FilterFactoryInterface                                         alias for "PSX\Api\Scanner\FilterFactory"                       
+  PSX\Data\Processor                                                                                                                             
+  PSX\Engine\DispatchInterface                                                   alias for "PSX\Framework\Dispatch\Dispatch"                     
+  PSX\Framework\Api\ControllerAttribute                                                                                                          
+  PSX\Framework\App\Api\Population\CollectionPopo                                                                                                
+  PSX\Framework\App\Api\Population\CollectionTypeSchema                                                                                          
+  PSX\Framework\App\Api\Population\EntityPopo                                                                                                    
+  PSX\Framework\App\Api\Population\EntityTypeSchema                                                                                              
+  PSX\Framework\App\Service\Population                                                                                                           
+  PSX\Framework\App\Table\Population                                                                                                             
+  PSX\Framework\Connection\ConnectionFactory                                                                                                     
+  PSX\Framework\Console\ApplicationFactory                                                                                                       
+  PSX\Framework\Console\DebugAutowiringCommand                                                                                                   
+  PSX\Framework\Console\DebugContainerCommand                                                                                                    
+  PSX\Framework\Console\DebugEventDispatcherCommand                                                                                              
+  PSX\Framework\Console\RouteCommand                                                                                                             
+  PSX\Framework\Console\ServeCommand                                                                                                             
+  PSX\Framework\Controller\Tool\DiscoveryController                                                                                              
+  PSX\Framework\Controller\Tool\GeneratorController                                                                                              
+  PSX\Framework\Controller\Tool\RoutingController                                                                                                
+  PSX\Framework\Data\ProcessorFactory                                                                                                            
+  PSX\Framework\Dispatch\Dispatch                                                                                                                
+  PSX\Framework\Event\EventDispatcherFactory                                                                                                     
+  PSX\Framework\Exception\Converter                                                                                                              
+  PSX\Framework\Exception\ConverterInterface                                     alias for "PSX\Framework\Exception\Converter"                   
+  PSX\Framework\Filter\ControllerExecutorFactory                                                                                                 
+  PSX\Framework\Filter\PostFilterCollection                                                                                                      
+  PSX\Framework\Filter\PreFilterCollection                                                                                                       
+  PSX\Framework\Http\RequestReader                                                                                                               
+  PSX\Framework\Http\ResponseWriter                                                                                                              
+  PSX\Framework\Listener\LoggingListener                                                                                                         
+  PSX\Framework\Listener\PHPUnitExceptionListener                                                                                                
+  PSX\Framework\Loader\ContextFactory                                                                                                            
+  PSX\Framework\Loader\ContextFactoryInterface                                   alias for "PSX\Framework\Loader\ContextFactory"                 
+  PSX\Framework\Loader\Loader                                                                                                                    
+  PSX\Framework\Loader\LoaderInterface                                           alias for "PSX\Framework\Loader\Loader"                         
+  PSX\Framework\Loader\LocationFinderInterface                                   alias for "PSX\Framework\Loader\LocationFinder\RoutingParser"   
+  PSX\Framework\Loader\LocationFinder\RoutingParser                                                                                              
+  PSX\Framework\Loader\ReverseRouter                                                                                                             
+  PSX\Framework\Loader\RoutingParserInterface                                    alias for "PSX\Framework\Loader\RoutingParser\AttributeParser"  
+  PSX\Framework\Loader\RoutingParser\AttributeParser                                                                                             
+  PSX\Framework\Logger\LoggerFactory                                                                                                             
+  PSX\Framework\Test\Environment                                                                                                                 
+  PSX\Framework\Tests\Controller\Foo\Application\BodyController                                                                                  
+  PSX\Framework\Tests\Controller\Foo\Application\DummyController                                                                                 
+  PSX\Framework\Tests\Controller\Foo\Application\ExceptionController                                                                             
+  PSX\Framework\Tests\Controller\Foo\Application\FilterController                                                                                
+  PSX\Framework\Tests\Controller\Foo\Application\PassthruController                                                                              
+  PSX\Framework\Tests\Controller\Foo\Application\PopoController                                                                                  
+  PSX\Framework\Tests\Controller\Foo\Application\RedirectExceptionController                                                                     
+  PSX\Framework\Tests\Controller\Foo\Application\SchemaController                                                                                
+  PSX\Framework\Tests\Controller\Foo\Application\StatusCodeExceptionController                                                                   
+  PSX\Framework\Tests\Controller\Foo\Application\TableController                                                                                 
+  PSX\Framework\Tests\Controller\Foo\Application\TypeSchemaController                                                                            
+  PSX\Http\Client\Client                                                                                                                         
+  PSX\Http\Client\ClientInterface                                                alias for "PSX\Http\Client\Client"                              
+  PSX\Http\Filter\CORS                                                                                                                           
+  PSX\Schema\Console\ParseCommand                                                                                                                
+  PSX\Schema\Parser\TypeSchema\ImportResolver                                                                                                    
+  PSX\Schema\SchemaManager                                                                                                                       
+  PSX\Schema\SchemaManagerInterface                                              alias for "PSX\Schema\SchemaManager"                            
+  PSX\Sql\TableManager                                                                                                                           
+  PSX\Sql\TableManagerInterface                                                  alias for "PSX\Sql\TableManager"                                
+  PSX\Validate\Validate                                                                                                                          
+  Psr\Cache\CacheItemPoolInterface                                               alias for "Symfony\Component\Cache\Adapter\ArrayAdapter"        
+  Psr\Container\ContainerInterface                                               alias for "service_container"                                   
+  Psr\EventDispatcher\EventDispatcherInterface                                   alias for "Symfony\Component\EventDispatcher\EventDispatcher"   
+  Psr\Log\LoggerInterface                                                        alias for "Monolog\Logger"                                      
+  Symfony\Component\Cache\Adapter\ArrayAdapter                                                                                                   
+  Symfony\Component\Cache\Adapter\FilesystemAdapter                                                                                              
+  Symfony\Component\Console\Application                                                                                                          
+  Symfony\Component\Console\Command\HelpCommand                                                                                                  
+  Symfony\Component\Console\Command\ListCommand                                                                                                  
+  Symfony\Component\EventDispatcher\EventDispatcher                                                                                              
+  service_container                                                              Symfony\Component\DependencyInjection\ContainerInterface        
+ ------------------------------------------------------------------------------ ---------------------------------------------------------------- 
+
+
+ // To search for a specific service, re-run this command with a search term. (e.g. debug:container log)
