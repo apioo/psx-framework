@@ -33,6 +33,12 @@ Autowirable Types
  RoutingParserInterface
  PSX\Framework\Loader\RoutingParserInterface (PSX\Framework\Loader\RoutingParser\AttributeParser)
  
+ AuthorizerInterface
+ PSX\Framework\OAuth2\AuthorizerInterface (PSX\Framework\Tests\OAuth2\TestAuthorizer)
+ 
+ CallbackInterface
+ PSX\Framework\OAuth2\CallbackInterface (PSX\Framework\Tests\OAuth2\TestCallback)
+ 
  ClientInterface
  PSX\Http\Client\ClientInterface (PSX\Http\Client\Client)
  
@@ -54,4 +60,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 71 more concrete services would be displayed when adding the "--all" option.
+ 83 more concrete services would be displayed when adding the "--all" option.

@@ -51,6 +51,6 @@ class ApiGenerateCommandTest extends ControllerTestCase
         $expect = file_get_contents(__DIR__ . '/output/expect.json');
 
         $this->assertStringContainsString('Successful!', $commandTester->getDisplay());
-        $this->assertJsonStringEqualsJsonString($expect, $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

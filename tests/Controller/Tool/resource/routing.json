@@ -102,6 +102,31 @@
     },
     {
       "method": "GET",
+      "path": "\/authorization\/authorize",
+      "operationId": "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet"
+    },
+    {
+      "method": "POST",
+      "path": "\/authorization\/authorize",
+      "operationId": "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost"
+    },
+    {
+      "method": "GET",
+      "path": "\/authorization\/callback",
+      "operationId": "PSX.Framework.Controller.OAuth2.CallbackController.doGet"
+    },
+    {
+      "method": "POST",
+      "path": "\/authorization\/callback",
+      "operationId": "PSX.Framework.Controller.OAuth2.CallbackController.doPost"
+    },
+    {
+      "method": "POST",
+      "path": "\/authorization\/token",
+      "operationId": "PSX.Framework.Controller.OAuth2.TokenController.doPost"
+    },
+    {
+      "method": "GET",
       "path": "\/system\/discovery",
       "operationId": "PSX.Framework.Controller.Tool.DiscoveryController.show"
     },

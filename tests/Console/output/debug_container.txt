@@ -35,6 +35,9 @@ Symfony Container Services
   PSX\Framework\Console\DebugEventDispatcherCommand                                                                                              
   PSX\Framework\Console\RouteCommand                                                                                                             
   PSX\Framework\Console\ServeCommand                                                                                                             
+  PSX\Framework\Controller\OAuth2\AuthorizationController                                                                                        
+  PSX\Framework\Controller\OAuth2\CallbackController                                                                                             
+  PSX\Framework\Controller\OAuth2\TokenController                                                                                                
   PSX\Framework\Controller\Tool\DiscoveryController                                                                                              
   PSX\Framework\Controller\Tool\GeneratorController                                                                                              
   PSX\Framework\Controller\Tool\RoutingController                                                                                                
@@ -60,6 +63,11 @@ Symfony Container Services
   PSX\Framework\Loader\RoutingParserInterface                                    alias for "PSX\Framework\Loader\RoutingParser\AttributeParser"  
   PSX\Framework\Loader\RoutingParser\AttributeParser                                                                                             
   PSX\Framework\Logger\LoggerFactory                                                                                                             
+  PSX\Framework\OAuth2\AuthorizerInterface                                       alias for "PSX\Framework\Tests\OAuth2\TestAuthorizer"           
+  PSX\Framework\OAuth2\CallbackInterface                                         alias for "PSX\Framework\Tests\OAuth2\TestCallback"             
+  PSX\Framework\OAuth2\GrantTypeFactory                                                                                                          
+  PSX\Framework\OAuth2\VoidAuthorizer                                                                                                            
+  PSX\Framework\OAuth2\VoidCallback                                                                                                              
   PSX\Framework\Test\Environment                                                                                                                 
   PSX\Framework\Tests\Controller\Foo\Application\BodyController                                                                                  
   PSX\Framework\Tests\Controller\Foo\Application\DummyController                                                                                 
@@ -72,6 +80,12 @@ Symfony Container Services
   PSX\Framework\Tests\Controller\Foo\Application\StatusCodeExceptionController                                                                   
   PSX\Framework\Tests\Controller\Foo\Application\TableController                                                                                 
   PSX\Framework\Tests\Controller\Foo\Application\TypeSchemaController                                                                            
+  PSX\Framework\Tests\OAuth2\GrantType\TestAuthorizationCode                                                                                     
+  PSX\Framework\Tests\OAuth2\GrantType\TestClientCredentials                                                                                     
+  PSX\Framework\Tests\OAuth2\GrantType\TestPassword                                                                                              
+  PSX\Framework\Tests\OAuth2\GrantType\TestRefreshToken                                                                                          
+  PSX\Framework\Tests\OAuth2\TestAuthorizer                                                                                                      
+  PSX\Framework\Tests\OAuth2\TestCallback                                                                                                        
   PSX\Http\Client\Client                                                                                                                         
   PSX\Http\Client\ClientInterface                                                alias for "PSX\Http\Client\Client"                              
   PSX\Http\Filter\CORS                                                                                                                           

@@ -21,7 +21,6 @@
 namespace PSX\Framework\Filter;
 
 use Psr\Cache\CacheItemPoolInterface;
-use PSX\Api\Exception\OperationNotFoundException;
 use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
 use PSX\Api\SpecificationInterface;
@@ -33,9 +32,7 @@ use PSX\DateTime\Time;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Model\Passthru;
 use PSX\Framework\Util\HeaderName;
-use PSX\Http\Filter\CORS;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;

@@ -21,13 +21,10 @@
 namespace PSX\Framework\Controller\OAuth2;
 
 use PSX\Api\Attribute\Get;
-use PSX\Api\Attribute\Incoming;
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Model\Passthru;
 use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
 use PSX\Oauth2\AuthorizationAbstract;
@@ -56,8 +53,6 @@ class CallbackController extends ControllerAbstract
     #[QueryParam('error_description', 'string')]
     #[QueryParam('code', 'string')]
     #[QueryParam('state', 'string')]
-    #[Incoming(schema: Passthru::class)]
-    #[Outgoing(code: 200, schema: Passthru::class)]
     public function doGet(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);
@@ -69,8 +64,6 @@ class CallbackController extends ControllerAbstract
     #[QueryParam('error_description', 'string')]
     #[QueryParam('code', 'string')]
     #[QueryParam('state', 'string')]
-    #[Incoming(schema: Passthru::class)]
-    #[Outgoing(code: 200, schema: Passthru::class)]
     public function doPost(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);

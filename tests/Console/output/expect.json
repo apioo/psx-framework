@@ -578,6 +578,216 @@
       "authorization": true,
       "tags": []
     },
+    "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet": {
+      "path": "\/authorization\/authorize",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "response_type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "client_id": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "redirect_uri": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost": {
+      "path": "\/authorization\/authorize",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "response_type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "client_id": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "redirect_uri": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.CallbackController.doGet": {
+      "path": "\/authorization\/callback",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "error": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "error_description": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.CallbackController.doPost": {
+      "path": "\/authorization\/callback",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "error": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "error_description": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.TokenController.doPost": {
+      "path": "\/authorization\/token",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "AccessToken"
+        }
+      },
+      "arguments": {
+        "authorization": {
+          "in": "header",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Passthru"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
     "PSX.Framework.Controller.Tool.DiscoveryController.show": {
       "path": "\/system\/discovery",
       "method": "GET",
@@ -924,6 +1134,29 @@
     }
   },
   "definitions": {
+    "AccessToken": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "token_type": {
+          "type": "string"
+        },
+        "expires_in": {
+          "type": "integer"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
     "Any": {
       "type": "object",
       "additionalProperties": {

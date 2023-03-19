@@ -20,21 +20,13 @@
 
 namespace PSX\Framework\Controller\Tool;
 
-use PSX\Api\Attribute\Get;
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
-use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Post;
-use PSX\Api\Attribute\QueryParam;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\GeneratorFactoryInterface;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
-use PSX\Api\SpecificationInterface;
-use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Loader\Context;
-use PSX\Framework\Model\Passthru;
 use PSX\Http\Environment\HttpResponse;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Writer\File;
@@ -62,7 +54,6 @@ class GeneratorController extends ControllerAbstract
 
     #[Post]
     #[Path('/system/generator/:type')]
-    #[Outgoing(200, Passthru::class)]
     public function generate(string $type, ?string $filter = null): mixed
     {
         $type      = $this->getType($type);

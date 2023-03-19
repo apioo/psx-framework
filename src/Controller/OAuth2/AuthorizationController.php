@@ -21,13 +21,10 @@
 namespace PSX\Framework\Controller\OAuth2;
 
 use PSX\Api\Attribute\Get;
-use PSX\Api\Attribute\Incoming;
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Model\Passthru;
 use PSX\Framework\OAuth2\AccessRequest;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\GrantTypeFactory;
@@ -64,8 +61,6 @@ class AuthorizationController extends ControllerAbstract
     #[QueryParam('redirect_uri', 'string')]
     #[QueryParam('scope', 'string')]
     #[QueryParam('state', 'string')]
-    #[Incoming(schema: Passthru::class)]
-    #[Outgoing(code: 200, schema: Passthru::class)]
     public function doGet(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
@@ -78,8 +73,6 @@ class AuthorizationController extends ControllerAbstract
     #[QueryParam('redirect_uri', 'string')]
     #[QueryParam('scope', 'string')]
     #[QueryParam('state', 'string')]
-    #[Incoming(schema: Passthru::class)]
-    #[Outgoing(code: 200, schema: Passthru::class)]
     public function doPost(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);

@@ -23,15 +23,14 @@ namespace PSX\Framework\Tests\Controller\Foo\Application;
 use PHPUnit\Framework\Assert;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Incoming;
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
+use PSX\Api\Model\Passthru;
 use PSX\DateTime\Date;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Model\Passthru;
 
 /**
  * PassthruController
@@ -44,8 +43,7 @@ use PSX\Framework\Model\Passthru;
 class PassthruController extends ControllerAbstract
 {
     #[Get]
-    #[Outgoing(code: 200, schema: Passthru::class)]
-    public function doGet(): array
+    public function doGet(): mixed
     {
         return [
             'any' => [
@@ -83,8 +81,7 @@ class PassthruController extends ControllerAbstract
 
     #[Post]
     #[Incoming(schema: Passthru::class)]
-    #[Outgoing(code: 200, schema: Passthru::class)]
-    public function doPost($record): Passthru
+    public function doPost($record): mixed
     {
         Assert::assertInstanceOf('stdClass', $record->any);
         Assert::assertEquals(['foo' => 'bar'], (array) $record->any);

@@ -18,6 +18,11 @@ GET|OPTIONS|HEAD /tests/table/row           PSX\Framework\Tests\Controller\Foo\A
 GET|OPTIONS|HEAD /tests/table/nested        PSX\Framework\Tests\Controller\Foo\Application\TableController::doNested            
 GET|OPTIONS|HEAD /tests/typeschema/:id      PSX\Framework\Tests\Controller\Foo\Application\TypeSchemaController::doGet          
 POST|OPTIONS     /tests/typeschema/:id      PSX\Framework\Tests\Controller\Foo\Application\TypeSchemaController::doPost         
+GET|OPTIONS|HEAD /authorization/authorize   PSX\Framework\Controller\OAuth2\AuthorizationController::doGet                      
+POST|OPTIONS     /authorization/authorize   PSX\Framework\Controller\OAuth2\AuthorizationController::doPost                     
+GET|OPTIONS|HEAD /authorization/callback    PSX\Framework\Controller\OAuth2\CallbackController::doGet                           
+POST|OPTIONS     /authorization/callback    PSX\Framework\Controller\OAuth2\CallbackController::doPost                          
+POST|OPTIONS     /authorization/token       PSX\Framework\Controller\OAuth2\TokenController::doPost                             
 GET|OPTIONS|HEAD /system/discovery          PSX\Framework\Controller\Tool\DiscoveryController::show                             
 POST|OPTIONS     /system/generator/:type    PSX\Framework\Controller\Tool\GeneratorController::generate                         
 GET|OPTIONS|HEAD /system/routing            PSX\Framework\Controller\Tool\RoutingController::show                               
