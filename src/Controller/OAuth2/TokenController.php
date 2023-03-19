@@ -48,6 +48,7 @@ use PSX\Oauth2\GrantFactory;
 class TokenController extends ControllerAbstract
 {
     private GrantTypeFactory $grantTypeFactory;
+    private ResponseWriter $responseWriter;
 
     public function __construct(GrantTypeFactory $grantTypeFactory, ResponseWriter $responseWriter)
     {
