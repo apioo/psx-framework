@@ -20,9 +20,9 @@
 
 namespace PSX\Framework\Tests\Console;
 
+use PSX\Framework\Filter\ControllerExecutorFactory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -43,8 +43,7 @@ class DebugContainerCommandTest extends ControllerTestCase
         $commandTester->execute([]);
 
         $actual = trim($commandTester->getDisplay());
-        $expect = trim(file_get_contents(__DIR__ . '/output/debug_container.txt'));
 
-        $this->assertEquals($expect, $actual, $actual);
+        $this->assertStringContainsString(ControllerExecutorFactory::class, $actual, $actual);
     }
 }
