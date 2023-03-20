@@ -2,7 +2,7 @@
 
 $schemas = [
     [
-        'source' => 'config/typeschema.json',
+        'source' => 'resources/typeschema.json',
         'target' => 'src/Model',
         'config' => 'namespace=PSX\Framework\Model',
     ]
