@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Console;
 
-use PSX\Framework\Dependency\DirectoryInterface;
+use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
 use PSX\Schema\Generator\FileAwareInterface;
 use PSX\Schema\GeneratorFactory;

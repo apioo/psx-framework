@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dependency;
+namespace PSX\Framework\Config;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\ConfigFactory;

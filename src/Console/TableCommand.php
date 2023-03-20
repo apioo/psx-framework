@@ -22,7 +22,7 @@
 namespace PSX\Framework\Console;
 
 use Doctrine\DBAL\Connection;
-use PSX\Framework\Dependency\DirectoryInterface;
+use PSX\Framework\Config\DirectoryInterface;
 use PSX\Sql\Generator\Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

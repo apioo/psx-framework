@@ -25,7 +25,7 @@ use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 
 /**
- * A simple routing parser which gets all informations from an array
+ * A simple routing parser which gets all information from an array
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0

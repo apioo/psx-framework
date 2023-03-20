@@ -21,6 +21,8 @@
 namespace PSX\Framework\Filter;
 
 use Psr\Cache\CacheItemPoolInterface;
+use PSX\Api\ApiManager;
+use PSX\Api\ApiManagerInterface;
 use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
 use PSX\Api\SpecificationInterface;
@@ -65,23 +67,21 @@ class ControllerExecutor implements FilterInterface
     private Context $context;
     private RequestReader $requestReader;
     private ResponseWriter $responseWriter;
-    private SchemaManagerInterface $schemaManager;
-    private CacheItemPoolInterface $cache;
+    private ApiManagerInterface $apiManager;
 
-    public function __construct(object $controller, string $methodName, Context $context, RequestReader $requestReader, ResponseWriter $responseWriter, SchemaManagerInterface $schemaManager, CacheItemPoolInterface $cache)
+    public function __construct(object $controller, string $methodName, Context $context, RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager)
     {
         $this->controller = $controller;
         $this->methodName = $methodName;
         $this->context = $context;
         $this->requestReader = $requestReader;
         $this->responseWriter = $responseWriter;
-        $this->schemaManager = $schemaManager;
-        $this->cache = $cache;
+        $this->apiManager = $apiManager;
     }
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $specification = $this->getSpecification(get_class($this->controller));
+        $specification = $this->apiManager->getApi(get_class($this->controller), ApiManager::TYPE_ATTRIBUTE);
 
         $operationId = Attribute::buildOperationId(get_class($this->controller), $this->methodName);
         $operation = $specification->getOperations()->get($operationId);
@@ -194,21 +194,5 @@ class ControllerExecutor implements FilterInterface
         }
 
         return $data;
-    }
-
-    private function getSpecification(string $controllerClass): SpecificationInterface
-    {
-        $item = $this->cache->getItem('psx-spec-' . str_replace('\\', '-', $controllerClass));
-        if ($item->isHit()) {
-            return $item->get();
-        }
-
-        $parser = new Attribute($this->schemaManager, true);
-        $spec = $parser->parse($controllerClass);
-
-        $item->set($spec);
-        $this->cache->save($item);
-
-        return $spec;
     }
 }

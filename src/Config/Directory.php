@@ -18,7 +18,9 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Dependency;
+namespace PSX\Framework\Config;
+
+use PSX\Framework\Config\DirectoryInterface;
 
 /**
  * Directory

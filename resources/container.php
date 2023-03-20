@@ -22,6 +22,8 @@ use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\ControllerAttribute;
+use PSX\Framework\Config\Directory;
+use PSX\Framework\Config\DirectoryInterface;
 use PSX\Framework\Connection\ConnectionFactory;
 use PSX\Framework\Console\ApplicationFactory;
 use PSX\Framework\Console\DebugAutowiringCommand;
@@ -31,8 +33,6 @@ use PSX\Framework\Console\RouteCommand;
 use PSX\Framework\Console\ServeCommand;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Data\ProcessorFactory;
-use PSX\Framework\Dependency\Directory;
-use PSX\Framework\Dependency\DirectoryInterface;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
@@ -51,6 +51,7 @@ use PSX\Framework\Loader\LocationFinder\RoutingParser;
 use PSX\Framework\Loader\LocationFinderInterface;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\AttributeParser;
+use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
@@ -175,7 +176,12 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(AttributeParser::class)
         ->args([tagged_iterator('psx.controller')]);
-    $services->alias(RoutingParserInterface::class, AttributeParser::class)
+    $services->set(CachedParser::class)
+        ->args([
+            service(AttributeParser::class),
+            param('psx_debug'),
+        ]);
+    $services->alias(RoutingParserInterface::class, CachedParser::class)
         ->public();
 
     $services->set(Loader::class);
