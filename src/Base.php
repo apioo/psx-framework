@@ -29,14 +29,12 @@ namespace PSX\Framework;
  */
 class Base
 {
-    const VERSION = '4.0.0';
+    const VERSION = '7.0.0';
 
     /**
      * Returns the version of the framework
-     *
-     * @return string
      */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         return self::VERSION;
     }

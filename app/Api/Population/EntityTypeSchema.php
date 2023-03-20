@@ -20,42 +20,49 @@
 
 namespace PSX\Framework\App\Api\Population;
 
+use PSX\Api\Attribute\Delete;
 use PSX\Api\Attribute\Description;
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
-use PSX\Dependency\Attribute\Inject;
+use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\Controller\ControllerAbstract;
-use PSX\Framework\Controller\SchemaApiAbstract;
-use PSX\Http\Environment\HttpContextInterface;
+use PSX\Record\Record;
 
 #[Description('Entity endpoint')]
+#[Path('/population/typeschema/:id')]
 #[PathParam(name: "id", type: "integer", required: true)]
 class EntityTypeSchema extends ControllerAbstract
 {
-    #[Inject]
     private Population $populationService;
 
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    protected function doGet(HttpContextInterface $context): mixed
+    public function __construct(Population $populationService)
     {
-        return $this->populationService->get(
-            $context->getUriFragment('id')
-        );
+        $this->populationService = $populationService;
     }
 
+    #[Get]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    public function doGet(int $id): mixed
+    {
+        return $this->populationService->get($id);
+    }
+
+    #[Put]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doPut(mixed $record, HttpContextInterface $context): array
+    public function doPut(int $id, Record $payload): array
     {
         $this->populationService->update(
-            $context->getUriFragment('id'),
-            $record['place'],
-            $record['region'],
-            $record['population'],
-            $record['users'],
-            $record['worldUsers']
+            $id,
+            $payload['place'],
+            $payload['region'],
+            $payload['population'],
+            $payload['users'],
+            $payload['worldUsers']
         );
 
         return [
@@ -64,12 +71,11 @@ class EntityTypeSchema extends ControllerAbstract
         ];
     }
 
+    #[Delete]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    protected function doDelete(HttpContextInterface $context): array
+    public function doDelete(int $id): array
     {
-        $this->populationService->delete(
-            $context->getUriFragment('id')
-        );
+        $this->populationService->delete($id);
 
         return [
             'success' => true,

@@ -23,8 +23,9 @@ namespace PSX\Framework\Tests\Console;
 use PSX\Api\GeneratorFactoryInterface;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiController;
+use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
 use PSX\Framework\Tests\Controller\Foo\Application\TestSchemaApiV2Controller;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -38,25 +39,18 @@ class ApiGenerateCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService('console')->find('api:generate');
+        $command = Environment::getService(Application::class)->find('api:generate');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'dir'      => __DIR__ . '/output',
-            '--format' => GeneratorFactoryInterface::MARKUP_MARKDOWN,
+            '--format' => GeneratorFactoryInterface::SPEC_TYPEAPI,
         ]);
 
-        $response = $commandTester->getDisplay();
+        $actual = file_get_contents(__DIR__ . '/output/output-spec-typeapi.json');;
+        $expect = file_get_contents(__DIR__ . '/output/expect.json');
 
-        $this->assertRegExp('/Successful!/', $response);
-        $this->assertTrue(is_file(__DIR__ . '/output/output-markup-markdown.md'));
-    }
-
-    protected function getPaths()
-    {
-        return [
-            [['GET', 'POST', 'PUT', 'DELETE'], '/controller', TestSchemaApiController::class],
-            [['GET', 'POST', 'PUT', 'DELETE'], '/foo/:bar', TestSchemaApiV2Controller::class],
-        ];
+        $this->assertStringContainsString('Successful!', $commandTester->getDisplay());
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

@@ -26,6 +26,7 @@ use PSX\Engine\EngineInterface;
 use PSX\Engine\WebServer\Engine;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Config\Config;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Environment
@@ -38,40 +39,19 @@ class Environment
 {
     private DispatchInterface $dispatch;
     private EngineInterface $engine;
-    private Config $config;
+    private bool $debug;
 
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, Config $config)
+    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
     {
         $this->dispatch = $dispatch;
         $this->engine   = $engine;
-        $this->config   = $config;
+        $this->debug    = $debug;
     }
 
     public function serve(): void
     {
-        Bootstrap::setupEnvironment($this->config);
+        Bootstrap::setupEnvironment($this->debug);
 
         $this->engine->serve($this->dispatch);
-    }
-
-    /**
-     * Creates a new PSX environment based on a DI container. You can optional provide
-     * a different engine to support different web servers
-     * 
-     * @link https://github.com/apioo/psx-engine
-     * @param ContainerInterface $container
-     * @param EngineInterface|null $engine
-     * @return Environment
-     */
-    public static function fromContainer(ContainerInterface $container, ?EngineInterface $engine = null): Environment
-    {
-        $dispatch = $container->get('dispatch');
-        $config   = $container->get('config');
-
-        if ($engine === null) {
-            $engine = new Engine($config->get('psx_url'));
-        }
-
-        return new self($dispatch, $engine, $config);
     }
 }

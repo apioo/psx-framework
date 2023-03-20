@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Loader;
 
-use PSX\Api\Listing\FilterInterface;
+use PSX\Api\Scanner\FilterInterface;
 
 /**
  * RoutingParserInterface

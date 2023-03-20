@@ -38,18 +38,18 @@ class Converter implements ConverterInterface
 {
     public const CONTEXT_SIZE = 4;
 
-    private bool $isDebug;
+    private bool $debug;
     private int $contextSize;
 
-    public function __construct(bool $isDebug, int $contextSize = self::CONTEXT_SIZE)
+    public function __construct(bool $debug, int $contextSize = self::CONTEXT_SIZE)
     {
-        $this->isDebug     = $isDebug;
+        $this->debug = $debug;
         $this->contextSize = $contextSize;
     }
 
     public function convert(\Throwable $exception): Error
     {
-        if ($this->isDebug === true) {
+        if ($this->debug === true) {
             if ($exception instanceof ErrorException) {
                 $exception = $exception->getOriginException();
             }

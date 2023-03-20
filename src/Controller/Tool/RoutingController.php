@@ -20,12 +20,17 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Path;
+use PSX\Api\Parser\Attribute;
 use PSX\Dependency\Attribute\Inject;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Controller\SchemaApiAbstract;
+use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\RoutingParserInterface;
-use PSX\Framework\Schema;
+use PSX\Framework\Model\RoutingCollection;
+use PSX\Framework\Model\RoutingRoute;
 use PSX\Http\Environment\HttpContextInterface;
 use PSX\Record\Record;
 
@@ -38,15 +43,20 @@ use PSX\Record\Record;
  */
 class RoutingController extends ControllerAbstract
 {
-    #[Inject]
     private RoutingParserInterface $routingParser;
 
-    #[Outgoing(code: 200, schema: Schema\Routing\Collection::class)]
-    protected function doGet(HttpContextInterface $context): array
+    public function __construct(RoutingParserInterface $routingParser)
     {
-        return [
-            'routings' => $this->getRoutings(),
-        ];
+        $this->routingParser = $routingParser;
+    }
+
+    #[Get]
+    #[Path('/system/routing')]
+    public function show(): RoutingCollection
+    {
+        $collection = new RoutingCollection();
+        $collection->setRoutings($this->getRoutings());
+        return $collection;
     }
 
     private function getRoutings(): array
@@ -57,11 +67,20 @@ class RoutingController extends ControllerAbstract
         foreach ($routings as $routing) {
             [$methods, $path, $source] = $routing;
 
-            $result[] = Record::fromArray([
-                'methods' => $methods,
-                'path'    => $path,
-                'source'  => $source,
-            ]);
+            if (!isset($methods[0])) {
+                continue;
+            }
+
+            if (!is_array($source) || count($source) !== 2) {
+                continue;
+            }
+
+            $router = new RoutingRoute();
+            $router->setMethod($methods[0]);
+            $router->setPath($path);
+            $router->setOperationId(Attribute::buildOperationId($source[0], $source[1]));
+
+            $result[] = $router;
         }
 
         return $result;

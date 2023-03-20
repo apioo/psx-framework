@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
 use PSX\DateTime\Date;
+use PSX\DateTime\LocalDate;
 use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Time;

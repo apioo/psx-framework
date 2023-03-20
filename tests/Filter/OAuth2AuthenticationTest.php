@@ -1,0 +1,178 @@
+<?php
+/*
+ * PSX is an open source PHP framework to develop RESTful APIs.
+ * For the current version and information visit <https://phpsx.org>
+ *
+ * Copyright 2010-2022 Christoph Kappestein <christoph.kappestein@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace PSX\Framework\Tests\Filter;
+
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use PSX\Http\Exception\UnauthorizedException;
+use PSX\Http\Filter\FilterChain;
+use PSX\Http\FilterChainInterface;
+use PSX\Http\Request;
+use PSX\Http\Response;
+use PSX\Oauth2\AccessToken;
+use PSX\Oauth2\Client;
+use PSX\Uri\Url;
+
+/**
+ * Oauth2AuthenticationTest
+ *
+ * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @link    http://phpsx.org
+ */
+class OAuth2AuthenticationTest extends TestCase
+{
+    const ACCESS_TOKEN = '2YotnFZFEjr1zCsicMWpAA';
+
+    public function testSuccessful()
+    {
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
+            return $accessToken == self::ACCESS_TOKEN;
+        });
+
+        $oauth = new Client();
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $response = new Response();
+
+        $filterChain = $this->getMockFilterChain();
+        $filterChain->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($request), $this->equalTo($response));
+
+        $handle->handle($request, $response, $filterChain);
+    }
+
+    public function testFailure()
+    {
+        $this->expectException(UnauthorizedException::class);
+
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
+            return false;
+        });
+
+        $oauth = new Client();
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $response = new Response();
+
+        $filterChain = $this->getMockFilterChain();
+        $filterChain->expects($this->never())
+            ->method('handle');
+
+        $handle->handle($request, $response, $filterChain);
+    }
+
+    public function testFailureEmptyCredentials()
+    {
+        $this->expectException(UnauthorizedException::class);
+
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
+            return $accessToken == self::ACCESS_TOKEN;
+        });
+
+        $oauth = new Client();
+        $value = '';
+
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $response = new Response();
+
+        $filterChain = $this->getMockFilterChain();
+        $filterChain->expects($this->never())
+            ->method('handle');
+
+        $handle->handle($request, $response, $filterChain);
+    }
+
+    public function testMissing()
+    {
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
+            return $accessToken == self::ACCESS_TOKEN;
+        });
+
+        $oauth = new Client();
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET');
+        $response = new Response();
+
+        $filterChain = $this->getMockFilterChain();
+        $filterChain->expects($this->never())
+            ->method('handle');
+
+        try {
+            $handle->handle($request, $response, $filterChain);
+
+            $this->fail('Must throw an Exception');
+        } catch (UnauthorizedException $e) {
+            $this->assertEquals(401, $e->getStatusCode());
+            $this->assertEquals('Bearer', $e->getType());
+            $this->assertEquals(['realm' => 'psx'], $e->getParameters());
+        }
+    }
+
+    public function testMissingWrongType()
+    {
+        $handle = new OAuth2TestFilter(function (string $accessToken) {
+            return $accessToken == self::ACCESS_TOKEN;
+        });
+
+        $oauth = new Client();
+        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+
+        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => 'Foo']);
+        $response = new Response();
+
+        $filterChain = $this->getMockFilterChain();
+        $filterChain->expects($this->never())
+            ->method('handle');
+
+        try {
+            $handle->handle($request, $response, $filterChain);
+
+            $this->fail('Must throw an Exception');
+        } catch (UnauthorizedException $e) {
+            $this->assertEquals(401, $e->getStatusCode());
+            $this->assertEquals('Bearer', $e->getType());
+            $this->assertEquals(['realm' => 'psx'], $e->getParameters());
+        }
+    }
+
+    protected function newAccessToken(): AccessToken
+    {
+        return new AccessToken(
+            '2YotnFZFEjr1zCsicMWpAA',
+            'bearer',
+            3600,
+            'tGzv3JOkF0XG5Qx2TlKWIA'
+        );
+    }
+
+    protected function getMockFilterChain(): FilterChainInterface&MockObject
+    {
+        return $this->getMockBuilder(FilterChain::class)
+            ->setConstructorArgs([[]])
+            ->setMethods(['handle'])
+            ->getMock();
+    }
+}

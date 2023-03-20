@@ -20,9 +20,9 @@
 
 namespace PSX\Framework;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use ErrorException;
 use PSX\Framework\Config\Config;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Bootstrap
@@ -35,23 +35,12 @@ class Bootstrap
 {
     /**
      * Setup an environment for PSX according to the provided configuration
-     *
-     * @codeCoverageIgnore
-     * @param \PSX\Framework\Config\Config $config
      */
-    public static function setupEnvironment(Config $config)
+    public static function setupEnvironment(bool $debug): void
     {
         if (!defined('PSX')) {
-            // define paths
-            define('PSX_PATH_CACHE', $config->get('psx_path_cache'));
-            define('PSX_PATH_PUBLIC', $config->get('psx_path_public'));
-            define('PSX_PATH_SRC', $config->get('psx_path_src') ?: $config->get('psx_path_library'));
-
-            /** @deprecated */
-            define('PSX_PATH_LIBRARY', $config->get('psx_path_library'));
-
             // error handling
-            if ($config['psx_debug'] === true) {
+            if ($debug === true) {
                 $errorReporting = E_ALL | E_STRICT;
             } else {
                 $errorReporting = 0;
@@ -60,13 +49,6 @@ class Bootstrap
             error_reporting($errorReporting);
             set_error_handler('\PSX\Framework\Bootstrap::errorHandler');
 
-            // ini settings
-            ini_set('date.timezone', $config['psx_timezone']);
-            ini_set('session.use_only_cookies', '1');
-            ini_set('docref_root', '');
-            ini_set('html_errors', '0');
-
-            // define in psx
             define('PSX', true);
         }
     }

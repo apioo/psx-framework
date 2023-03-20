@@ -31,7 +31,7 @@ class Context
 {
     private ?string $path = null;
     private array $parameters = [];
-    private ?string $source = null;
+    private ?array $source = null;
     private ?\Throwable $exception = null;
     private ?string $version = null;
 
@@ -60,12 +60,12 @@ class Context
         $this->parameters = $parameters;
     }
 
-    public function getSource(): ?string
+    public function getSource(): ?array
     {
         return $this->source;
     }
 
-    public function setSource(string $source): void
+    public function setSource(array $source): void
     {
         $this->source = $source;
     }

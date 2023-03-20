@@ -21,6 +21,7 @@
 namespace PSX\Framework\Loader;
 
 use InvalidArgumentException;
+use PSX\Framework\Config\Config;
 
 /**
  * ReverseRouter
@@ -33,21 +34,20 @@ class ReverseRouter
 {
     private RoutingParserInterface $routingParser;
     private string $url;
-    private ?string $basePath;
     private string $dispatch;
+    private ?string $basePath;
 
     public function __construct(RoutingParserInterface $routingParser, string $url, string $dispatch)
     {
         $this->routingParser = $routingParser;
         $this->url           = $url;
-        $this->basePath      = parse_url($this->url, PHP_URL_PATH);
         $this->dispatch      = $dispatch;
+        $this->basePath      = parse_url($this->url, PHP_URL_PATH);
     }
 
-    public function getPath($source, array $parameters = array(), $leadingPath = true)
+    public function getPath(array $source, array $parameters = array(), $leadingPath = true): ?string
     {
         $path = $this->getPathBySource($source);
-
         if ($path === null) {
             return null;
         }
@@ -97,20 +97,19 @@ class ReverseRouter
         return ($leadingPath ? '/' : '') . $path;
     }
 
-    public function getBasePath()
+    public function getBasePath(): string
     {
         return $this->basePath;
     }
 
-    public function getDispatchUrl()
+    public function getDispatchUrl(): string
     {
         return $this->url . '/' . $this->dispatch;
     }
 
-    public function getAbsolutePath($source, array $parameters = array())
+    public function getAbsolutePath($source, array $parameters = []): ?string
     {
         $path = $this->getPath($source, $parameters, false);
-
         if ($path === null) {
             return null;
         }
@@ -122,10 +121,9 @@ class ReverseRouter
         }
     }
 
-    public function getUrl($source, array $parameters = array())
+    public function getUrl($source, array $parameters = []): ?string
     {
         $path = $this->getPath($source, $parameters, false);
-
         if ($path === null) {
             return null;
         }
@@ -137,7 +135,7 @@ class ReverseRouter
         }
     }
 
-    protected function getPathBySource($source)
+    private function getPathBySource(array $source): ?string
     {
         $routingCollection = $this->routingParser->getCollection();
 
@@ -150,7 +148,7 @@ class ReverseRouter
         return null;
     }
 
-    protected function isAbsoluteUrl($path)
+    private function isAbsoluteUrl(string $path): bool
     {
         return substr($path, 0, 7) == 'http://' || substr($path, 0, 8) == 'https://';
     }

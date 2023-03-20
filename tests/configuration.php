@@ -16,67 +16,19 @@ return [
     // The input path 'index.php/' or '' if you use mod_rewrite
     'psx_dispatch'            => '',
 
-    // The default timezone
-    'psx_timezone'            => 'UTC',
-
     // Whether PSX runs in debug mode or not. If not error reporting is set to 0
     // Also several caches are used if the debug mode is false
     'psx_debug'               => true,
 
     // Database parameters which are used for the doctrine DBAL connection
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
-    'psx_connection'          => getConnectionParams(getenv('DB')),
+    'psx_connection'          => \PSX\Framework\Test\Environment::getConnectionParams(getenv('DB')),
 
-    // Path to the routing file
-    'psx_routing'             => __DIR__ . '/routes.php',
+    'psx_log_level'           => \Monolog\Logger::ERROR,
 
     // Folder locations
     'psx_path_cache'          => __DIR__ . '/cache',
-    'psx_path_library'        => __DIR__,
-
-    // Class name of the error controller
-    //'psx_error_controller'    => null,
-
-    // If you only want to change the appearance of the error page you can
-    // specify a custom template
-    //'psx_error_template'      => null,
-
-    // Global middleware which are applied before and after every request. Must
-    // bei either a classname, closure or PSX\Dispatch\FilterInterface instance
-    //'psx_filter_pre'          => [],
-    //'psx_filter_post'         => [],
+    'psx_path_log'            => __DIR__ . '/log',
+    'psx_path_src'            => __DIR__,
 
 ];
-
-function getConnectionParams($db)
-{
-    switch ($db) {
-        case 'mysql':
-            return [
-                'dbname'   => 'psx',
-                'user'     => 'root',
-                'password' => 'test1234',
-                'host'     => 'localhost',
-                'driver'   => 'pdo_mysql',
-            ];
-            break;
-
-        case 'pgsql':
-            return [
-                'dbname'   => 'psx',
-                'user'     => 'postgres',
-                'password' => 'test1234',
-                'host'     => 'localhost',
-                'driver'   => 'pdo_pgsql',
-            ];
-            break;
-
-        default:
-        case 'sqlite':
-            return [
-                'memory' => true,
-                'driver' => 'pdo_sqlite',
-            ];
-            break;
-    }
-}

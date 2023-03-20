@@ -43,6 +43,6 @@ class CallbackMethod implements LocationFinderInterface
 
     public function resolve(RequestInterface $request, Context $context): ?RequestInterface
     {
-        return call_user_func_array($this->callback, array($request, $context));
+        return call_user_func_array($this->callback, [$request, $context]);
     }
 }

@@ -20,12 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
-use PSX\Framework\Controller\Generator\OpenAPIController;
-use PSX\Framework\Controller\Generator\RamlController;
-use PSX\Framework\Controller\Generator\SwaggerController;
-use PSX\Framework\Controller\Tool\DiscoveryController;
-use PSX\Framework\Controller\Tool\Documentation;
-use PSX\Framework\Controller\Tool\RoutingController;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**
@@ -37,102 +31,14 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class DiscoveryControllerTest extends ControllerTestCase
 {
-    public function testDocumentation()
-    {
-        $response = $this->sendRequest('/doc/*/discovery', 'GET');
-
-        $actual = (string) $response->getBody();
-        $expect = <<<'JSON'
-{
-    "status": 1,
-    "path": "\/discovery",
-    "methods": {
-        "GET": {
-            "operationId": "PSX_Framework_Controller_Tool_DiscoveryController_doGet",
-            "tags": [],
-            "responses": {
-                "200": "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response"
-            }
-        }
-    },
-    "definitions": {
-        "Discovery_Collection": {
-            "type": "object",
-            "properties": {
-                "links": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "Discovery_Link"
-                    }
-                }
-            }
-        },
-        "Discovery_Link": {
-            "type": "object",
-            "properties": {
-                "rel": {
-                    "type": "string"
-                },
-                "href": {
-                    "type": "string"
-                }
-            }
-        },
-        "PSX_Framework_Controller_Tool_DiscoveryController_doGet_GET_200_Response": {
-            "$ref": "Discovery_Collection"
-        }
-    }
-}
-JSON;
-
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
     public function testIndex()
     {
-        $response = $this->sendRequest('/discovery', 'GET');
-        $json     = (string) $response->getBody();
+        $response = $this->sendRequest('/system/discovery', 'GET');
 
-        $expect = <<<'JSON'
-{
-    "links": [
-        {
-            "rel": "api",
-            "href": "http:\/\/127.0.0.1\/"
-        },
-        {
-            "rel": "routing",
-            "href": "http:\/\/127.0.0.1\/routing"
-        },
-        {
-            "rel": "documentation",
-            "href": "http:\/\/127.0.0.1\/doc"
-        },
-        {
-            "rel": "openapi",
-            "href": "http:\/\/127.0.0.1\/openapi"
-        },
-        {
-            "rel": "raml",
-            "href": "http:\/\/127.0.0.1\/raml"
-        }
-    ]
-}
-JSON;
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/discovery.json');
 
-        $this->assertEquals(200, $response->getStatusCode(), $json);
-        $this->assertJsonStringEqualsJsonString($expect, $json, $json);
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/discovery', DiscoveryController::class],
-            [['GET'], '/routing', RoutingController::class],
-            [['GET'], '/doc', Documentation\IndexController::class],
-            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
-            [['GET'], '/openapi', OpenAPIController::class],
-            [['GET'], '/raml', RamlController::class],
-        );
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

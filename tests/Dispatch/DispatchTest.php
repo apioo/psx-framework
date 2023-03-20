@@ -43,52 +43,16 @@ class DispatchTest extends ControllerTestCase
 {
     public function testRoute()
     {
-        /** @var EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = Environment::getService('event_dispatcher');
+        $response = $this->sendRequest('/tests/dummy', 'GET');
 
-        $testListener = new TestListener($this);
-        $eventDispatcher->addSubscriber($testListener);
-
-        $response = $this->sendRequest('/dummy', 'GET');
-
-        $eventDispatcher->removeSubscriber($testListener);
-
-        $called = $testListener->getCalled();
-        $expect = [
-            'onRequestIncoming',
-            'onRouteMatched',
-            'onControllerExecute',
-            'onControllerProcessed',
-            'onResponseSend',
-        ];
-
-        $this->assertEquals($expect, $called);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('foo', (string) $response->getBody());
     }
 
     public function testRouteException()
     {
-        /** @var EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = Environment::getService('event_dispatcher');
+        $response = $this->sendRequest('/tests/exception', 'GET');
 
-        $testListener = new TestListener($this);
-        $eventDispatcher->addSubscriber($testListener);
-
-        $response = $this->sendRequest('/exception', 'GET');
-
-        $eventDispatcher->removeSubscriber($testListener);
-
-        $called = $testListener->getCalled();
-        $expect = [
-            'onRequestIncoming',
-            'onRouteMatched',
-            'onControllerExecute',
-            'onExceptionThrown',
-            'onResponseSend',
-        ];
-
-        $this->assertEquals($expect, $called);
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -97,7 +61,7 @@ class DispatchTest extends ControllerTestCase
      */
     public function testStatusException($code)
     {
-        $response = $this->sendRequest('/status?code=' . $code, 'GET');
+        $response = $this->sendRequest('/tests/status/' . $code, 'GET');
         $body     = (string) $response->getBody();
 
         $this->assertEquals($code, $response->getStatusCode());
@@ -133,14 +97,5 @@ class DispatchTest extends ControllerTestCase
             [501],
             [503],
         ];
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/dummy', DummyController::class],
-            [['GET'], '/exception', ExceptionController::class],
-            [['GET'], '/status', StatusCodeExceptionController::class],
-        );
     }
 }

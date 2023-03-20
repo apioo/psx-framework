@@ -21,10 +21,13 @@
 namespace PSX\Framework\Tests\Http;
 
 use PHPUnit\Framework\TestCase;
-use PSX\Framework\Test\Environment;
+use PSX\Data\Configuration;
+use PSX\Data\Processor;
+use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Request;
 use PSX\Http\Stream\StringStream;
+use PSX\Schema\SchemaManager;
 use PSX\Uri\Uri;
 
 /**
@@ -110,11 +113,11 @@ JSON;
         $this->assertEquals(true, $data->getBoolean());
     }
 
-    /**
-     * @return \PSX\Framework\Http\RequestReader
-     */
-    protected function newRequestReader()
+    protected function newRequestReader(): RequestReader
     {
-        return Environment::getService('request_reader');
+        $config = Configuration::createDefault(new SchemaManager());
+        $processor = new Processor($config);
+
+        return new RequestReader($processor);
     }
 }

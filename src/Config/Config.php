@@ -23,17 +23,12 @@ namespace PSX\Framework\Config;
 use ArrayIterator;
 
 /**
- * Simple config class which uses a simple array to store all values. Here an
- * example howto use the class
- * <code>
- * $config = Config::fromFile('configuration.php');
- *
- * echo $config['psx_url'];
- * </code>
+ * Config
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @template-extends \ArrayIterator<string, mixed>
  */
 class Config extends ArrayIterator
 {
@@ -73,7 +68,6 @@ class Config extends ArrayIterator
     public static function fromFile(string $file): self
     {
         $config = include($file);
-
         if (is_array($config)) {
             return new static($config);
         } else {

@@ -33,98 +33,14 @@ use PSX\Framework\Test\ControllerTestCase;
  */
 class RoutingControllerTest extends ControllerTestCase
 {
-    public function testDocumentation()
-    {
-        $response = $this->sendRequest('/doc/*/routing', 'GET');
-
-        $actual = (string) $response->getBody();
-        $expect = <<<'JSON'
-{
-    "status": 1,
-    "path": "\/routing",
-    "methods": {
-        "GET": {
-            "operationId": "PSX_Framework_Controller_Tool_RoutingController_doGet",
-            "tags": [],
-            "responses": {
-                "200": "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response"
-            }
-        }
-    },
-    "definitions": {
-        "PSX_Framework_Controller_Tool_RoutingController_doGet_GET_200_Response": {
-            "$ref": "Routing_Collection"
-        },
-        "Routing_Collection": {
-            "type": "object",
-            "properties": {
-                "routings": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "Routing_Route"
-                    }
-                }
-            }
-        },
-        "Routing_Route": {
-            "type": "object",
-            "properties": {
-                "methods": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "path": {
-                    "type": "string"
-                },
-                "source": {
-                    "type": "string"
-                }
-            }
-        }
-    }
-}
-JSON;
-
-        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
-    }
-
     public function testIndex()
     {
-        $response = $this->sendRequest('/routing', 'GET', ['Accept' => 'application/json']);
-        $json     = (string) $response->getBody();
+        $response = $this->sendRequest('/system/routing', 'GET', ['Accept' => 'application/json']);
 
-        $expect = <<<'JSON'
-{
-    "routings": [
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "\/routing",
-            "source": "PSX\\Framework\\Controller\\Tool\\RoutingController"
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "\/doc\/:version\/*path",
-            "source": "PSX\\Framework\\Controller\\Tool\\Documentation\\DetailController"
-        }
-    ]
-}
-JSON;
+        $actual = (string) $response->getBody();
+        $expect = file_get_contents(__DIR__ . '/resource/routing.json');
 
-        $this->assertEquals(200, $response->getStatusCode(), $json);
-        $this->assertJsonStringEqualsJsonString($expect, $json, $json);
-    }
-
-    protected function getPaths()
-    {
-        return array(
-            [['GET'], '/routing', RoutingController::class],
-            [['GET'], '/doc/:version/*path', Documentation\DetailController::class],
-        );
+        $this->assertEquals(200, $response->getStatusCode(), $actual);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 }

@@ -46,7 +46,7 @@ class CachedParserTest extends RoutingParserTestCase
     {
         $cache         = new ArrayAdapter();
         $routing       = new PhpFile(__DIR__ . '/../routes.php');
-        $routingParser = new CachedParser($routing, $cache);
+        $routingParser = new CachedParser($routing, $cache, true);
 
         // we remove previous cache
         $cache->deleteItems([CachedParser::CACHE_KEY]);

@@ -20,10 +20,29 @@
 
 namespace PSX\Framework\Tests\Loader;
 
+use Monolog\Handler\NullHandler;
+use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
+use PSX\Framework\Loader\Context;
+use PSX\Framework\Loader\InvalidPathException;
+use PSX\Framework\Loader\Loader;
+use PSX\Framework\Loader\LoaderInterface;
+use PSX\Framework\Loader\LocationFinder\CallbackMethod;
+use PSX\Framework\Loader\LocationFinderInterface;
+use PSX\Framework\Test\ControllerTestCase;
+use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Dispatch\DummyController;
+use PSX\Framework\Tests\Dispatch\TestListener;
+use PSX\Framework\Tests\Filter\TestFilter;
+use PSX\Framework\Tests\Oauth2\AuthorizationCode\TestCallbackController;
 use PSX\Http\FilterChainInterface;
-use PSX\Http\FilterInterface;
+use PSX\Http\Request;
 use PSX\Http\RequestInterface;
+use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
+use PSX\Uri\Uri;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * LoaderFilterTest
@@ -32,12 +51,16 @@ use PSX\Http\ResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class LoaderFilterTest implements FilterInterface
+class LoaderFilterTest extends ControllerTestCase
 {
-    public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
+    public function testFilter()
     {
-        $response->addHeader('X-Middleware', __CLASS__);
+        $request  = new Request(new Uri('/tests/filter'), 'GET');
+        $response = new Response();
 
-        $filterChain->handle($request, $response);
+        $this->loadController($request, $response);
+
+        $this->assertEquals(['pre_filter' => true, 'post_filter' => true], $request->getAttributes());
+        $this->assertEquals(TestFilter::class, $response->getHeader('X-Middleware'));
     }
 }

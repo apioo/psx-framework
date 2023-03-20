@@ -1,0 +1,1413 @@
+{
+  "security": null,
+  "operations": {
+    "PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet": {
+      "path": "\/tests\/body",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet": {
+      "path": "\/tests\/dummy",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet": {
+      "path": "\/tests\/exception",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet": {
+      "path": "\/tests\/filter",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet": {
+      "path": "\/tests\/passthru",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doPost": {
+      "path": "\/tests\/passthru",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Passthru"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doGet": {
+      "path": "\/tests\/popo\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Property"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doPost": {
+      "path": "\/tests\/popo\/:id",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Property"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Property"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet": {
+      "path": "\/tests\/redirect",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet": {
+      "path": "\/tests\/schema\/:name\/:type",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Collection"
+        }
+      },
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        },
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "description": "startIndex parameter",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          }
+        },
+        "float": {
+          "in": "query",
+          "schema": {
+            "type": "number"
+          }
+        },
+        "boolean": {
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        "date": {
+          "in": "query",
+          "schema": {
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "dateTime": {
+          "in": "query",
+          "schema": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Returns a collection",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost": {
+      "path": "\/tests\/schema\/:name\/:type",
+      "method": "POST",
+      "return": {
+        "code": 201,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        },
+        "record": {
+          "in": "body",
+          "schema": {
+            "$ref": "Create"
+          }
+        }
+      },
+      "throws": [],
+      "description": "lorem ipsum",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut": {
+      "path": "\/tests\/schema\/:name\/:type",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Update"
+          }
+        }
+      },
+      "throws": [],
+      "description": "lorem ipsum",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete": {
+      "path": "\/tests\/schema\/:name\/:type",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Delete"
+          }
+        }
+      },
+      "throws": [],
+      "description": "lorem ipsum",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch": {
+      "path": "\/tests\/schema\/:name\/:type",
+      "method": "PATCH",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string",
+            "pattern": "[A-z]+",
+            "minLength": 0,
+            "maxLength": 16
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "enum": [
+              "foo",
+              "bar"
+            ],
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Patch"
+          }
+        }
+      },
+      "throws": [],
+      "description": "lorem ipsum",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet": {
+      "path": "\/tests\/status\/:code",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "code": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet": {
+      "path": "\/tests\/table",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doRow": {
+      "path": "\/tests\/table\/row",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doNested": {
+      "path": "\/tests\/table\/nested",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doGet": {
+      "path": "\/tests\/typeschema\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Property"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost": {
+      "path": "\/tests\/typeschema\/:id",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Property"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Property"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet": {
+      "path": "\/authorization\/authorize",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "response_type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "client_id": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "redirect_uri": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost": {
+      "path": "\/authorization\/authorize",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "response_type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "client_id": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "redirect_uri": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.CallbackController.doGet": {
+      "path": "\/authorization\/callback",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "error": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "error_description": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.CallbackController.doPost": {
+      "path": "\/authorization\/callback",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "error": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "error_description": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.OAuth2.TokenController.doPost": {
+      "path": "\/authorization\/token",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "AccessToken"
+        }
+      },
+      "arguments": {
+        "authorization": {
+          "in": "header",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Passthru"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.Tool.DiscoveryController.show": {
+      "path": "\/system\/discovery",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "DiscoveryCollection"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.Tool.GeneratorController.generate": {
+      "path": "\/system\/generator\/:type",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Passthru"
+        }
+      },
+      "arguments": {
+        "type": {
+          "in": "path",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        },
+        "filter": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.Controller.Tool.RoutingController.show": {
+      "path": "\/system\/routing",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "RoutingCollection"
+        }
+      },
+      "arguments": [],
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionPopo.doGet": {
+      "path": "\/population\/popo",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Collection"
+        }
+      },
+      "arguments": {
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "count": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionPopo.doPost": {
+      "path": "\/population\/popo",
+      "method": "POST",
+      "return": {
+        "code": 201,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doGet": {
+      "path": "\/population\/typeschema",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Collection"
+        }
+      },
+      "arguments": {
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "count": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doPost": {
+      "path": "\/population\/typeschema",
+      "method": "POST",
+      "return": {
+        "code": 201,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doGet": {
+      "path": "\/population\/popo\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Entity"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doPut": {
+      "path": "\/population\/popo\/:id",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityPopo.doDelete": {
+      "path": "\/population\/popo\/:id",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doGet": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Entity"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doPut": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Entity"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Api.Population.EntityTypeSchema.doDelete": {
+      "path": "\/population\/typeschema\/:id",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Entity endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    }
+  },
+  "definitions": {
+    "AccessToken": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "token_type": {
+          "type": "string"
+        },
+        "expires_in": {
+          "type": "integer"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "Any": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "ChoiceA": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "foo"
+      ]
+    },
+    "ChoiceB": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar"
+      ]
+    },
+    "Collection": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "type": "array",
+          "items": {
+            "$generic": "Entry"
+          }
+        }
+      }
+    },
+    "Complex": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      }
+    },
+    "Create": {
+      "$extends": "Entry",
+      "type": "object",
+      "required": [
+        "title",
+        "date"
+      ]
+    },
+    "Delete": {
+      "$extends": "Entry",
+      "type": "object",
+      "required": [
+        "id"
+      ]
+    },
+    "DiscoveryCollection": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "DiscoveryLink"
+          }
+        }
+      }
+    },
+    "DiscoveryLink": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        }
+      }
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "place": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "users": {
+          "type": "integer"
+        },
+        "worldUsers": {
+          "type": "number"
+        },
+        "datetime": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string",
+          "pattern": "[A-z]+",
+          "minLength": 3,
+          "maxLength": 16
+        },
+        "date": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Passthru": {
+      "description": "No schema information available",
+      "type": "object",
+      "additionalProperties": {
+        "type": "any"
+      }
+    },
+    "Patch": {
+      "$extends": "Entry",
+      "type": "object",
+      "required": [
+        "id"
+      ]
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "any": {
+          "$ref": "Any"
+        },
+        "array": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "arrayComplex": {
+          "type": "array",
+          "items": {
+            "$ref": "Complex"
+          }
+        },
+        "arrayChoice": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "ChoiceA"
+              },
+              {
+                "$ref": "ChoiceB"
+              }
+            ]
+          }
+        },
+        "boolean": {
+          "type": "boolean"
+        },
+        "choice": {
+          "oneOf": [
+            {
+              "$ref": "ChoiceA"
+            },
+            {
+              "$ref": "ChoiceB"
+            }
+          ]
+        },
+        "complex": {
+          "$ref": "Complex"
+        },
+        "date": {
+          "format": "date",
+          "type": "string"
+        },
+        "dateTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "duration": {
+          "format": "duration",
+          "type": "string"
+        },
+        "float": {
+          "type": "number"
+        },
+        "integer": {
+          "type": "integer"
+        },
+        "string": {
+          "type": "string"
+        },
+        "time": {
+          "format": "time",
+          "type": "string"
+        }
+      }
+    },
+    "RoutingCollection": {
+      "type": "object",
+      "properties": {
+        "routings": {
+          "type": "array",
+          "items": {
+            "$ref": "RoutingRoute"
+          }
+        }
+      }
+    },
+    "RoutingRoute": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        }
+      }
+    },
+    "Update": {
+      "$extends": "Entry",
+      "type": "object",
+      "required": [
+        "id"
+      ]
+    }
+  }
+}

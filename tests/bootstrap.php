@@ -2,7 +2,12 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-\PSX\Framework\Test\Environment::setup(__DIR__, function(\Doctrine\DBAL\Schema\Schema $fromSchema){
+$container = require_once __DIR__ . '/container.php';
+
+/** @var \PSX\Framework\Test\Environment $environment */
+$environment = $container->get(\PSX\Framework\Test\Environment::class);
+
+$environment->setup(function(\Doctrine\DBAL\Schema\Schema $fromSchema){
     // create the database schema if not available
     if (!$fromSchema->hasTable('psx_handler_comment')) {
         $schema = \PSX\Framework\App\TestSchema::getSchema();
@@ -23,3 +28,5 @@ require_once __DIR__ . '/../vendor/autoload.php';
         return $schema;
     }
 });
+
+$environment->register();

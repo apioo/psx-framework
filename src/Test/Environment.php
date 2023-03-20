@@ -21,14 +21,10 @@
 namespace PSX\Framework\Test;
 
 use Closure;
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use RuntimeException;
 
 /**
  * Environment
@@ -39,190 +35,112 @@ use RuntimeException;
  */
 class Environment
 {
-    /**
-     * @var string
-     */
-    protected static $basePath;
+    private static self $instance;
 
-    /**
-     * @var \PSX\Dependency\Container
-     */
-    protected static $container;
+    private bool $hasConnection = false;
+    private Connection $connection;
+    private ContainerInterface $container;
+    private bool $debug;
 
-    /**
-     * @var array
-     */
-    protected static $config;
-
-    /**
-     * @var boolean
-     */
-    protected static $hasConnection = false;
-
-    /**
-     * Setups the environment to run unit tests. Includes the DI container and
-     * optional creates an database schema
-     *
-     * @codeCoverageIgnore
-     * @param string $basePath
-     * @param Closure $schemaSetup
-     */
-    public static function setup($basePath, Closure $schemaSetup = null)
+    public function __construct(Connection $connection, ContainerInterface $container, bool $debug)
     {
-        self::$basePath = $basePath;
-
-        // setup PHP ini settings
-        self::setupIni();
-
-        // setup container
-        self::setupContainer();
-
-        // bootstrap PSX environment
-        Bootstrap::setupEnvironment(self::getContainer()->get('config'));
-
-        // setup database connection
-        self::setupConnection(self::$container, $schemaSetup);
+        $this->connection = $connection;
+        $this->container = $container;
+        $this->debug = $debug;
     }
 
     /**
-     * @return \PSX\Dependency\Container
+     * Setups the environment to run unit tests. Includes the DI container and optional creates a database schema
      */
-    public static function getContainer()
+    public function setup(Closure $schemaSetup = null): void
     {
-        return self::$container;
+        Bootstrap::setupEnvironment($this->debug);
+
+        $this->setupConnection($schemaSetup);
+    }
+
+    public function hasConnection(): bool
+    {
+        return $this->hasConnection;
+    }
+
+    public function getConnection(): Connection
+    {
+        return $this->connection;
+    }
+
+    public static function getContainer(): ContainerInterface
+    {
+        return self::$instance->container;
     }
 
     /**
-     * Returns an service from the DI container
-     *
-     * @param string $service
-     * @return mixed
+     * @template T
+     * @psalm-param class-string<T> $id
+     * @return T
      */
-    public static function getService($service)
+    public static function getService(string $id): mixed
     {
-        return self::$container->get($service);
+        return self::$instance->container->get($id);
     }
 
-    /**
-     * Returns a clean configuration which has the original values even if an
-     * test has modified the config
-     *
-     * @return \PSX\Framework\Config\Config
-     */
-    public static function getConfig()
+    public static function getConfig(string $name): mixed
     {
-        return new Config(self::$config);
+        return self::$instance->container->getParameter($name);
     }
 
-    /**
-     * @return string
-     */
-    public static function getBaseUrl()
+    private function setupConnection(Closure $schemaSetup = null): void
     {
-        return self::$config['psx_url'] . '/' . self::$config['psx_dispatch'];
-    }
+        $fromSchema = $this->connection->getSchemaManager()->createSchema();
 
-    /**
-     * @return boolean
-     */
-    public static function hasConnection()
-    {
-        return self::$hasConnection;
-    }
+        // we get the schema from the callback if available
+        if ($schemaSetup !== null) {
+            $toSchema = $schemaSetup($fromSchema, $this->connection);
 
-    /**
-     * @codeCoverageIgnore
-     */
-    protected static function setupIni()
-    {
-        ini_set('session.use_cookies', 0);
-        ini_set('session.use_only_cookies', 0);
-        ini_set('session.use_trans_sid', 1);
-        ini_set('session.cache_limiter', ''); // prevent sending header
+            if ($toSchema instanceof Schema) {
+                $queries = $fromSchema->getMigrateToSql($toSchema, $this->connection->getDatabasePlatform());
 
-        if (getenv('TRAVIS_PHP_VERSION') == 'hhvm') {
-            ini_set('hhvm.libxml.ext_entity_whitelist', 'file');
-        }
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    protected static function setupContainer()
-    {
-        $file = self::$basePath . '/container.php';
-
-        if (!is_file($file)) {
-            throw new RuntimeException('The container file "' . $file . '" does not exist');
-        }
-
-        self::$container = require_once($file);
-
-        if (!self::$container instanceof ContainerInterface) {
-            throw new RuntimeException('The container file "' . $file . '" must return an Psr\Container\ContainerInterface');
-        }
-
-        // set test config
-        self::$container->set('config', self::buildConfig(self::$container));
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * @param \Psr\Container\ContainerInterface $container
-     * @param \Closure $schemaSetup
-     */
-    protected static function setupConnection(ContainerInterface $container, Closure $schemaSetup = null)
-    {
-        $params = null;
-        if (getenv('DB')) {
-            $params = $container->get('config')->get('psx_connection');
-        } else {
-            $params = [
-                'memory' => true,
-                'driver' => 'pdo_sqlite',
-            ];
-        }
-
-        if (!empty($params)) {
-            try {
-                $config     = new Configuration();
-                $connection = DriverManager::getConnection($params, $config);
-                $fromSchema = $connection->getSchemaManager()->createSchema();
-
-                // we get the schema from the callback if available
-                if ($schemaSetup !== null) {
-                    $toSchema = $schemaSetup($fromSchema, $connection);
-
-                    if ($toSchema instanceof Schema) {
-                        $queries = $fromSchema->getMigrateToSql($toSchema, $connection->getDatabasePlatform());
-
-                        foreach ($queries as $query) {
-                            $connection->query($query);
-                        }
-                    }
+                foreach ($queries as $query) {
+                    $this->connection->executeStatement($query);
                 }
-
-                $container->set('connection', $connection);
-
-                self::$hasConnection = true;
-            } catch (DBALException $e) {
-                $container->get('logger')->error($e->getMessage());
             }
         }
+
+        $this->hasConnection = true;
     }
 
-    /**
-     * @codeCoverageIgnore
-     * @param \Psr\Container\ContainerInterface $container
-     * @return \PSX\Framework\Config\Config
-     */
-    protected static function buildConfig(ContainerInterface $container)
+    public function register(): void
     {
-        self::$config = $container->get('config')->getArrayCopy();
+        self::$instance = $this;
+    }
 
-        // set an fix url and no dispatch
-        self::$config['psx_debug'] = true;
+    public static function getConnectionParams(string $type): array
+    {
+        switch ($type) {
+            case 'mysql':
+                return [
+                    'dbname'   => 'psx',
+                    'user'     => 'root',
+                    'password' => 'test1234',
+                    'host'     => 'localhost',
+                    'driver'   => 'pdo_mysql',
+                ];
 
-        return new Config(self::$config);
+            case 'pgsql':
+                return [
+                    'dbname'   => 'psx',
+                    'user'     => 'postgres',
+                    'password' => 'test1234',
+                    'host'     => 'localhost',
+                    'driver'   => 'pdo_pgsql',
+                ];
+
+            default:
+            case 'sqlite':
+                return [
+                    'memory' => true,
+                    'driver' => 'pdo_sqlite',
+                ];
+        }
     }
 }

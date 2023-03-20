@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Framework\Bootstrap;
 
 /**
  * BootstrapTest
@@ -31,10 +32,10 @@ use PHPUnit\Framework\TestCase;
  */
 class BootstrapTest extends TestCase
 {
-    public function testSettings()
+    public function testSetupEnvironment()
     {
-        $this->assertEquals(true, defined('PSX_PATH_CACHE'));
-        $this->assertEquals(true, defined('PSX_PATH_LIBRARY'));
-        $this->assertEquals(true, defined('PSX'));
+        Bootstrap::setupEnvironment(true);
+
+        $this->assertTrue(defined('PSX'));
     }
 }

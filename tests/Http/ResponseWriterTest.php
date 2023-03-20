@@ -21,9 +21,13 @@
 namespace PSX\Framework\Tests\Http;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Configuration;
+use PSX\Data\Processor;
+use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Test\Environment;
 use PSX\Framework\Tests\Controller\Foo\Model\Property;
 use PSX\Http\Response;
+use PSX\Schema\SchemaManager;
 
 /**
  * ResponseWriterTest
@@ -74,11 +78,11 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, (string) $response->getBody());
     }
 
-    /**
-     * @return \PSX\Framework\Http\ResponseWriter
-     */
-    protected function newResponseWriter()
+    protected function newResponseWriter(): ResponseWriter
     {
-        return Environment::getService('response_writer');
+        $config = Configuration::createDefault(new SchemaManager());
+        $processor = new Processor($config);
+
+        return new ResponseWriter($processor, Environment::getConfig('psx_supported_writer'));
     }
 }
