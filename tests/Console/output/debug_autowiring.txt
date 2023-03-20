@@ -19,7 +19,7 @@ Autowirable Types
  PSX\Engine\DispatchInterface (PSX\Framework\Dispatch\Dispatch)
  
  DirectoryInterface
- PSX\Framework\Dependency\DirectoryInterface (PSX\Framework\Dependency\Directory)
+ PSX\Framework\Config\DirectoryInterface (PSX\Framework\Config\Directory)
  
  ConverterInterface
  PSX\Framework\Exception\ConverterInterface (PSX\Framework\Exception\Converter)
@@ -34,7 +34,7 @@ Autowirable Types
  PSX\Framework\Loader\LocationFinderInterface (PSX\Framework\Loader\LocationFinder\RoutingParser)
  
  RoutingParserInterface
- PSX\Framework\Loader\RoutingParserInterface (PSX\Framework\Loader\RoutingParser\AttributeParser)
+ PSX\Framework\Loader\RoutingParserInterface (PSX\Framework\Loader\RoutingParser\CachedParser)
  
  AuthorizerInterface
  PSX\Framework\OAuth2\AuthorizerInterface (PSX\Framework\Tests\OAuth2\TestAuthorizer)
@@ -63,4 +63,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 84 more concrete services would be displayed when adding the "--all" option.
+ 85 more concrete services would be displayed when adding the "--all" option.

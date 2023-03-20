@@ -179,6 +179,7 @@ return static function (ContainerConfigurator $container) {
     $services->set(CachedParser::class)
         ->args([
             service(AttributeParser::class),
+            service(CacheItemPoolInterface::class),
             param('psx_debug'),
         ]);
     $services->alias(RoutingParserInterface::class, CachedParser::class)

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Filter;
 
 use Psr\Cache\CacheItemPoolInterface;
+use PSX\Api\ApiManagerInterface;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
@@ -37,15 +38,13 @@ class ControllerExecutorFactory
 {
     private RequestReader $requestReader;
     private ResponseWriter $responseWriter;
-    private SchemaManagerInterface $schemaManager;
-    private CacheItemPoolInterface $cache;
+    private ApiManagerInterface $apiManager;
 
-    public function __construct(RequestReader $requestReader, ResponseWriter $responseWriter, SchemaManagerInterface $schemaManager, CacheItemPoolInterface $cache)
+    public function __construct(RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager)
     {
         $this->requestReader = $requestReader;
         $this->responseWriter = $responseWriter;
-        $this->schemaManager = $schemaManager;
-        $this->cache = $cache;
+        $this->apiManager = $apiManager;
     }
 
     public function factory(object $controller, string $methodName, Context $context): ControllerExecutor
@@ -56,8 +55,7 @@ class ControllerExecutorFactory
             $context,
             $this->requestReader,
             $this->responseWriter,
-            $this->schemaManager,
-            $this->cache
+            $this->apiManager
         );
     }
 }
