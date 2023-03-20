@@ -22,6 +22,7 @@ namespace PSX\Framework\Dependency;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\ConfigFactory;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -36,14 +37,21 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
  */
 class ContainerBuilder
 {
-    public static function build(string $appDir, ...$containerFiles): ContainerInterface
+    public static function build(string $appDir, bool $isDebug, ...$containerFiles): ContainerInterface
     {
         $targetFile = $appDir . '/cache/container.php';
-        if (!is_file($targetFile)) {
-            self::dumpContainer($appDir, $targetFile, $containerFiles);
+        $containerConfigCache = new ConfigCache($targetFile, $isDebug);
+
+        if (!$containerConfigCache->isFresh()) {
+            $containerBuilder = self::getContainerBuilder($appDir, $containerFiles);
+            $containerBuilder->compile();
+
+            $dumper = new PhpDumper($containerBuilder);
+
+            $containerConfigCache->write($dumper->dump(), $containerBuilder->getResources());
         }
 
-        require $targetFile;
+        require_once $targetFile;
 
         return new \ProjectServiceContainer();
     }
@@ -53,7 +61,7 @@ class ContainerBuilder
         $config = ConfigFactory::factory($appDir . '/configuration.php');
         $containerBuilder = new SymfonyContainerBuilder();
 
-        $containerBuilder->setParameter('psx_app_dir', $appDir);
+        $containerBuilder->setParameter('psx_path_app', $appDir);
         $containerBuilder->setParameter('psx_container_files', $containerFiles);
 
         foreach ($config as $key => $value) {
@@ -66,14 +74,5 @@ class ContainerBuilder
         }
 
         return $containerBuilder;
-    }
-
-    private static function dumpContainer(string $appDir, string $targetFile, array $containerFiles): void
-    {
-        $containerBuilder = self::getContainerBuilder($appDir, $containerFiles);
-        $containerBuilder->compile();
-
-        $dumper = new PhpDumper($containerBuilder);
-        file_put_contents($targetFile, $dumper->dump());
     }
 }

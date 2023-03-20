@@ -59,7 +59,7 @@ EOF
         $errorIo = $io->getErrorStyle();
 
         $builder = ContainerBuilder::getContainerBuilder(
-            $this->container->getParameter('psx_app_dir'),
+            $this->container->getParameter('psx_path_app'),
             $this->container->getParameter('psx_container_files')
         );
 
@@ -146,7 +146,7 @@ EOF
     {
         if ($input->mustSuggestArgumentValuesFor('search')) {
             $builder = ContainerBuilder::getContainerBuilder(
-                $this->container->getParameter('psx_app_dir'),
+                $this->container->getParameter('psx_path_app'),
                 $this->container->getParameter('psx_container_files')
             );
 

@@ -126,7 +126,7 @@ EOF
         $this->validateInput($input);
 
         $object = ContainerBuilder::getContainerBuilder(
-            $this->container->getParameter('psx_app_dir'),
+            $this->container->getParameter('psx_path_app'),
             $this->container->getParameter('psx_container_files')
         );
 
@@ -212,7 +212,7 @@ EOF
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         $object = ContainerBuilder::getContainerBuilder(
-            $this->container->getParameter('psx_app_dir'),
+            $this->container->getParameter('psx_path_app'),
             $this->container->getParameter('psx_container_files')
         );
 

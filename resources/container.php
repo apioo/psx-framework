@@ -28,9 +28,11 @@ use PSX\Framework\Console\DebugAutowiringCommand;
 use PSX\Framework\Console\DebugContainerCommand;
 use PSX\Framework\Console\DebugEventDispatcherCommand;
 use PSX\Framework\Console\RouteCommand;
+use PSX\Framework\Dependency\Directory;
 use PSX\Framework\Console\ServeCommand;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Data\ProcessorFactory;
+use PSX\Framework\Dependency\DirectoryInterface;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
@@ -103,6 +105,14 @@ return static function (ContainerConfigurator $container) {
         ->tag('psx.oauth2_grant');
 
     $services->alias(ContainerInterface::class, 'service_container')
+        ->public();
+
+    $services->set(Directory::class)
+        ->arg('$appDir', param('psx_path_app'))
+        ->arg('$cacheDir', param('psx_path_cache'))
+        ->arg('$srcDir', param('psx_path_src'))
+        ->arg('$logDir', param('psx_path_log'));
+    $services->alias(DirectoryInterface::class, Directory::class)
         ->public();
 
     $services->set(FilesystemAdapter::class)

@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Console;
 
-use Psr\Container\ContainerInterface;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Environment\CLI\Engine;
 use PSX\Framework\Environment\Environment;
