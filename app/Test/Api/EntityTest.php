@@ -105,7 +105,7 @@ JSON;
             ->where('id = :id')
             ->getSQL();
 
-        $result = Environment::getService(Connection::class)->fetchAssoc($sql, ['id' => 1]);
+        $result = Environment::getService(Connection::class)->fetchAssociative($sql, ['id' => 1]);
         $expect = [
             'id' => 1,
             'place' => 11,
@@ -143,7 +143,7 @@ JSON;
             ->where('id = :id')
             ->getSQL();
 
-        $result = Environment::getService(Connection::class)->fetchAssoc($sql, ['id' => 1]);
+        $result = Environment::getService(Connection::class)->fetchAssociative($sql, ['id' => 1]);
 
         $this->assertEmpty($result);
     }

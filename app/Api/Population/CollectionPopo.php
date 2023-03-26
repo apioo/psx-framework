@@ -48,7 +48,7 @@ class CollectionPopo extends ControllerAbstract
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: Collection::class)]
-    public function doGet(int $startIndex, int $count): mixed
+    public function doGet(?int $startIndex, ?int $count): mixed
     {
         return $this->populationService->getAll(
             $startIndex,

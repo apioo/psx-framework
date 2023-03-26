@@ -41,10 +41,7 @@ class ApiTestCase extends ControllerDbTestCase
 {
     private static Client $httpClient;
 
-    /**
-     * @inheritdoc
-     */
-    public function getDataSet()
+    public function getDataSet(): array
     {
         return $this->createFromFile(__DIR__ . '/api_fixture.php');
     }

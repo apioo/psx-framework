@@ -45,7 +45,7 @@ class CollectionTypeSchema extends ControllerAbstract
     #[QueryParam(name: "startIndex", type: "integer")]
     #[QueryParam(name: "count", type: "integer")]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
-    public function doGet(int $startIndex, int $count): mixed
+    public function doGet(?int $startIndex, ?int $count): mixed
     {
         return $this->populationService->getAll(
             $startIndex,
