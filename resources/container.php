@@ -4,6 +4,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Tools\Console\Command as MigrationCommand;
 use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
@@ -54,6 +56,7 @@ use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
+use PSX\Framework\Migration\DependencyFactoryFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Framework\OAuth2\GrantTypeFactory;
@@ -233,6 +236,12 @@ return static function (ContainerConfigurator $container) {
     $services->set(SingleConnectionProvider::class);
     $services->alias(ConnectionProvider::class, SingleConnectionProvider::class);
 
+    $services->set(DependencyFactoryFactory::class)
+        ->arg('$srcDir', param('psx_path_src'));
+    $services->set(DependencyFactory::class)
+        ->factory([service(DependencyFactoryFactory::class), 'factory'])
+        ->public();
+
     $services->set(ControllerExecutorFactory::class);
 
     $services->set(GrantTypeFactory::class)
@@ -269,6 +278,17 @@ return static function (ContainerConfigurator $container) {
 
     // commands
     $services->load('PSX\\Framework\\Command\\', __DIR__ . '/../src/Command');
+
+    $services->set(MigrationCommand\DumpSchemaCommand::class);
+    $services->set(MigrationCommand\ExecuteCommand::class);
+    $services->set(MigrationCommand\GenerateCommand::class);
+    $services->set(MigrationCommand\LatestCommand::class);
+    $services->set(MigrationCommand\ListCommand::class);
+    $services->set(MigrationCommand\MigrateCommand::class);
+    $services->set(MigrationCommand\RollupCommand::class);
+    $services->set(MigrationCommand\StatusCommand::class);
+    $services->set(MigrationCommand\SyncMetadataCommand::class);
+    $services->set(MigrationCommand\VersionCommand::class);
 
     $services->set(PushCommand::class);
     $services->set(HelpCommand::class);
