@@ -49,7 +49,7 @@ trait ContainerTestCaseTrait
      */
     protected function sendRequest(string|Uri $uri, string $method, array $headers = [], ?string $body = null): ResponseInterface
     {
-        $request  = new Request(is_string($uri) ? new Uri($uri) : $uri, $method, $headers, $body);
+        $request  = new Request(is_string($uri) ? Uri::parse($uri) : $uri, $method, $headers, $body);
         $response = new Response();
         $response->setBody(new Stream(fopen('php://memory', 'r+')));
 

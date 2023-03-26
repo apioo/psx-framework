@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\OAuth2;
 
-use PSX\Oauth2\Authorization\Exception\UnsupportedGrantTypeException;
+use PSX\OAuth2\Exception\UnsupportedGrantTypeException;
 
 /**
  * GrantTypeFactory

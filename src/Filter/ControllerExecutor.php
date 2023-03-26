@@ -20,17 +20,16 @@
 
 namespace PSX\Framework\Filter;
 
-use Psr\Cache\CacheItemPoolInterface;
 use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
-use PSX\Api\SpecificationInterface;
-use PSX\DateTime\Date;
-use PSX\DateTime\DateTime;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Exception\InvalidFormatException;
-use PSX\DateTime\Time;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
+use PSX\DateTime\Period;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
@@ -42,7 +41,6 @@ use PSX\Http\ResponseInterface;
 use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\Exception\TypeNotFoundException;
 use PSX\Schema\Schema;
-use PSX\Schema\SchemaManagerInterface;
 use PSX\Schema\Type\AnyType;
 use PSX\Schema\Type\BooleanType;
 use PSX\Schema\Type\IntegerType;
@@ -146,11 +144,12 @@ class ControllerExecutor implements FilterInterface
         if ($type instanceof StringType) {
             return match ($type->getFormat()) {
                 TypeAbstract::FORMAT_BINARY => $this->buildResource($value),
-                TypeAbstract::FORMAT_DATETIME => new DateTime($value),
-                TypeAbstract::FORMAT_DATE => new Date($value),
-                TypeAbstract::FORMAT_TIME => new Time($value),
-                TypeAbstract::FORMAT_DURATION => new Duration($value),
-                TypeAbstract::FORMAT_URI => new Uri($value),
+                TypeAbstract::FORMAT_DATETIME => LocalDateTime::parse($value),
+                TypeAbstract::FORMAT_DATE => LocalDate::parse($value),
+                TypeAbstract::FORMAT_TIME => LocalTime::parse($value),
+                TypeAbstract::FORMAT_PERIOD => Period::parse($value),
+                TypeAbstract::FORMAT_DURATION => Duration::parse($value),
+                TypeAbstract::FORMAT_URI => Uri::parse($value),
                 default => (string) $value,
             };
         } elseif ($type instanceof IntegerType) {

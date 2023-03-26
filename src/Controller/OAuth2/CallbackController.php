@@ -26,9 +26,9 @@ use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\OAuth2\CallbackInterface;
-use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
-use PSX\Oauth2\AuthorizationAbstract;
-use PSX\Oauth2\Grant;
+use PSX\OAuth2\Exception\ErrorExceptionAbstract;
+use PSX\OAuth2\AuthorizationAbstract;
+use PSX\OAuth2\Grant;
 use RuntimeException;
 
 /**

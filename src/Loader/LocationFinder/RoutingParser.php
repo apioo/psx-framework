@@ -61,7 +61,7 @@ class RoutingParser implements LocationFinderInterface
                 $source = $routing[RoutingCollection::ROUTING_SOURCE];
 
                 if ($source[0] == '~') {
-                    $request->setUri(new Uri(substr($source, 1)));
+                    $request->setUri(Uri::parse(substr($source, 1)));
 
                     return $this->resolve($request, $context);
                 }

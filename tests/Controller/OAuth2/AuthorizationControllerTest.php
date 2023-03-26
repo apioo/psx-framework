@@ -111,7 +111,7 @@ class AuthorizationControllerTest extends ControllerTestCase
         $data     = Parser::decode((string) $response->getBody(), true);
 
         $this->assertEquals(false, $data['success']);
-        $this->assertEquals('PSX\Oauth2\Authorization\Exception\InvalidRequestException', $data['title']);
+        $this->assertEquals('PSX\OAuth2\Exception\InvalidRequestException', $data['title']);
     }
 
     protected function callEndpoint(array $params)

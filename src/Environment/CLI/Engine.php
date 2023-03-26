@@ -73,7 +73,7 @@ class Engine implements EngineInterface
         }
 
         return new Request(
-            new Uri($uri),
+            Uri::parse($uri),
             $method,
             $headers,
             $body

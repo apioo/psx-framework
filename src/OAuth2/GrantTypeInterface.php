@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\OAuth2;
 
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\GrantInterface;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\GrantInterface;
 
 /**
  * GrantTypeInterface

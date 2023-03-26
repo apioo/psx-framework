@@ -32,10 +32,10 @@ use PSX\Framework\OAuth2\GrantTypeFactory;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
-use PSX\Oauth2\Error;
-use PSX\Oauth2\GrantFactory;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Exception\ErrorExceptionAbstract;
+use PSX\OAuth2\Error;
+use PSX\OAuth2\GrantFactory;
 
 /**
  * OAuth2 token endpoint controller

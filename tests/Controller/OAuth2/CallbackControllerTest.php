@@ -43,13 +43,13 @@ class CallbackControllerTest extends ControllerTestCase
     public function testErrorCallback()
     {
         $errors = array(
-            'invalid_request'           => Exception\InvalidRequestException::class,
-            'unauthorized_client'       => Exception\UnauthorizedClientException::class,
-            'access_denied'             => Exception\AccessDeniedException::class,
-            'unsupported_response_type' => Exception\UnsupportedResponseTypeException::class,
-            'invalid_scope'             => Exception\InvalidScopeException::class,
-            'server_error'              => Exception\ServerErrorException::class,
-            'temporarily_unavailable'   => Exception\TemporarilyUnavailableException::class,
+            'invalid_request'           => \PSX\OAuth2\Exception\InvalidRequestException::class,
+            'unauthorized_client'       => \PSX\OAuth2\Exception\UnauthorizedClientException::class,
+            'access_denied'             => \PSX\OAuth2\Exception\AccessDeniedException::class,
+            'unsupported_response_type' => \PSX\OAuth2\Exception\UnsupportedResponseTypeException::class,
+            'invalid_scope'             => \PSX\OAuth2\Exception\InvalidScopeException::class,
+            'server_error'              => \PSX\OAuth2\Exception\ServerErrorException::class,
+            'temporarily_unavailable'   => \PSX\OAuth2\Exception\TemporarilyUnavailableException::class,
         );
 
         foreach ($errors as $error => $exceptionType) {

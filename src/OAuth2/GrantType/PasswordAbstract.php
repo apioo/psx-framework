@@ -22,10 +22,10 @@ namespace PSX\Framework\OAuth2\GrantType;
 
 use PSX\Framework\OAuth2\Credentials;
 use PSX\Framework\OAuth2\GrantTypeInterface;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
-use PSX\Oauth2\Grant;
-use PSX\Oauth2\GrantInterface;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Exception\InvalidRequestException;
+use PSX\OAuth2\Grant;
+use PSX\OAuth2\GrantInterface;
 
 /**
  * PasswordAbstract

@@ -29,11 +29,11 @@ use PSX\Framework\OAuth2\AccessRequest;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\GrantTypeFactory;
 use PSX\Http\Exception as StatusCode;
-use PSX\Oauth2\Authorization\Exception\ErrorExceptionAbstract;
-use PSX\Oauth2\Authorization\Exception\InvalidRequestException;
-use PSX\Oauth2\Authorization\Exception\ServerErrorException;
-use PSX\Oauth2\Authorization\Exception\UnauthorizedClientException;
-use PSX\Oauth2\Authorization\Exception\UnsupportedResponseTypeException;
+use PSX\OAuth2\Exception\ErrorExceptionAbstract;
+use PSX\OAuth2\Exception\InvalidRequestException;
+use PSX\OAuth2\Exception\ServerErrorException;
+use PSX\OAuth2\Exception\UnauthorizedClientException;
+use PSX\OAuth2\Exception\UnsupportedResponseTypeException;
 use PSX\Uri\Url;
 
 /**
@@ -89,7 +89,7 @@ class AuthorizationController extends ControllerAbstract
                 // in case we have no redirect uri we can get the redirect uri from the app
                 $redirectUri = $this->authorizer->getCallback($clientId);
             } else {
-                $redirectUri = new Url($redirectUri);
+                $redirectUri = Url::parse($redirectUri);
             }
 
             $request = new AccessRequest($clientId, $redirectUri, $scope, $state);
