@@ -18,46 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Command;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
+use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * ConsoleTest
+ * RouteCommandTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class ConsoleTest extends ControllerTestCase
+class RouteCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $application = Environment::getService(Application::class);
-        $commands    = $application->all();
+        $command = Environment::getService(Application::class)->find('route');
 
-        $keys = array_keys($commands);
-        sort($keys);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(array(
+        ));
 
-        $expect = [
-            '_complete',
-            'api:push',
-            'completion',
-            'dbal:run-sql',
-            'debug:autowiring',
-            'debug:container',
-            'debug:event-dispatcher',
-            'generate:model',
-            'generate:sdk',
-            'generate:table',
-            'help',
-            'list',
-            'route',
-            'serve',
-        ];
+        $actual = trim($commandTester->getDisplay());
+        $expect = trim(file_get_contents(__DIR__ . '/output/routes.txt'));
 
-        $this->assertEquals($expect, $keys);
+        $this->assertEquals($expect, $actual, $actual);
     }
 }

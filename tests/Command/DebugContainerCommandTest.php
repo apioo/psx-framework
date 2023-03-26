@@ -18,33 +18,32 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Command;
 
+use PSX\Framework\Filter\ControllerExecutorFactory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\TestApiController;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * DebugEventDispatcherCommandTest
+ * DebugContainerCommandTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class DebugEventDispatcherCommandTest extends ControllerTestCase
+class DebugContainerCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService(Application::class)->find('debug:event-dispatcher');
+        $command = Environment::getService(Application::class)->find('debug:container');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
         $actual = trim($commandTester->getDisplay());
-        $expect = trim(file_get_contents(__DIR__ . '/output/debug_event-dispatcher.txt'));
 
-        $this->assertEquals($expect, $actual, $actual);
+        $this->assertStringContainsString(ControllerExecutorFactory::class, $actual, $actual);
     }
 }

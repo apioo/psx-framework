@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Command;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
@@ -27,28 +27,24 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * ServeCommandTest
+ * DebugAutowiringCommandTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class ServeCommandTest extends ControllerTestCase
+class DebugAutowiringCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService(Application::class)->find('serve');
+        $command = Environment::getService(Application::class)->find('debug:autowiring');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
-            'method'  => 'GET',
-            'uri'     => '/system/routing',
-            'headers' => 'Accept=application/xml',
-        ));
+        $commandTester->execute([]);
 
-        $actual = $commandTester->getDisplay();
-        $expect = file_get_contents(__DIR__ . '/output/routes.xml');
+        $actual = trim($commandTester->getDisplay());
+        $expect = trim(file_get_contents(__DIR__ . '/output/debug_autowiring.txt'));
 
-        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+        $this->assertEquals($expect, $actual, $actual);
     }
 }

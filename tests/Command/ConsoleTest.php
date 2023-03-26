@@ -18,32 +18,46 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Command;
 
-use PSX\Framework\Filter\ControllerExecutorFactory;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * DebugContainerCommandTest
+ * ConsoleTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class DebugContainerCommandTest extends ControllerTestCase
+class ConsoleTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService(Application::class)->find('debug:container');
+        $application = Environment::getService(Application::class);
+        $commands    = $application->all();
 
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $keys = array_keys($commands);
+        sort($keys);
 
-        $actual = trim($commandTester->getDisplay());
+        $expect = [
+            '_complete',
+            'api:push',
+            'completion',
+            'dbal:run-sql',
+            'debug:autowiring',
+            'debug:container',
+            'debug:event-dispatcher',
+            'generate:model',
+            'generate:sdk',
+            'generate:table',
+            'help',
+            'list',
+            'route',
+            'serve',
+        ];
 
-        $this->assertStringContainsString(ControllerExecutorFactory::class, $actual, $actual);
+        $this->assertEquals($expect, $keys);
     }
 }

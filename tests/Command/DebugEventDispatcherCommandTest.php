@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Console;
+namespace PSX\Framework\Tests\Command;
 
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
@@ -27,24 +27,23 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * RouteCommandTest
+ * DebugEventDispatcherCommandTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class RouteCommandTest extends ControllerTestCase
+class DebugEventDispatcherCommandTest extends ControllerTestCase
 {
     public function testCommand()
     {
-        $command = Environment::getService(Application::class)->find('route');
+        $command = Environment::getService(Application::class)->find('debug:event-dispatcher');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
-        ));
+        $commandTester->execute([]);
 
         $actual = trim($commandTester->getDisplay());
-        $expect = trim(file_get_contents(__DIR__ . '/output/routes.txt'));
+        $expect = trim(file_get_contents(__DIR__ . '/output/debug_event-dispatcher.txt'));
 
         $this->assertEquals($expect, $actual, $actual);
     }
