@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
@@ -48,7 +48,6 @@ class DebugEventDispatcherCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('debug:event-dispatcher')
             ->setDefinition([
                 new InputArgument('event', InputArgument::OPTIONAL, 'An event name or a part of the event name'),
                 new InputOption('dispatcher', null, InputOption::VALUE_REQUIRED, 'To view events of a specific event dispatcher', self::DEFAULT_DISPATCHER),

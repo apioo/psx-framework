@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use PSX\Api\GeneratorFactory;
 use PSX\Api\GeneratorFactoryInterface;
@@ -26,6 +26,7 @@ use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,6 +40,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
+#[AsCommand(name: 'generate:sdk', description: 'Generates a client SDK')]
 class SdkCommand extends Command
 {
     private DirectoryInterface $directory;
@@ -59,8 +61,6 @@ class SdkCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('generate:sdk')
-            ->setDescription('Generates a client SDK')
             ->addArgument('format', InputArgument::OPTIONAL, 'The target format of the SDK', GeneratorFactoryInterface::CLIENT_TYPESCRIPT)
             ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection which is used', 'System')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)

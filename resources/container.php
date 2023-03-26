@@ -268,18 +268,12 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     // commands
-    $services->set(RouteCommand::class);
-    $services->set(ServeCommand::class);
-    $services->set(GenerateCommand::class);
-    $services->set(ParseCommand::class);
+    $services->load('PSX\\Framework\\Command\\', __DIR__ . '/../src/Command');
+
     $services->set(PushCommand::class);
-    $services->set(DebugContainerCommand::class);
-    $services->set(DebugAutowiringCommand::class);
-    $services->set(DebugEventDispatcherCommand::class);
     $services->set(HelpCommand::class);
     $services->set(ListCommand::class);
     $services->set(RunSqlCommand::class);
-    $services->set(SchemaParseCommand::class);
 
     // event listener
     $services->set(LoggingListener::class);

@@ -18,13 +18,14 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
 use PSX\Schema\Generator\FileAwareInterface;
 use PSX\Schema\GeneratorFactory;
 use PSX\Schema\SchemaManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,6 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
+#[AsCommand(name: 'generate:model', description: 'Generates model classes based on a TypeSchema specification')]
 class ModelCommand extends Command
 {
     private DirectoryInterface $directory;
@@ -47,13 +49,6 @@ class ModelCommand extends Command
 
         $this->directory = $directory;
         $this->schemaManager = $schemaManager;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('generate:model')
-            ->setDescription('Generates model classes based on a TypeSchema specification');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

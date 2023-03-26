@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use Doctrine\DBAL\Connection;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Sql\Generator\Generator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,6 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org
  */
+#[AsCommand(name: 'generate:table', description: 'Generates table and row classes for the configured connection')]
 class TableCommand extends Command
 {
     private DirectoryInterface $directory;
@@ -46,13 +48,6 @@ class TableCommand extends Command
 
         $this->directory = $directory;
         $this->connection = $connection;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('generate:table')
-            ->setDescription('Generates table and row classes for the configured connection');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

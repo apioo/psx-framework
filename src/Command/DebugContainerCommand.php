@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Console\Descriptor\TextDescriptor;
@@ -48,7 +48,6 @@ class DebugContainerCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('debug:container')
             ->setDefinition([
                 new InputArgument('name', InputArgument::OPTIONAL, 'A service name (foo)'),
                 new InputOption('show-arguments', null, InputOption::VALUE_NONE, 'Show arguments in services'),

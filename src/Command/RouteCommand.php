@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use PSX\Framework\Loader\RoutingParserInterface;
 use Symfony\Component\Console\Command\Command;

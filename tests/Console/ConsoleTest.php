@@ -43,18 +43,18 @@ class ConsoleTest extends ControllerTestCase
 
         $expect = [
             '_complete',
-            'api:generate',
-            'api:parse',
             'api:push',
             'completion',
             'dbal:run-sql',
             'debug:autowiring',
             'debug:container',
             'debug:event-dispatcher',
+            'generate:model',
+            'generate:sdk',
+            'generate:table',
             'help',
             'list',
             'route',
-            'schema:parse',
             'serve',
         ];
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use PSX\Framework\Console\Descriptor\Descriptor;
 use PSX\Framework\Dependency\ContainerBuilder;
@@ -33,7 +33,6 @@ class DebugAutowiringCommand extends DebugContainerCommand
     protected function configure(): void
     {
         $this
-            ->setName('debug:autowiring')
             ->setDefinition([
                 new InputArgument('search', InputArgument::OPTIONAL, 'A search filter'),
                 new InputOption('all', null, InputOption::VALUE_NONE, 'Show also services that are not aliased'),

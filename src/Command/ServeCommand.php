@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Console;
+namespace PSX\Framework\Command;
 
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Environment\CLI\Engine;
