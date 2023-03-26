@@ -65,4 +65,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 84 more concrete services would be displayed when adding the "--all" option.
+ 96 more concrete services would be displayed when adding the "--all" option.
