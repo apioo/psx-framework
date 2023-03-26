@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDateTime;
 use PSX\Schema\Attribute\MaxLength;
 use PSX\Schema\Attribute\MinLength;
 use PSX\Schema\Attribute\Pattern;
@@ -40,7 +40,7 @@ class Entry
     #[MaxLength(16)]
     #[Pattern('[A-z]+')]
     private ?string $title = null;
-    private ?DateTime $date = null;
+    private ?LocalDateTime $date = null;
 
     public function getId(): ?int
     {
@@ -72,12 +72,12 @@ class Entry
         $this->title = $title;
     }
 
-    public function getDate(): ?DateTime
+    public function getDate(): ?LocalDateTime
     {
         return $this->date;
     }
 
-    public function setDate(?DateTime $date): void
+    public function setDate(?LocalDateTime $date): void
     {
         $this->date = $date;
     }

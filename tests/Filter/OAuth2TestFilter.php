@@ -29,8 +29,8 @@ use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Client;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Client;
 use PSX\Uri\Url;
 
 /**

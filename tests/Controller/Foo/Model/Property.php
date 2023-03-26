@@ -20,11 +20,10 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\DateTime\Date;
 use PSX\DateTime\LocalDate;
-use PSX\DateTime\DateTime;
-use PSX\DateTime\Duration;
-use PSX\DateTime\Time;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
+use PSX\DateTime\Period;
 
 /**
  * Property
@@ -55,13 +54,13 @@ class Property
     private ?bool $boolean = null;
     private ChoiceA|ChoiceB|null $choice = null;
     private ?Complex $complex = null;
-    private ?Date $date = null;
-    private ?DateTime $dateTime = null;
-    private ?Duration $duration = null;
+    private ?LocalDate $date = null;
+    private ?LocalDateTime $dateTime = null;
+    private ?Period $duration = null;
     private ?float $float = null;
     private ?int $integer = null;
     private ?string $string = null;
-    private ?Time $time = null;
+    private ?LocalTime $time = null;
 
     public function getAny(): ?Any
     {
@@ -133,32 +132,32 @@ class Property
         $this->complex = $complex;
     }
 
-    public function getDate(): ?Date
+    public function getDate(): ?LocalDate
     {
         return $this->date;
     }
 
-    public function setDate(Date $date): void
+    public function setDate(LocalDate $date): void
     {
         $this->date = $date;
     }
 
-    public function getDateTime(): ?DateTime
+    public function getDateTime(): ?LocalDateTime
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(DateTime $dateTime): void
+    public function setDateTime(LocalDateTime $dateTime): void
     {
         $this->dateTime = $dateTime;
     }
 
-    public function getDuration(): ?Duration
+    public function getDuration(): ?Period
     {
         return $this->duration;
     }
 
-    public function setDuration(Duration $duration): void
+    public function setDuration(Period $duration): void
     {
         $this->duration = $duration;
     }
@@ -193,12 +192,12 @@ class Property
         $this->string = $string;
     }
 
-    public function getTime(): ?Time
+    public function getTime(): ?LocalTime
     {
         return $this->time;
     }
 
-    public function setTime(Time $time): void
+    public function setTime(LocalTime $time): void
     {
         $this->time = $time;
     }

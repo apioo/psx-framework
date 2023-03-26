@@ -1,8 +1,8 @@
 <?php
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
+use Doctrine\DBAL\Tools\Console\ConnectionProvider;
 use Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider;
 use Monolog\Logger;
 use Psr\Cache\CacheItemPoolInterface;
@@ -229,7 +229,9 @@ return static function (ContainerConfigurator $container) {
     $services->set(Application::class)
         ->factory([service(ApplicationFactory::class), 'factory'])
         ->public();
+
     $services->set(SingleConnectionProvider::class);
+    $services->alias(ConnectionProvider::class, SingleConnectionProvider::class);
 
     $services->set(ControllerExecutorFactory::class);
 
@@ -276,7 +278,6 @@ return static function (ContainerConfigurator $container) {
     $services->set(DebugEventDispatcherCommand::class);
     $services->set(HelpCommand::class);
     $services->set(ListCommand::class);
-    $services->set(ReservedWordsCommand::class);
     $services->set(RunSqlCommand::class);
     $services->set(SchemaParseCommand::class);
 

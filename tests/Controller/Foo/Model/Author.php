@@ -20,11 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\DateTime\DateTime;
-use PSX\Schema\Attribute\MaxLength;
-use PSX\Schema\Attribute\MinLength;
-use PSX\Schema\Attribute\Pattern;
-
 /**
  * Author
  *

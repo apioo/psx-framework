@@ -1123,16 +1123,16 @@
     "AccessToken": {
       "type": "object",
       "properties": {
-        "access_token": {
+        "accessToken": {
           "type": "string"
         },
-        "token_type": {
+        "tokenType": {
           "type": "string"
         },
-        "expires_in": {
+        "expiresIn": {
           "type": "integer"
         },
-        "refresh_token": {
+        "refreshToken": {
           "type": "string"
         },
         "scope": {
@@ -1359,7 +1359,7 @@
           "type": "string"
         },
         "duration": {
-          "format": "duration",
+          "format": "period",
           "type": "string"
         },
         "float": {

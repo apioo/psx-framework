@@ -121,7 +121,7 @@ class RoutingParserTest extends TestCase
     protected function resolve(string $method, string $path)
     {
         $context = new Context();
-        $request = new Request(new Uri($path), $method);
+        $request = new Request(Uri::parse($path), $method);
 
         $locationFinder = new RoutingParser(new PhpFile(__DIR__ . '/../routes.php'));
         $locationFinder->resolve($request, $context);

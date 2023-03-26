@@ -22,8 +22,8 @@ namespace PSX\Framework\Tests\OAuth2\GrantType;
 
 use PSX\Framework\OAuth2\Credentials;
 use PSX\Framework\OAuth2\GrantType\PasswordAbstract;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\Password;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Grant\Password;
 
 /**
  * TestPassword

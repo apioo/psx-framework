@@ -32,8 +32,8 @@ use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\Put;
 use PSX\Api\Attribute\QueryParam;
-use PSX\DateTime\Date;
-use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\TestTable;
@@ -67,15 +67,15 @@ class SchemaController extends ControllerAbstract
     #[QueryParam(name: 'date', type: 'string', format: 'date')]
     #[QueryParam(name: 'dateTime', type: 'string', format: 'date-time')]
     #[Outgoing(code: 200, schema: Model\Collection::class)]
-    public function doGet(string $name, string $type, ?int $startIndex, ?float $float, ?bool $boolean, ?Date $date, ?DateTime $dateTime): array
+    public function doGet(string $name, string $type, ?int $startIndex, ?float $float, ?bool $boolean, ?LocalDate $date, ?LocalDateTime $dateTime): array
     {
         Assert::assertEquals('foo', $name);
         Assert::assertEquals('bar', $type);
-        Assert::assertEquals(0, $startIndex);
-        Assert::assertEquals(0.0, $float);
-        Assert::assertEquals(false, $boolean);
-        Assert::assertInstanceOf(Date::class, $date);
-        Assert::assertInstanceOf(DateTime::class, $dateTime);
+        Assert::assertNull($startIndex);
+        Assert::assertNull($float);
+        Assert::assertNull($boolean);
+        Assert::assertNull($date);
+        Assert::assertNull($dateTime);
 
         return [
             'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
@@ -91,7 +91,7 @@ class SchemaController extends ControllerAbstract
         Assert::assertEquals('bar', $type);
         Assert::assertEquals(3, $record->getUserId());
         Assert::assertEquals('test', $record->getTitle());
-        Assert::assertInstanceOf('DateTime', $record->getDate());
+        Assert::assertInstanceOf(LocalDateTime::class, $record->getDate());
 
         $message = new Model\Message();
         $message->setSuccess(true);

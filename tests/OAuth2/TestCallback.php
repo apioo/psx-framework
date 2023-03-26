@@ -29,8 +29,8 @@ use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Framework\Tests\Controller\OAuth2\AuthorizationControllerTest;
 use PSX\Http\Client\Client;
 use PSX\Http\Environment\HttpResponse;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Authorization\AuthorizationCode;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Authorization\AuthorizationCode;
 use PSX\Uri\Url;
 
 /**
@@ -65,7 +65,7 @@ JSON;
         $stack->push($history);
 
         $client = new Client(['handler' => $stack]);
-        $oauth  = new AuthorizationCode($client, new Url('http://127.0.0.1/api'));
+        $oauth  = new AuthorizationCode($client, Url::parse('http://127.0.0.1/api'));
         $oauth->setClientPassword(AuthorizationControllerTest::CLIENT_ID, AuthorizationControllerTest::CLIENT_SECRET);
 
         return $oauth;

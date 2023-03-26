@@ -47,7 +47,6 @@ class ConsoleTest extends ControllerTestCase
             'api:parse',
             'api:push',
             'completion',
-            'dbal:reserved-words',
             'dbal:run-sql',
             'debug:autowiring',
             'debug:container',

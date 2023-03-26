@@ -26,10 +26,10 @@ use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Model\Passthru;
-use PSX\DateTime\Date;
-use PSX\DateTime\DateTime;
-use PSX\DateTime\Duration;
-use PSX\DateTime\Time;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
+use PSX\DateTime\Period;
 use PSX\Framework\Controller\ControllerAbstract;
 
 /**
@@ -69,13 +69,13 @@ class PassthruController extends ControllerAbstract
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => new Date('2015-05-01'),
-            'dateTime' => new DateTime('2015-05-01T13:37:14'),
-            'duration' => new Duration('P1M'),
+            'date' => LocalDate::parse('2015-05-01'),
+            'dateTime' => LocalDateTime::parse('2015-05-01T13:37:14'),
+            'duration' => Period::parse('P1M'),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => new Time('13:37:14'),
+            'time' => LocalTime::parse('13:37:14'),
         ];
     }
 

@@ -141,6 +141,10 @@ class ControllerExecutor implements FilterInterface
      */
     private function castToType(TypeInterface $type, mixed $value): mixed
     {
+        if ($value === null) {
+            return null;
+        }
+
         if ($type instanceof StringType) {
             return match ($type->getFormat()) {
                 TypeAbstract::FORMAT_BINARY => $this->buildResource($value),

@@ -27,8 +27,8 @@ use PSX\Http\Filter\FilterChain;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\Request;
 use PSX\Http\Response;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Client;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\TokenAbstract;
 use PSX\Uri\Url;
 
 /**
@@ -48,10 +48,9 @@ class OAuth2AuthenticationTest extends TestCase
             return $accessToken == self::ACCESS_TOKEN;
         });
 
-        $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+        $value = TokenAbstract::factory($this->newAccessToken())->getHeader();
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $request  = new Request(Url::parse('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -70,10 +69,9 @@ class OAuth2AuthenticationTest extends TestCase
             return false;
         });
 
-        $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
+        $value = TokenAbstract::factory($this->newAccessToken())->getHeader();
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $request  = new Request(Url::parse('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -91,10 +89,9 @@ class OAuth2AuthenticationTest extends TestCase
             return $accessToken == self::ACCESS_TOKEN;
         });
 
-        $oauth = new Client();
         $value = '';
 
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
+        $request  = new Request(Url::parse('http://localhost/index.php'), 'GET', ['Authorization' => $value]);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -110,10 +107,7 @@ class OAuth2AuthenticationTest extends TestCase
             return $accessToken == self::ACCESS_TOKEN;
         });
 
-        $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
-
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET');
+        $request  = new Request(Url::parse('http://localhost/index.php'), 'GET');
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();
@@ -137,10 +131,7 @@ class OAuth2AuthenticationTest extends TestCase
             return $accessToken == self::ACCESS_TOKEN;
         });
 
-        $oauth = new Client();
-        $value = $oauth->getAuthorizationHeader($this->newAccessToken());
-
-        $request  = new Request(new Url('http://localhost/index.php'), 'GET', ['Authorization' => 'Foo']);
+        $request  = new Request(Url::parse('http://localhost/index.php'), 'GET', ['Authorization' => 'Foo']);
         $response = new Response();
 
         $filterChain = $this->getMockFilterChain();

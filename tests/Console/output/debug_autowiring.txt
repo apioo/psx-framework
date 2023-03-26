@@ -3,6 +3,8 @@ Autowirable Types
 
  The following classes & interfaces can be used as type-hints when autowiring:
  
+ Doctrine\DBAL\Tools\Console\ConnectionProvider (Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider)
+ 
  ApiManagerInterface
  PSX\Api\ApiManagerInterface (PSX\Api\ApiManager)
  
@@ -63,4 +65,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 85 more concrete services would be displayed when adding the "--all" option.
+ 84 more concrete services would be displayed when adding the "--all" option.

@@ -21,10 +21,10 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PHPUnit\Framework\Assert;
-use PSX\DateTime\Date;
-use PSX\DateTime\DateTime;
-use PSX\DateTime\Duration;
-use PSX\DateTime\Time;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
+use PSX\DateTime\Period;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Tests\Controller\Foo\Model\Any;
 use PSX\Framework\Tests\Controller\Foo\Model\ChoiceA;
@@ -216,7 +216,7 @@ JSON;
         $data     = json_decode($body);
 
         $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertEquals('/duration must be a valid duration format [ISO8601]', substr($data->message, 0, 51), $body);
+        $this->assertEquals('/duration must be a valid period format [ISO8601]', substr($data->message, 0, 49), $body);
     }
 
     public function testPostInvalidFloat()
@@ -289,44 +289,44 @@ JSON;
     public static function assertRecord(RecordInterface $record)
     {
         Assert::assertInstanceOf(RecordInterface::class, $record->any);
-        Assert::assertEquals(['foo' => 'bar'], $record->any->getProperties());
+        Assert::assertEquals(['foo' => 'bar'], $record->any->getAll());
         Assert::assertIsArray($record->array);
         Assert::assertEquals(1, count($record->array));
         Assert::assertEquals(['bar'], $record->array);
         Assert::assertIsArray($record->arrayComplex);
         Assert::assertEquals(2, count($record->arrayComplex));
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[0]);
-        Assert::assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getProperties());
+        Assert::assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
-        Assert::assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getProperties());
+        Assert::assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getAll());
         Assert::assertIsArray($record->arrayChoice);
         Assert::assertEquals(3, count($record->arrayChoice));
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[0]);
-        Assert::assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getProperties());
+        Assert::assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[1]);
-        Assert::assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getProperties());
+        Assert::assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[2]);
-        Assert::assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getProperties());
+        Assert::assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getAll());
         Assert::assertIsBool($record->boolean);
         Assert::assertEquals(true, $record->boolean);
         Assert::assertInstanceOf(RecordInterface::class, $record->choice);
-        Assert::assertEquals(['bar' => 'test'], $record->choice->getProperties());
+        Assert::assertEquals(['bar' => 'test'], $record->choice->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->complex);
-        Assert::assertEquals(['foo' => 'bar'], $record->complex->getProperties());
-        Assert::assertInstanceOf(Date::class, $record->date);
-        Assert::assertEquals('2015-05-01', $record->date->format('Y-m-d'));
-        Assert::assertInstanceOf(DateTime::class, $record->dateTime);
-        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->format('Y-m-d\TH:i:s\Z'));
-        Assert::assertInstanceOf(Duration::class, $record->duration);
-        Assert::assertEquals('000100000000', $record->duration->format('%Y%M%D%H%I%S'));
+        Assert::assertEquals(['foo' => 'bar'], $record->complex->getAll());
+        Assert::assertInstanceOf(LocalDate::class, $record->date);
+        Assert::assertEquals('2015-05-01', $record->date->toString());
+        Assert::assertInstanceOf(LocalDateTime::class, $record->dateTime);
+        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->toString());
+        Assert::assertInstanceOf(Period::class, $record->duration);
+        Assert::assertEquals('P1M', $record->duration->toString());
         Assert::assertIsFloat($record->float);
         Assert::assertEquals(13.37, $record->float);
         Assert::assertIsInt($record->integer);
         Assert::assertEquals(7, $record->integer);
         Assert::assertIsString($record->string);
         Assert::assertEquals('bar', $record->string);
-        Assert::assertInstanceOf(Time::class, $record->time);
-        Assert::assertEquals('13:37:14', $record->time->format('H:i:s'));
+        Assert::assertInstanceOf(LocalTime::class, $record->time);
+        Assert::assertEquals('13:37:14', $record->time->toString());
     }
 
     /**
@@ -390,13 +390,13 @@ JSON;
             'complex' => [
                 'foo' => 'bar'
             ],
-            'date' => Date::create(2015, 5, 1),
-            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
-            'duration' => new Duration('P1M'),
+            'date' => LocalDate::of(2015, 5, 1),
+            'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
+            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => Time::create(13, 37, 14),
+            'time' => LocalTime::of(13, 37, 14),
         ];
     }
 
@@ -426,13 +426,13 @@ JSON;
             'complex' => (object) [
                 'foo' => 'bar'
             ],
-            'date' => Date::create(2015, 5, 1),
-            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
-            'duration' => new Duration('P1M'),
+            'date' => LocalDate::of(2015, 5, 1),
+            'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
+            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => Time::create(13, 37, 14),
+            'time' => LocalTime::of(13, 37, 14),
         ];
     }
 
@@ -469,13 +469,13 @@ JSON;
             'complex' => Record::fromArray([
                 'foo' => 'bar'
             ]),
-            'date' => Date::create(2015, 5, 1),
-            'dateTime' => DateTime::create(2015, 5, 1, 13, 37, 14),
-            'duration' => new Duration('P1M'),
+            'date' => LocalDate::of(2015, 5, 1),
+            'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
+            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
-            'time' => Time::create(13, 37, 14),
+            'time' => LocalTime::of(13, 37, 14),
         ]);
     }
 
@@ -492,13 +492,13 @@ JSON;
         $object->setBoolean(true);
         $object->setChoice(new ChoiceB('test'));
         $object->setComplex(new Complex('bar'));
-        $object->setDate(Date::create(2015, 5, 1));
-        $object->setDateTime(DateTime::create(2015, 5, 1, 13, 37, 14));
-        $object->setDuration(new Duration('P1M'));
+        $object->setDate(LocalDate::of(2015, 5, 1));
+        $object->setDateTime(LocalDateTime::of(2015, 5, 1, 13, 37, 14));
+        $object->setDuration(Period::ofMonths(1));
         $object->setFloat(13.37);
         $object->setInteger(7);
         $object->setString('bar');
-        $object->setTime(Time::create(13, 37, 14));
+        $object->setTime(LocalTime::of(13, 37, 14));
 
         return $object;
     }

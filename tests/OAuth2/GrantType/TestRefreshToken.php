@@ -22,8 +22,8 @@ namespace PSX\Framework\Tests\OAuth2\GrantType;
 
 use PSX\Framework\OAuth2\Credentials;
 use PSX\Framework\OAuth2\GrantType\RefreshTokenAbstract;
-use PSX\Oauth2\AccessToken;
-use PSX\Oauth2\Grant\RefreshToken;
+use PSX\OAuth2\AccessToken;
+use PSX\OAuth2\Grant\RefreshToken;
 
 /**
  * TestRefreshToken

@@ -89,7 +89,7 @@
         },
         "duration": {
           "type": "string",
-          "format": "duration"
+          "format": "period"
         },
         "float": {
           "type": "number"

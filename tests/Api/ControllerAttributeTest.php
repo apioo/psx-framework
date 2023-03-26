@@ -36,7 +36,7 @@ use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
  */
 class ControllerAttributeTest extends ControllerDbTestCase
 {
-    public function getDataSet()
+    public function getDataSet(): array
     {
         return $this->createFromFile(__DIR__ . '/../table_fixture.php');
     }

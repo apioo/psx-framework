@@ -55,7 +55,7 @@ class LoaderFilterTest extends ControllerTestCase
 {
     public function testFilter()
     {
-        $request  = new Request(new Uri('/tests/filter'), 'GET');
+        $request  = new Request(Uri::parse('/tests/filter'), 'GET');
         $response = new Response();
 
         $this->loadController($request, $response);

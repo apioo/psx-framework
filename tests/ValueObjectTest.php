@@ -21,9 +21,9 @@
 namespace PSX\Framework\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PSX\DateTime\Date;
-use PSX\DateTime\DateTime;
-use PSX\DateTime\Time;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
 use PSX\Http\MediaType;
 use PSX\Uri\Uri;
 use PSX\Uri\Url;
@@ -49,8 +49,8 @@ class ValueObjectTest extends TestCase
         $objects = $this->getObjects();
 
         foreach ($objects as $object) {
-            $voClass   = get_class($object);
-            $newObject = new $voClass($object->toString());
+            $voClass = new \ReflectionClass(get_class($object));
+            $newObject = $voClass->getMethod('parse')->invoke(null, $object->toString());
 
             $this->assertEquals($object->toString(), $newObject->toString());
             $this->assertEquals($object->toString(), (string) $newObject);
@@ -60,13 +60,13 @@ class ValueObjectTest extends TestCase
     protected function getObjects()
     {
         return [
-            new Uri('foo://user:password@example.com:8042/over/there?name=ferret&foo=bar#nose'),
-            new Urn('urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6'),
-            new Url('http://benutzername:passwort@hostname:8080/pfad?argument=wert#textanker'),
-            new MediaType('text/plain; q=0.5'),
-            new Date('2015-04-25'),
-            new Time('19:35:20.1234+01:00'),
-            new DateTime('2015-04-25T19:35:20.1234+01:00'),
+            Uri::parse('foo://user:password@example.com:8042/over/there?name=ferret&foo=bar#nose'),
+            Urn::parse('urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6'),
+            Url::parse('http://benutzername:passwort@hostname:8080/pfad?argument=wert#textanker'),
+            MediaType::parse('text/plain; q=0.5'),
+            LocalDate::parse('2015-04-25'),
+            LocalTime::parse('19:35:20.1234+01:00'),
+            LocalDateTime::parse('2015-04-25T19:35:20.1234+01:00'),
         ];
     }
 }

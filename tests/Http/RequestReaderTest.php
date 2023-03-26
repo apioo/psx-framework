@@ -49,7 +49,7 @@ JSON;
 
         $headers = [];
         $body    = new StringStream($json);
-        $request = new Request(new Uri('/'), 'POST', $headers, $body);
+        $request = new Request(Uri::parse('/'), 'POST', $headers, $body);
 
         $data = $this->newRequestReader()->getBody($request);
 
@@ -67,7 +67,7 @@ JSON;
 
         $headers = ['Content-Type' => 'application/json'];
         $body    = new StringStream($json);
-        $request = new Request(new Uri('/'), 'POST', $headers, $body);
+        $request = new Request(Uri::parse('/'), 'POST', $headers, $body);
 
         $data = $this->newRequestReader()->getBody($request);
 
@@ -85,7 +85,7 @@ XML;
 
         $headers = ['Content-Type' => 'application/xml'];
         $body    = new StringStream($xml);
-        $request = new Request(new Uri('/'), 'POST', $headers, $body);
+        $request = new Request(Uri::parse('/'), 'POST', $headers, $body);
 
         $data = $this->newRequestReader()->getBody($request);
 
@@ -104,7 +104,7 @@ JSON;
 
         $headers = [];
         $body    = new StringStream($json);
-        $request = new Request(new Uri('/'), 'POST', $headers, $body);
+        $request = new Request(Uri::parse('/'), 'POST', $headers, $body);
 
         $data = $this->newRequestReader()->getBodyAs($request, Property::class);
 

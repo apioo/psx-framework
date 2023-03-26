@@ -21,7 +21,7 @@
 namespace PSX\Framework\Tests\Controller\OAuth2;
 
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Oauth2\Authorization\Exception;
+use PSX\OAuth2\Authorization\Exception;
 
 /**
  * CallbackAbstractTest
