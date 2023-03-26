@@ -20,6 +20,8 @@
 
 namespace PSX\Framework;
 
+use Composer\InstalledVersions;
+
 /**
  * Base
  *
@@ -29,13 +31,16 @@ namespace PSX\Framework;
  */
 class Base
 {
-    const VERSION = '7.0.0';
-
     /**
      * Returns the version of the framework
      */
     public static function getVersion(): string
     {
-        return self::VERSION;
+        return InstalledVersions::getVersion('psx/framework');
+    }
+
+    public static function getUserAgent(): string
+    {
+        return 'PSX v' . self::getVersion() . ' (https://phpsx.org/)';
     }
 }
