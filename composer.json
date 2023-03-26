@@ -1,7 +1,12 @@
 {
   "name": "psx/framework",
   "description": "Engine of the PSX framework",
-  "keywords": ["psx", "rest", "api", "framework"],
+  "keywords": [
+    "psx",
+    "rest",
+    "api",
+    "framework"
+  ],
   "homepage": "https://phpsx.org",
   "license": "Apache-2.0",
   "authors": [
@@ -32,7 +37,7 @@
     "symfony/console": "^5.0|^6.0",
     "symfony/event-dispatcher": "^5.0|^6.0",
     "symfony/dependency-injection": "^5.0|^6.0",
-    "symfony/config": "^5.0|^6.0",
+    "symfony/config": "^5.0|^6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0",
