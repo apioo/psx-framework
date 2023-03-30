@@ -9,11 +9,9 @@ $params = getConnectionParams();
 /** @var \PSX\Framework\Test\Environment $environment */
 $environment = $container->get(\PSX\Framework\Test\Environment::class);
 
-$environment->setup($params, function (\Doctrine\DBAL\Schema\Schema $fromSchema) {
+$environment->setup($params, function (\Doctrine\DBAL\Schema\Schema $schema) {
     // create the database schema if not available
-    if (!$fromSchema->hasTable('psx_handler_comment')) {
-        $schema = \PSX\Framework\App\TestSchema::getSchema();
-
+    if (!$schema->hasTable('psx_handler_comment')) {
         $table = $schema->createTable('psx_handler_comment');
         $table->addColumn('id', 'integer', ['length' => 10, 'autoincrement' => true]);
         $table->addColumn('userId', 'integer', ['length' => 10]);
@@ -26,8 +24,6 @@ $environment->setup($params, function (\Doctrine\DBAL\Schema\Schema $fromSchema)
         $table->addColumn('content', 'blob');
         $table->addColumn('date', 'datetime');
         $table->setPrimaryKey(['id']);
-
-        return $schema;
     }
 });
 

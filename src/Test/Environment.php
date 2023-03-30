@@ -91,23 +91,20 @@ class Environment
         return self::$instance->container->getParameter($name);
     }
 
-    private function setupConnection(array $params, Closure $schemaSetup = null): void
+    private function setupConnection(array $params, ?Closure $schemaSetup = null): void
     {
         $this->connectionFactory->setParams($params);
 
         $this->connection = $this->connectionFactory->factory();
-        $fromSchema = $this->connection->getSchemaManager()->createSchema();
+        $schema = $this->connection->createSchemaManager()->introspectSchema();
 
         // we get the schema from the callback if available
         if ($schemaSetup !== null) {
-            $toSchema = $schemaSetup($fromSchema, $this->connection);
+            $schemaSetup($schema, $this->connection);
 
-            if ($toSchema instanceof Schema) {
-                $queries = $fromSchema->getMigrateToSql($toSchema, $this->connection->getDatabasePlatform());
-
-                foreach ($queries as $query) {
-                    $this->connection->executeStatement($query);
-                }
+            $queries = $schema->toSql($this->connection->getDatabasePlatform());
+            foreach ($queries as $query) {
+                $this->connection->executeStatement($query);
             }
         }
 
