@@ -25,6 +25,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
+use PSX\Framework\Connection\ConnectionFactory;
 
 /**
  * Environment
@@ -39,12 +40,13 @@ class Environment
 
     private bool $hasConnection = false;
     private Connection $connection;
+    private ConnectionFactory $connectionFactory;
     private ContainerInterface $container;
     private bool $debug;
 
-    public function __construct(Connection $connection, ContainerInterface $container, bool $debug)
+    public function __construct(ConnectionFactory $connectionFactory, ContainerInterface $container, bool $debug)
     {
-        $this->connection = $connection;
+        $this->connectionFactory = $connectionFactory;
         $this->container = $container;
         $this->debug = $debug;
     }
@@ -52,11 +54,11 @@ class Environment
     /**
      * Setups the environment to run unit tests. Includes the DI container and optional creates a database schema
      */
-    public function setup(Closure $schemaSetup = null): void
+    public function setup(array $params, Closure $schemaSetup = null): void
     {
         Bootstrap::setupEnvironment($this->debug);
 
-        $this->setupConnection($schemaSetup);
+        $this->setupConnection($params, $schemaSetup);
     }
 
     public function hasConnection(): bool
@@ -89,8 +91,11 @@ class Environment
         return self::$instance->container->getParameter($name);
     }
 
-    private function setupConnection(Closure $schemaSetup = null): void
+    private function setupConnection(array $params, Closure $schemaSetup = null): void
     {
+        $this->connectionFactory->setParams($params);
+
+        $this->connection = $this->connectionFactory->factory();
         $fromSchema = $this->connection->getSchemaManager()->createSchema();
 
         // we get the schema from the callback if available
@@ -107,40 +112,7 @@ class Environment
         }
 
         $this->hasConnection = true;
-    }
 
-    public function register(): void
-    {
         self::$instance = $this;
-    }
-
-    public static function getConnectionParams(string $type): array
-    {
-        switch ($type) {
-            case 'mysql':
-                return [
-                    'dbname'   => 'psx',
-                    'user'     => 'root',
-                    'password' => 'test1234',
-                    'host'     => 'localhost',
-                    'driver'   => 'pdo_mysql',
-                ];
-
-            case 'pgsql':
-                return [
-                    'dbname'   => 'psx',
-                    'user'     => 'postgres',
-                    'password' => 'test1234',
-                    'host'     => 'localhost',
-                    'driver'   => 'pdo_pgsql',
-                ];
-
-            default:
-            case 'sqlite':
-                return [
-                    'memory' => true,
-                    'driver' => 'pdo_sqlite',
-                ];
-        }
     }
 }

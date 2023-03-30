@@ -31,6 +31,7 @@ use Doctrine\DBAL;
  */
 class ConnectionFactory
 {
+    private ?DBAL\Connection $connection = null;
     private array $params;
 
     public function __construct(array $params)
@@ -38,10 +39,19 @@ class ConnectionFactory
         $this->params = $params;
     }
 
+    public function setParams(array $params): void
+    {
+        $this->params = $params;
+    }
+
     public function factory(): DBAL\Connection
     {
+        if (isset($this->connection)) {
+            return $this->connection;
+        }
+
         $config = new DBAL\Configuration();
 
-        return DBAL\DriverManager::getConnection($this->params, $config);
+        return $this->connection = DBAL\DriverManager::getConnection($this->params, $config);
     }
 }

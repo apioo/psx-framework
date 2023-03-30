@@ -22,7 +22,10 @@ return [
 
     // Database parameters which are used for the doctrine DBAL connection
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
-    'psx_connection'          => \PSX\Framework\Test\Environment::getConnectionParams(getenv('DB')),
+    'psx_connection'          => [
+        'memory'              => true,
+        'driver'              => 'pdo_sqlite',
+    ],
 
     'psx_log_level'           => \Monolog\Logger::ERROR,
 
