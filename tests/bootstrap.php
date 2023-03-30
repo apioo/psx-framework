@@ -4,28 +4,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $container = require_once __DIR__ . '/container.php';
 
-$params = getConnectionParams();
-
 /** @var \PSX\Framework\Test\Environment $environment */
 $environment = $container->get(\PSX\Framework\Test\Environment::class);
-
-$environment->setup($params, function (\Doctrine\DBAL\Schema\Schema $schema) {
-    // create the database schema if not available
-    if (!$schema->hasTable('psx_handler_comment')) {
-        $table = $schema->createTable('psx_handler_comment');
-        $table->addColumn('id', 'integer', ['length' => 10, 'autoincrement' => true]);
-        $table->addColumn('userId', 'integer', ['length' => 10]);
-        $table->addColumn('title', 'string', ['length' => 32]);
-        $table->addColumn('date', 'datetime');
-        $table->setPrimaryKey(['id']);
-
-        $table = $schema->createTable('psx_session_handler_sql_test');
-        $table->addColumn('id', 'string', ['length' => 32]);
-        $table->addColumn('content', 'blob');
-        $table->addColumn('date', 'datetime');
-        $table->setPrimaryKey(['id']);
-    }
-});
+$environment->setup(getConnectionParams());
 
 function getConnectionParams(): array
 {

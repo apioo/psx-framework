@@ -27,6 +27,8 @@ return [
         'driver'              => 'pdo_sqlite',
     ],
 
+    'psx_migration_namespace' => 'PSX\\Framework\\Tests\\Migrations',
+
     'psx_log_level'           => \Monolog\Logger::ERROR,
 
     // Folder locations

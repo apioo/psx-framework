@@ -23,6 +23,10 @@ namespace PSX\Framework\Test;
 use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\MigratorConfiguration;
+use Doctrine\Migrations\Version\Direction;
+use Doctrine\Migrations\Version\Version;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Connection\ConnectionFactory;
@@ -42,23 +46,25 @@ class Environment
     private Connection $connection;
     private ConnectionFactory $connectionFactory;
     private ContainerInterface $container;
+    private DependencyFactory $dependencyFactory;
     private bool $debug;
 
-    public function __construct(ConnectionFactory $connectionFactory, ContainerInterface $container, bool $debug)
+    public function __construct(ConnectionFactory $connectionFactory, ContainerInterface $container, DependencyFactory $dependencyFactory, bool $debug)
     {
         $this->connectionFactory = $connectionFactory;
         $this->container = $container;
+        $this->dependencyFactory = $dependencyFactory;
         $this->debug = $debug;
     }
 
     /**
      * Setups the environment to run unit tests. Includes the DI container and optional creates a database schema
      */
-    public function setup(array $params, Closure $schemaSetup = null): void
+    public function setup(array $params): void
     {
         Bootstrap::setupEnvironment($this->debug);
 
-        $this->setupConnection($params, $schemaSetup);
+        $this->setupConnection($params);
     }
 
     public function hasConnection(): bool
@@ -91,24 +97,22 @@ class Environment
         return self::$instance->container->getParameter($name);
     }
 
-    private function setupConnection(array $params, ?Closure $schemaSetup = null): void
+    private function setupConnection(array $params): void
     {
         $this->connectionFactory->setParams($params);
-
         $this->connection = $this->connectionFactory->factory();
-        $schema = $this->connection->createSchemaManager()->introspectSchema();
-
-        // we get the schema from the callback if available
-        if ($schemaSetup !== null) {
-            $schemaSetup($schema, $this->connection);
-
-            $queries = $schema->toSql($this->connection->getDatabasePlatform());
-            foreach ($queries as $query) {
-                $this->connection->executeStatement($query);
-            }
-        }
-
         $this->hasConnection = true;
+
+        // check whether we can execute
+        $this->dependencyFactory->getMetadataStorage()->ensureInitialized();
+
+        $migratorConfiguration = new MigratorConfiguration();
+        $planCalculator = $this->dependencyFactory->getMigrationPlanCalculator();
+        $version = $this->dependencyFactory->getVersionAliasResolver()->resolveVersionAlias('latest');
+        $plan = $planCalculator->getPlanUntilVersion($version);
+
+        $migrator = $this->dependencyFactory->getMigrator();
+        $migrator->migrate($plan, $migratorConfiguration);
 
         self::$instance = $this;
     }

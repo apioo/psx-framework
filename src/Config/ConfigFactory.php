@@ -48,6 +48,7 @@ class ConfigFactory
                 'memory'              => true,
                 'driver'              => 'pdo_sqlite',
             ],
+            'psx_migration_namespace' => 'App\\Migrations',
             'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],
             'psx_supported_writer'    => [

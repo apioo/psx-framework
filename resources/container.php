@@ -237,7 +237,8 @@ return static function (ContainerConfigurator $container) {
     $services->alias(ConnectionProvider::class, SingleConnectionProvider::class);
 
     $services->set(DependencyFactoryFactory::class)
-        ->arg('$srcDir', param('psx_path_src'));
+        ->arg('$srcDir', param('psx_path_src'))
+        ->arg('$namespace', param('psx_migration_namespace'));
     $services->set(DependencyFactory::class)
         ->factory([service(DependencyFactoryFactory::class), 'factory'])
         ->public();

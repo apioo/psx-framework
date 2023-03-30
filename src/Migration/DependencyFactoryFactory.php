@@ -36,11 +36,13 @@ class DependencyFactoryFactory
 {
     private Connection $connection;
     private string $srcDir;
+    private string $namespace;
 
-    public function __construct(Connection $connection, string $srcDir)
+    public function __construct(Connection $connection, string $srcDir, string $namespace)
     {
         $this->connection = $connection;
         $this->srcDir = $srcDir;
+        $this->namespace = $namespace;
     }
 
     public function factory(): DependencyFactory
@@ -54,7 +56,7 @@ class DependencyFactoryFactory
                 'execution_time_column_name' => 'execution_time',
             ],
             'migrations_paths' => [
-                'App\Migrations' => $this->srcDir . '/Migrations',
+                $this->namespace => $this->srcDir . '/Migrations',
             ],
             'all_or_nothing' => false,
             'transactional' => true,
