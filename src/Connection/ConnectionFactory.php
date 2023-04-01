@@ -33,10 +33,16 @@ class ConnectionFactory
 {
     private ?DBAL\Connection $connection = null;
     private array|string $params;
+    private array $schemeMapping;
 
     public function __construct(array|string $params)
     {
         $this->params = $params;
+
+        $this->schemeMapping = [
+            'mysql' => 'mysqli',
+            'postgres' => 'pdo_pgsql',
+        ];
     }
 
     public function setParams(array|string $params): void
@@ -51,7 +57,7 @@ class ConnectionFactory
         }
 
         if (is_string($this->params)) {
-            $params = (new DBAL\Tools\DsnParser())->parse($this->params);
+            $params = (new DBAL\Tools\DsnParser($this->schemeMapping))->parse($this->params);
         } else {
             $params = $this->params;
         }
