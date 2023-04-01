@@ -20,10 +20,7 @@ return [
 
     // Database parameters which are used for the doctrine DBAL connection
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
-    'psx_connection'          => [
-        'memory'              => true,
-        'driver'              => 'pdo_sqlite',
-    ],
+    'psx_connection'          => env('APP_CONNECTION')->string(),
 
     'psx_migration_namespace' => 'PSX\\Framework\\Tests\\Migrations',
 

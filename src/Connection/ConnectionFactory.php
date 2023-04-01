@@ -32,14 +32,14 @@ use Doctrine\DBAL;
 class ConnectionFactory
 {
     private ?DBAL\Connection $connection = null;
-    private array $params;
+    private array|string $params;
 
-    public function __construct(array $params)
+    public function __construct(array|string $params)
     {
         $this->params = $params;
     }
 
-    public function setParams(array $params): void
+    public function setParams(array|string $params): void
     {
         $this->params = $params;
     }
@@ -50,8 +50,14 @@ class ConnectionFactory
             return $this->connection;
         }
 
+        if (is_string($this->params)) {
+            $params = (new DBAL\Tools\DsnParser())->parse($this->params);
+        } else {
+            $params = $this->params;
+        }
+
         $config = new DBAL\Configuration();
 
-        return $this->connection = DBAL\DriverManager::getConnection($this->params, $config);
+        return $this->connection = DBAL\DriverManager::getConnection($params, $config);
     }
 }
