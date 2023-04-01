@@ -54,10 +54,8 @@ class ConfigFactory
             'psx_env'                 => 'prod',
             'psx_debug'               => false,
             'psx_dispatch'            => 'index.php/',
-            'psx_connection'          => [
-                'memory'              => true,
-                'driver'              => 'pdo_sqlite',
-            ],
+            'psx_connection'          => 'pdo-sqlite://:memory:',
+            'psx_mailer'              => 'native://default',
             'psx_migration_namespace' => 'App\\Migrations',
             'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],

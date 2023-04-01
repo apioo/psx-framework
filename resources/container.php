@@ -13,8 +13,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
-use PSX\Api\Console\GenerateCommand;
-use PSX\Api\Console\ParseCommand;
 use PSX\Api\Console\PushCommand;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\GeneratorFactoryInterface;
@@ -28,11 +26,6 @@ use PSX\Framework\Config\Directory;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Framework\Connection\ConnectionFactory;
 use PSX\Framework\Console\ApplicationFactory;
-use PSX\Framework\Console\DebugAutowiringCommand;
-use PSX\Framework\Console\DebugContainerCommand;
-use PSX\Framework\Console\DebugEventDispatcherCommand;
-use PSX\Framework\Console\RouteCommand;
-use PSX\Framework\Console\ServeCommand;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Data\ProcessorFactory;
 use PSX\Framework\Dispatch\Dispatch;
@@ -56,6 +49,7 @@ use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
+use PSX\Framework\Mailer\MailerFactory;
 use PSX\Framework\Migration\DependencyFactoryFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
@@ -67,7 +61,6 @@ use PSX\Framework\Test\Environment;
 use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
 use PSX\Http\Filter;
-use PSX\Schema\Console\ParseCommand as SchemaParseCommand;
 use PSX\Schema\Parser\TypeSchema\ImportResolver;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\SchemaManagerInterface;
@@ -82,6 +75,7 @@ use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -136,6 +130,12 @@ return static function (ContainerConfigurator $container) {
         ->arg('$params', param('psx_connection'));
     $services->set(Connection::class)
         ->factory([service(ConnectionFactory::class), 'factory'])
+        ->public();
+
+    $services->set(MailerFactory::class)
+        ->arg('$dsn', param('psx_mailer'));
+    $services->set(MailerInterface::class)
+        ->factory([service(MailerFactory::class), 'factory'])
         ->public();
 
     $services->set(HttpClient::class);

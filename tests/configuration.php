@@ -22,6 +22,10 @@ return [
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
     'psx_connection'          => env('APP_CONNECTION')->string(),
 
+    // Mailer connection which is used to send mails
+    // https://symfony.com/doc/current/mailer.html#using-built-in-transports
+    'psx_mailer'              => env('APP_MAILER')->string(),
+
     'psx_migration_namespace' => 'PSX\\Framework\\Tests\\Migrations',
 
     'psx_log_level'           => Logger::ERROR,
