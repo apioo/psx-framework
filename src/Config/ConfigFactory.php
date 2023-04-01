@@ -41,9 +41,6 @@ class ConfigFactory
             return self::$config;
         }
 
-        $dotenv = new Dotenv();
-        $dotenv->load($appDir . '/.env');
-
         $config = new Config(self::getDefaultConfig());
         return self::$config = $config->merge(Config::fromFile($appDir . '/configuration.php'));
     }

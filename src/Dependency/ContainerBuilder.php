@@ -27,6 +27,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * ContainerBuilder
@@ -39,6 +40,9 @@ class ContainerBuilder
 {
     public static function build(string $appDir, bool $debug, ...$containerFiles): ContainerInterface
     {
+        $dotenv = new Dotenv();
+        $dotenv->load($appDir . '/.env');
+
         $targetFile = $appDir . '/cache/container.php';
         $containerConfigCache = new ConfigCache($targetFile, $debug);
 
