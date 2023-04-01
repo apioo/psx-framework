@@ -21,8 +21,6 @@
 namespace PSX\Framework;
 
 use ErrorException;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Bootstrap
@@ -36,29 +34,19 @@ class Bootstrap
     /**
      * Setup an environment for PSX according to the provided configuration
      */
-    public static function setupEnvironment(bool $debug): void
+    public static function setupEnvironment(): void
     {
         if (!defined('PSX')) {
-            // error handling
-            if ($debug === true) {
-                $errorReporting = E_ALL | E_STRICT;
-            } else {
-                $errorReporting = 0;
-            }
-
-            error_reporting($errorReporting);
             set_error_handler('\PSX\Framework\Bootstrap::errorHandler');
-
             define('PSX', true);
         }
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         if (error_reporting() == 0) {
-            // if someone adds an @ to the function call to supress an error
-            // message the error reporting is 0 so in this case we dont throw an
-            // exception
+            // if someone adds an @ to the function call to suppress an error message the error reporting is 0 so in
+            // this case we dont throw an exception
             return false;
         } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
             // for deprecation errors we also use the normal PHP error handling

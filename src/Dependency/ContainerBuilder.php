@@ -37,10 +37,10 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
  */
 class ContainerBuilder
 {
-    public static function build(string $appDir, bool $isDebug, ...$containerFiles): ContainerInterface
+    public static function build(string $appDir, bool $debug, ...$containerFiles): ContainerInterface
     {
         $targetFile = $appDir . '/cache/container.php';
-        $containerConfigCache = new ConfigCache($targetFile, $isDebug);
+        $containerConfigCache = new ConfigCache($targetFile, $debug);
 
         if (!$containerConfigCache->isFresh()) {
             $containerBuilder = self::getContainerBuilder($appDir, $containerFiles);
@@ -58,19 +58,19 @@ class ContainerBuilder
 
     public static function getContainerBuilder(string $appDir, array $containerFiles): SymfonyContainerBuilder
     {
-        $config = ConfigFactory::factory($appDir . '/configuration.php');
         $containerBuilder = new SymfonyContainerBuilder();
-
         $containerBuilder->setParameter('psx_path_app', $appDir);
         $containerBuilder->setParameter('psx_container_files', $containerFiles);
-
-        foreach ($config as $key => $value) {
-            $containerBuilder->setParameter($key, $value);
-        }
 
         $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../resources'));
         foreach ($containerFiles as $containerFile) {
             $loader->load($containerFile);
+        }
+
+        // load config after the file loader since we have only at the point the env function
+        $config = ConfigFactory::factory($appDir);
+        foreach ($config as $key => $value) {
+            $containerBuilder->setParameter($key, $value);
         }
 
         return $containerBuilder;

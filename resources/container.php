@@ -258,7 +258,6 @@ return static function (ContainerConfigurator $container) {
 
     // test environment
     $services->set(Environment::class)
-        ->arg('$debug', param('psx_debug'))
         ->public();
 
     // global filter chain

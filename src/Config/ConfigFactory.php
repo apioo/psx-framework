@@ -21,8 +21,7 @@
 namespace PSX\Framework\Config;
 
 use PSX\Data\WriterInterface;
-use PSX\Framework\Loader\Context;
-use PSX\Framework\Logger\LoggerFactory;
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
@@ -31,18 +30,29 @@ use PSX\Framework\Logger\LoggerFactory;
  */
 class ConfigFactory
 {
+    private static ?Config $config = null;
+
     /**
      * @throws NotFoundException
      */
-    public static function factory(string $configFile): Config
+    public static function factory(string $appDir): Config
     {
+        if (isset(self::$config)) {
+            return self::$config;
+        }
+
+        $dotenv = new Dotenv();
+        $dotenv->load($appDir . '/.env');
+
         $config = new Config(self::getDefaultConfig());
-        return $config->merge(Config::fromFile($configFile));
+        return self::$config = $config->merge(Config::fromFile($appDir . '/configuration.php'));
     }
 
     private static function getDefaultConfig(): array
     {
         return [
+            'psx_env'                 => 'prod',
+            'psx_debug'               => false,
             'psx_dispatch'            => 'index.php/',
             'psx_connection'          => [
                 'memory'              => true,

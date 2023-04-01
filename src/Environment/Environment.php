@@ -39,18 +39,16 @@ class Environment
 {
     private DispatchInterface $dispatch;
     private EngineInterface $engine;
-    private bool $debug;
 
-    public function __construct(DispatchInterface $dispatch, EngineInterface $engine, bool $debug)
+    public function __construct(DispatchInterface $dispatch, EngineInterface $engine)
     {
         $this->dispatch = $dispatch;
         $this->engine   = $engine;
-        $this->debug    = $debug;
     }
 
     public function serve(): void
     {
-        Bootstrap::setupEnvironment($this->debug);
+        Bootstrap::setupEnvironment();
 
         $this->engine->serve($this->dispatch);
     }

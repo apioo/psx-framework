@@ -47,14 +47,12 @@ class Environment
     private ConnectionFactory $connectionFactory;
     private ContainerInterface $container;
     private DependencyFactory $dependencyFactory;
-    private bool $debug;
 
-    public function __construct(ConnectionFactory $connectionFactory, ContainerInterface $container, DependencyFactory $dependencyFactory, bool $debug)
+    public function __construct(ConnectionFactory $connectionFactory, ContainerInterface $container, DependencyFactory $dependencyFactory)
     {
         $this->connectionFactory = $connectionFactory;
         $this->container = $container;
         $this->dependencyFactory = $dependencyFactory;
-        $this->debug = $debug;
     }
 
     /**
@@ -62,7 +60,7 @@ class Environment
      */
     public function setup(array $params): void
     {
-        Bootstrap::setupEnvironment($this->debug);
+        Bootstrap::setupEnvironment();
 
         $this->setupConnection($params);
     }

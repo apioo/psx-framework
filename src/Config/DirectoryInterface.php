@@ -20,13 +20,6 @@
 
 namespace PSX\Framework\Config;
 
-use Psr\Container\ContainerInterface;
-use PSX\Framework\Config\ConfigFactory;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-
 /**
  * DirectoryInterface
  *

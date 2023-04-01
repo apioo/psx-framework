@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Config;
 
-use PSX\Framework\Config\DirectoryInterface;
-
 /**
  * Directory
  *

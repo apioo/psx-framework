@@ -1,24 +1,22 @@
 <?php
 
-/*
-This is the configuration file of PSX. Every parameter can be used inside your
-application or in the DI container. Which configuration file gets loaded depends
-on the DI container parameter "config.file". See the container.php if you want
-load a different configuration depending on the environment.
-*/
+use Monolog\Logger;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return [
 
-    // The url to the psx public folder (i.e. http://127.0.0.1/psx/public,
-    // http://localhost.com or //localhost.com)
-    'psx_url'                 => 'http://127.0.0.1',
+    // The url to the psx public folder (i.e. http://api.acme.com or http://127.0.0.1/psx/public)
+    'psx_url'                 => env('APP_URL')->string(),
 
-    // The input path 'index.php/' or '' if you use mod_rewrite
+    // The input path 'index.php/' or '' if every request is served to the index.php file
     'psx_dispatch'            => '',
 
-    // Whether PSX runs in debug mode or not. If not error reporting is set to 0
-    // Also several caches are used if the debug mode is false
-    'psx_debug'               => true,
+    // Defines the current environment i.e. prod or dev
+    'psx_env'                 => env('APP_ENV')->string()->default('prod'),
+
+    // Whether the app runs in debug mode or not. If not error reporting is set to 0, also several caches are used if
+    // the debug mode is false
+    'psx_debug'               => env('APP_DEBUG')->bool()->default(false),
 
     // Database parameters which are used for the doctrine DBAL connection
     // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
@@ -29,7 +27,7 @@ return [
 
     'psx_migration_namespace' => 'PSX\\Framework\\Tests\\Migrations',
 
-    'psx_log_level'           => \Monolog\Logger::ERROR,
+    'psx_log_level'           => Logger::ERROR,
 
     // Folder locations
     'psx_path_cache'          => __DIR__ . '/cache',

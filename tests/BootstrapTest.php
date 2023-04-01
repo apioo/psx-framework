@@ -34,7 +34,7 @@ class BootstrapTest extends TestCase
 {
     public function testSetupEnvironment()
     {
-        Bootstrap::setupEnvironment(true);
+        Bootstrap::setupEnvironment();
 
         $this->assertTrue(defined('PSX'));
     }
