@@ -62,7 +62,6 @@ class SdkCommand extends Command
     {
         $this
             ->addArgument('format', InputArgument::OPTIONAL, 'The target format of the SDK', GeneratorFactoryInterface::CLIENT_TYPESCRIPT)
-            ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection which is used', 'System')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)
             ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null);
     }
