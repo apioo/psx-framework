@@ -2,9 +2,12 @@
 
 namespace PSX\Framework\App\Table\Generated;
 
+/**
+ * @extends \PSX\Sql\TableAbstract<\PSX\Framework\App\Table\Generated\PopulationRow>
+ */
 class PopulationTable extends \PSX\Sql\TableAbstract
 {
-    public const NAME = 'population';
+    public const NAME = 'app_population';
     public const COLUMN_ID = 'id';
     public const COLUMN_PLACE = 'place';
     public const COLUMN_REGION = 'region';
@@ -21,44 +24,44 @@ class PopulationTable extends \PSX\Sql\TableAbstract
         return array(self::COLUMN_ID => 0x3020000a, self::COLUMN_PLACE => 0x20000a, self::COLUMN_REGION => 0xa000ff, self::COLUMN_POPULATION => 0x20000a, self::COLUMN_USERS => 0x20000a, self::COLUMN_WORLD_USERS => 0x60000a, self::COLUMN_INSERT_DATE => 0x800000);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findAll(?\PSX\Sql\Condition $condition = null, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null, ?\PSX\Sql\Fields $fields = null) : iterable
+    public function findAll(?\PSX\Sql\Condition $condition = null, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        return $this->doFindAll($condition, $startIndex, $count, $sortBy, $sortOrder, $fields);
+        return $this->doFindAll($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findBy(\PSX\Sql\Condition $condition, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null, ?\PSX\Sql\Fields $fields = null) : iterable
+    public function findBy(\PSX\Sql\Condition $condition, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder, $fields);
+        return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
     /**
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findOneBy(\PSX\Sql\Condition $condition, ?\PSX\Sql\Fields $fields = null) : ?\PSX\Framework\App\Table\Generated\PopulationRow
+    public function findOneBy(\PSX\Sql\Condition $condition) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        return $this->doFindOneBy($condition, $fields);
+        return $this->doFindOneBy($condition);
     }
     /**
      * @throws \PSX\Sql\Exception\QueryException
      */
     public function find(int $id) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('id', $id);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findById(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findById(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('id', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -67,17 +70,35 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneById(int $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('id', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateById(int $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('id', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteById(int $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('id', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByPlace(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByPlace(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('place', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -86,17 +107,35 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneByPlace(int $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('place', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateByPlace(int $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('place', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByPlace(int $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('place', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByRegion(string $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByRegion(string $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->like('region', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -105,17 +144,35 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneByRegion(string $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->like('region', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateByRegion(string $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->like('region', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByRegion(string $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->like('region', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByPopulation(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByPopulation(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('population', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -124,17 +181,35 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneByPopulation(int $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('population', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateByPopulation(int $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('population', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByPopulation(int $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('population', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByUsers(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByUsers(int $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('users', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -143,17 +218,35 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneByUsers(int $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('users', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateByUsers(int $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('users', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByUsers(int $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('users', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByWorldUsers(float $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByWorldUsers(float $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('world_users', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
@@ -162,52 +255,105 @@ class PopulationTable extends \PSX\Sql\TableAbstract
      */
     public function findOneByWorldUsers(float $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('world_users', $value);
         return $this->doFindOneBy($condition);
     }
     /**
-     * @return \PSX\Framework\App\Table\Generated\PopulationRow[]
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateByWorldUsers(float $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('world_users', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByWorldUsers(float $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('world_users', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @return array<\PSX\Framework\App\Table\Generated\PopulationRow>
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findByInsertDate(\DateTime $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?int $sortOrder = null) : iterable
+    public function findByInsertDate(\PSX\DateTime\LocalDateTime $value, ?int $startIndex = null, ?int $count = null, ?string $sortBy = null, ?\PSX\Sql\OrderBy $sortOrder = null) : array
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('insert_date', $value);
         return $this->doFindBy($condition, $startIndex, $count, $sortBy, $sortOrder);
     }
     /**
      * @throws \PSX\Sql\Exception\QueryException
      */
-    public function findOneByInsertDate(\DateTime $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
+    public function findOneByInsertDate(\PSX\DateTime\LocalDateTime $value) : ?\PSX\Framework\App\Table\Generated\PopulationRow
     {
-        $condition = new \PSX\Sql\Condition();
+        $condition = \PSX\Sql\Condition::withAnd();
         $condition->equals('insert_date', $value);
         return $this->doFindOneBy($condition);
     }
     /**
      * @throws \PSX\Sql\Exception\ManipulationException
      */
+    public function updateByInsertDate(\PSX\DateTime\LocalDateTime $value, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('insert_date', $value);
+        return $this->doUpdateBy($condition, $record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteByInsertDate(\PSX\DateTime\LocalDateTime $value) : int
+    {
+        $condition = \PSX\Sql\Condition::withAnd();
+        $condition->equals('insert_date', $value);
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
     public function create(\PSX\Framework\App\Table\Generated\PopulationRow $record) : int
     {
-        return $this->doCreate($record);
+        return $this->doCreate($record->toRecord());
     }
     /**
      * @throws \PSX\Sql\Exception\ManipulationException
      */
     public function update(\PSX\Framework\App\Table\Generated\PopulationRow $record) : int
     {
-        return $this->doUpdate($record);
+        return $this->doUpdate($record->toRecord());
+    }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function updateBy(\PSX\Sql\Condition $condition, \PSX\Framework\App\Table\Generated\PopulationRow $record) : int
+    {
+        return $this->doUpdateBy($condition, $record->toRecord());
     }
     /**
      * @throws \PSX\Sql\Exception\ManipulationException
      */
     public function delete(\PSX\Framework\App\Table\Generated\PopulationRow $record) : int
     {
-        return $this->doDelete($record);
+        return $this->doDelete($record->toRecord());
     }
+    /**
+     * @throws \PSX\Sql\Exception\ManipulationException
+     */
+    public function deleteBy(\PSX\Sql\Condition $condition) : int
+    {
+        return $this->doDeleteBy($condition);
+    }
+    /**
+     * @param array<string, mixed> $row
+     */
     protected function newRecord(array $row) : \PSX\Framework\App\Table\Generated\PopulationRow
     {
-        return new \PSX\Framework\App\Table\Generated\PopulationRow($row);
+        return \PSX\Framework\App\Table\Generated\PopulationRow::from($row);
     }
 }

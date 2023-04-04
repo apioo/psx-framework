@@ -20,10 +20,11 @@
 
 namespace PSX\Framework\App\Service;
 
+use PSX\DateTime\LocalDateTime;
+use PSX\Framework\App\Model;
 use PSX\Framework\App\Table\Generated\PopulationRow;
-use PSX\Http\Exception as StatusCode;
-use PSX\Model\Common\ResultSet;
 use PSX\Framework\App\Table\Population as TablePopulation;
+use PSX\Http\Exception as StatusCode;
 
 /**
  * Population
@@ -46,10 +47,9 @@ class Population
         return $this->populationTable->getCollection($startIndex, $count);
     }
 
-    public function get(int $id)
+    public function get(int $id): PopulationRow
     {
-        $population = $this->populationTable->getEntity($id);
-
+        $population = $this->populationTable->find($id);
         if (empty($population)) {
             throw new StatusCode\NotFoundException('Internet population not found');
         }
@@ -57,38 +57,33 @@ class Population
         return $population;
     }
 
-    public function create($place, $region, $count, $users, $worldUsers)
+    public function create(Model\Population $population): void
     {
-        $this->populationTable->create(new PopulationRow([
-            'place'       => $place,
-            'region'      => $region,
-            'population'  => $count,
-            'users'       => $users,
-            'world_users' => $worldUsers,
-            'insert_date' => new \DateTime(),
-        ]));
+        $row = new PopulationRow();
+        $row->setPlace($population->getPlace());
+        $row->setRegion($population->getRegion());
+        $row->setPopulation($population->getPopulation());
+        $row->setUsers($population->getUsers());
+        $row->setWorldUsers($population->getWorldUsers());
+        $row->setInsertDate(LocalDateTime::now());
+        $this->populationTable->create($row);
     }
 
-    public function update($id, $place, $region, $count, $users, $worldUsers)
+    public function update(int $id, Model\Population $population): void
     {
-        $population = $this->get($id);
-
-        $this->populationTable->update(new PopulationRow([
-            'id'          => $population['id'],
-            'place'       => $place,
-            'region'      => $region,
-            'population'  => $count,
-            'users'       => $users,
-            'world_users' => $worldUsers,
-        ]));
+        $row = $this->get($id);
+        $row->setPlace($population->getPlace());
+        $row->setRegion($population->getRegion());
+        $row->setPopulation($population->getPopulation());
+        $row->setUsers($population->getUsers());
+        $row->setWorldUsers($population->getWorldUsers());
+        $this->populationTable->update($row);
     }
 
-    public function delete($id)
+    public function delete(int $id): void
     {
-        $population = $this->get($id);
+        $row = $this->get($id);
 
-        $this->populationTable->delete(new PopulationRow([
-            'id' => $population['id']
-        ]));
+        $this->populationTable->delete($row);
     }
 }

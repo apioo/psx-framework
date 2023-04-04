@@ -860,19 +860,21 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Collection"
+          "$ref": "PopulationCollection"
         }
       },
       "arguments": {
         "startIndex": {
           "in": "query",
           "schema": {
+            "description": "",
             "type": "integer"
           }
         },
         "count": {
           "in": "query",
           "schema": {
+            "description": "",
             "type": "integer"
           }
         }
@@ -897,7 +899,7 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Entity"
+            "$ref": "Population"
           }
         }
       },
@@ -968,7 +970,7 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Entity"
+          "$ref": "Population"
         }
       },
       "arguments": {
@@ -1005,7 +1007,7 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Entity"
+            "$ref": "Population"
           }
         }
       },
@@ -1231,31 +1233,51 @@
       }
     },
     "Entity": {
+      "description": "Represents an internet population entity",
       "type": "object",
       "properties": {
         "id": {
+          "description": "Unique id for each entry",
           "type": "integer"
         },
         "place": {
-          "type": "integer"
+          "description": "Position in the top list",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
         },
         "region": {
-          "type": "string"
+          "description": "Name of the region",
+          "type": "string",
+          "pattern": "[A-z]+",
+          "minLength": 3,
+          "maxLength": 64
         },
         "population": {
+          "description": "Complete number of population",
           "type": "integer"
         },
         "users": {
+          "description": "Number of internet users",
           "type": "integer"
         },
         "worldUsers": {
+          "description": "Percentage users of the world",
           "type": "number"
         },
         "datetime": {
+          "description": "Date when the entity was created",
           "format": "date-time",
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "place",
+        "region",
+        "population",
+        "users",
+        "worldUsers"
+      ]
     },
     "Entry": {
       "type": "object",
@@ -1302,6 +1324,39 @@
       "required": [
         "id"
       ]
+    },
+    "Population": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "place": {
+          "type": "integer"
+        },
+        "region": {
+          "type": "string"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "users": {
+          "type": "integer"
+        },
+        "worldUsers": {
+          "type": "number"
+        },
+        "insertDate": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "PopulationCollection": {
+      "$ref": "Collection",
+      "$template": {
+        "T": "Population"
+      }
     },
     "Property": {
       "type": "object",

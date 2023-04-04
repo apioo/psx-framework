@@ -20,10 +20,11 @@
 
 namespace PSX\Framework\App\Table;
 
+use PSX\Framework\App\Model;
+use PSX\Framework\App\Table\Generated\PopulationRow;
 use PSX\Framework\App\Table\Generated\PopulationTable;
 use PSX\Sql\Condition;
-use PSX\Sql\Sql;
-use PSX\Sql\TableAbstract;
+use PSX\Sql\OrderBy;
 
 /**
  * Population
@@ -34,7 +35,7 @@ use PSX\Sql\TableAbstract;
  */
 class Population extends PopulationTable
 {
-    public function getCollection(?int $startIndex = null, ?int $count = null)
+    public function getCollection(?int $startIndex = null, ?int $count = null): Model\Collection
     {
         if (empty($startIndex) || $startIndex < 0) {
             $startIndex = 0;
@@ -44,38 +45,41 @@ class Population extends PopulationTable
             $count = 16;
         }
 
-        $condition = new Condition();
+        $condition = Condition::withAnd();
 
-        $definition = [
-            'totalResults' => $this->getCount($condition),
-            'startIndex' => $startIndex,
-            'itemsPerPage' => $count,
-            'entry' => $this->doCollection([$this, 'findAll'], [$condition, $startIndex, $count, 'priority', Sql::SORT_DESC], [
-                'id' => $this->fieldInteger('id'),
-                'place' => $this->fieldInteger('place'),
-                'region' => 'region',
-                'population' => $this->fieldInteger('population'),
-                'users' => $this->fieldInteger('users'),
-                'worldUsers' => $this->fieldNumber('world_users'),
-                'datetime' => $this->fieldDateTime('insert_date'),
-            ]),
-        ];
+        $entries = [];
+        $result = $this->findAll($condition, $startIndex, $count, 'place', OrderBy::ASC);
+        foreach ($result as $row) {
+            $entries[] = $this->mapModel($row);
+        }
 
-        return $this->build($definition);
+        $collection = new Model\PopulationCollection();
+        $collection->setTotalResults($this->getCount($condition));
+        $collection->setEntry($entries);
+
+        return $collection;
     }
 
-    public function getEntity(int $id)
+    public function getEntity(int $id): ?Model\Population
     {
-        $definition = $this->doEntity([$this, 'find'], [$id], [
-            'id' => $this->fieldInteger('id'),
-            'place' => $this->fieldInteger('place'),
-            'region' => 'region',
-            'population' => $this->fieldInteger('population'),
-            'users' => $this->fieldInteger('users'),
-            'worldUsers' => $this->fieldNumber('world_users'),
-            'datetime' => $this->fieldDateTime('insert_date'),
-        ]);
+        $row = $this->find($id);
+        if (!$row instanceof PopulationRow) {
+            return null;
+        }
 
-        return $this->build($definition);
+        return $this->mapModel($row);
+    }
+
+    private function mapModel(PopulationRow $row): Model\Population
+    {
+        $entity = new Model\Population();
+        $entity->setId($row->getId());
+        $entity->setPlace($row->getPlace());
+        $entity->setRegion($row->getRegion());
+        $entity->setPopulation($row->getPopulation());
+        $entity->setUsers($row->getUsers());
+        $entity->setWorldUsers($row->getWorldUsers());
+        $entity->setInsertDate($row->getInsertDate());
+        return $entity;
     }
 }

@@ -91,7 +91,7 @@ JSON;
         // check database
         $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('place', 'region', 'population', 'users', 'world_users')
-            ->from('population')
+            ->from('app_population')
             ->orderBy('id', 'DESC')
             ->setFirstResult(0)
             ->setMaxResults(2)

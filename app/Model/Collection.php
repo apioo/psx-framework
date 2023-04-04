@@ -1,57 +1,61 @@
 <?php
-/*
- * PSX is an open source PHP framework to develop RESTful APIs.
- * For the current version and information visit <https://phpsx.org>
- *
- * Copyright 2010-2022 Christoph Kappestein <christoph.kappestein@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
+declare(strict_types = 1);
 
 namespace PSX\Framework\App\Model;
 
 /**
- * @Description("Collection result")
+ * @template T
  */
-class Collection
+class Collection implements \JsonSerializable
 {
+    protected ?int $totalResults = null;
+    protected ?int $startIndex = null;
+    protected ?int $itemsPerPage = null;
     /**
-     * @var integer
+     * @var array<T>|null
      */
-    protected $totalResults;
-
-    /**
-     * @var array<\PSX\Framework\App\Model\Entity>
-     */
-    protected $entry;
-
-    public function getTotalResults()
-    {
-        return $this->totalResults;
-    }
-
-    public function setTotalResults($totalResults)
+    protected ?array $entry = null;
+    public function setTotalResults(?int $totalResults) : void
     {
         $this->totalResults = $totalResults;
     }
-
-    public function getEntry()
+    public function getTotalResults() : ?int
     {
-        return $this->entry;
+        return $this->totalResults;
     }
-
-    public function setEntry($entry)
+    public function setStartIndex(?int $startIndex) : void
+    {
+        $this->startIndex = $startIndex;
+    }
+    public function getStartIndex() : ?int
+    {
+        return $this->startIndex;
+    }
+    public function setItemsPerPage(?int $itemsPerPage) : void
+    {
+        $this->itemsPerPage = $itemsPerPage;
+    }
+    public function getItemsPerPage() : ?int
+    {
+        return $this->itemsPerPage;
+    }
+    /**
+     * @param array<T>|null $entry
+     */
+    public function setEntry(?array $entry) : void
     {
         $this->entry = $entry;
     }
+    public function getEntry() : ?array
+    {
+        return $this->entry;
+    }
+    public function jsonSerialize() : object
+    {
+        return (object) array_filter(array('totalResults' => $this->totalResults, 'startIndex' => $this->startIndex, 'itemsPerPage' => $this->itemsPerPage, 'entry' => $this->entry), static function ($value) : bool {
+            return $value !== null;
+        });
+    }
 }
+

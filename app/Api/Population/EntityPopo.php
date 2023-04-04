@@ -23,63 +23,60 @@ namespace PSX\Framework\App\Api\Population;
 use PSX\Api\Attribute\Delete;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Get;
-use PSX\Api\Attribute\Incoming;
-use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Model;
 use PSX\Framework\App\Service\Population;
+use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Exception as StatusCode;
+use PSX\Sql\TableManagerInterface;
 
 #[Description('Entity endpoint')]
 #[Path('/population/popo/:id')]
-#[PathParam(name: "id", type: "integer")]
+#[PathParam(name: 'id', type: 'integer')]
 class EntityPopo extends ControllerAbstract
 {
     private Population $populationService;
+    private Table\Population $populationTable;
 
-    public function __construct(Population $populationService)
+    public function __construct(Population $populationService, TableManagerInterface $tableManager)
     {
         $this->populationService = $populationService;
+        $this->populationTable = $tableManager->getTable(Table\Population::class);
     }
 
     #[Get]
-    #[Outgoing(code: 200, schema: Model\Entity::class)]
-    public function doGet(int $id): mixed
+    public function doGet(int $id): Model\Population
     {
-        return $this->populationService->get($id);
+        $population = $this->populationTable->getEntity($id);
+        if (empty($population)) {
+            throw new StatusCode\NotFoundException('Internet population not found');
+        }
+
+        return $population;
     }
 
     #[Put]
-    #[Incoming(schema: Model\Entity::class)]
-    #[Outgoing(code: 200, schema: Model\Message::class)]
-    public function doPut(int $id, Model\Entity $payload): array
+    public function doPut(int $id, Model\Population $payload): Model\Message
     {
-        $this->populationService->update(
-            $id,
-            $payload->getPlace(),
-            $payload->getRegion(),
-            $payload->getPopulation(),
-            $payload->getUsers(),
-            $payload->getWorldUsers()
-        );
+        $this->populationService->update($id, $payload);
 
-        return [
-            'success' => true,
-            'message' => 'Update successful',
-        ];
+        $entity = new Model\Message();
+        $entity->setSuccess(true);
+        $entity->setMessage('Update successful');
+        return $entity;
     }
 
     #[Delete]
-    #[Outgoing(code: 200, schema: Model\Message::class)]
-    public function doDelete(int $id): array
+    public function doDelete(int $id): Model\Message
     {
         $this->populationService->delete($id);
 
-        return [
-            'success' => true,
-            'message' => 'Delete successful',
-        ];
+        $entity = new Model\Message();
+        $entity->setSuccess(true);
+        $entity->setMessage('Delete successful');
+        return $entity;
     }
 }

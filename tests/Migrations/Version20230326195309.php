@@ -32,7 +32,7 @@ final class Version20230326195309 extends AbstractMigration
         $table->addColumn('date', 'datetime');
         $table->setPrimaryKey(['id']);
 
-        $table = $schema->createTable('population');
+        $table = $schema->createTable('app_population');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('place', 'integer');
         $table->addColumn('region', 'string');

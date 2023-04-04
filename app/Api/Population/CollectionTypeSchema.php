@@ -27,18 +27,24 @@ use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
+use PSX\Framework\App\Model;
 use PSX\Framework\App\Service\Population;
+use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Record\Record;
+use PSX\Sql\TableManagerInterface;
 
 #[Description('Collection endpoint')]
 #[Path('/population/typeschema')]
 class CollectionTypeSchema extends ControllerAbstract
 {
     private Population $populationService;
+    private Table\Population $populationTable;
 
-    public function __construct(Population $populationService)
+    public function __construct(Population $populationService, TableManagerInterface $tableManager)
     {
         $this->populationService = $populationService;
+        $this->populationTable = $tableManager->getTable(Table\Population::class);
     }
 
     #[Get]
@@ -47,7 +53,7 @@ class CollectionTypeSchema extends ControllerAbstract
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
     public function doGet(?int $startIndex, ?int $count): mixed
     {
-        return $this->populationService->getAll(
+        return $this->populationTable->getCollection(
             $startIndex,
             $count
         );
@@ -56,15 +62,15 @@ class CollectionTypeSchema extends ControllerAbstract
     #[Post]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 201, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    public function doPost($record): array
+    public function doPost(Record $payload): array
     {
-        $this->populationService->create(
-            $record['place'],
-            $record['region'],
-            $record['population'],
-            $record['users'],
-            $record['worldUsers']
-        );
+        $model = new Model\Population();
+        $model->setPlace($payload->get('place'));
+        $model->setRegion($payload->get('region'));
+        $model->setPopulation($payload->get('population'));
+        $model->setUsers($payload->get('users'));
+        $model->setWorldUsers($payload->get('worldUsers'));
+        $this->populationService->create($model);
 
         return [
             'success' => true,

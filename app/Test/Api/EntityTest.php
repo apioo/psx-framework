@@ -101,7 +101,7 @@ JSON;
         // check database
         $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('id', 'place', 'region', 'population', 'users', 'world_users')
-            ->from('population')
+            ->from('app_population')
             ->where('id = :id')
             ->getSQL();
 
@@ -139,7 +139,7 @@ JSON;
         // check database
         $sql = Environment::getService(Connection::class)->createQueryBuilder()
             ->select('id', 'place', 'region', 'population', 'users', 'world_users')
-            ->from('population')
+            ->from('app_population')
             ->where('id = :id')
             ->getSQL();
 

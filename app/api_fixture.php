@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'population' => [
+    'app_population' => [
         ['id' => 1, 'place' => 1, 'region' => 'China', 'population' => 1338612968, 'users' => 360000000, 'world_users' => 20.8, 'insert_date' => '2009-11-29 15:21:49'],
         ['id' => 2, 'place' => 2, 'region' => 'United States', 'population' => 307212123, 'users' => 227719000, 'world_users' => 13.1, 'insert_date' => '2009-11-29 15:22:40'],
         ['id' => 3, 'place' => 3, 'region' => 'Japan', 'population' => 127078679, 'users' => 95979000, 'world_users' => 5.5, 'insert_date' => '2009-11-29 15:23:18'],

@@ -22,52 +22,44 @@ namespace PSX\Framework\App\Api\Population;
 
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Get;
-use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
-use PSX\Api\Attribute\QueryParam;
-use PSX\Framework\App\Model\Collection;
-use PSX\Framework\App\Model\Entity;
+use PSX\Framework\App\Model;
 use PSX\Framework\App\Model\Message;
+use PSX\Framework\App\Model\PopulationCollection;
 use PSX\Framework\App\Service\Population;
+use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Sql\TableManagerInterface;
 
 #[Description('Collection endpoint')]
 #[Path('/population/popo')]
 class CollectionPopo extends ControllerAbstract
 {
     private Population $populationService;
+    private Table\Population $populationTable;
 
-    public function __construct(Population $populationService)
+    public function __construct(Population $populationService, TableManagerInterface $tableManager)
     {
         $this->populationService = $populationService;
+        $this->populationTable = $tableManager->getTable(Table\Population::class);
     }
 
     #[Get]
-    #[QueryParam(name: "startIndex", type: "integer")]
-    #[QueryParam(name: "count", type: "integer")]
-    #[Outgoing(code: 200, schema: Collection::class)]
-    public function doGet(?int $startIndex, ?int $count): mixed
+    public function doGet(?int $startIndex, ?int $count): PopulationCollection
     {
-        return $this->populationService->getAll(
+        return $this->populationTable->getCollection(
             $startIndex,
             $count
         );
     }
 
     #[Post]
-    #[Incoming(schema: Entity::class)]
-    #[Outgoing(code: 201, schema: Message::class)]
-    public function doPost(Entity $record): Message
+    #[Outgoing(code: 201, schema: Model\Message::class)]
+    public function doPost(Model\Population $payload): Model\Message
     {
-        $this->populationService->create(
-            $record->getPlace(),
-            $record->getRegion(),
-            $record->getPopulation(),
-            $record->getUsers(),
-            $record->getWorldUsers()
-        );
+        $this->populationService->create($payload);
 
         $message = new Message();
         $message->setSuccess(true);

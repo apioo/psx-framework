@@ -28,9 +28,13 @@ use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Put;
+use PSX\Framework\App\Model;
 use PSX\Framework\App\Service\Population;
+use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Exception as StatusCode;
 use PSX\Record\Record;
+use PSX\Sql\TableManagerInterface;
 
 #[Description('Entity endpoint')]
 #[Path('/population/typeschema/:id')]
@@ -38,17 +42,24 @@ use PSX\Record\Record;
 class EntityTypeSchema extends ControllerAbstract
 {
     private Population $populationService;
+    private Table\Population $populationTable;
 
-    public function __construct(Population $populationService)
+    public function __construct(Population $populationService, TableManagerInterface $tableManager)
     {
         $this->populationService = $populationService;
+        $this->populationTable = $tableManager->getTable(Table\Population::class);
     }
 
     #[Get]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     public function doGet(int $id): mixed
     {
-        return $this->populationService->get($id);
+        $population = $this->populationTable->getEntity($id);
+        if (empty($population)) {
+            throw new StatusCode\NotFoundException('Internet population not found');
+        }
+
+        return $population;
     }
 
     #[Put]
@@ -56,14 +67,13 @@ class EntityTypeSchema extends ControllerAbstract
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
     public function doPut(int $id, Record $payload): array
     {
-        $this->populationService->update(
-            $id,
-            $payload['place'],
-            $payload['region'],
-            $payload['population'],
-            $payload['users'],
-            $payload['worldUsers']
-        );
+        $model = new Model\Population();
+        $model->setPlace($payload->get('place'));
+        $model->setRegion($payload->get('region'));
+        $model->setPopulation($payload->get('population'));
+        $model->setUsers($payload->get('users'));
+        $model->setWorldUsers($payload->get('worldUsers'));
+        $this->populationService->update($id, $model);
 
         return [
             'success' => true,
