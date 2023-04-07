@@ -21,7 +21,6 @@
 namespace PSX\Framework\Tests\Loader;
 
 use PHPUnit\Framework\TestCase;
-use PSX\Framework\Config\ConfigFactory;
 use PSX\Framework\Loader\Context;
 use PSX\Framework\Loader\ContextFactoryInterface;
 use PSX\Framework\Test\Environment;

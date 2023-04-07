@@ -21,13 +21,6 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\FilterController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\IndexController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\InspectController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\MethodsController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\SetBodyController;
-use PSX\Framework\Tests\Controller\Foo\Application\TestController\SupportedWriterController;
-use PSX\Json\Parser;
 
 /**
  * BodyControllerTest

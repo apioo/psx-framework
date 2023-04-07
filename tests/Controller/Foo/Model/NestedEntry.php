@@ -22,8 +22,6 @@ namespace PSX\Framework\Tests\Controller\Foo\Schema;
 
 use PSX\Framework\Tests\Controller\Foo\Model\Author;
 use PSX\Framework\Tests\Controller\Foo\Model\Item;
-use PSX\Schema\DefinitionsInterface;
-use PSX\Schema\SchemaAbstract;
 
 /**
  * NestedEntry

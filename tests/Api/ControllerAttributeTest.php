@@ -25,7 +25,6 @@ use PSX\Api\ScannerInterface;
 use PSX\Api\SpecificationInterface;
 use PSX\Framework\Test\ControllerDbTestCase;
 use PSX\Framework\Test\Environment;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
 
 /**
  * ControllerAttributeTest

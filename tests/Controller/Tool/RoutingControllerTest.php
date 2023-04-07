@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
-use PSX\Framework\Controller\Tool\RoutingController;
-use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**

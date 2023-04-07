@@ -22,7 +22,6 @@ namespace PSX\Framework\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Util\HeaderName;
-use PSX\Framework\Util\Uuid;
 
 /**
  * HeaderNameTest

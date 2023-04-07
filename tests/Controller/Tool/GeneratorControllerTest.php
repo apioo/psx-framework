@@ -20,10 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Tool;
 
-use PSX\Framework\Controller\Generator\GeneratorController;
-use PSX\Framework\Controller\Tool\Documentation;
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Tests\Controller\Foo\Application\SchemaController;
 
 /**
  * DocumentationControllerTest

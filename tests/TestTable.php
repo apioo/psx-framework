@@ -21,7 +21,6 @@
 namespace PSX\Framework\Tests;
 
 use PSX\Framework\Tests\Table\HandlerCommentTable;
-use PSX\Sql\TableInterface;
 
 /**
  * TestTable

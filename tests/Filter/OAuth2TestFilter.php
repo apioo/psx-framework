@@ -20,18 +20,8 @@
 
 namespace PSX\Framework\Tests\Filter;
 
-use PHPUnit\Framework\TestCase;
 use PSX\Framework\Filter\OAuth2AuthenticationAbstract;
-use PSX\Http\Exception\BadRequestException;
-use PSX\Http\Exception\UnauthorizedException;
-use PSX\Http\Filter\FilterChain;
-use PSX\Http\FilterChainInterface;
-use PSX\Http\Request;
-use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
-use PSX\OAuth2\AccessToken;
-use PSX\OAuth2\Client;
-use PSX\Uri\Url;
 
 /**
  * OAuth2TestFilter

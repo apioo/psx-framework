@@ -20,9 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\Schema\DefinitionsInterface;
-use PSX\Schema\SchemaAbstract;
-
 /**
  * Message
  *

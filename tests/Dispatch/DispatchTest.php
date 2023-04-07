@@ -20,17 +20,7 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
-use PSX\Framework\Event\Event;
-use PSX\Framework\Event\ExceptionThrownEvent;
-use PSX\Framework\Event\RequestIncomingEvent;
-use PSX\Framework\Event\ResponseSendEvent;
-use PSX\Framework\Loader\Context;
 use PSX\Framework\Test\ControllerTestCase;
-use PSX\Framework\Test\Environment;
-use PSX\Http\RequestInterface;
-use PSX\Http\ResponseInterface;
-use PSX\Http\Stream\TempStream;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * DispatchTest
