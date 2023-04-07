@@ -35,6 +35,7 @@ use PSX\Framework\App\Service\Population;
 use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Schema\Type;
 use PSX\Sql\TableManagerInterface;
 
 #[Description('Collection endpoint')]
@@ -61,7 +62,7 @@ class PopulationPopo extends ControllerAbstract
 
     #[Get]
     #[Path('/population/popo/:id')]
-    #[PathParam(name: 'id', type: 'integer')]
+    #[PathParam(name: 'id', type: Type::INTEGER)]
     public function get(int $id): Model\Population
     {
         $population = $this->populationTable->getEntity($id);
@@ -87,7 +88,7 @@ class PopulationPopo extends ControllerAbstract
 
     #[Put]
     #[Path('/population/popo/:id')]
-    #[PathParam(name: 'id', type: 'integer')]
+    #[PathParam(name: 'id', type: Type::INTEGER)]
     public function update(int $id, Model\Population $payload): Model\Message
     {
         $this->populationService->update($id, $payload);
@@ -100,7 +101,7 @@ class PopulationPopo extends ControllerAbstract
 
     #[Delete]
     #[Path('/population/popo/:id')]
-    #[PathParam(name: 'id', type: 'integer')]
+    #[PathParam(name: 'id', type: Type::INTEGER)]
     public function delete(int $id): Model\Message
     {
         $this->populationService->delete($id);

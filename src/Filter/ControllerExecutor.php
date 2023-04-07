@@ -40,6 +40,7 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\Exception\TypeNotFoundException;
+use PSX\Schema\Format;
 use PSX\Schema\Schema;
 use PSX\Schema\Type\AnyType;
 use PSX\Schema\Type\BooleanType;
@@ -147,13 +148,13 @@ class ControllerExecutor implements FilterInterface
 
         if ($type instanceof StringType) {
             return match ($type->getFormat()) {
-                TypeAbstract::FORMAT_BINARY => $this->buildResource($value),
-                TypeAbstract::FORMAT_DATETIME => LocalDateTime::parse($value),
-                TypeAbstract::FORMAT_DATE => LocalDate::parse($value),
-                TypeAbstract::FORMAT_TIME => LocalTime::parse($value),
-                TypeAbstract::FORMAT_PERIOD => Period::parse($value),
-                TypeAbstract::FORMAT_DURATION => Duration::parse($value),
-                TypeAbstract::FORMAT_URI => Uri::parse($value),
+                Format::BINARY => $this->buildResource($value),
+                Format::DATETIME => LocalDateTime::parse($value),
+                Format::DATE => LocalDate::parse($value),
+                Format::TIME => LocalTime::parse($value),
+                Format::PERIOD => Period::parse($value),
+                Format::DURATION => Duration::parse($value),
+                Format::URI => Uri::parse($value),
                 default => (string) $value,
             };
         } elseif ($type instanceof IntegerType) {

@@ -36,6 +36,7 @@ use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\Controller\PropertyTestCase;
 use PSX\Record\RecordInterface;
+use PSX\Schema\Type;
 
 /**
  * PopoController
@@ -45,13 +46,13 @@ use PSX\Record\RecordInterface;
  * @link    https://phpsx.org
  */
 #[Path('/tests/popo/:id')]
-#[PathParam(name: 'id', type: 'integer')]
+#[PathParam(name: 'id', type: Type::INTEGER)]
 class PopoController extends ControllerAbstract
 {
     use PropertyControllerTrait;
 
     #[Get]
-    #[QueryParam(name: 'type', type: 'integer')]
+    #[QueryParam(name: 'type', type: Type::INTEGER)]
     #[Outgoing(code: 200, schema: Model\Property::class)]
     public function doGet(int $id, int $type): mixed
     {

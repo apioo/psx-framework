@@ -36,6 +36,7 @@ use PSX\OAuth2\AccessToken;
 use PSX\OAuth2\Exception\ErrorExceptionAbstract;
 use PSX\OAuth2\Error;
 use PSX\OAuth2\GrantFactory;
+use PSX\Schema\Type;
 
 /**
  * OAuth2 token endpoint controller
@@ -92,7 +93,7 @@ class TokenController extends ControllerAbstract
 
     #[Post]
     #[Path('/authorization/token')]
-    #[HeaderParam('authorization', 'string')]
+    #[HeaderParam('authorization', Type::STRING)]
     #[Incoming(schema: Passthru::class)]
     public function doPost(?string $authorization, \stdClass $payload): AccessToken
     {

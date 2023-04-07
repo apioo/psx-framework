@@ -143,52 +143,52 @@
     {
       "method": "GET",
       "path": "\/population\/popo",
-      "operationId": "PSX.Framework.App.Api.Population.CollectionPopo.doGet"
+      "operationId": "PSX.Framework.App.Controller.PopulationPopo.getAll"
+    },
+    {
+      "method": "GET",
+      "path": "\/population\/popo\/:id",
+      "operationId": "PSX.Framework.App.Controller.PopulationPopo.get"
     },
     {
       "method": "POST",
       "path": "\/population\/popo",
-      "operationId": "PSX.Framework.App.Api.Population.CollectionPopo.doPost"
+      "operationId": "PSX.Framework.App.Controller.PopulationPopo.create"
+    },
+    {
+      "method": "PUT",
+      "path": "\/population\/popo\/:id",
+      "operationId": "PSX.Framework.App.Controller.PopulationPopo.update"
+    },
+    {
+      "method": "DELETE",
+      "path": "\/population\/popo\/:id",
+      "operationId": "PSX.Framework.App.Controller.PopulationPopo.delete"
     },
     {
       "method": "GET",
       "path": "\/population\/typeschema",
-      "operationId": "PSX.Framework.App.Api.Population.CollectionTypeSchema.doGet"
+      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.getAll"
     },
     {
       "method": "POST",
       "path": "\/population\/typeschema",
-      "operationId": "PSX.Framework.App.Api.Population.CollectionTypeSchema.doPost"
-    },
-    {
-      "method": "GET",
-      "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityPopo.doGet"
-    },
-    {
-      "method": "PUT",
-      "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityPopo.doPut"
-    },
-    {
-      "method": "DELETE",
-      "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityPopo.doDelete"
+      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.get"
     },
     {
       "method": "GET",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityTypeSchema.doGet"
+      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.create"
     },
     {
       "method": "PUT",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityTypeSchema.doPut"
+      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.update"
     },
     {
       "method": "DELETE",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Api.Population.EntityTypeSchema.doDelete"
+      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.delete"
     }
   ]
 }

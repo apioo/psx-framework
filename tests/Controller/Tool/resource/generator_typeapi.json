@@ -2,7 +2,7 @@
   "security": null,
   "operations": {
     "PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet": {
-      "path": "\/tests\/body",
+      "path": "/tests/body",
       "method": "GET",
       "return": {
         "code": 200,
@@ -26,7 +26,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet": {
-      "path": "\/tests\/dummy",
+      "path": "/tests/dummy",
       "method": "GET",
       "return": {
         "code": 200,
@@ -43,7 +43,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet": {
-      "path": "\/tests\/exception",
+      "path": "/tests/exception",
       "method": "GET",
       "return": {
         "code": 200,
@@ -60,7 +60,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet": {
-      "path": "\/tests\/filter",
+      "path": "/tests/filter",
       "method": "GET",
       "return": {
         "code": 200,
@@ -77,7 +77,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet": {
-      "path": "\/tests\/passthru",
+      "path": "/tests/passthru",
       "method": "GET",
       "return": {
         "code": 200,
@@ -94,7 +94,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doPost": {
-      "path": "\/tests\/passthru",
+      "path": "/tests/passthru",
       "method": "POST",
       "return": {
         "code": 200,
@@ -118,7 +118,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doGet": {
-      "path": "\/tests\/popo\/:id",
+      "path": "/tests/popo/:id",
       "method": "GET",
       "return": {
         "code": 200,
@@ -148,7 +148,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doPost": {
-      "path": "\/tests\/popo\/:id",
+      "path": "/tests/popo/:id",
       "method": "POST",
       "return": {
         "code": 200,
@@ -178,7 +178,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet": {
-      "path": "\/tests\/redirect",
+      "path": "/tests/redirect",
       "method": "GET",
       "return": {
         "code": 200,
@@ -195,7 +195,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet": {
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "method": "GET",
       "return": {
         "code": 200,
@@ -228,9 +228,7 @@
           "in": "query",
           "schema": {
             "description": "startIndex parameter",
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 32
+            "type": "string"
           }
         },
         "float": {
@@ -268,7 +266,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost": {
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "method": "POST",
       "return": {
         "code": 201,
@@ -312,7 +310,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut": {
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "method": "PUT",
       "return": {
         "code": 200,
@@ -356,7 +354,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete": {
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "method": "DELETE",
       "return": {
         "code": 200,
@@ -400,7 +398,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch": {
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "method": "PATCH",
       "return": {
         "code": 200,
@@ -444,7 +442,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet": {
-      "path": "\/tests\/status\/:code",
+      "path": "/tests/status/:code",
       "method": "GET",
       "return": {
         "code": 200,
@@ -468,7 +466,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet": {
-      "path": "\/tests\/table",
+      "path": "/tests/table",
       "method": "GET",
       "return": {
         "code": 200,
@@ -485,7 +483,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.TableController.doRow": {
-      "path": "\/tests\/table\/row",
+      "path": "/tests/table/row",
       "method": "GET",
       "return": {
         "code": 200,
@@ -502,7 +500,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.TableController.doNested": {
-      "path": "\/tests\/table\/nested",
+      "path": "/tests/table/nested",
       "method": "GET",
       "return": {
         "code": 200,
@@ -519,7 +517,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doGet": {
-      "path": "\/tests\/typeschema\/:id",
+      "path": "/tests/typeschema/:id",
       "method": "GET",
       "return": {
         "code": 200,
@@ -549,7 +547,7 @@
       "tags": []
     },
     "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost": {
-      "path": "\/tests\/typeschema\/:id",
+      "path": "/tests/typeschema/:id",
       "method": "POST",
       "return": {
         "code": 200,
@@ -579,7 +577,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet": {
-      "path": "\/authorization\/authorize",
+      "path": "/authorization/authorize",
       "method": "GET",
       "return": {
         "code": 200,
@@ -627,7 +625,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost": {
-      "path": "\/authorization\/authorize",
+      "path": "/authorization/authorize",
       "method": "POST",
       "return": {
         "code": 200,
@@ -675,7 +673,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.OAuth2.CallbackController.doGet": {
-      "path": "\/authorization\/callback",
+      "path": "/authorization/callback",
       "method": "GET",
       "return": {
         "code": 200,
@@ -717,7 +715,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.OAuth2.CallbackController.doPost": {
-      "path": "\/authorization\/callback",
+      "path": "/authorization/callback",
       "method": "POST",
       "return": {
         "code": 200,
@@ -759,7 +757,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.OAuth2.TokenController.doPost": {
-      "path": "\/authorization\/token",
+      "path": "/authorization/token",
       "method": "POST",
       "return": {
         "code": 200,
@@ -789,7 +787,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.Tool.DiscoveryController.show": {
-      "path": "\/system\/discovery",
+      "path": "/system/discovery",
       "method": "GET",
       "return": {
         "code": 200,
@@ -806,7 +804,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.Tool.GeneratorController.generate": {
-      "path": "\/system\/generator\/:type",
+      "path": "/system/generator/:type",
       "method": "POST",
       "return": {
         "code": 200,
@@ -838,7 +836,7 @@
       "tags": []
     },
     "PSX.Framework.Controller.Tool.RoutingController.show": {
-      "path": "\/system\/routing",
+      "path": "/system/routing",
       "method": "GET",
       "return": {
         "code": 200,
@@ -854,8 +852,8 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.CollectionPopo.doGet": {
-      "path": "\/population\/popo",
+    "PSX.Framework.App.Controller.PopulationPopo.getAll": {
+      "path": "/population/popo",
       "method": "GET",
       "return": {
         "code": 200,
@@ -886,8 +884,32 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.CollectionPopo.doPost": {
-      "path": "\/population\/popo",
+    "PSX.Framework.App.Controller.PopulationPopo.get": {
+      "path": "/population/popo/:id",
+      "method": "GET",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Population"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Controller.PopulationPopo.create": {
+      "path": "/population/popo",
       "method": "POST",
       "return": {
         "code": 201,
@@ -910,8 +932,62 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doGet": {
-      "path": "\/population\/typeschema",
+    "PSX.Framework.App.Controller.PopulationPopo.update": {
+      "path": "/population/popo/:id",
+      "method": "PUT",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "$ref": "Population"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Controller.PopulationPopo.delete": {
+      "path": "/population/popo/:id",
+      "method": "DELETE",
+      "return": {
+        "code": 200,
+        "schema": {
+          "$ref": "Message"
+        }
+      },
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "throws": [],
+      "description": "Collection endpoint",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "PSX.Framework.App.Controller.PopulationTypeSchema.getAll": {
+      "path": "/population/typeschema",
       "method": "GET",
       "return": {
         "code": 200,
@@ -940,8 +1016,8 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.CollectionTypeSchema.doPost": {
-      "path": "\/population\/typeschema",
+    "PSX.Framework.App.Controller.PopulationTypeSchema.get": {
+      "path": "/population/typeschema",
       "method": "POST",
       "return": {
         "code": 201,
@@ -964,86 +1040,8 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.EntityPopo.doGet": {
-      "path": "\/population\/popo\/:id",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "$ref": "Population"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Entity endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "PSX.Framework.App.Api.Population.EntityPopo.doPut": {
-      "path": "\/population\/popo\/:id",
-      "method": "PUT",
-      "return": {
-        "code": 200,
-        "schema": {
-          "$ref": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "$ref": "Population"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Entity endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "PSX.Framework.App.Api.Population.EntityPopo.doDelete": {
-      "path": "\/population\/popo\/:id",
-      "method": "DELETE",
-      "return": {
-        "code": 200,
-        "schema": {
-          "$ref": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Entity endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "PSX.Framework.App.Api.Population.EntityTypeSchema.doGet": {
-      "path": "\/population\/typeschema\/:id",
+    "PSX.Framework.App.Controller.PopulationTypeSchema.create": {
+      "path": "/population/typeschema/:id",
       "method": "GET",
       "return": {
         "code": 200,
@@ -1060,14 +1058,14 @@
         }
       },
       "throws": [],
-      "description": "Entity endpoint",
+      "description": "Collection endpoint",
       "stability": 1,
       "security": [],
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.EntityTypeSchema.doPut": {
-      "path": "\/population\/typeschema\/:id",
+    "PSX.Framework.App.Controller.PopulationTypeSchema.update": {
+      "path": "/population/typeschema/:id",
       "method": "PUT",
       "return": {
         "code": 200,
@@ -1090,14 +1088,14 @@
         }
       },
       "throws": [],
-      "description": "Entity endpoint",
+      "description": "Collection endpoint",
       "stability": 1,
       "security": [],
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Api.Population.EntityTypeSchema.doDelete": {
-      "path": "\/population\/typeschema\/:id",
+    "PSX.Framework.App.Controller.PopulationTypeSchema.delete": {
+      "path": "/population/typeschema/:id",
       "method": "DELETE",
       "return": {
         "code": 200,
@@ -1114,7 +1112,7 @@
         }
       },
       "throws": [],
-      "description": "Entity endpoint",
+      "description": "Collection endpoint",
       "stability": 1,
       "security": [],
       "authorization": true,

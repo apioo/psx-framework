@@ -36,6 +36,7 @@ use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
 use PSX\Record\Record;
+use PSX\Schema\Type;
 use PSX\Sql\TableManagerInterface;
 
 #[Description('Collection endpoint')]
@@ -52,9 +53,9 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Get]
     #[Path('/population/typeschema')]
-    #[QueryParam(name: "startIndex", type: "integer")]
-    #[QueryParam(name: "count", type: "integer")]
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
+    #[QueryParam(name: "startIndex", type: Type::INTEGER)]
+    #[QueryParam(name: "count", type: Type::INTEGER)]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/collection.json')]
     public function getAll(?int $startIndex, ?int $count): mixed
     {
         return $this->populationTable->getCollection(
@@ -65,8 +66,8 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Post]
     #[Path('/population/typeschema')]
-    #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    #[Outgoing(code: 201, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    #[Incoming(schema: __DIR__ . '/../Resource/schema/population/entity.json')]
+    #[Outgoing(code: 201, schema: __DIR__ . '/../Resource/schema/population/message.json')]
     public function get(Record $payload): array
     {
         $model = new Model\Population();
@@ -86,8 +87,8 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Get]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: "integer", required: true)]
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/entity.json')]
     public function create(int $id): mixed
     {
         $population = $this->populationTable->getEntity($id);
@@ -100,9 +101,9 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Put]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: "integer", required: true)]
-    #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[Incoming(schema: __DIR__ . '/../Resource/schema/population/entity.json')]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/message.json')]
     public function update(int $id, Record $payload): array
     {
         $model = new Model\Population();
@@ -121,8 +122,8 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Delete]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: "integer", required: true)]
-    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/message.json')]
     public function delete(int $id): array
     {
         $this->populationService->delete($id);

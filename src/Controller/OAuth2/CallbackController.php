@@ -29,6 +29,7 @@ use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\OAuth2\Exception\ErrorExceptionAbstract;
 use PSX\OAuth2\AuthorizationAbstract;
 use PSX\OAuth2\Grant;
+use PSX\Schema\Type;
 use RuntimeException;
 
 /**
@@ -49,10 +50,10 @@ class CallbackController extends ControllerAbstract
 
     #[Get]
     #[Path('/authorization/callback')]
-    #[QueryParam('error', 'string')]
-    #[QueryParam('error_description', 'string')]
-    #[QueryParam('code', 'string')]
-    #[QueryParam('state', 'string')]
+    #[QueryParam('error', Type::STRING)]
+    #[QueryParam('error_description', Type::STRING)]
+    #[QueryParam('code', Type::STRING)]
+    #[QueryParam('state', Type::STRING)]
     public function doGet(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);
@@ -60,10 +61,10 @@ class CallbackController extends ControllerAbstract
 
     #[Post]
     #[Path('/authorization/callback')]
-    #[QueryParam('error', 'string')]
-    #[QueryParam('error_description', 'string')]
-    #[QueryParam('code', 'string')]
-    #[QueryParam('state', 'string')]
+    #[QueryParam('error', Type::STRING)]
+    #[QueryParam('error_description', Type::STRING)]
+    #[QueryParam('code', Type::STRING)]
+    #[QueryParam('state', Type::STRING)]
     public function doPost(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);

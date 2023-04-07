@@ -26,6 +26,7 @@ use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Writer;
 use PSX\Record\Record;
+use PSX\Schema\Type;
 
 /**
  * SetBodyController
@@ -35,7 +36,7 @@ use PSX\Record\Record;
  * @link    https://phpsx.org
  */
 #[Path('/tests/body')]
-#[QueryParam('type', 'string')]
+#[QueryParam('type', Type::STRING)]
 class BodyController extends ControllerAbstract
 {
     #[Get]

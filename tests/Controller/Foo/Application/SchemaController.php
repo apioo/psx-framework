@@ -37,6 +37,8 @@ use PSX\DateTime\LocalDateTime;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\TestTable;
+use PSX\Schema\Format;
+use PSX\Schema\Type;
 use PSX\Sql\TableManagerInterface;
 
 /**
@@ -48,8 +50,8 @@ use PSX\Sql\TableManagerInterface;
  */
 #[Description('lorem ipsum')]
 #[Path('/tests/schema/:name/:type')]
-#[PathParam(name: 'name', type: 'string', description: 'Name parameter', minLength: 0, maxLength: 16, pattern: '[A-z]+')]
-#[PathParam(name: 'type', type: 'string', enum: ['foo', 'bar'])]
+#[PathParam(name: 'name', type: Type::STRING, description: 'Name parameter', minLength: 0, maxLength: 16, pattern: '[A-z]+')]
+#[PathParam(name: 'type', type: Type::STRING, enum: ['foo', 'bar'])]
 class SchemaController extends ControllerAbstract
 {
     private TableManagerInterface $tableManager;
@@ -61,11 +63,11 @@ class SchemaController extends ControllerAbstract
 
     #[Get]
     #[Description('Returns a collection')]
-    #[QueryParam(name: 'startIndex', type: 'integer', description: 'startIndex parameter', minimum: 0, maximum: 32)]
-    #[QueryParam(name: 'float', type: 'number')]
-    #[QueryParam(name: 'boolean', type: 'boolean')]
-    #[QueryParam(name: 'date', type: 'string', format: 'date')]
-    #[QueryParam(name: 'dateTime', type: 'string', format: 'date-time')]
+    #[QueryParam(name: 'startIndex', type: Type::STRING, description: 'startIndex parameter', minimum: 0, maximum: 32)]
+    #[QueryParam(name: 'float', type: Type::NUMBER)]
+    #[QueryParam(name: 'boolean', type: Type::BOOLEAN)]
+    #[QueryParam(name: 'date', type: Type::STRING, format: Format::DATE)]
+    #[QueryParam(name: 'dateTime', type: Type::STRING, format: Format::DATETIME)]
     #[Outgoing(code: 200, schema: Model\Collection::class)]
     public function doGet(string $name, string $type, ?int $startIndex, ?float $float, ?bool $boolean, ?LocalDate $date, ?LocalDateTime $dateTime): array
     {

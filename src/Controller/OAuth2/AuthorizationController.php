@@ -34,6 +34,7 @@ use PSX\OAuth2\Exception\InvalidRequestException;
 use PSX\OAuth2\Exception\ServerErrorException;
 use PSX\OAuth2\Exception\UnauthorizedClientException;
 use PSX\OAuth2\Exception\UnsupportedResponseTypeException;
+use PSX\Schema\Type;
 use PSX\Uri\Url;
 
 /**
@@ -56,11 +57,11 @@ class AuthorizationController extends ControllerAbstract
 
     #[Get]
     #[Path('/authorization/authorize')]
-    #[QueryParam('response_type', 'string')]
-    #[QueryParam('client_id', 'string')]
-    #[QueryParam('redirect_uri', 'string')]
-    #[QueryParam('scope', 'string')]
-    #[QueryParam('state', 'string')]
+    #[QueryParam('response_type', Type::STRING)]
+    #[QueryParam('client_id', Type::STRING)]
+    #[QueryParam('redirect_uri', Type::STRING)]
+    #[QueryParam('scope', Type::STRING)]
+    #[QueryParam('state', Type::STRING)]
     public function doGet(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
@@ -68,11 +69,11 @@ class AuthorizationController extends ControllerAbstract
 
     #[Post]
     #[Path('/authorization/authorize')]
-    #[QueryParam('response_type', 'string')]
-    #[QueryParam('client_id', 'string')]
-    #[QueryParam('redirect_uri', 'string')]
-    #[QueryParam('scope', 'string')]
-    #[QueryParam('state', 'string')]
+    #[QueryParam('response_type', Type::STRING)]
+    #[QueryParam('client_id', Type::STRING)]
+    #[QueryParam('redirect_uri', Type::STRING)]
+    #[QueryParam('scope', Type::STRING)]
+    #[QueryParam('state', Type::STRING)]
     public function doPost(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);

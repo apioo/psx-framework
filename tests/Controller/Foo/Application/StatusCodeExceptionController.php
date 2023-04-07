@@ -25,6 +25,7 @@ use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
+use PSX\Schema\Type;
 
 /**
  * StatusCodeExceptionController
@@ -37,7 +38,7 @@ class StatusCodeExceptionController extends ControllerAbstract
 {
     #[Get]
     #[Path('/tests/status/:code')]
-    #[PathParam('code', 'integer')]
+    #[PathParam('code', Type::INTEGER)]
     public function doGet(int $code): mixed
     {
         switch ($code) {
