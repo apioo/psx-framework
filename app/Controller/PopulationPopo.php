@@ -18,24 +18,27 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Population;
+namespace PSX\Framework\App\Controller;
 
+use PSX\Api\Attribute\Delete;
 use PSX\Api\Attribute\Description;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Post;
+use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Model;
 use PSX\Framework\App\Model\Message;
 use PSX\Framework\App\Model\PopulationCollection;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
+use PSX\Http\Exception as StatusCode;
 use PSX\Sql\TableManagerInterface;
 
 #[Description('Collection endpoint')]
-#[Path('/population/popo')]
-class CollectionPopo extends ControllerAbstract
+class PopulationPopo extends ControllerAbstract
 {
     private Population $populationService;
     private Table\Population $populationTable;
@@ -47,7 +50,8 @@ class CollectionPopo extends ControllerAbstract
     }
 
     #[Get]
-    public function doGet(?int $startIndex, ?int $count): PopulationCollection
+    #[Path('/population/popo')]
+    public function getAll(?int $startIndex, ?int $count): PopulationCollection
     {
         return $this->populationTable->getCollection(
             $startIndex,
@@ -55,9 +59,23 @@ class CollectionPopo extends ControllerAbstract
         );
     }
 
+    #[Get]
+    #[Path('/population/popo/:id')]
+    #[PathParam(name: 'id', type: 'integer')]
+    public function get(int $id): Model\Population
+    {
+        $population = $this->populationTable->getEntity($id);
+        if (empty($population)) {
+            throw new StatusCode\NotFoundException('Internet population not found');
+        }
+
+        return $population;
+    }
+
     #[Post]
+    #[Path('/population/popo')]
     #[Outgoing(code: 201, schema: Model\Message::class)]
-    public function doPost(Model\Population $payload): Model\Message
+    public function create(Model\Population $payload): Model\Message
     {
         $this->populationService->create($payload);
 
@@ -65,5 +83,31 @@ class CollectionPopo extends ControllerAbstract
         $message->setSuccess(true);
         $message->setMessage('Create population successful');
         return $message;
+    }
+
+    #[Put]
+    #[Path('/population/popo/:id')]
+    #[PathParam(name: 'id', type: 'integer')]
+    public function update(int $id, Model\Population $payload): Model\Message
+    {
+        $this->populationService->update($id, $payload);
+
+        $entity = new Model\Message();
+        $entity->setSuccess(true);
+        $entity->setMessage('Update successful');
+        return $entity;
+    }
+
+    #[Delete]
+    #[Path('/population/popo/:id')]
+    #[PathParam(name: 'id', type: 'integer')]
+    public function delete(int $id): Model\Message
+    {
+        $this->populationService->delete($id);
+
+        $entity = new Model\Message();
+        $entity->setSuccess(true);
+        $entity->setMessage('Delete successful');
+        return $entity;
     }
 }

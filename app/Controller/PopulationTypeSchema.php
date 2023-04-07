@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\App\Api\Population;
+namespace PSX\Framework\App\Controller;
 
 use PSX\Api\Attribute\Delete;
 use PSX\Api\Attribute\Description;
@@ -27,7 +27,9 @@ use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
+use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\Put;
+use PSX\Api\Attribute\QueryParam;
 use PSX\Framework\App\Model;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\App\Table;
@@ -36,10 +38,8 @@ use PSX\Http\Exception as StatusCode;
 use PSX\Record\Record;
 use PSX\Sql\TableManagerInterface;
 
-#[Description('Entity endpoint')]
-#[Path('/population/typeschema/:id')]
-#[PathParam(name: "id", type: "integer", required: true)]
-class EntityTypeSchema extends ControllerAbstract
+#[Description('Collection endpoint')]
+class PopulationTypeSchema extends ControllerAbstract
 {
     private Population $populationService;
     private Table\Population $populationTable;
@@ -51,8 +51,44 @@ class EntityTypeSchema extends ControllerAbstract
     }
 
     #[Get]
+    #[Path('/population/typeschema')]
+    #[QueryParam(name: "startIndex", type: "integer")]
+    #[QueryParam(name: "count", type: "integer")]
+    #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/collection.json')]
+    public function getAll(?int $startIndex, ?int $count): mixed
+    {
+        return $this->populationTable->getCollection(
+            $startIndex,
+            $count
+        );
+    }
+
+    #[Post]
+    #[Path('/population/typeschema')]
+    #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
+    #[Outgoing(code: 201, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
+    public function get(Record $payload): array
+    {
+        $model = new Model\Population();
+        $model->setPlace($payload->get('place'));
+        $model->setRegion($payload->get('region'));
+        $model->setPopulation($payload->get('population'));
+        $model->setUsers($payload->get('users'));
+        $model->setWorldUsers($payload->get('worldUsers'));
+        $this->populationService->create($model);
+
+        return [
+            'success' => true,
+            'message' => 'Create population successful',
+        ];
+    }
+
+
+    #[Get]
+    #[Path('/population/typeschema/:id')]
+    #[PathParam(name: "id", type: "integer", required: true)]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
-    public function doGet(int $id): mixed
+    public function create(int $id): mixed
     {
         $population = $this->populationTable->getEntity($id);
         if (empty($population)) {
@@ -63,9 +99,11 @@ class EntityTypeSchema extends ControllerAbstract
     }
 
     #[Put]
+    #[Path('/population/typeschema/:id')]
+    #[PathParam(name: "id", type: "integer", required: true)]
     #[Incoming(schema: __DIR__ . '/../../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    public function doPut(int $id, Record $payload): array
+    public function update(int $id, Record $payload): array
     {
         $model = new Model\Population();
         $model->setPlace($payload->get('place'));
@@ -82,8 +120,10 @@ class EntityTypeSchema extends ControllerAbstract
     }
 
     #[Delete]
+    #[Path('/population/typeschema/:id')]
+    #[PathParam(name: "id", type: "integer", required: true)]
     #[Outgoing(code: 200, schema: __DIR__ . '/../../Resource/schema/population/message.json')]
-    public function doDelete(int $id): array
+    public function delete(int $id): array
     {
         $this->populationService->delete($id);
 
