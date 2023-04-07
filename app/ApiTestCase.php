@@ -22,9 +22,6 @@ namespace PSX\Framework\App;
 
 use GuzzleHttp\Client;
 use PSX\Framework\Test\ControllerDbTestCase;
-use PSX\Framework\App\Api\Population;
-use PSX\Framework\Controller\Generator;
-use PSX\Framework\Controller\Tool;
 use PSX\Framework\Test\Environment;
 use PSX\Http\Response;
 use PSX\Http\ResponseInterface;

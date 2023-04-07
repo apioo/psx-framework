@@ -21,8 +21,8 @@
 namespace PSX\Framework\App\Test\Api;
 
 use Doctrine\DBAL\Connection;
-use PSX\Framework\Test\Environment;
 use PSX\Framework\App\ApiTestCase;
+use PSX\Framework\Test\Environment;
 
 /**
  * CollectionTest
