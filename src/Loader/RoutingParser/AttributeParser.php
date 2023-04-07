@@ -20,8 +20,8 @@
 
 namespace PSX\Framework\Loader\RoutingParser;
 
-use PSX\Api\Scanner\FilterInterface;
 use PSX\Api\Parser\Attribute\Meta;
+use PSX\Api\Scanner\FilterInterface;
 use PSX\Framework\Loader\RoutingCollection;
 use PSX\Framework\Loader\RoutingParserInterface;
 

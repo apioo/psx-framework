@@ -20,13 +20,9 @@
 
 namespace PSX\Framework\Test;
 
-use Closure;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\MigratorConfiguration;
-use Doctrine\Migrations\Version\Direction;
-use Doctrine\Migrations\Version\Version;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Connection\ConnectionFactory;

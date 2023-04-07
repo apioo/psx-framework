@@ -20,10 +20,8 @@
 
 namespace PSX\Framework\OAuth2;
 
-use PSX\Http\Environment\HttpContextInterface;
 use PSX\OAuth2\AccessToken;
 use PSX\OAuth2\Authorization\AuthorizationCode;
-use PSX\Uri\Url;
 
 /**
  * CallbackInterface

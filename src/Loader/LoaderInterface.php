@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Loader;
 
-use PSX\Framework\Loader\Context;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 

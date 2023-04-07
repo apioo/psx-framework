@@ -22,10 +22,9 @@ namespace PSX\Framework\Http;
 
 use PSX\Data\GraphTraverser;
 use PSX\Data\Payload;
-use PSX\Data\Writer;
 use PSX\Data\Processor;
+use PSX\Data\Writer;
 use PSX\Data\WriterInterface;
-use PSX\Framework\Config\Config;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;

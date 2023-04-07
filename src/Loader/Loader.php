@@ -23,7 +23,6 @@ namespace PSX\Framework\Loader;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PSX\Framework\Controller\FilterAwareInterface;
-use PSX\Framework\Event\Event;
 use PSX\Framework\Event\RouteMatchedEvent;
 use PSX\Framework\Filter\ControllerExecutorFactory;
 use PSX\Framework\Filter\PostFilterCollection;

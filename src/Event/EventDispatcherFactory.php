@@ -20,13 +20,8 @@
 
 namespace PSX\Framework\Event;
 
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-use PSX\Framework\Config\Config;
-use PSX\Framework\Log\LogListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * EventDispatcherFactory

@@ -33,8 +33,8 @@ use PSX\Http\FilterChainInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\OAuth2\AccessToken;
-use PSX\OAuth2\Exception\ErrorExceptionAbstract;
 use PSX\OAuth2\Error;
+use PSX\OAuth2\Exception\ErrorExceptionAbstract;
 use PSX\OAuth2\GrantFactory;
 use PSX\Schema\Type;
 

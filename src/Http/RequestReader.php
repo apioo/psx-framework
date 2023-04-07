@@ -23,7 +23,6 @@ namespace PSX\Framework\Http;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Http\RequestInterface;
-use PSX\Schema\SchemaInterface;
 use PSX\Schema\Validation\ValidatorInterface;
 use PSX\Schema\Visitor\TypeVisitor;
 

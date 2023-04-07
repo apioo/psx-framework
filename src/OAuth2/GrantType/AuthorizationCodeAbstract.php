@@ -23,8 +23,8 @@ namespace PSX\Framework\OAuth2\GrantType;
 use PSX\Framework\OAuth2\Credentials;
 use PSX\Framework\OAuth2\GrantTypeInterface;
 use PSX\OAuth2\AccessToken;
-use PSX\OAuth2\Grant;
 use PSX\OAuth2\Exception\InvalidRequestException;
+use PSX\OAuth2\Grant;
 use PSX\OAuth2\GrantInterface;
 
 /**

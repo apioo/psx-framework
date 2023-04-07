@@ -20,12 +20,10 @@
 
 namespace PSX\Framework\Filter;
 
-use Psr\Cache\CacheItemPoolInterface;
 use PSX\Api\ApiManagerInterface;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
-use PSX\Schema\SchemaManagerInterface;
 
 /**
  * ControllerExecutorFactory

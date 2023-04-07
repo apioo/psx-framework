@@ -20,13 +20,9 @@
 
 namespace PSX\Framework\Environment;
 
-use Psr\Container\ContainerInterface;
 use PSX\Engine\DispatchInterface;
 use PSX\Engine\EngineInterface;
-use PSX\Engine\WebServer\Engine;
 use PSX\Framework\Bootstrap;
-use PSX\Framework\Config\Config;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Environment

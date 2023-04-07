@@ -48,7 +48,6 @@ use PSX\Schema\Type\IntegerType;
 use PSX\Schema\Type\NumberType;
 use PSX\Schema\Type\ReferenceType;
 use PSX\Schema\Type\StringType;
-use PSX\Schema\Type\TypeAbstract;
 use PSX\Schema\TypeInterface;
 use PSX\Uri\Uri;
 

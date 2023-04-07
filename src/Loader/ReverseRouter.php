@@ -21,7 +21,6 @@
 namespace PSX\Framework\Loader;
 
 use InvalidArgumentException;
-use PSX\Framework\Config\Config;
 
 /**
  * ReverseRouter

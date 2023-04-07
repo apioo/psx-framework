@@ -23,7 +23,6 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
 use PSX\Api\GeneratorFactory;
-use PSX\Api\Parser\Attribute;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Model\DiscoveryCollection;

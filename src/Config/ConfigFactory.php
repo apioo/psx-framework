@@ -21,7 +21,6 @@
 namespace PSX\Framework\Config;
 
 use PSX\Data\WriterInterface;
-use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
