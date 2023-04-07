@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Exception;
 
-use PSX\Model\Common\Error;
+use PSX\Model\Error;
 
 /**
  * ConverterInterface

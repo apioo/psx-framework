@@ -23,7 +23,7 @@ namespace PSX\Framework\Exception;
 use PSX\Framework\DisplayException;
 use PSX\Framework\Template\ErrorException;
 use PSX\Http\Exception as StatusCode;
-use PSX\Model\Common\Error;
+use PSX\Model\Error;
 use PSX\Schema;
 use PSX\Validate;
 
