@@ -20,28 +20,31 @@
 
 namespace PSX\Framework\Config;
 
-use PSX\Record\Record;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Config
+ * ContainerConfig
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
- * @template-extends \PSX\Record\Record<string, mixed>
  */
-class Config extends Record implements ConfigInterface
+class ContainerConfig implements ConfigInterface
 {
-    /**
-     * @throws NotFoundException
-     */
-    public static function fromFile(string $file): self
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
     {
-        $config = include($file);
-        if (is_array($config)) {
-            return new static($config);
+        $this->container = $container;
+    }
+
+    public function get(string $key): mixed
+    {
+        if ($this->container instanceof Container) {
+            return $this->container->getParameter($key);
         } else {
-            throw new NotFoundException('Config file must return an array');
+            return null;
         }
     }
 }

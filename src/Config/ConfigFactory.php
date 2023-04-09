@@ -41,7 +41,8 @@ class ConfigFactory
         }
 
         $config = new Config(self::getDefaultConfig());
-        return self::$config = $config->merge(Config::fromFile($appDir . '/configuration.php'));
+        $config->putAll(Config::fromFile($appDir . '/configuration.php'));
+        return self::$config = $config;
     }
 
     private static function getDefaultConfig(): array

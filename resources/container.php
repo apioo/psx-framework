@@ -22,6 +22,8 @@ use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\ControllerAttribute;
+use PSX\Framework\Config\ConfigInterface;
+use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Framework\Connection\ConnectionFactory;
@@ -73,6 +75,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -254,6 +259,10 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(VoidCallback::class);
     $services->alias(CallbackInterface::class, VoidCallback::class)
+        ->public();
+
+    $services->set(ContainerConfig::class);
+    $services->alias(ConfigInterface::class, ContainerConfig::class)
         ->public();
 
     // test environment

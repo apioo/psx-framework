@@ -20,28 +20,14 @@
 
 namespace PSX\Framework\Config;
 
-use PSX\Record\Record;
-
 /**
- * Config
+ * ConfigInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
- * @template-extends \PSX\Record\Record<string, mixed>
  */
-class Config extends Record implements ConfigInterface
+interface ConfigInterface
 {
-    /**
-     * @throws NotFoundException
-     */
-    public static function fromFile(string $file): self
-    {
-        $config = include($file);
-        if (is_array($config)) {
-            return new static($config);
-        } else {
-            throw new NotFoundException('Config file must return an array');
-        }
-    }
+    public function get(string $key): mixed;
 }
