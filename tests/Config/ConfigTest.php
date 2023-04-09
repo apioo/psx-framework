@@ -89,67 +89,15 @@ class ConfigTest extends TestCase
         Config::fromFile(__DIR__ . '/foo_config.php');
     }
 
-    public function testConfigOffsetSet()
-    {
-        $config = new Config([]);
-        $config['foo'] = 'bar';
-
-        $this->assertEquals('bar', $config['foo']);
-
-        $config->set('bar', 'foo');
-
-        $this->assertEquals('foo', $config['bar']);
-    }
-
-    public function testConfigOffsetExists()
-    {
-        $config = new Config([]);
-
-        $this->assertEquals(false, isset($config['foobar']));
-        $this->assertEquals(false, $config->has('foobar'));
-
-        $config['foobar'] = 'test';
-
-        $this->assertEquals(true, isset($config['foobar']));
-        $this->assertEquals(true, $config->has('foobar'));
-    }
-
-    public function testConfigOffsetUnset()
-    {
-        $config = new Config([]);
-        $config['bar'] = 'test';
-
-        unset($config['bar']);
-
-        $this->assertEquals(true, !isset($config['bar']));
-    }
-
-    public function testConfigOffsetGet()
-    {
-        $config = new Config([]);
-        $config['bar'] = 'test';
-
-        $this->assertEquals('test', $config['bar']);
-        $this->assertEquals('test', $config->get('bar'));
-    }
-
-    public function testConfigOffsetGetNotExisting()
-    {
-        $config = new Config([]);
-
-        $this->assertNull($config['bar']);
-        $this->assertNull($config->get('bar'));
-    }
-
     public function testConfigMerge()
     {
         $config = new Config(['foo' => 'bar']);
         $config['foo'] = 'bar';
 
         $configA = new Config(['bar' => 'foo']);
-        $configB = $configA->merge($config);
+        $configA->putAll($config);
 
-        $this->assertEquals('foo', $configB->get('bar'));
-        $this->assertEquals('bar', $configB->get('foo'));
+        $this->assertEquals('foo', $configA->get('bar'));
+        $this->assertEquals('bar', $configA->get('foo'));
     }
 }
