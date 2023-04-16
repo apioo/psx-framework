@@ -168,4 +168,17 @@ class ReverseRouterTest extends TestCase
 
         $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getUrl(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
+
+    public function testGetBasePath()
+    {
+        $routingFile = new PhpFile(__DIR__ . '/routes.php');
+        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+
+        $this->assertEquals('', $router->getBasePath());
+
+        $routingFile = new PhpFile(__DIR__ . '/routes.php');
+        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
+
+        $this->assertEquals('/foo/bar', $router->getBasePath());
+    }
 }

@@ -98,7 +98,7 @@ class ReverseRouter
 
     public function getBasePath(): string
     {
-        return $this->basePath;
+        return $this->basePath ?? '';
     }
 
     public function getDispatchUrl(): string
