@@ -20,41 +20,17 @@
 
 namespace PSX\Framework\Filter;
 
-use PSX\Api\ApiManagerInterface;
-use PSX\Framework\Http\RequestReader;
-use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
 use PSX\Http\FilterInterface;
 
 /**
- * ControllerExecutorFactory
+ * ControllerExecutorFactoryInterface
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class ControllerExecutorFactory implements ControllerExecutorFactoryInterface
+interface ControllerExecutorFactoryInterface
 {
-    private RequestReader $requestReader;
-    private ResponseWriter $responseWriter;
-    private ApiManagerInterface $apiManager;
-
-    public function __construct(RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager)
-    {
-        $this->requestReader = $requestReader;
-        $this->responseWriter = $responseWriter;
-        $this->apiManager = $apiManager;
-    }
-
-    public function factory(object $controller, string $methodName, Context $context): FilterInterface
-    {
-        return new ControllerExecutor(
-            $controller,
-            $methodName,
-            $context,
-            $this->requestReader,
-            $this->responseWriter,
-            $this->apiManager
-        );
-    }
+    public function factory(object $controller, string $methodName, Context $context): FilterInterface;
 }

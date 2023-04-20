@@ -35,6 +35,7 @@ use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
 use PSX\Framework\Exception\ConverterInterface;
 use PSX\Framework\Filter\ControllerExecutorFactory;
+use PSX\Framework\Filter\ControllerExecutorFactoryInterface;
 use PSX\Framework\Filter\PostFilterCollection;
 use PSX\Framework\Filter\PreFilterCollection;
 use PSX\Framework\Http\RequestReader;
@@ -246,6 +247,7 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     $services->set(ControllerExecutorFactory::class);
+    $services->alias(ControllerExecutorFactoryInterface::class, ControllerExecutorFactory::class);
 
     $services->set(GrantTypeFactory::class)
         ->args([tagged_iterator('psx.oauth2_grant')]);
