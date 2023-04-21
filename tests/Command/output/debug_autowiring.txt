@@ -29,6 +29,9 @@ Autowirable Types
  ConverterInterface
  PSX\Framework\Exception\ConverterInterface (PSX\Framework\Exception\Converter)
  
+ ControllerExecutorFactoryInterface
+ PSX\Framework\Filter\ControllerExecutorFactoryInterface (PSX\Framework\Filter\ControllerExecutorFactory)
+ 
  ContextFactoryInterface
  PSX\Framework\Loader\ContextFactoryInterface (PSX\Framework\Loader\ContextFactory)
  
