@@ -24,7 +24,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PSX\Framework\Controller\FilterAwareInterface;
 use PSX\Framework\Event\RouteMatchedEvent;
-use PSX\Framework\Filter\ControllerExecutorFactory;
+use PSX\Framework\Filter\ControllerExecutorFactoryInterface;
 use PSX\Framework\Filter\PostFilterCollection;
 use PSX\Framework\Filter\PreFilterCollection;
 use PSX\Http\Filter\FilterChain;
@@ -44,13 +44,13 @@ use PSX\Http\ResponseInterface;
 class Loader implements LoaderInterface
 {
     private LocationFinderInterface $locationFinder;
-    private ControllerExecutorFactory $controllerExecutorFactory;
+    private ControllerExecutorFactoryInterface $controllerExecutorFactory;
     private FilterCollectionInterface $preFilterCollection;
     private FilterCollectionInterface $postFilterCollection;
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactory $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactoryInterface $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
     {
         $this->locationFinder = $locationFinder;
         $this->controllerExecutorFactory = $controllerExecutorFactory;
