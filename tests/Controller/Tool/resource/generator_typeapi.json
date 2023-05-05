@@ -382,12 +382,6 @@
             ],
             "type": "string"
           }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "$ref": "Delete"
-          }
         }
       },
       "throws": [],
@@ -1196,13 +1190,6 @@
       "required": [
         "title",
         "date"
-      ]
-    },
-    "Delete": {
-      "$extends": "Entry",
-      "type": "object",
-      "required": [
-        "id"
       ]
     },
     "DiscoveryCollection": {

@@ -81,44 +81,44 @@ class PassthruController extends ControllerAbstract
 
     #[Post]
     #[Incoming(schema: Passthru::class)]
-    public function doPost($record): mixed
+    public function doPost($payload): mixed
     {
-        Assert::assertInstanceOf('stdClass', $record->any);
-        Assert::assertEquals(['foo' => 'bar'], (array) $record->any);
-        Assert::assertIsArray($record->array);
-        Assert::assertEquals(1, count($record->array));
-        Assert::assertEquals(['bar'], $record->array);
-        Assert::assertIsArray($record->arrayComplex);
-        Assert::assertEquals(2, count($record->arrayComplex));
-        Assert::assertInstanceOf('stdClass', $record->arrayComplex[0]);
-        Assert::assertEquals(['foo' => 'bar'], (array) $record->arrayComplex[0]);
-        Assert::assertInstanceOf('stdClass', $record->arrayComplex[1]);
-        Assert::assertEquals(['foo' => 'foo'], (array) $record->arrayComplex[1]);
-        Assert::assertIsArray($record->arrayChoice);
-        Assert::assertEquals(3, count($record->arrayChoice));
-        Assert::assertInstanceOf('stdClass', $record->arrayChoice[0]);
-        Assert::assertEquals(['foo' => 'baz'], (array) $record->arrayChoice[0]);
-        Assert::assertInstanceOf('stdClass', $record->arrayChoice[1]);
-        Assert::assertEquals(['bar' => 'bar'], (array) $record->arrayChoice[1]);
-        Assert::assertInstanceOf('stdClass', $record->arrayChoice[2]);
-        Assert::assertEquals(['foo' => 'foo'], (array) $record->arrayChoice[2]);
-        Assert::assertIsBool($record->boolean);
-        Assert::assertEquals(true, $record->boolean);
-        Assert::assertInstanceOf('stdClass', $record->choice);
-        Assert::assertEquals(['bar' => 'test'], (array) $record->choice);
-        Assert::assertInstanceOf('stdClass', $record->complex);
-        Assert::assertEquals(['foo' => 'bar'], (array) $record->complex);
-        Assert::assertEquals('2015-05-01', $record->date);
-        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime);
-        Assert::assertEquals('P1M', $record->duration);
-        Assert::assertIsFloat($record->float);
-        Assert::assertEquals(13.37, $record->float);
-        Assert::assertIsInt($record->integer);
-        Assert::assertEquals(7, $record->integer);
-        Assert::assertIsString($record->string);
-        Assert::assertEquals('bar', $record->string);
-        Assert::assertEquals('13:37:14', $record->time);
+        Assert::assertInstanceOf('stdClass', $payload->any);
+        Assert::assertEquals(['foo' => 'bar'], (array) $payload->any);
+        Assert::assertIsArray($payload->array);
+        Assert::assertEquals(1, count($payload->array));
+        Assert::assertEquals(['bar'], $payload->array);
+        Assert::assertIsArray($payload->arrayComplex);
+        Assert::assertEquals(2, count($payload->arrayComplex));
+        Assert::assertInstanceOf('stdClass', $payload->arrayComplex[0]);
+        Assert::assertEquals(['foo' => 'bar'], (array) $payload->arrayComplex[0]);
+        Assert::assertInstanceOf('stdClass', $payload->arrayComplex[1]);
+        Assert::assertEquals(['foo' => 'foo'], (array) $payload->arrayComplex[1]);
+        Assert::assertIsArray($payload->arrayChoice);
+        Assert::assertEquals(3, count($payload->arrayChoice));
+        Assert::assertInstanceOf('stdClass', $payload->arrayChoice[0]);
+        Assert::assertEquals(['foo' => 'baz'], (array) $payload->arrayChoice[0]);
+        Assert::assertInstanceOf('stdClass', $payload->arrayChoice[1]);
+        Assert::assertEquals(['bar' => 'bar'], (array) $payload->arrayChoice[1]);
+        Assert::assertInstanceOf('stdClass', $payload->arrayChoice[2]);
+        Assert::assertEquals(['foo' => 'foo'], (array) $payload->arrayChoice[2]);
+        Assert::assertIsBool($payload->boolean);
+        Assert::assertEquals(true, $payload->boolean);
+        Assert::assertInstanceOf('stdClass', $payload->choice);
+        Assert::assertEquals(['bar' => 'test'], (array) $payload->choice);
+        Assert::assertInstanceOf('stdClass', $payload->complex);
+        Assert::assertEquals(['foo' => 'bar'], (array) $payload->complex);
+        Assert::assertEquals('2015-05-01', $payload->date);
+        Assert::assertEquals('2015-05-01T13:37:14Z', $payload->dateTime);
+        Assert::assertEquals('P1M', $payload->duration);
+        Assert::assertIsFloat($payload->float);
+        Assert::assertEquals(13.37, $payload->float);
+        Assert::assertIsInt($payload->integer);
+        Assert::assertEquals(7, $payload->integer);
+        Assert::assertIsString($payload->string);
+        Assert::assertEquals('bar', $payload->string);
+        Assert::assertEquals('13:37:14', $payload->time);
 
-        return $record;
+        return $payload;
     }
 }

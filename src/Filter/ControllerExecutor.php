@@ -121,15 +121,15 @@ class ControllerExecutor implements FilterInterface
         foreach ($operation->getArguments()->getAll() as $name => $argument) {
             if ($argument->getIn() === 'path') {
                 $value = $this->context->getParameter($name);
-                $result[] = $this->castToType($argument->getSchema(), $value);
+                $result[$name] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'header') {
                 $value = $request->getHeader(HeaderName::convert($name));
-                $result[] = $this->castToType($argument->getSchema(), $value);
+                $result[$name] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'query') {
                 $value = $request->getUri()->getParameter($name);
-                $result[] = $this->castToType($argument->getSchema(), $value);
+                $result[$name] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'body') {
-                $result[] = $this->parseRequest($argument->getSchema(), $request, $definitions);
+                $result[$name] = $this->parseRequest($argument->getSchema(), $request, $definitions);
             }
         }
 

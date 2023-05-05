@@ -59,10 +59,10 @@ class TypeSchemaController extends ControllerAbstract
     #[Post]
     #[Incoming(schema: __DIR__ . '/../Resource/property.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/property.json')]
-    public function doPost(int $id, RecordInterface $record): mixed
+    public function doPost(int $id, RecordInterface $payload): mixed
     {
-        PropertyTestCase::assertRecord($record);
+        PropertyTestCase::assertRecord($payload);
 
-        return $record;
+        return $payload;
     }
 }

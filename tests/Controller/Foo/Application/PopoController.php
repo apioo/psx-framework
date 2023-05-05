@@ -64,49 +64,49 @@ class PopoController extends ControllerAbstract
     #[Post]
     #[Incoming(schema: Model\Property::class)]
     #[Outgoing(code: 200, schema: Model\Property::class)]
-    public function doPost(int $id, Model\Property $record): mixed
+    public function doPost(int $id, Model\Property $payload): mixed
     {
-        Assert::assertInstanceOf(Model\Property::class, $record);
-        Assert::assertInstanceOf(RecordInterface::class, $record->getAny());
-        Assert::assertEquals('bar', $record->getAny()['foo']);
-        Assert::assertIsArray($record->getArray());
-        Assert::assertEquals(1, count($record->getArray()));
-        Assert::assertEquals(['bar'], $record->getArray());
-        Assert::assertIsArray($record->getArrayComplex());
-        Assert::assertEquals(2, count($record->getArrayComplex()));
-        Assert::assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[0]);
-        Assert::assertEquals('bar', $record->getArrayComplex()[0]->getFoo());
-        Assert::assertInstanceOf(Model\Complex::class, $record->getArrayComplex()[1]);
-        Assert::assertEquals('foo', $record->getArrayComplex()[1]->getFoo());
-        Assert::assertIsArray($record->getArrayChoice());
-        Assert::assertEquals(3, count($record->getArrayChoice()));
-        Assert::assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[0]);
-        Assert::assertEquals('baz', $record->getArrayChoice()[0]->getFoo());
-        Assert::assertInstanceOf(Model\ChoiceB::class, $record->getArrayChoice()[1]);
-        Assert::assertEquals('bar', $record->getArrayChoice()[1]->getBar());
-        Assert::assertInstanceOf(Model\ChoiceA::class, $record->getArrayChoice()[2]);
-        Assert::assertEquals('foo', $record->getArrayChoice()[2]->getFoo());
-        Assert::assertIsBool($record->getBoolean());
-        Assert::assertEquals(true, $record->getBoolean());
-        Assert::assertInstanceOf(Model\ChoiceB::class, $record->getChoice());
-        Assert::assertEquals('test', $record->getChoice()->getBar());
-        Assert::assertInstanceOf(Model\Complex::class, $record->getComplex());
-        Assert::assertEquals('bar', $record->getComplex()->getFoo());
-        Assert::assertInstanceOf(LocalDate::class, $record->getDate());
-        Assert::assertEquals('2015-05-01', $record->getDate()->toString());
-        Assert::assertInstanceOf(LocalDateTime::class, $record->getDateTime());
-        Assert::assertEquals('2015-05-01T13:37:14Z', $record->getDateTime()->toString());
-        Assert::assertInstanceOf(Period::class, $record->getDuration());
-        Assert::assertEquals('P1M', $record->getDuration()->toString());
-        Assert::assertIsFloat($record->getFloat());
-        Assert::assertEquals(13.37, $record->getFloat());
-        Assert::assertIsInt($record->getInteger());
-        Assert::assertEquals(7, $record->getInteger());
-        Assert::assertIsString($record->getString());
-        Assert::assertEquals('bar', $record->getString());
-        Assert::assertInstanceOf(LocalTime::class, $record->getTime());
-        Assert::assertEquals('13:37:14', $record->getTime()->toString());
+        Assert::assertInstanceOf(Model\Property::class, $payload);
+        Assert::assertInstanceOf(RecordInterface::class, $payload->getAny());
+        Assert::assertEquals('bar', $payload->getAny()['foo']);
+        Assert::assertIsArray($payload->getArray());
+        Assert::assertEquals(1, count($payload->getArray()));
+        Assert::assertEquals(['bar'], $payload->getArray());
+        Assert::assertIsArray($payload->getArrayComplex());
+        Assert::assertEquals(2, count($payload->getArrayComplex()));
+        Assert::assertInstanceOf(Model\Complex::class, $payload->getArrayComplex()[0]);
+        Assert::assertEquals('bar', $payload->getArrayComplex()[0]->getFoo());
+        Assert::assertInstanceOf(Model\Complex::class, $payload->getArrayComplex()[1]);
+        Assert::assertEquals('foo', $payload->getArrayComplex()[1]->getFoo());
+        Assert::assertIsArray($payload->getArrayChoice());
+        Assert::assertEquals(3, count($payload->getArrayChoice()));
+        Assert::assertInstanceOf(Model\ChoiceA::class, $payload->getArrayChoice()[0]);
+        Assert::assertEquals('baz', $payload->getArrayChoice()[0]->getFoo());
+        Assert::assertInstanceOf(Model\ChoiceB::class, $payload->getArrayChoice()[1]);
+        Assert::assertEquals('bar', $payload->getArrayChoice()[1]->getBar());
+        Assert::assertInstanceOf(Model\ChoiceA::class, $payload->getArrayChoice()[2]);
+        Assert::assertEquals('foo', $payload->getArrayChoice()[2]->getFoo());
+        Assert::assertIsBool($payload->getBoolean());
+        Assert::assertEquals(true, $payload->getBoolean());
+        Assert::assertInstanceOf(Model\ChoiceB::class, $payload->getChoice());
+        Assert::assertEquals('test', $payload->getChoice()->getBar());
+        Assert::assertInstanceOf(Model\Complex::class, $payload->getComplex());
+        Assert::assertEquals('bar', $payload->getComplex()->getFoo());
+        Assert::assertInstanceOf(LocalDate::class, $payload->getDate());
+        Assert::assertEquals('2015-05-01', $payload->getDate()->toString());
+        Assert::assertInstanceOf(LocalDateTime::class, $payload->getDateTime());
+        Assert::assertEquals('2015-05-01T13:37:14Z', $payload->getDateTime()->toString());
+        Assert::assertInstanceOf(Period::class, $payload->getDuration());
+        Assert::assertEquals('P1M', $payload->getDuration()->toString());
+        Assert::assertIsFloat($payload->getFloat());
+        Assert::assertEquals(13.37, $payload->getFloat());
+        Assert::assertIsInt($payload->getInteger());
+        Assert::assertEquals(7, $payload->getInteger());
+        Assert::assertIsString($payload->getString());
+        Assert::assertEquals('bar', $payload->getString());
+        Assert::assertInstanceOf(LocalTime::class, $payload->getTime());
+        Assert::assertEquals('13:37:14', $payload->getTime()->toString());
 
-        return $record;
+        return $payload;
     }
 }

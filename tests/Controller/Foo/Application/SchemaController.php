@@ -104,13 +104,13 @@ class SchemaController extends ControllerAbstract
     #[Put]
     #[Incoming(schema: Model\Update::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    public function doPut(string $name, string $type, Model\Update $record): Model\Message
+    public function doPut(string $name, string $type, Model\Update $payload): Model\Message
     {
         Assert::assertEquals('foo', $name);
         Assert::assertEquals('bar', $type);
-        Assert::assertEquals(1, $record->getId());
-        Assert::assertEquals(3, $record->getUserId());
-        Assert::assertEquals('foobar', $record->getTitle());
+        Assert::assertEquals(1, $payload->getId());
+        Assert::assertEquals(3, $payload->getUserId());
+        Assert::assertEquals('foobar', $payload->getTitle());
 
         $message = new Model\Message();
         $message->setSuccess(true);
@@ -119,7 +119,6 @@ class SchemaController extends ControllerAbstract
     }
 
     #[Delete]
-    #[Incoming(schema: Model\Delete::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
     public function doDelete(string $name, string $type): Model\Message
     {
@@ -135,13 +134,13 @@ class SchemaController extends ControllerAbstract
     #[Patch]
     #[Incoming(schema: Model\Patch::class)]
     #[Outgoing(code: 200, schema: Model\Message::class)]
-    public function doPatch(string $name, string $type, Model\Patch $record): Model\Message
+    public function doPatch(string $name, string $type, Model\Patch $payload): Model\Message
     {
         Assert::assertEquals('foo', $name);
         Assert::assertEquals('bar', $type);
-        Assert::assertEquals(1, $record->getId());
-        Assert::assertEquals(3, $record->getUserId());
-        Assert::assertEquals('foobar', $record->getTitle());
+        Assert::assertEquals(1, $payload->getId());
+        Assert::assertEquals(3, $payload->getUserId());
+        Assert::assertEquals('foobar', $payload->getTitle());
 
         $message = new Model\Message();
         $message->setSuccess(true);
