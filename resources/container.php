@@ -28,8 +28,8 @@ use PSX\Framework\Config\Directory;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Framework\Connection\ConnectionFactory;
 use PSX\Framework\Console\ApplicationFactory;
-use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\Data\ProcessorFactory;
+use PSX\Framework\Dependency\Configurator;
 use PSX\Framework\Dispatch\Dispatch;
 use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
@@ -57,7 +57,6 @@ use PSX\Framework\Migration\DependencyFactoryFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Framework\OAuth2\GrantTypeFactory;
-use PSX\Framework\OAuth2\GrantTypeInterface;
 use PSX\Framework\OAuth2\VoidAuthorizer;
 use PSX\Framework\OAuth2\VoidCallback;
 use PSX\Framework\Test\Environment;
@@ -72,38 +71,17 @@ use PSX\Sql\TableManagerInterface;
 use PSX\Validate\Validate;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container) {
-    $services = $container->services();
-    $services->defaults()
-        ->autowire()
-        ->autoconfigure();
-
-    $services
-        ->instanceof(ControllerInterface::class)
-        ->tag('psx.controller');
-
-    $services
-        ->instanceof(Command::class)
-        ->tag('psx.command');
-
-    $services
-        ->instanceof(EventSubscriberInterface::class)
-        ->tag('psx.event_subscriber');
-
-    $services
-        ->instanceof(GrantTypeInterface::class)
-        ->tag('psx.oauth2_grant');
+    $services = Configurator::services($container->services());
 
     $services->alias(ContainerInterface::class, 'service_container')
         ->public();
