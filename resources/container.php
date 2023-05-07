@@ -11,6 +11,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use PSX\Api;
 use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\Console\PushCommand;
@@ -21,7 +22,6 @@ use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
-use PSX\Framework\Api\ControllerAttribute;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
@@ -185,8 +185,12 @@ return static function (ContainerConfigurator $container) {
         ->arg('$url', param('psx_url'))
         ->arg('$dispatch', param('psx_dispatch'));
 
-    $services->set(ControllerAttribute::class);
-    $services->alias(ScannerInterface::class, ControllerAttribute::class)
+    $services->set(Api\Parser\Attribute::class);
+    $services->alias(Api\ParserInterface::class, Api\Parser\Attribute::class)
+        ->public();
+
+    $services->set(RoutingParser::class);
+    $services->alias(ScannerInterface::class, RoutingParser::class)
         ->public();
 
     $services->set(FilterFactory::class);

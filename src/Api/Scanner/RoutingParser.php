@@ -18,34 +18,34 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Api;
+namespace PSX\Framework\Api\Scanner;
 
+use PSX\Api\Exception\ParserException;
 use PSX\Api\Operations;
-use PSX\Api\Parser\Attribute;
+use PSX\Api\ParserInterface;
 use PSX\Api\Scanner\FilterInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Api\Specification;
 use PSX\Api\SpecificationInterface;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Schema\Definitions;
-use PSX\Schema\SchemaManagerInterface;
 
 /**
- * The documentation how a request and response looks is provided in the controller
+ * Scanner which goes through all registered routes and uses the API parser to get a fitting specification
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class ControllerAttribute implements ScannerInterface
+class RoutingParser implements ScannerInterface
 {
     private RoutingParserInterface $routingParser;
-    private Attribute $attributeParser;
+    private ParserInterface $parser;
 
-    public function __construct(RoutingParserInterface $routingParser, SchemaManagerInterface $schemaManager)
+    public function __construct(RoutingParserInterface $routingParser, ParserInterface $parser)
     {
-        $this->routingParser   = $routingParser;
-        $this->attributeParser = new Attribute($schemaManager);
+        $this->routingParser = $routingParser;
+        $this->parser = $parser;
     }
 
     public function generate(?FilterInterface $filter = null): SpecificationInterface
@@ -58,12 +58,15 @@ class ControllerAttribute implements ScannerInterface
 
             if (is_array($source) && count($source) === 2) {
                 $controller = $source[0];
-                $methodName = $source[1];
             } else {
                 continue;
             }
 
-            $spec = $this->attributeParser->parse($controller);
+            try {
+                $spec = $this->parser->parse($controller);
+            } catch (ParserException $e) {
+                continue;
+            }
 
             if ($filter !== null) {
                 $spec->getOperations()->filter($filter);
