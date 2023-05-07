@@ -22,6 +22,7 @@ use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
+use PSX\Framework\Api\Scanner\RoutingParser as ScannerRoutingParser;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
@@ -189,8 +190,8 @@ return static function (ContainerConfigurator $container) {
     $services->alias(Api\ParserInterface::class, Api\Parser\Attribute::class)
         ->public();
 
-    $services->set(RoutingParser::class);
-    $services->alias(ScannerInterface::class, RoutingParser::class)
+    $services->set(ScannerRoutingParser::class);
+    $services->alias(ScannerInterface::class, ScannerRoutingParser::class)
         ->public();
 
     $services->set(FilterFactory::class);
