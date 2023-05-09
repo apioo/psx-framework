@@ -49,12 +49,12 @@ class CachedParser implements RoutingParserInterface
 
     public function getCollection(?FilterInterface $filter = null): RoutingCollection
     {
-        $item = $this->cache->getItem(self::CACHE_KEY);
+        $item = $this->cache->getItem(self::CACHE_KEY . $filter?->getId());
         if (!$this->debug && $item->isHit()) {
             return $item->get();
         }
 
-        $collection = $this->routingParser->getCollection();
+        $collection = $this->routingParser->getCollection($filter);
 
         if (!$this->debug) {
             $item->set($collection);
