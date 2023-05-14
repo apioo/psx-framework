@@ -44,15 +44,17 @@ use PSX\Http\ResponseInterface;
 class Loader implements LoaderInterface
 {
     private LocationFinderInterface $locationFinder;
+    private ControllerResolverInterface $controllerResolver;
     private ControllerExecutorFactoryInterface $controllerExecutorFactory;
     private FilterCollectionInterface $preFilterCollection;
     private FilterCollectionInterface $postFilterCollection;
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(LocationFinderInterface $locationFinder, ControllerExecutorFactoryInterface $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
+    public function __construct(LocationFinderInterface $locationFinder, ControllerResolverInterface $controllerResolver, ControllerExecutorFactoryInterface $controllerExecutorFactory, PreFilterCollection $preFilterCollection, PostFilterCollection $postFilterCollection, ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
     {
         $this->locationFinder = $locationFinder;
+        $this->controllerResolver = $controllerResolver;
         $this->controllerExecutorFactory = $controllerExecutorFactory;
         $this->preFilterCollection = $preFilterCollection;
         $this->postFilterCollection = $postFilterCollection;
@@ -75,12 +77,7 @@ class Loader implements LoaderInterface
 
     public function execute(mixed $source, RequestInterface $request, ResponseInterface $response, Context $context): void
     {
-        if (is_array($source) && count($source) === 2) {
-            $controller = $this->container->get($source[0]);
-            $methodName = $source[1];
-        } else {
-            throw new \RuntimeException('Provided an invalid source');
-        }
+        [$controller, $methodName] = $this->controllerResolver->resolve($source);
 
         if ($controller instanceof FilterAwareInterface) {
             $preFilterCollection = $this->resolveFilter($controller->getPreFilter());

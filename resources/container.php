@@ -44,6 +44,8 @@ use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Listener\LoggingListener;
 use PSX\Framework\Loader\ContextFactory;
 use PSX\Framework\Loader\ContextFactoryInterface;
+use PSX\Framework\Loader\ControllerResolver;
+use PSX\Framework\Loader\ControllerResolverInterface;
 use PSX\Framework\Loader\Loader;
 use PSX\Framework\Loader\LoaderInterface;
 use PSX\Framework\Loader\LocationFinder\RoutingParser;
@@ -228,6 +230,9 @@ return static function (ContainerConfigurator $container) {
     $services->set(DependencyFactory::class)
         ->factory([service(DependencyFactoryFactory::class), 'factory'])
         ->public();
+
+    $services->set(ControllerResolver::class);
+    $services->alias(ControllerResolverInterface::class, ControllerResolver::class);
 
     $services->set(ControllerExecutorFactory::class);
     $services->alias(ControllerExecutorFactoryInterface::class, ControllerExecutorFactory::class);
