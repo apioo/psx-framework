@@ -38,6 +38,9 @@ Autowirable Types
  ContextFactoryInterface
  PSX\Framework\Loader\ContextFactoryInterface (PSX\Framework\Loader\ContextFactory)
  
+ ControllerResolverInterface
+ PSX\Framework\Loader\ControllerResolverInterface (PSX\Framework\Loader\ControllerResolver)
+ 
  LoaderInterface
  PSX\Framework\Loader\LoaderInterface (PSX\Framework\Loader\Loader)
  
@@ -74,4 +77,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 98 more concrete services would be displayed when adding the "--all" option.
+ 99 more concrete services would be displayed when adding the "--all" option.
