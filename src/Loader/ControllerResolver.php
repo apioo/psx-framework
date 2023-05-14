@@ -40,7 +40,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     public function resolve(mixed $source): array
     {
-        if (!is_array($source) || count($source) === 2) {
+        if (!is_array($source) || count($source) !== 2) {
             throw new \RuntimeException('Could not resolve source to a controller');
         }
 
