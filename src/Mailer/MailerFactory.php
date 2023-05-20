@@ -21,6 +21,7 @@
 namespace PSX\Framework\Mailer;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use PSX\Framework\Config\ConfigInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
@@ -35,16 +36,22 @@ use Symfony\Component\Mailer\Transport;
 class MailerFactory
 {
     private string $dsn;
+    private ConfigInterface $config;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(string $dsn, EventDispatcherInterface $eventDispatcher)
+    public function __construct(string $dsn, ConfigInterface $config, EventDispatcherInterface $eventDispatcher)
     {
         $this->dsn = $dsn;
+        $this->config = $config;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     public function factory(): MailerInterface
     {
-        return new Mailer(Transport::fromDsn($this->dsn), null, $this->eventDispatcher);
+        if ($this->config->get('psx_debug') === true) {
+            return new Mailer(new Transport\NullTransport(), null, $this->eventDispatcher);
+        } else {
+            return new Mailer(Transport::fromDsn($this->dsn), null, $this->eventDispatcher);
+        }
     }
 }
