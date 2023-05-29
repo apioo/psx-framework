@@ -32,7 +32,7 @@ use PSX\Framework\Loader\RoutingParserInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class CachedParser implements RoutingParserInterface
+class CachedParser implements RoutingParserInterface, InvalidateableInterface
 {
     public const CACHE_KEY = 'psx-routing-collection';
 
@@ -62,5 +62,14 @@ class CachedParser implements RoutingParserInterface
         }
 
         return $collection;
+    }
+
+    public function invalidate(?FilterInterface $filter = null): void
+    {
+        $this->cache->deleteItem(self::CACHE_KEY . $filter?->getId());
+
+        if ($this->routingParser instanceof InvalidateableInterface) {
+            $this->routingParser->invalidate($filter);
+        }
     }
 }
