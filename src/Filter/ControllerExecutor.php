@@ -79,7 +79,7 @@ class ControllerExecutor implements FilterInterface
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $specification = $this->apiManager->getApi(get_class($this->controller), ApiManager::TYPE_ATTRIBUTE);
+        $specification = $this->apiManager->getApi(get_class($this->controller));
 
         $operationId = Attribute::buildOperationId(get_class($this->controller), $this->methodName);
         $operation = $specification->getOperations()->get($operationId);
