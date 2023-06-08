@@ -20,9 +20,10 @@
 
 namespace PSX\Framework\Api\Scanner;
 
+use PSX\Api\ApiManagerInterface;
+use PSX\Api\Exception\InvalidApiException;
 use PSX\Api\Exception\ParserException;
 use PSX\Api\Operations;
-use PSX\Api\ParserInterface;
 use PSX\Api\Scanner\FilterInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Api\Specification;
@@ -40,12 +41,12 @@ use PSX\Schema\Definitions;
 class RoutingParser implements ScannerInterface
 {
     private RoutingParserInterface $routingParser;
-    private ParserInterface $parser;
+    private ApiManagerInterface $apiManager;
 
-    public function __construct(RoutingParserInterface $routingParser, ParserInterface $parser)
+    public function __construct(RoutingParserInterface $routingParser, ApiManagerInterface $apiManager)
     {
         $this->routingParser = $routingParser;
-        $this->parser = $parser;
+        $this->apiManager = $apiManager;
     }
 
     public function generate(?FilterInterface $filter = null): SpecificationInterface
@@ -63,8 +64,8 @@ class RoutingParser implements ScannerInterface
             }
 
             try {
-                $spec = $this->parser->parse($controller);
-            } catch (ParserException $e) {
+                $spec = $this->apiManager->getApi($controller);
+            } catch (InvalidApiException|ParserException $e) {
                 continue;
             }
 
