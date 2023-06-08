@@ -11,9 +11,6 @@ Autowirable Types
  GeneratorFactoryInterface
  PSX\Api\GeneratorFactoryInterface (PSX\Api\GeneratorFactory)
  
- The parser reads an arbitrary schema format and returns a specification object
- PSX\Api\ParserInterface (PSX\Api\Parser\Attribute)
- 
  A scanner knows all available operations and can be used to generate a specification for the system. Through the filter it is possible restrict operations to a specific subset
  PSX\Api\ScannerInterface (PSX\Framework\Api\Scanner\RoutingParser)
  
@@ -77,4 +74,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 99 more concrete services would be displayed when adding the "--all" option.
+ 97 more concrete services would be displayed when adding the "--all" option.
