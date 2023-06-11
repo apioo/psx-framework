@@ -22,6 +22,7 @@ namespace PSX\Framework\Config;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
  * ContainerConfig
@@ -41,9 +42,13 @@ class ContainerConfig implements ConfigInterface
 
     public function get(string $key): mixed
     {
-        if ($this->container instanceof Container) {
+        if (!$this->container instanceof Container) {
+            return null;
+        }
+
+        try {
             return $this->container->getParameter($key);
-        } else {
+        } catch (ParameterNotFoundException) {
             return null;
         }
     }
