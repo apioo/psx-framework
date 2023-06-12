@@ -63,16 +63,14 @@ class SdkCommand extends Command
         $this
             ->addArgument('format', InputArgument::OPTIONAL, 'The target format of the SDK', GeneratorFactoryInterface::CLIENT_TYPESCRIPT)
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)
-            ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null);
+            ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null)
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Optional the output dir, the default is output/', 'output')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Optional the generator config', null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $appDir = $this->directory->getAppDir();
-        $dir = $appDir . '/output';
-        if (!is_dir($dir)) {
-            throw new \RuntimeException('The folder output/ does not exist, please create it in order to generate the SDK');
-        }
+        $dir = $this->getOutputDir($input);
 
         $format = $input->getArgument('format') ?? GeneratorFactoryInterface::CLIENT_TYPESCRIPT;
         if (!is_string($format) || !in_array($format, GeneratorFactory::getPossibleTypes())) {
@@ -121,6 +119,11 @@ class SdkCommand extends Command
 
     private function getConfig(InputInterface $input): ?string
     {
+        $config = $input->getOption('config');
+        if (!empty($config)) {
+            return $config;
+        }
+
         $namespace = $input->getOption('namespace');
         $options = [];
         if (!empty($namespace)) {
@@ -132,5 +135,20 @@ class SdkCommand extends Command
         } else {
             return null;
         }
+    }
+
+    private function getOutputDir(InputInterface $input): string
+    {
+        $outputDir = $input->getOption('output');
+        if (is_dir($outputDir)) {
+            return $outputDir;
+        }
+
+        $appDir = $this->directory->getAppDir();
+        if (is_dir($appDir . '/' . $outputDir)) {
+            return $appDir . '/' . $outputDir;
+        }
+
+        throw new \RuntimeException('The folder ' . $outputDir . ' does not exist, please create it in order to generate the SDK');
     }
 }
