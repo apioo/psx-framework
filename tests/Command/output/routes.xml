@@ -3,6 +3,46 @@
  <routings type="array">
   <entry type="object">
    <method type="string">GET</method>
+   <path type="string">/authorization/authorize</path>
+   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doGet</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">POST</method>
+   <path type="string">/authorization/authorize</path>
+   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doPost</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">GET</method>
+   <path type="string">/authorization/callback</path>
+   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doGet</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">POST</method>
+   <path type="string">/authorization/callback</path>
+   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doPost</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">POST</method>
+   <path type="string">/authorization/token</path>
+   <operationId type="string">PSX.Framework.Controller.OAuth2.TokenController.doPost</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">GET</method>
+   <path type="string">/system/discovery</path>
+   <operationId type="string">PSX.Framework.Controller.Tool.DiscoveryController.show</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">POST</method>
+   <path type="string">/system/generator/:type</path>
+   <operationId type="string">PSX.Framework.Controller.Tool.GeneratorController.generate</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">GET</method>
+   <path type="string">/system/routing</path>
+   <operationId type="string">PSX.Framework.Controller.Tool.RoutingController.show</operationId>
+  </entry>
+  <entry type="object">
+   <method type="string">GET</method>
    <path type="string">/tests/body</path>
    <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet</operationId>
   </entry>
@@ -100,46 +140,6 @@
    <method type="string">POST</method>
    <path type="string">/tests/typeschema/:id</path>
    <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">GET</method>
-   <path type="string">/authorization/authorize</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doGet</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">POST</method>
-   <path type="string">/authorization/authorize</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doPost</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">GET</method>
-   <path type="string">/authorization/callback</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doGet</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">POST</method>
-   <path type="string">/authorization/callback</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doPost</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">POST</method>
-   <path type="string">/authorization/token</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.TokenController.doPost</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">GET</method>
-   <path type="string">/system/discovery</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.DiscoveryController.show</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">POST</method>
-   <path type="string">/system/generator/:type</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.GeneratorController.generate</operationId>
-  </entry>
-  <entry type="object">
-   <method type="string">GET</method>
-   <path type="string">/system/routing</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.RoutingController.show</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
