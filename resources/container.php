@@ -266,6 +266,14 @@ return static function (ContainerConfigurator $container) {
     // commands
     $services->load('PSX\\Framework\\Command\\', __DIR__ . '/../src/Command');
 
+    // controller
+    $services->load('PSX\\Framework\\Controller\\OAuth2\\', __DIR__ . '/../src/Controller/OAuth2')
+        ->public();
+
+    $services->load('PSX\\Framework\\Controller\\Tool\\', __DIR__ . '/../src/Controller/Tool')
+        ->public();
+
+    // migrations
     $services->set(MigrationCommand\DumpSchemaCommand::class);
     $services->set(MigrationCommand\ExecuteCommand::class);
     $services->set(MigrationCommand\GenerateCommand::class);
