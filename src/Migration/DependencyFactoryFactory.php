@@ -35,14 +35,23 @@ use Doctrine\Migrations\DependencyFactory;
 class DependencyFactoryFactory
 {
     private Connection $connection;
-    private string $srcDir;
-    private string $namespace;
+    private array $paths = [];
 
     public function __construct(Connection $connection, string $srcDir, string $namespace)
     {
         $this->connection = $connection;
-        $this->srcDir = $srcDir;
-        $this->namespace = $namespace;
+
+        $this->addPath($namespace, $srcDir);
+    }
+
+    public function addPath(string $namespace, string $srcDir): void
+    {
+        $migrationDir = $srcDir . '/Migrations';
+        if (!is_dir($migrationDir)) {
+            return;
+        }
+
+        $this->paths[$namespace] = $migrationDir;
     }
 
     public function factory(): DependencyFactory
@@ -55,9 +64,7 @@ class DependencyFactoryFactory
                 'executed_at_column_name' => 'executed_at',
                 'execution_time_column_name' => 'execution_time',
             ],
-            'migrations_paths' => [
-                $this->namespace => $this->srcDir . '/Migrations',
-            ],
+            'migrations_paths' => $this->paths,
             'all_or_nothing' => false,
             'transactional' => true,
             'check_database_platform' => true,
