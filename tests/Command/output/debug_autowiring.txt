@@ -8,8 +8,8 @@ Autowirable Types
  ApiManagerInterface
  PSX\Api\ApiManagerInterface (PSX\Api\ApiManager)
  
- GeneratorFactoryInterface
- PSX\Api\GeneratorFactoryInterface (PSX\Api\GeneratorFactory)
+ ConfigInterface
+ PSX\Api\Repository\SDKgen\ConfigInterface (PSX\Framework\Api\Repository\SDKgen\Config)
  
  A scanner knows all available operations and can be used to generate a specification for the system. Through the filter it is possible restrict operations to a specific subset
  PSX\Api\ScannerInterface (PSX\Framework\Api\Scanner\RoutingParser)
@@ -74,4 +74,4 @@ Autowirable Types
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
 
- 97 more concrete services would be displayed when adding the "--all" option.
+ 100 more concrete services would be displayed when adding the "--all" option.

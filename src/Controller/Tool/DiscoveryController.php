@@ -23,6 +23,7 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
 use PSX\Api\GeneratorFactory;
+use PSX\Api\GeneratorRegistry;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Model\DiscoveryCollection;
@@ -38,10 +39,12 @@ use PSX\Framework\Model\DiscoveryLink;
 class DiscoveryController extends ControllerAbstract
 {
     private ReverseRouter $reverseRouter;
+    private GeneratorFactory $generatorFactory;
 
-    public function __construct(ReverseRouter $reverseRouter)
+    public function __construct(ReverseRouter $reverseRouter, GeneratorFactory $generatorFactory)
     {
         $this->reverseRouter = $reverseRouter;
+        $this->generatorFactory = $generatorFactory;
     }
 
     #[Get]
@@ -63,7 +66,7 @@ class DiscoveryController extends ControllerAbstract
             $links[] = $this->newLink('routing', $routingPath, 'GET');
         }
 
-        $types = GeneratorFactory::getPossibleTypes();
+        $types = $this->generatorFactory->factory()->getPossibleTypes();
         foreach ($types as $type) {
             $generatorPath = $this->reverseRouter->getUrl([GeneratorController::class, 'generate'], ['type' => $type]);
             if ($generatorPath !== null) {

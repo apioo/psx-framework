@@ -21,7 +21,7 @@
 namespace PSX\Framework\Command;
 
 use PSX\Api\GeneratorFactory;
-use PSX\Api\GeneratorFactoryInterface;
+use PSX\Api\GeneratorRegistry;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Framework\Config\DirectoryInterface;
@@ -45,10 +45,10 @@ class SdkCommand extends Command
 {
     private DirectoryInterface $directory;
     private ScannerInterface $scanner;
-    private GeneratorFactoryInterface $factory;
+    private GeneratorFactory $factory;
     private ?FilterFactoryInterface $filterFactory;
 
-    public function __construct(DirectoryInterface $directory, ScannerInterface $scanner, GeneratorFactoryInterface $factory, FilterFactoryInterface $filterFactory)
+    public function __construct(DirectoryInterface $directory, ScannerInterface $scanner, GeneratorFactory $factory, FilterFactoryInterface $filterFactory)
     {
         parent::__construct();
 
@@ -61,7 +61,7 @@ class SdkCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('format', InputArgument::OPTIONAL, 'The target format of the SDK', GeneratorFactoryInterface::CLIENT_TYPESCRIPT)
+            ->addArgument('type', InputArgument::REQUIRED, 'The target format of the SDK')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)
             ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null)
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Optional the output dir, the default is output/', 'output')
@@ -71,10 +71,11 @@ class SdkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dir = $this->getOutputDir($input);
+        $registry = $this->factory->factory();
 
-        $format = $input->getArgument('format') ?? GeneratorFactoryInterface::CLIENT_TYPESCRIPT;
-        if (!is_string($format) || !in_array($format, GeneratorFactory::getPossibleTypes())) {
-            throw new \InvalidArgumentException('Provided an invalid format, possible values are: ' . implode(', ', GeneratorFactory::getPossibleTypes()));
+        $type = $input->getArgument('type');
+        if (!is_string($type) || !in_array($type, $registry->getPossibleTypes())) {
+            throw new \InvalidArgumentException('Provided an invalid type, possible values are: ' . implode(', ', $registry->getPossibleTypes()));
         }
 
         $config = $this->getConfig($input);
@@ -87,8 +88,8 @@ class SdkCommand extends Command
             }
         }
 
-        $generator = $this->factory->getGenerator($format, $config);
-        $extension = $this->factory->getFileExtension($format, $config);
+        $generator = $registry->getGenerator($type, $config);
+        $extension = $registry->getFileExtension($type);
 
         $output->writeln('Generating ...');
 
@@ -96,17 +97,17 @@ class SdkCommand extends Command
 
         if ($content instanceof Chunks) {
             if (!empty($filterName)) {
-                $file = 'sdk-' . $format .  '-' . $filterName . '.zip';
+                $file = 'sdk-' . $type .  '-' . $filterName . '.zip';
             } else {
-                $file = 'sdk-' . $format .  '.zip';
+                $file = 'sdk-' . $type .  '.zip';
             }
 
             $content->writeTo($dir . '/' . $file);
         } else {
             if (!empty($filterName)) {
-                $file = 'output-' . $format . '-' . $filterName . '.' . $extension;
+                $file = 'output-' . $type . '-' . $filterName . '.' . $extension;
             } else {
-                $file = 'output-' . $format . '.' . $extension;
+                $file = 'output-' . $type . '.' . $extension;
             }
 
             file_put_contents($dir . '/' . $file, $content);

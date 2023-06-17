@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Dependency;
 
+use PSX\Api\ConfiguratorInterface;
+use PSX\Api\Repository\RepositoryInterface;
 use PSX\Framework\Controller\ControllerInterface;
 use PSX\Framework\OAuth2\GrantTypeInterface;
 use Symfony\Component\Console\Command\Command;
@@ -56,6 +58,14 @@ class Configurator
         $services
             ->instanceof(GrantTypeInterface::class)
             ->tag('psx.oauth2_grant');
+
+        $services
+            ->instanceof(RepositoryInterface::class)
+            ->tag('psx.api_repository');
+
+        $services
+            ->instanceof(ConfiguratorInterface::class)
+            ->tag('psx.api_configurator');
 
         return $services;
     }

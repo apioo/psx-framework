@@ -23,9 +23,11 @@ namespace PSX\Framework\Controller\Tool;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\GeneratorFactory;
-use PSX\Api\GeneratorFactoryInterface;
+use PSX\Api\GeneratorRegistry;
+use PSX\Api\GeneratorRegistryInterface;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
+use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Environment\HttpResponse;
 use PSX\Http\Exception as StatusCode;
@@ -43,22 +45,26 @@ class GeneratorController extends ControllerAbstract
 {
     private ScannerInterface $scanner;
     private FilterFactoryInterface $filterFactory;
-    private GeneratorFactoryInterface $generatorFactory;
+    private GeneratorFactory $generatorFactory;
+    private ConfigInterface $config;
 
-    public function __construct(ScannerInterface $scanner, FilterFactoryInterface $filterFactory, GeneratorFactoryInterface $generatorFactory)
+    public function __construct(ScannerInterface $scanner, FilterFactoryInterface $filterFactory, GeneratorFactory $generatorFactory, ConfigInterface $config)
     {
         $this->scanner = $scanner;
         $this->filterFactory = $filterFactory;
         $this->generatorFactory = $generatorFactory;
+        $this->config = $config;
     }
 
     #[Post]
     #[Path('/system/generator/:type')]
     public function generate(string $type, ?string $filter = null): mixed
     {
-        $type      = $this->getType($type);
+        $registry = $this->generatorFactory->factory();
+
+        $type      = $this->getType($type, $registry->getPossibleTypes());
         $filter    = $this->filterFactory->getFilter($filter ?? '');
-        $generator = $this->generatorFactory->getGenerator($type, null, $filter);
+        $generator = $registry->getGenerator($type, null, $filter);
 
         $spec   = $this->scanner->generate($filter);
         $result = $generator->generate($spec);
@@ -66,27 +72,26 @@ class GeneratorController extends ControllerAbstract
         $headers = [];
         if ($result instanceof Chunks) {
             // write chunks to zip file
-            $file = tempnam($this->config->get('psx_path_cache'), 'sdk');
+            $file = tempnam($this->config->get('psx_path_cache'), 'sdk-' . $type);
             $result->writeTo($file);
 
             $result = new File($file, 'sdk.zip', 'application/zip');
         } else {
-            $headers['Content-Type'] = $this->generatorFactory->getMime($type);
+            $headers['Content-Type'] = $registry->getMime($type);
         }
 
         return new HttpResponse(200, $headers, $result);
     }
 
-    private function getType(string $type): string
+    private function getType(string $type, array $possibleTypes): string
     {
-        $types = GeneratorFactory::getPossibleTypes();
-        if (in_array($type, $types)) {
+        if (in_array($type, $possibleTypes)) {
             // we have a valid type
             return $type;
         }
 
         // check whether the sub type matches
-        foreach ($types as $value) {
+        foreach ($possibleTypes as $value) {
             [, $subType] = explode('-', $value);
             if ($subType === $type) {
                 return $value;

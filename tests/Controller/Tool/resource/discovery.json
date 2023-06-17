@@ -11,16 +11,6 @@
       "method": "GET"
     },
     {
-      "rel": "client-go",
-      "href": "http:\/\/127.0.0.1\/system\/generator\/client-go",
-      "method": "POST"
-    },
-    {
-      "rel": "client-java",
-      "href": "http:\/\/127.0.0.1\/system\/generator\/client-java",
-      "method": "POST"
-    },
-    {
       "rel": "client-php",
       "href": "http:\/\/127.0.0.1\/system\/generator\/client-php",
       "method": "POST"

@@ -15,12 +15,13 @@ use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\Console\PushCommand;
 use PSX\Api\GeneratorFactory;
-use PSX\Api\GeneratorFactoryInterface;
+use PSX\Api\Repository;
 use PSX\Api\Scanner\FilterFactory;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
+use PSX\Framework\Api\Repository\SDKgen\Config as SDKgenConfig;
 use PSX\Framework\Api\Scanner\RoutingParser as ScannerRoutingParser;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
@@ -191,11 +192,16 @@ return static function (ContainerConfigurator $container) {
     $services->alias(FilterFactoryInterface::class, FilterFactory::class)
         ->public();
 
+    $services->set(Repository\LocalRepository::class);
+    $services->set(Repository\SDKgenRepository::class);
+    $services->set(SDKgenConfig::class);
+    $services->alias(Repository\SDKgen\ConfigInterface::class, SDKgenConfig::class);
     $services->set(GeneratorFactory::class)
-        ->arg('$url', param('psx_url'))
-        ->arg('$dispatch', param('psx_dispatch'));
-    $services->alias(GeneratorFactoryInterface::class, GeneratorFactory::class)
-        ->public();
+        ->args([
+            tagged_iterator('psx.api_repository'),
+            tagged_iterator('psx.api_configurator'),
+            param('psx_url') . '/' . param('psx_dispatch')
+        ]);
 
     $services->set(ApiManager::class)
         ->arg('$debug', param('psx_debug'));
