@@ -21,7 +21,7 @@
 namespace PSX\Framework\Command;
 
 use PSX\Api\GeneratorFactory;
-use PSX\Api\GeneratorRegistry;
+use PSX\Api\Repository\LocalRepository;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Framework\Config\DirectoryInterface;
@@ -61,7 +61,7 @@ class SdkCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('type', InputArgument::REQUIRED, 'The target format of the SDK')
+            ->addArgument('type', InputArgument::OPTIONAL, 'The target format of the SDK')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)
             ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null)
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Optional the output dir, the default is output/', 'output')
@@ -73,7 +73,7 @@ class SdkCommand extends Command
         $dir = $this->getOutputDir($input);
         $registry = $this->factory->factory();
 
-        $type = $input->getArgument('type');
+        $type = $input->getArgument('type') ?? LocalRepository::CLIENT_TYPESCRIPT;;
         if (!is_string($type) || !in_array($type, $registry->getPossibleTypes())) {
             throw new \InvalidArgumentException('Provided an invalid type, possible values are: ' . implode(', ', $registry->getPossibleTypes()));
         }
