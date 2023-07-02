@@ -45,11 +45,6 @@ class ConnectionFactory
         ];
     }
 
-    public function setParams(array|string $params): void
-    {
-        $this->params = $params;
-    }
-
     public function factory(): DBAL\Connection
     {
         if (isset($this->connection)) {

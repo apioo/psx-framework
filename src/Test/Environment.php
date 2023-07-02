@@ -54,11 +54,11 @@ class Environment
     /**
      * Setups the environment to run unit tests. Includes the DI container and optional creates a database schema
      */
-    public function setup(array $params): void
+    public function setup(): void
     {
         Bootstrap::setupEnvironment();
 
-        $this->setupConnection($params);
+        $this->setupConnection();
     }
 
     public function hasConnection(): bool
@@ -91,9 +91,8 @@ class Environment
         return self::$instance->container->getParameter($name);
     }
 
-    private function setupConnection(array $params): void
+    private function setupConnection(): void
     {
-        $this->connectionFactory->setParams($params);
         $this->connection = $this->connectionFactory->factory();
         $this->hasConnection = true;
 
