@@ -4,7 +4,7 @@ GET|OPTIONS|HEAD /authorization/callback    PSX\Framework\Controller\OAuth2\Call
 POST|OPTIONS     /authorization/callback    PSX\Framework\Controller\OAuth2\CallbackController::doPost                          
 POST|OPTIONS     /authorization/token       PSX\Framework\Controller\OAuth2\TokenController::doPost                             
 GET|OPTIONS|HEAD /system/discovery          PSX\Framework\Controller\Tool\DiscoveryController::show                             
-POST|OPTIONS     /system/generator/:type    PSX\Framework\Controller\Tool\GeneratorController::generate                         
+GET|OPTIONS|HEAD /system/generator/:type    PSX\Framework\Controller\Tool\GeneratorController::generate                         
 GET|OPTIONS|HEAD /system/routing            PSX\Framework\Controller\Tool\RoutingController::show                               
 GET|OPTIONS|HEAD /tests/body                PSX\Framework\Tests\Controller\Foo\Application\BodyController::doGet                
 GET|OPTIONS|HEAD /tests/dummy               PSX\Framework\Tests\Controller\Foo\Application\DummyController::doGet               

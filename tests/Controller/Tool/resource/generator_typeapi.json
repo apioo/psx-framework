@@ -231,7 +231,7 @@
     },
     "PSX.Framework.Controller.Tool.GeneratorController.generate": {
       "path": "/system/generator/:type",
-      "method": "POST",
+      "method": "GET",
       "return": {
         "code": 200,
         "schema": {

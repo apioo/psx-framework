@@ -32,7 +32,7 @@
    <operationId type="string">PSX.Framework.Controller.Tool.DiscoveryController.show</operationId>
   </entry>
   <entry type="object">
-   <method type="string">POST</method>
+   <method type="string">GET</method>
    <path type="string">/system/generator/:type</path>
    <operationId type="string">PSX.Framework.Controller.Tool.GeneratorController.generate</operationId>
   </entry>

@@ -20,11 +20,9 @@
 
 namespace PSX\Framework\Controller\Tool;
 
+use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
-use PSX\Api\Attribute\Post;
 use PSX\Api\GeneratorFactory;
-use PSX\Api\GeneratorRegistry;
-use PSX\Api\GeneratorRegistryInterface;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Framework\Config\ConfigInterface;
@@ -56,7 +54,7 @@ class GeneratorController extends ControllerAbstract
         $this->config = $config;
     }
 
-    #[Post]
+    #[Get]
     #[Path('/system/generator/:type')]
     public function generate(string $type, ?string $filter = null): mixed
     {

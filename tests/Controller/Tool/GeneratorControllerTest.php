@@ -33,7 +33,7 @@ class GeneratorControllerTest extends ControllerTestCase
 {
     public function testGenerate()
     {
-        $response = $this->sendRequest('/system/generator/spec-typeapi', 'POST', ['Accept' => 'application/json']);
+        $response = $this->sendRequest('/system/generator/spec-typeapi', 'GET', ['Accept' => 'application/json']);
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/generator_typeapi.json');
