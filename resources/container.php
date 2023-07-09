@@ -280,6 +280,7 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     // migrations
+    $services->set(MigrationCommand\DiffCommand::class);
     $services->set(MigrationCommand\DumpSchemaCommand::class);
     $services->set(MigrationCommand\ExecuteCommand::class);
     $services->set(MigrationCommand\GenerateCommand::class);
@@ -289,6 +290,7 @@ return static function (ContainerConfigurator $container) {
     $services->set(MigrationCommand\RollupCommand::class);
     $services->set(MigrationCommand\StatusCommand::class);
     $services->set(MigrationCommand\SyncMetadataCommand::class);
+    $services->set(MigrationCommand\UpToDateCommand::class);
     $services->set(MigrationCommand\VersionCommand::class);
 
     $services->set(PushCommand::class);
