@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Logger;
 
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -53,6 +54,10 @@ class LoggerFactory
 
     protected function newHandler(): HandlerInterface
     {
-        return new StreamHandler($this->logDir . '/app.log', $this->logLevel);
+        if ($this->logDir === 'php://error_log') {
+            return new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $this->logLevel);
+        } else {
+            return new StreamHandler($this->logDir . '/app.log', $this->logLevel);
+        }
     }
 }
