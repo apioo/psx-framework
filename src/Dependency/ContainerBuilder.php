@@ -38,10 +38,14 @@ use Symfony\Component\Dotenv\Dotenv;
  */
 class ContainerBuilder
 {
-    public static function build(string $appDir, bool $debug, ...$containerFiles): ContainerInterface
+    public static function build(string $appDir, ?bool $debug, ...$containerFiles): ContainerInterface
     {
         $dotenv = new Dotenv();
         $dotenv->load($appDir . '/.env');
+
+        if ($debug === null) {
+            $debug = ($_ENV['APP_DEBUG'] ?? '') === 'true';
+        }
 
         $targetFile = $appDir . '/cache/container.php';
         $containerConfigCache = new ConfigCache($targetFile, $debug);
@@ -64,12 +68,12 @@ class ContainerBuilder
     {
         $containerBuilder = new SymfonyContainerBuilder();
         $containerBuilder->setParameter('psx_path_app', $appDir);
-        $containerBuilder->setParameter('psx_container_files', $containerFiles);
 
+        $actualFiles = [];
         $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../resources'));
-        foreach ($containerFiles as $containerFile) {
-            $loader->load($containerFile);
-        }
+        self::resolve($loader, $containerFiles, $actualFiles);
+
+        $containerBuilder->setParameter('psx_container_files', $actualFiles);
 
         // load config after the file loader since we have only at the point the env function
         $config = ConfigFactory::factory($appDir);
@@ -78,5 +82,24 @@ class ContainerBuilder
         }
 
         return $containerBuilder;
+    }
+
+    private static function resolve(PhpFileLoader $loader, iterable $files, array &$actualFiles): void
+    {
+        foreach ($files as $file) {
+            if (is_string($file)) {
+                $actualFiles[] = $file;
+                $loader->load($file);
+            } elseif (is_callable($file)) {
+                $callbackFiles = call_user_func($file);
+                if (is_iterable($callbackFiles)) {
+                    self::resolve($loader, $callbackFiles, $actualFiles);
+                } else {
+                    throw new \RuntimeException('Provided container file callable must return an iterable');
+                }
+            } else {
+                throw new \RuntimeException('Provided an invalid container file, must be either a string or callable');
+            }
+        }
     }
 }
