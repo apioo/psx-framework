@@ -86,7 +86,7 @@ class SdkCommand extends Command
                 throw new \RuntimeException('Provided an invalid filter name');
             }
         } else {
-            $filter = $this->filterFactory->getDefault();
+            $filter = $this->filterFactory->getFilter($this->filterFactory->getDefault());
         }
 
         $generator = $registry->getGenerator($type, $config);
