@@ -46,7 +46,7 @@ class SdkCommand extends Command
     private DirectoryInterface $directory;
     private ScannerInterface $scanner;
     private GeneratorFactory $factory;
-    private ?FilterFactoryInterface $filterFactory;
+    private FilterFactoryInterface $filterFactory;
 
     public function __construct(DirectoryInterface $directory, ScannerInterface $scanner, GeneratorFactory $factory, FilterFactoryInterface $filterFactory)
     {
@@ -79,13 +79,14 @@ class SdkCommand extends Command
         }
 
         $config = $this->getConfig($input);
-        $filter = null;
         $filterName = $input->getOption('filter');
         if (!empty($filterName) && is_string($filterName)) {
-            $filter = $this->filterFactory?->getFilter($filterName);
+            $filter = $this->filterFactory->getFilter($filterName);
             if ($filter === null) {
                 throw new \RuntimeException('Provided an invalid filter name');
             }
+        } else {
+            $filter = $this->filterFactory->getDefault();
         }
 
         $generator = $registry->getGenerator($type, $config);
