@@ -80,13 +80,15 @@ class SdkCommand extends Command
 
         $config = $this->getConfig($input);
         $filterName = $input->getOption('filter');
+        if (empty($filterName)) {
+            $filterName = $this->filterFactory->getDefault();
+        }
+
         if (!empty($filterName) && is_string($filterName)) {
             $filter = $this->filterFactory->getFilter($filterName);
             if ($filter === null) {
                 throw new \RuntimeException('Provided an invalid filter name');
             }
-        } else {
-            $filter = $this->filterFactory->getFilter($this->filterFactory->getDefault());
         }
 
         $generator = $registry->getGenerator($type, $config);
