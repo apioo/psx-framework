@@ -66,7 +66,7 @@ class DependencyFactoryFactory
             ],
             'migrations_paths' => $this->paths,
             'all_or_nothing' => false,
-            'transactional' => true,
+            'transactional' => false,
             'check_database_platform' => true,
             'organize_migrations' => 'none',
             'connection' => null,
