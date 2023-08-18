@@ -44,6 +44,91 @@
       "rel": "spec-openapi",
       "href": "http:\/\/127.0.0.1\/system\/generator\/spec-openapi",
       "method": "POST"
+    },
+    {
+      "rel": "model-csharp",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-csharp",
+      "method": "POST"
+    },
+    {
+      "rel": "model-go",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-go",
+      "method": "POST"
+    },
+    {
+      "rel": "model-graphql",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-graphql",
+      "method": "POST"
+    },
+    {
+      "rel": "model-html",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-html",
+      "method": "POST"
+    },
+    {
+      "rel": "model-java",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-java",
+      "method": "POST"
+    },
+    {
+      "rel": "model-jsonschema",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-jsonschema",
+      "method": "POST"
+    },
+    {
+      "rel": "model-kotlin",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-kotlin",
+      "method": "POST"
+    },
+    {
+      "rel": "model-markdown",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-markdown",
+      "method": "POST"
+    },
+    {
+      "rel": "model-php",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-php",
+      "method": "POST"
+    },
+    {
+      "rel": "model-protobuf",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-protobuf",
+      "method": "POST"
+    },
+    {
+      "rel": "model-python",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-python",
+      "method": "POST"
+    },
+    {
+      "rel": "model-ruby",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-ruby",
+      "method": "POST"
+    },
+    {
+      "rel": "model-rust",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-rust",
+      "method": "POST"
+    },
+    {
+      "rel": "model-swift",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-swift",
+      "method": "POST"
+    },
+    {
+      "rel": "model-typescript",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-typescript",
+      "method": "POST"
+    },
+    {
+      "rel": "model-typeschema",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-typeschema",
+      "method": "POST"
+    },
+    {
+      "rel": "model-visualbasic",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-visualbasic",
+      "method": "POST"
     }
   ]
 }
