@@ -193,6 +193,7 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     $services->set(Repository\LocalRepository::class);
+    $services->set(Repository\SchemaRepository::class);
     $services->set(Repository\SDKgenRepository::class);
     $services->set(SDKgenConfig::class);
     $services->alias(Repository\SDKgen\ConfigInterface::class, SDKgenConfig::class);
