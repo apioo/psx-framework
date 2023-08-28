@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Http;
 
+use PSX\Api\Model\Passthru;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Http\RequestInterface;
@@ -64,6 +65,10 @@ class RequestReader
         $payload = Payload::create($data, $request->getHeader('Content-Type'));
         if ($readerType !== null) {
             $payload->setRwType($readerType);
+        }
+
+        if ($schema === Passthru::class) {
+            return Passthru::fromPayload($this->processor->parse($payload));
         }
 
         return $this->processor->read($schema, $payload, new TypeVisitor($validator));
