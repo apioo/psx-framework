@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Http;
 
-use PSX\Api\Model\Passthru;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Http\RequestInterface;
