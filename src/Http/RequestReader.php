@@ -67,10 +67,6 @@ class RequestReader
             $payload->setRwType($readerType);
         }
 
-        if ($schema === Passthru::class) {
-            return Passthru::fromPayload($this->processor->parse($payload));
-        }
-
         return $this->processor->read($schema, $payload, new TypeVisitor($validator));
     }
 }
