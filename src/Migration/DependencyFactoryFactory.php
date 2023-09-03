@@ -24,7 +24,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
 use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Version\AlphabeticalComparator;
 use Doctrine\Migrations\Version\Comparator;
 
 /**
