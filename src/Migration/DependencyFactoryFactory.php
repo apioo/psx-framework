@@ -24,6 +24,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Version\AlphabeticalComparator;
+use Doctrine\Migrations\Version\Comparator;
 
 /**
  * DependencyFactoryFactory
@@ -73,6 +75,8 @@ class DependencyFactoryFactory
             'em' => null,
         ]);
 
-        return DependencyFactory::fromConnection($config, new ExistingConnection($this->connection));
+        $factory = DependencyFactory::fromConnection($config, new ExistingConnection($this->connection));
+        $factory->setService(Comparator::class, new MigrationComparator());
+        return $factory;
     }
 }
