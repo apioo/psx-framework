@@ -39,8 +39,13 @@ class Config implements ConfigInterface
         $this->config = $config;
     }
 
-    public function getAccessToken(): ?string
+    public function getClientId(): ?string
     {
-        return $this->config->get('psx_sdkgen_token');
+        return $this->config->get('sdkgen_client_id');
+    }
+
+    public function getClientSecret(): ?string
+    {
+        return $this->config->get('sdkgen_client_secret');
     }
 }
