@@ -3,88 +3,88 @@ Autowirable Types
 
  The following classes & interfaces can be used as type-hints when autowiring:
  
- Doctrine\DBAL\Tools\Console\ConnectionProvider (Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider)
+ Doctrine\DBAL\Tools\Console\ConnectionProvider - alias:Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider
  
  ApiManagerInterface
- PSX\Api\ApiManagerInterface (PSX\Api\ApiManager)
+ PSX\Api\ApiManagerInterface - alias:PSX\Api\ApiManager
  
  ConfigInterface
- PSX\Api\Repository\SDKgen\ConfigInterface (PSX\Framework\Api\Repository\SDKgen\Config)
+ PSX\Api\Repository\SDKgen\ConfigInterface - alias:PSX\Framework\Api\Repository\SDKgen\Config
  
  A scanner knows all available operations and can be used to generate a specification for the system. Through the filter it is possible restrict operations to a specific subset
- PSX\Api\ScannerInterface (PSX\Framework\Api\Scanner\RoutingParser)
+ PSX\Api\ScannerInterface - alias:PSX\Framework\Api\Scanner\RoutingParser
  
  FilterFactoryInterface
- PSX\Api\Scanner\FilterFactoryInterface (PSX\Api\Scanner\FilterFactory)
+ PSX\Api\Scanner\FilterFactoryInterface - alias:PSX\Api\Scanner\FilterFactory
  
  DispatchInterface
- PSX\Engine\DispatchInterface (PSX\Framework\Dispatch\Dispatch)
+ PSX\Engine\DispatchInterface - alias:PSX\Framework\Dispatch\Dispatch
  
  ConfigInterface
- PSX\Framework\Config\ConfigInterface (PSX\Framework\Config\ContainerConfig)
+ PSX\Framework\Config\ConfigInterface - alias:PSX\Framework\Config\ContainerConfig
  
  DirectoryInterface
- PSX\Framework\Config\DirectoryInterface (PSX\Framework\Config\Directory)
+ PSX\Framework\Config\DirectoryInterface - alias:PSX\Framework\Config\Directory
  
  ConverterInterface
- PSX\Framework\Exception\ConverterInterface (PSX\Framework\Exception\Converter)
+ PSX\Framework\Exception\ConverterInterface - alias:PSX\Framework\Exception\Converter
  
  ControllerExecutorFactoryInterface
- PSX\Framework\Filter\ControllerExecutorFactoryInterface (PSX\Framework\Filter\ControllerExecutorFactory)
+ PSX\Framework\Filter\ControllerExecutorFactoryInterface - alias:PSX\Framework\Filter\ControllerExecutorFactory
  
  ContextFactoryInterface
- PSX\Framework\Loader\ContextFactoryInterface (PSX\Framework\Loader\ContextFactory)
+ PSX\Framework\Loader\ContextFactoryInterface - alias:PSX\Framework\Loader\ContextFactory
  
  ControllerResolverInterface
- PSX\Framework\Loader\ControllerResolverInterface (PSX\Framework\Loader\ControllerResolver)
+ PSX\Framework\Loader\ControllerResolverInterface - alias:PSX\Framework\Loader\ControllerResolver
  
  LoaderInterface
- PSX\Framework\Loader\LoaderInterface (PSX\Framework\Loader\Loader)
+ PSX\Framework\Loader\LoaderInterface - alias:PSX\Framework\Loader\Loader
  
  LocationFinderInterface
- PSX\Framework\Loader\LocationFinderInterface (PSX\Framework\Loader\LocationFinder\RoutingParser)
+ PSX\Framework\Loader\LocationFinderInterface - alias:PSX\Framework\Loader\LocationFinder\RoutingParser
  
  RoutingParserInterface
- PSX\Framework\Loader\RoutingParserInterface (PSX\Framework\Loader\RoutingParser\CachedParser)
+ PSX\Framework\Loader\RoutingParserInterface - alias:PSX\Framework\Loader\RoutingParser\CachedParser
  
  AuthorizerInterface
- PSX\Framework\OAuth2\AuthorizerInterface (PSX\Framework\Tests\OAuth2\TestAuthorizer)
+ PSX\Framework\OAuth2\AuthorizerInterface - alias:PSX\Framework\Tests\OAuth2\TestAuthorizer
  
  CallbackInterface
- PSX\Framework\OAuth2\CallbackInterface (PSX\Framework\Tests\OAuth2\TestCallback)
+ PSX\Framework\OAuth2\CallbackInterface - alias:PSX\Framework\Tests\OAuth2\TestCallback
  
  ClientInterface
- PSX\Http\Client\ClientInterface (PSX\Http\Client\Client)
+ PSX\Http\Client\ClientInterface - alias:PSX\Http\Client\Client
  
  SchemaManagerInterface
- PSX\Schema\SchemaManagerInterface (PSX\Schema\SchemaManager)
+ PSX\Schema\SchemaManagerInterface - alias:PSX\Schema\SchemaManager
  
  TableManagerInterface
- PSX\Sql\TableManagerInterface (PSX\Sql\TableManager)
+ PSX\Sql\TableManagerInterface - alias:PSX\Sql\TableManager
  
  CacheItemPoolInterface generates CacheItemInterface objects.
- Psr\Cache\CacheItemPoolInterface (Symfony\Component\Cache\Adapter\ArrayAdapter)
+ Psr\Cache\CacheItemPoolInterface - alias:Symfony\Component\Cache\Adapter\ArrayAdapter
  
  Describes the interface of a container that exposes methods to read its entries.
- Psr\Container\ContainerInterface (service_container)
+ Psr\Container\ContainerInterface - alias:service_container
  
  Defines a dispatcher for events.
- Psr\EventDispatcher\EventDispatcherInterface (Symfony\Component\EventDispatcher\EventDispatcher)
+ Psr\EventDispatcher\EventDispatcherInterface - alias:Symfony\Component\EventDispatcher\EventDispatcher
  
  Describes a logger instance.
- Psr\Log\LoggerInterface (Monolog\Logger)
+ Psr\Log\LoggerInterface - alias:Monolog\Logger
  
  Maps a message to a list of handlers.
- Symfony\Component\Messenger\Handler\HandlersLocatorInterface (PSX\Framework\Messenger\HandlersLocator)
+ Symfony\Component\Messenger\Handler\HandlersLocatorInterface - alias:PSX\Framework\Messenger\HandlersLocator
  
- Symfony\Component\Messenger\MessageBusInterface (Symfony\Component\Messenger\MessageBus)
+ Symfony\Component\Messenger\MessageBusInterface - alias:Symfony\Component\Messenger\MessageBus
  
  Maps a message to a list of senders.
- Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface (PSX\Framework\Messenger\SendersLocator)
+ Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface - alias:PSX\Framework\Messenger\SendersLocator
  
- Symfony\Component\Messenger\Transport\Serialization\SerializerInterface (Symfony\Component\Messenger\Transport\Serialization\PhpSerializer)
+ Symfony\Component\Messenger\Transport\Serialization\SerializerInterface - alias:Symfony\Component\Messenger\Transport\Serialization\PhpSerializer
  
  Creates a Messenger transport.
- Symfony\Component\Messenger\Transport\TransportFactoryInterface (Symfony\Component\Messenger\Transport\TransportFactory)
+ Symfony\Component\Messenger\Transport\TransportFactoryInterface - alias:Symfony\Component\Messenger\Transport\TransportFactory
 
  117 more concrete services would be displayed when adding the "--all" option.

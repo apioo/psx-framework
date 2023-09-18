@@ -57,12 +57,12 @@ EOF
         $io = new SymfonyStyle($input, $output);
         $errorIo = $io->getErrorStyle();
 
-        $builder = ContainerBuilder::getContainerBuilder(
+        $container = ContainerBuilder::getContainerBuilder(
             $this->container->getParameter('psx_path_app'),
             $this->container->getParameter('psx_container_files')
         );
 
-        $serviceIds = $builder->getServiceIds();
+        $serviceIds = $container->getServiceIds();
         $serviceIds = array_filter($serviceIds, $this->filterToServiceTypes(...));
 
         if ($search = $input->getArgument('search')) {
@@ -89,29 +89,48 @@ EOF
         $previousId = '-';
         $serviceIdsNb = 0;
         foreach ($serviceIds as $serviceId) {
+            if ($container->hasDefinition($serviceId) && $container->getDefinition($serviceId)->hasTag('container.excluded')) {
+                continue;
+            }
             $text = [];
             $resolvedServiceId = $serviceId;
-            if (!str_starts_with($serviceId, $previousId)) {
+            if (!str_starts_with($serviceId, $previousId.' $')) {
                 $text[] = '';
-                if ('' !== $description = Descriptor::getClassDescription($serviceId, $resolvedServiceId)) {
-                    if (isset($hasAlias[$serviceId])) {
+                $previousId = preg_replace('/ \$.*/', '', $serviceId);
+                if ('' !== $description = Descriptor::getClassDescription($previousId, $resolvedServiceId)) {
+                    if (isset($hasAlias[$previousId])) {
                         continue;
                     }
                     $text[] = $description;
                 }
-                $previousId = $serviceId.' $';
             }
 
             $serviceLine = sprintf('<fg=yellow>%s</>', $serviceId);
 
-            if ($builder->hasAlias($serviceId)) {
+            if ($container->hasAlias($serviceId)) {
                 $hasAlias[$serviceId] = true;
-                $serviceAlias = $builder->getAlias($serviceId);
+                $serviceAlias = $container->getAlias($serviceId);
+                $alias = (string) $serviceAlias;
 
-                if ($builder->hasDefinition($serviceAlias) && $decorated = $builder->getDefinition($serviceAlias)->getTag('container.decorator')) {
-                    $serviceLine .= ' <fg=cyan>('.$decorated[0]['id'].')</>';
-                } else {
-                    $serviceLine .= ' <fg=cyan>('.$serviceAlias.')</>';
+                $target = null;
+                foreach ($reverseAliases[(string) $serviceAlias] ?? [] as $id) {
+                    if (!str_starts_with($id, '.'.$previousId.' $')) {
+                        continue;
+                    }
+                    $target = substr($id, \strlen($previousId) + 3);
+
+                    if ($previousId.' $'.(new Target($target))->getParsedName() === $serviceId) {
+                        $serviceLine .= ' - <fg=magenta>target:</><fg=cyan>'.$target.'</>';
+                        break;
+                    }
+                }
+
+                if ($container->hasDefinition($serviceAlias) && $decorated = $container->getDefinition($serviceAlias)->getTag('container.decorator')) {
+                    $alias = $decorated[0]['id'];
+                }
+
+                if ($alias !== $target) {
+                    $serviceLine .= ' - <fg=magenta>alias:</><fg=cyan>'.$alias.'</>';
                 }
 
                 if ($serviceAlias->isDeprecated()) {
@@ -120,7 +139,7 @@ EOF
             } elseif (!$all) {
                 ++$serviceIdsNb;
                 continue;
-            } elseif ($builder->getDefinition($serviceId)->isDeprecated()) {
+            } elseif ($container->getDefinition($serviceId)->isDeprecated()) {
                 $serviceLine .= ' - <fg=magenta>deprecated</>';
             }
             $text[] = $serviceLine;
@@ -144,12 +163,12 @@ EOF
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         if ($input->mustSuggestArgumentValuesFor('search')) {
-            $builder = ContainerBuilder::getContainerBuilder(
+            $container = ContainerBuilder::getContainerBuilder(
                 $this->container->getParameter('psx_path_app'),
                 $this->container->getParameter('psx_container_files')
             );
 
-            $suggestions->suggestValues(array_filter($builder->getServiceIds(), $this->filterToServiceTypes(...)));
+            $suggestions->suggestValues(array_filter($container->getServiceIds(), $this->filterToServiceTypes(...)));
         }
     }
 }
