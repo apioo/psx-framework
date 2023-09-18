@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Debug;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
@@ -32,7 +32,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
  * @author Matthieu Auger <mail@matthieuauger.com>
  */
 #[AsCommand(name: 'debug:event-dispatcher', description: 'Display configured listeners for an application')]
-class DebugEventDispatcherCommand extends Command
+class EventDispatcherCommand extends Command
 {
     private const DEFAULT_DISPATCHER = PsrEventDispatcherInterface::class;
 

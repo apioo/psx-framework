@@ -22,12 +22,17 @@ namespace PSX\Framework\Dependency;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\ConfigFactory;
+use PSX\Framework\Messenger\DefaultBus;
+use PSX\Framework\Messenger\DefaultTransport;
+use PSX\Framework\Messenger\MessengerPass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * ContainerBuilder
@@ -72,6 +77,7 @@ class ContainerBuilder
         $actualFiles = [];
         $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../resources'));
         self::resolve($loader, $containerFiles, $actualFiles);
+        self::registerAttributeForAutoconfiguration($containerBuilder);
 
         $containerBuilder->setParameter('psx_container_files', $actualFiles);
 
@@ -80,6 +86,9 @@ class ContainerBuilder
         foreach ($config as $key => $value) {
             $containerBuilder->setParameter($key, $value);
         }
+
+        // compiler passes
+        $containerBuilder->addCompilerPass(new MessengerPass());
 
         return $containerBuilder;
     }
@@ -101,5 +110,22 @@ class ContainerBuilder
                 throw new \RuntimeException('Provided an invalid container file, must be either a string or callable');
             }
         }
+    }
+
+    private static function registerAttributeForAutoconfiguration(SymfonyContainerBuilder $container): void
+    {
+        $container->registerAttributeForAutoconfiguration(AsMessageHandler::class, static function (ChildDefinition $definition, AsMessageHandler $attribute, \ReflectionClass|\ReflectionMethod $reflector): void {
+            $tagAttributes = get_object_vars($attribute);
+            $tagAttributes['bus'] = $tagAttributes['bus'] ?? DefaultBus::NAME;
+            $tagAttributes['from_transport'] = $tagAttributes['fromTransport'] ?? DefaultTransport::NAME;
+            unset($tagAttributes['fromTransport']);
+            if ($reflector instanceof \ReflectionMethod) {
+                if (isset($tagAttributes['method'])) {
+                    throw new \LogicException(sprintf('AsMessageHandler attribute cannot declare a method on "%s::%s()".', $reflector->class, $reflector->name));
+                }
+                $tagAttributes['method'] = $reflector->getName();
+            }
+            $definition->addTag('psx.messenger_handler', $tagAttributes);
+        });
     }
 }

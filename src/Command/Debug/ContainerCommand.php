@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Debug;
 
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Console\Descriptor\TextDescriptor;
@@ -34,7 +34,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  * @author Ryan Weaver <ryan@thatsquality.com>
  */
 #[AsCommand(name: 'debug:container', description: 'Display current services for an application')]
-class DebugContainerCommand extends Command
+class ContainerCommand extends Command
 {
     protected ContainerInterface $container;
 

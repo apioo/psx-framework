@@ -23,6 +23,7 @@ use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\Repository\SDKgen\Config as SDKgenConfig;
 use PSX\Framework\Api\Scanner\RoutingParser as ScannerRoutingParser;
+use PSX\Framework\Command\Messenger\ConsumeCommand;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
@@ -56,6 +57,8 @@ use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\Mailer\MailerFactory;
+use PSX\Framework\Messenger\HandlersLocator;
+use PSX\Framework\Messenger\SendersLocator;
 use PSX\Framework\Migration\DependencyFactoryFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
@@ -78,6 +81,21 @@ use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\Command\StopWorkersCommand;
+use Symfony\Component\Messenger\Handler\HandlersLocatorInterface;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory;
+use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Component\Messenger\Transport\Sync\SyncTransport;
+use Symfony\Component\Messenger\Transport\TransportFactory;
+use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -250,6 +268,41 @@ return static function (ContainerConfigurator $container) {
     $services->alias(ConfigInterface::class, ContainerConfig::class)
         ->public();
 
+    // messenger
+    $services->set(MessageBus::class)
+        ->args([tagged_iterator('psx.messenger_middleware')]);
+    $services->alias(MessageBusInterface::class, MessageBus::class)
+        ->public();
+
+    $services->set(SendMessageMiddleware::class);
+    $services->set(HandleMessageMiddleware::class);
+
+    $services->set(HandlersLocator::class)
+        ->args([abstract_arg('handlers')]);
+    $services->alias(HandlersLocatorInterface::class, HandlersLocator::class);
+
+    $services->set(SendersLocator::class);
+    $services->alias(SendersLocatorInterface::class, SendersLocator::class);
+
+    $services->set(TransportFactory::class)
+        ->args([tagged_iterator('psx.messenger_transport_factory')]);
+    $services->alias(TransportFactoryInterface::class, TransportFactory::class);
+
+    $services->set(TransportInterface::class)
+        ->factory([service(TransportFactoryInterface::class), 'createTransport'])
+        ->args([
+            param('psx_messenger'),
+            [],
+            service(SerializerInterface::class)
+        ])
+        ->public();
+
+    $services->set(InMemoryTransportFactory::class);
+    $services->set(SyncTransport::class);
+
+    $services->set(PhpSerializer::class);
+    $services->alias(SerializerInterface::class, PhpSerializer::class);
+
     // test environment
     $services->set(Environment::class)
         ->public();
@@ -293,6 +346,9 @@ return static function (ContainerConfigurator $container) {
     $services->set(MigrationCommand\SyncMetadataCommand::class);
     $services->set(MigrationCommand\UpToDateCommand::class);
     $services->set(MigrationCommand\VersionCommand::class);
+
+    // messenger
+    $services->set(StopWorkersCommand::class);
 
     $services->set(PushCommand::class);
     $services->set(HelpCommand::class);

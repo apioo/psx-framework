@@ -23,6 +23,7 @@ namespace PSX\Framework\Command;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Environment\CLI\Engine;
 use PSX\Framework\Environment\Environment;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,6 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
+#[AsCommand(name: 'serve', description: 'Accepts an HTTP request via stdin and returns the HTTP response')]
 class ServeCommand extends Command
 {
     private DispatchInterface $dispatch;
@@ -46,17 +48,15 @@ class ServeCommand extends Command
         $this->dispatch = $dispatch;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('serve')
-            ->setDescription('Accepts an HTTP request via stdin and returns the HTTP response')
             ->addArgument('method', InputArgument::REQUIRED, 'HTTP method i.e. GET or POST')
             ->addArgument('uri', InputArgument::REQUIRED, 'Request URI i.e. /foo')
             ->addArgument('headers', InputArgument::OPTIONAL, 'Request headers form encoded i.e. "Content-Type=application/json&X-Header=foo"');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $engine      = new Engine($input, $output);
         $environment = new Environment($this->dispatch, $engine, true);

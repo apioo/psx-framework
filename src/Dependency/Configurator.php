@@ -27,6 +27,8 @@ use PSX\Framework\OAuth2\GrantTypeInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
+use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 
 /**
  * Configurator
@@ -66,6 +68,14 @@ class Configurator
         $services
             ->instanceof(ConfiguratorInterface::class)
             ->tag('psx.api_configurator');
+
+        $services
+            ->instanceof(MiddlewareInterface::class)
+            ->tag('psx.messenger_middleware');
+
+        $services
+            ->instanceof(TransportFactoryInterface::class)
+            ->tag('psx.messenger_transport_factory');
 
         return $services;
     }

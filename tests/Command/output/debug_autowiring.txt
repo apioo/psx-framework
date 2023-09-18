@@ -73,5 +73,18 @@ Autowirable Types
  
  Describes a logger instance.
  Psr\Log\LoggerInterface (Monolog\Logger)
+ 
+ Maps a message to a list of handlers.
+ Symfony\Component\Messenger\Handler\HandlersLocatorInterface (PSX\Framework\Messenger\HandlersLocator)
+ 
+ Symfony\Component\Messenger\MessageBusInterface (Symfony\Component\Messenger\MessageBus)
+ 
+ Maps a message to a list of senders.
+ Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface (PSX\Framework\Messenger\SendersLocator)
+ 
+ Symfony\Component\Messenger\Transport\Serialization\SerializerInterface (Symfony\Component\Messenger\Transport\Serialization\PhpSerializer)
+ 
+ Creates a Messenger transport.
+ Symfony\Component\Messenger\Transport\TransportFactoryInterface (Symfony\Component\Messenger\Transport\TransportFactory)
 
- 103 more concrete services would be displayed when adding the "--all" option.
+ 117 more concrete services would be displayed when adding the "--all" option.

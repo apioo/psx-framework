@@ -6,6 +6,7 @@ use PSX\Framework\Listener\PHPUnitExceptionListener;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
 use PSX\Framework\OAuth2\GrantTypeInterface;
+use PSX\Framework\Tests\Messenger\TestHandler;
 use PSX\Framework\Tests\OAuth2\TestAuthorizer;
 use PSX\Framework\Tests\OAuth2\TestCallback;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -42,6 +43,9 @@ return static function (ContainerConfigurator $container) {
 
     // event listener
     $services->set(PHPUnitExceptionListener::class);
+
+    // messenger
+    $services->set(TestHandler::class);
 
     // oauth2
     $services->load('PSX\\Framework\\Tests\\OAuth2\\GrantType\\', __DIR__ . '/OAuth2/GrantType')

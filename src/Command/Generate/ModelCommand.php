@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Generate;
 
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
@@ -51,7 +51,7 @@ class ModelCommand extends Command
         $this->schemaManager = $schemaManager;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $appDir = $this->directory->getAppDir();
         $srcDir = $this->directory->getSrcDir();

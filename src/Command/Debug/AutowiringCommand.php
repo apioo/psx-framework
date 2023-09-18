@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Debug;
 
 use PSX\Framework\Console\Descriptor\Descriptor;
 use PSX\Framework\Dependency\ContainerBuilder;
@@ -28,7 +28,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
 #[AsCommand(name: 'debug:autowiring', description: 'List classes/interfaces you can use for autowiring')]
-class DebugAutowiringCommand extends DebugContainerCommand
+class AutowiringCommand extends ContainerCommand
 {
     protected function configure(): void
     {

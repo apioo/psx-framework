@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Generate;
 
 use Doctrine\DBAL\Connection;
 use PSX\Framework\Config\DirectoryInterface;
@@ -50,7 +50,7 @@ class TableCommand extends Command
         $this->connection = $connection;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $srcDir = $this->directory->getSrcDir();
         $tableFolder = $srcDir . '/Table';

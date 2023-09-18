@@ -21,6 +21,7 @@
 namespace PSX\Framework\Command;
 
 use PSX\Framework\Loader\RoutingParserInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
+#[AsCommand(name: 'route', description: 'Displays all available routes')]
 class RouteCommand extends Command
 {
     private RoutingParserInterface $routingParser;
@@ -42,13 +44,6 @@ class RouteCommand extends Command
         parent::__construct();
 
         $this->routingParser = $routingParser;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('route')
-            ->setDescription('Displays all available routes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

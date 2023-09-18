@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Command;
+namespace PSX\Framework\Command\Generate;
 
 use PSX\Api\GeneratorFactory;
 use PSX\Api\Repository\LocalRepository;
@@ -58,7 +58,7 @@ class SdkCommand extends Command
         $this->filterFactory = $filterFactory;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('type', InputArgument::OPTIONAL, 'The target format of the SDK')
@@ -68,7 +68,7 @@ class SdkCommand extends Command
             ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Optional the generator config', null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dir = $this->getOutputDir($input);
         $registry = $this->factory->factory();
