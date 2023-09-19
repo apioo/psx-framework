@@ -53,6 +53,7 @@ class ConfigFactory
             'psx_dispatch'            => 'index.php/',
             'psx_connection'          => 'pdo-sqlite://:memory:',
             'psx_mailer'              => 'native://default',
+            'psx_messenger'           => 'in-memory://',
             'psx_migration_namespace' => 'App\\Migrations',
             'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],
