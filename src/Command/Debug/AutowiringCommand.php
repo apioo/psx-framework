@@ -77,6 +77,14 @@ EOF
             }
         }
 
+        $reverseAliases = [];
+
+        foreach ($container->getAliases() as $id => $alias) {
+            if ('.' === ($id[0] ?? null)) {
+                $reverseAliases[(string) $alias][] = $id;
+            }
+        }
+
         uasort($serviceIds, 'strnatcmp');
 
         $io->title('Autowirable Types');
@@ -118,11 +126,6 @@ EOF
                         continue;
                     }
                     $target = substr($id, \strlen($previousId) + 3);
-
-                    if ($previousId.' $'.(new Target($target))->getParsedName() === $serviceId) {
-                        $serviceLine .= ' - <fg=magenta>target:</><fg=cyan>'.$target.'</>';
-                        break;
-                    }
                 }
 
                 if ($container->hasDefinition($serviceAlias) && $decorated = $container->getDefinition($serviceAlias)->getTag('container.decorator')) {
