@@ -59,6 +59,7 @@ use PSX\Framework\Mailer\MailerFactory;
 use PSX\Framework\Messenger\DefaultTransport;
 use PSX\Framework\Messenger\HandlersLocator;
 use PSX\Framework\Messenger\SendersLocator;
+use PSX\Framework\Messenger\Transport\DoctrineTransportFactory;
 use PSX\Framework\Migration\DependencyFactoryFactory;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Framework\OAuth2\CallbackInterface;
@@ -298,6 +299,8 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     $services->set(MessengerTransport\InMemory\InMemoryTransportFactory::class);
+    $services->set(DoctrineTransportFactory::class);
+
     $services->set(MessengerTransport\Sync\SyncTransport::class);
 
     $services->set(MessengerTransport\Serialization\PhpSerializer::class);
