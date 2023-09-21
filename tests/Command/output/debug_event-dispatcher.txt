@@ -1,6 +1,36 @@
 Registered Listeners Grouped by Event
 =====================================
 
+"Symfony\Component\Messenger\Event\WorkerMessageFailedEvent" event
+------------------------------------------------------------------
+
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+  Order   Callable                                                                                               Priority  
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+  #1      Symfony\Component\Messenger\EventListener\AddErrorDetailsStampListener::onMessageFailed()              200       
+  #2      Symfony\Component\Messenger\EventListener\SendFailedMessageForRetryListener::onMessageFailed()         100       
+  #3      Symfony\Component\Messenger\EventListener\StopWorkerOnCustomStopExceptionListener::onMessageFailed()   0         
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+
+"Symfony\Component\Messenger\Event\WorkerRunningEvent" event
+------------------------------------------------------------
+
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+  Order   Callable                                                                                               Priority  
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+  #1      Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener::onWorkerRunning()         0         
+  #2      Symfony\Component\Messenger\EventListener\StopWorkerOnCustomStopExceptionListener::onWorkerRunning()   0         
+ ------- ------------------------------------------------------------------------------------------------------ ---------- 
+
+"Symfony\Component\Messenger\Event\WorkerStartedEvent" event
+------------------------------------------------------------
+
+ ------- ------------------------------------------------------------------------------------------------ ---------- 
+  Order   Callable                                                                                         Priority  
+ ------- ------------------------------------------------------------------------------------------------ ---------- 
+  #1      Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener::onWorkerStarted()   0         
+ ------- ------------------------------------------------------------------------------------------------ ---------- 
+
 "psx.event_listener.exception_thrown" event
 -------------------------------------------
 

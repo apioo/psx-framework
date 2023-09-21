@@ -39,7 +39,7 @@ class DebugAutowiringCommandTest extends ControllerTestCase
         $command = Environment::getService(Application::class)->find('debug:autowiring');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $commandTester->execute(['--all' => '1']);
 
         $actual = trim($commandTester->getDisplay());
         $expect = trim(file_get_contents(__DIR__ . '/output/debug_autowiring.txt'));

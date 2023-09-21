@@ -23,7 +23,6 @@ use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\Repository\SDKgen\Config as SDKgenConfig;
 use PSX\Framework\Api\Scanner\RoutingParser as ScannerRoutingParser;
-use PSX\Framework\Command\Messenger\ConsumeCommand;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
@@ -57,6 +56,7 @@ use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
 use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\Mailer\MailerFactory;
+use PSX\Framework\Messenger\DefaultTransport;
 use PSX\Framework\Messenger\HandlersLocator;
 use PSX\Framework\Messenger\SendersLocator;
 use PSX\Framework\Migration\DependencyFactoryFactory;
@@ -82,22 +82,19 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Command\StopWorkersCommand;
+use Symfony\Component\Messenger\EventListener as MessengerEventListener;
 use Symfony\Component\Messenger\Handler\HandlersLocatorInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory;
-use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
-use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
-use Symfony\Component\Messenger\Transport\Sync\SyncTransport;
-use Symfony\Component\Messenger\Transport\TransportFactory;
-use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
+use Symfony\Component\Messenger\Retry\MultiplierRetryStrategy;
+use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
+use Symfony\Component\Messenger\Transport as MessengerTransport;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $container) {
@@ -160,8 +157,11 @@ return static function (ContainerConfigurator $container) {
     $services->set(Validate::class);
 
     $services->set(EventDispatcherFactory::class)
-        ->args([tagged_iterator('psx.event_subscriber')]);
+        ->args([
+            tagged_iterator('psx.event_subscriber'),
+        ]);
     $services->set(EventDispatcher::class)
+        ->lazy()
         ->factory([service(EventDispatcherFactory::class), 'factory']);
     $services->alias(EventDispatcherInterface::class, EventDispatcher::class)
         ->public();
@@ -282,26 +282,42 @@ return static function (ContainerConfigurator $container) {
     $services->alias(HandlersLocatorInterface::class, HandlersLocator::class);
 
     $services->set(SendersLocator::class);
-    $services->alias(SendersLocatorInterface::class, SendersLocator::class);
+    $services->alias(MessengerTransport\Sender\SendersLocatorInterface::class, SendersLocator::class);
 
-    $services->set(TransportFactory::class)
+    $services->set(MessengerTransport\TransportFactory::class)
         ->args([tagged_iterator('psx.messenger_transport_factory')]);
-    $services->alias(TransportFactoryInterface::class, TransportFactory::class);
+    $services->alias(MessengerTransport\TransportFactoryInterface::class, MessengerTransport\TransportFactory::class);
 
-    $services->set(TransportInterface::class)
-        ->factory([service(TransportFactoryInterface::class), 'createTransport'])
+    $services->set(MessengerTransport\TransportInterface::class)
+        ->factory([service(MessengerTransport\TransportFactoryInterface::class), 'createTransport'])
         ->args([
             param('psx_messenger'),
             [],
-            service(SerializerInterface::class)
+            service(MessengerTransport\Serialization\SerializerInterface::class)
         ])
         ->public();
 
-    $services->set(InMemoryTransportFactory::class);
-    $services->set(SyncTransport::class);
+    $services->set(MessengerTransport\InMemory\InMemoryTransportFactory::class);
+    $services->set(MessengerTransport\Sync\SyncTransport::class);
 
-    $services->set(PhpSerializer::class);
-    $services->alias(SerializerInterface::class, PhpSerializer::class);
+    $services->set(MessengerTransport\Serialization\PhpSerializer::class);
+    $services->alias(MessengerTransport\Serialization\SerializerInterface::class, MessengerTransport\Serialization\PhpSerializer::class);
+
+    $services->set(MultiplierRetryStrategy::class);
+    $services->alias(RetryStrategyInterface::class, MultiplierRetryStrategy::class);
+
+    $services->set(MessengerEventListener\SendFailedMessageForRetryListener::class)
+        ->args([
+            service_locator([DefaultTransport::NAME => service(MessengerTransport\TransportInterface::class)]),
+            service_locator([DefaultTransport::NAME => service(RetryStrategyInterface::class)]),
+            service(LoggerInterface::class),
+            service(EventDispatcherInterface::class),
+        ]);
+    $services->set(MessengerEventListener\AddErrorDetailsStampListener::class);
+    $services->set(MessengerEventListener\DispatchPcntlSignalListener::class);
+    $services->set(MessengerEventListener\StopWorkerOnRestartSignalListener::class);
+    $services->set(MessengerEventListener\StopWorkerOnSignalsListener::class);
+    $services->set(MessengerEventListener\StopWorkerOnCustomStopExceptionListener::class);
 
     // test environment
     $services->set(Environment::class)
