@@ -35,7 +35,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class PHPUnitExceptionListener implements EventSubscriberInterface
 {
-    public function onExceptionThrown(ExceptionThrownEvent $event)
+    public function onExceptionThrown(ExceptionThrownEvent $event): void
     {
         if ($event->getException() instanceof Exception) {
             throw $event->getException();

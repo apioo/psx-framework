@@ -43,7 +43,7 @@ class LoggingListener implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public function onExceptionThrown(ExceptionThrownEvent $event)
+    public function onExceptionThrown(ExceptionThrownEvent $event): void
     {
         $exception = $event->getException();
         $severity  = $exception instanceof \ErrorException ? $exception->getSeverity() : null;
