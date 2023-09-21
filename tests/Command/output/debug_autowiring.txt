@@ -262,6 +262,9 @@ Autowirable Types
  SendersLocator
  PSX\Framework\Messenger\SendersLocator
  
+ DoctrineTransportFactory
+ PSX\Framework\Messenger\Transport\DoctrineTransportFactory
+ 
  DependencyFactoryFactory
  PSX\Framework\Migration\DependencyFactoryFactory
  
