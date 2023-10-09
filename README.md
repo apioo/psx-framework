@@ -21,7 +21,7 @@ This overview shows all PSX related composer dependencies and the build status:
 | [psx/framework](https://github.com/apioo/psx-framework)     | ![Status](https://github.com/apioo/psx-framework/actions/workflows/ci.yml/badge.svg)   |
 | [psx/http](https://github.com/apioo/psx-http)               | ![Status](https://github.com/apioo/psx-http/actions/workflows/ci.yml/badge.svg)        |
 | [psx/json](https://github.com/apioo/psx-json)               | ![Status](https://github.com/apioo/psx-json/actions/workflows/ci.yml/badge.svg)        |
-| [osx/model](https://github.com/apioo/psx-model)             | ![Status](https://github.com/apioo/psx-model/actions/workflows/ci.yml/badge.svg)       |
+| [psx/model](https://github.com/apioo/psx-model)             | ![Status](https://github.com/apioo/psx-model/actions/workflows/ci.yml/badge.svg)       |
 | [psx/nested](https://github.com/apioo/psx-nested)           | ![Status](https://github.com/apioo/psx-nested/actions/workflows/ci.yml/badge.svg)      |
 | [psx/oauth2](https://github.com/apioo/psx-oauth2)           | ![Status](https://github.com/apioo/psx-oauth2/actions/workflows/ci.yml/badge.svg)      |
 | [psx/openapi](https://github.com/apioo/psx-openapi)         | ![Status](https://github.com/apioo/psx-openapi/actions/workflows/ci.yml/badge.svg)     |
