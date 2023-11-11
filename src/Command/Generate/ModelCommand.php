@@ -22,6 +22,7 @@ namespace PSX\Framework\Command\Generate;
 
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
+use PSX\Schema\Generator\Config;
 use PSX\Schema\Generator\FileAwareInterface;
 use PSX\Schema\GeneratorFactory;
 use PSX\Schema\SchemaManagerInterface;
@@ -59,7 +60,6 @@ class ModelCommand extends Command
         $source = $appDir . '/resources/typeschema.json';
         $target = $srcDir . '/Model';
         $format = 'php';
-        $config = 'namespace=App\Model';
 
         if (!is_file($source)) {
             throw new \RuntimeException('TypeSchema file does not exist at resources/typeschema.json, please create the file in order to generate the models, more information about TypeSchema at: typeschema.org');
@@ -69,6 +69,9 @@ class ModelCommand extends Command
             throw new \RuntimeException('The folder src/Model does not exist, please create it in order to generate the models');
         }
 
+        $config = new Config();
+        $config->put(Config::NAMESPACE, 'App\\Model');
+
         $count = $this->generate($source, $target, $format, $config);
 
         $output->writeln('Generated ' . $count . ' files at ' . $target);
@@ -76,7 +79,7 @@ class ModelCommand extends Command
         return 0;
     }
 
-    private function generate(string $source, string $target, string $format, string $config): int
+    private function generate(string $source, string $target, string $format, Config $config): int
     {
         $schema = $this->schemaManager->getSchema($source);
 
