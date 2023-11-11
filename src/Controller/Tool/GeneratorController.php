@@ -31,6 +31,7 @@ use PSX\Http\Environment\HttpResponse;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\Writer\File;
 use PSX\Schema\Generator\Code\Chunks;
+use PSX\Schema\Generator\Config;
 
 /**
  * Generator controller which supports automatically every type from the generator factory
@@ -56,13 +57,14 @@ class GeneratorController extends ControllerAbstract
 
     #[Get]
     #[Path('/system/generator/:type')]
-    public function generate(string $type, ?string $filter = null): mixed
+    public function generate(string $type, ?string $filter = null, ?string $config = null): mixed
     {
         $registry = $this->generatorFactory->factory();
 
         $type      = $this->getType($type, $registry->getPossibleTypes());
         $filter    = $this->filterFactory->getFilter($filter ?? '');
-        $generator = $registry->getGenerator($type, null, $filter);
+        $config    = Config::fromBase64String($config);
+        $generator = $registry->getGenerator($type, $config, $filter);
 
         $spec   = $this->scanner->generate($filter);
         $result = $generator->generate($spec);
