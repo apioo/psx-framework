@@ -252,6 +252,13 @@
             "description": "",
             "type": "string"
           }
+        },
+        "config": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
         }
       },
       "throws": [],
