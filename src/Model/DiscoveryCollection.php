@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace PSX\Framework\Model;
 
 
-class DiscoveryCollection implements \JsonSerializable
+class DiscoveryCollection implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     /**
      * @var array<DiscoveryLink>|null
@@ -18,15 +18,23 @@ class DiscoveryCollection implements \JsonSerializable
     {
         $this->links = $links;
     }
+    /**
+     * @return array<DiscoveryLink>|null
+     */
     public function getLinks() : ?array
     {
         return $this->links;
     }
+    public function toRecord() : \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = new \PSX\Record\Record();
+        $record->put('links', $this->links);
+        return $record;
+    }
     public function jsonSerialize() : object
     {
-        return (object) array_filter(array('links' => $this->links), static function ($value) : bool {
-            return $value !== null;
-        });
+        return (object) $this->toRecord()->getAll();
     }
 }
 

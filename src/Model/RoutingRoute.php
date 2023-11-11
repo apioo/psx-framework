@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace PSX\Framework\Model;
 
 
-class RoutingRoute implements \JsonSerializable
+class RoutingRoute implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     protected ?string $method = null;
     protected ?string $path = null;
@@ -34,11 +34,18 @@ class RoutingRoute implements \JsonSerializable
     {
         return $this->operationId;
     }
+    public function toRecord() : \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = new \PSX\Record\Record();
+        $record->put('method', $this->method);
+        $record->put('path', $this->path);
+        $record->put('operationId', $this->operationId);
+        return $record;
+    }
     public function jsonSerialize() : object
     {
-        return (object) array_filter(array('method' => $this->method, 'path' => $this->path, 'operationId' => $this->operationId), static function ($value) : bool {
-            return $value !== null;
-        });
+        return (object) $this->toRecord()->getAll();
     }
 }
 

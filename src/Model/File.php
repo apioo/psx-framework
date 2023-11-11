@@ -8,7 +8,7 @@ use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
 #[Description('File upload provided through a multipart/form-data post')]
-class File implements \JsonSerializable
+class File implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     protected ?string $name = null;
     protected ?string $type = null;
@@ -56,11 +56,20 @@ class File implements \JsonSerializable
     {
         return $this->error;
     }
+    public function toRecord() : \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = new \PSX\Record\Record();
+        $record->put('name', $this->name);
+        $record->put('type', $this->type);
+        $record->put('size', $this->size);
+        $record->put('tmp_name', $this->tmpName);
+        $record->put('error', $this->error);
+        return $record;
+    }
     public function jsonSerialize() : object
     {
-        return (object) array_filter(array('name' => $this->name, 'type' => $this->type, 'size' => $this->size, 'tmp_name' => $this->tmpName, 'error' => $this->error), static function ($value) : bool {
-            return $value !== null;
-        });
+        return (object) $this->toRecord()->getAll();
     }
 }
 
