@@ -26,6 +26,7 @@ use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
 use PSX\Framework\Config\DirectoryInterface;
 use PSX\Schema\Generator\Code\Chunks;
+use PSX\Schema\Generator\Config;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -121,24 +122,20 @@ class SdkCommand extends Command
         return 0;
     }
 
-    private function getConfig(InputInterface $input): ?string
+    private function getConfig(InputInterface $input): ?Config
     {
         $config = $input->getOption('config');
         if (!empty($config)) {
-            return $config;
+            return Config::fromQueryString($config);
         }
 
         $namespace = $input->getOption('namespace');
-        $options = [];
+        $config = new Config();
         if (!empty($namespace)) {
-            $options['namespace'] = $namespace;
+            $config->put(Config::NAMESPACE, $namespace);
         }
 
-        if (!empty($options)) {
-            return http_build_query($options);
-        } else {
-            return null;
-        }
+        return $config;
     }
 
     private function getOutputDir(InputInterface $input): string
