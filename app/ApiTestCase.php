@@ -36,7 +36,7 @@ use PSX\Uri\Uri;
  */
 class ApiTestCase extends ControllerDbTestCase
 {
-    private static Client $httpClient;
+    private static ?Client $httpClient = null;
 
     public function getDataSet(): array
     {
