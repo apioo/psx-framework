@@ -67,7 +67,7 @@ class ApiTestCase extends ControllerDbTestCase
         }
 
         return self::$httpClient = new Client([
-            'base_uri'    => Environment::getBaseUrl(),
+            'base_uri'    => Environment::getConfig('psx_url') . '/' . Environment::getConfig('psx_dispatch'),
             'http_errors' => false,
         ]);
     }
