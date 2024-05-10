@@ -26,7 +26,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 /**
  * MessengerPass
@@ -91,22 +90,14 @@ class MessengerPass implements CompilerPassInterface
 
                     if (isset($options['bus'])) {
                         if (!\in_array($options['bus'], $busIds)) {
-                            // @deprecated since Symfony 6.2, in 7.0 change to:
-                            // $messageLocation = isset($tag['handles']) ? 'declared in your tag attribute "handles"' : sprintf('used as argument type in method "%s::%s()"', $r->getName(), $method);
-                            $messageLocation = isset($tag['handles']) ? 'declared in your tag attribute "handles"' : ($r->implementsInterface(MessageSubscriberInterface::class) ? sprintf('returned by method "%s::getHandledMessages()"', $r->getName()) : sprintf('used as argument type in method "%s::%s()"', $r->getName(), $method));
-
-                            throw new RuntimeException(sprintf('Invalid configuration '.$messageLocation.' for message "%s": bus "%s" does not exist.', $message, $options['bus']));
+                            throw new RuntimeException(sprintf('Invalid configuration for message "%s": bus "%s" does not exist.', $message, $options['bus']));
                         }
 
                         $buses = [$options['bus']];
                     }
 
                     if ('*' !== $message && !class_exists($message) && !interface_exists($message, false)) {
-                        // @deprecated since Symfony 6.2, in 7.0 change to:
-                        // $messageLocation = isset($tag['handles']) ? 'declared in your tag attribute "handles"' : sprintf('used as argument type in method "%s::%s()"', $r->getName(), $method);
-                        $messageLocation = isset($tag['handles']) ? 'declared in your tag attribute "handles"' : ($r->implementsInterface(MessageSubscriberInterface::class) ? sprintf('returned by method "%s::getHandledMessages()"', $r->getName()) : sprintf('used as argument type in method "%s::%s()"', $r->getName(), $method));
-
-                        throw new RuntimeException(sprintf('Invalid handler service "%s": class or interface "%s" '.$messageLocation.' not found.', $serviceId, $message));
+                        throw new RuntimeException(sprintf('Invalid handler service "%s": class or interface "%s" not found.', $serviceId, $message));
                     }
 
                     if (!$r->hasMethod($method)) {
