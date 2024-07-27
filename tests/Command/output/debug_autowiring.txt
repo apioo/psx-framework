@@ -393,7 +393,7 @@ Autowirable Types
  The EventDispatcherInterface is the central point of Symfony's event listener system.
  Symfony\Component\EventDispatcher\EventDispatcher
  
- Interface for mailers able to send emails synchronous and/or asynchronous.
+ Interface for mailers able to send emails synchronously and/or asynchronously.
  Symfony\Component\Mailer\MailerInterface
  
  Symfony\Component\Messenger\Command\StopWorkersCommand
