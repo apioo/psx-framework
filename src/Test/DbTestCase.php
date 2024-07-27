@@ -23,6 +23,8 @@ namespace PSX\Framework\Test;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use PSX\Sql\Test\DatabaseTestCaseTrait;
+use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * Base test class for database test cases
@@ -56,10 +58,19 @@ abstract class DbTestCase extends TestCase
         }
 
         $this->setUpFixture();
+        $this->setUpMessengerTransport();
     }
 
     protected function createFromFile(string $file): array
     {
         return include $file;
+    }
+
+    private function setUpMessengerTransport(): void
+    {
+        $transport = Environment::getService(TransportInterface::class);
+        if ($transport instanceof SetupableTransportInterface) {
+            $transport->setup();
+        }
     }
 }
