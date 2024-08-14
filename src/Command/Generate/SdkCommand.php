@@ -66,7 +66,8 @@ class SdkCommand extends Command
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'A namespace which is used', null)
             ->addOption('filter', 'e', InputOption::VALUE_REQUIRED, 'Optional a filter which is used', null)
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Optional the output dir, the default is output/', 'output')
-            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Optional the generator config', null);
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Optional the generator config', null)
+            ->addOption('raw', 'r', InputOption::VALUE_NONE, 'Ignore packing the generated files in a zip file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -100,13 +101,19 @@ class SdkCommand extends Command
         $content = $generator->generate($this->scanner->generate($filter));
 
         if ($content instanceof Chunks) {
-            if (!empty($filterName)) {
-                $file = 'sdk-' . $type .  '-' . $filterName . '.zip';
+            if ($input->hasOption('raw')) {
+                foreach ($content->getChunks() as $identifier => $code) {
+                    file_put_contents($dir . '/' . $identifier, $code);
+                }
             } else {
-                $file = 'sdk-' . $type .  '.zip';
-            }
+                if (!empty($filterName)) {
+                    $file = 'sdk-' . $type .  '-' . $filterName . '.zip';
+                } else {
+                    $file = 'sdk-' . $type .  '.zip';
+                }
 
-            $content->writeTo($dir . '/' . $file);
+                $content->writeTo($dir . '/' . $file);
+            }
         } else {
             if (!empty($filterName)) {
                 $file = 'output-' . $type . '-' . $filterName . '.' . $extension;
