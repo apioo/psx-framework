@@ -21,6 +21,16 @@
       "method": "POST"
     },
     {
+      "rel": "server-php",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/server-php",
+      "method": "POST"
+    },
+    {
+      "rel": "server-typescript",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/server-typescript",
+      "method": "POST"
+    },
+    {
       "rel": "markup-client",
       "href": "http:\/\/127.0.0.1\/system\/generator\/markup-client",
       "method": "POST"
