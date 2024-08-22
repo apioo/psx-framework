@@ -86,6 +86,7 @@ class SdkCommand extends Command
             $filterName = $this->filterFactory->getDefault();
         }
 
+        $filter = null;
         if (!empty($filterName) && is_string($filterName)) {
             $filter = $this->filterFactory->getFilter($filterName);
             if ($filter === null) {
