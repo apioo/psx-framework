@@ -58,7 +58,7 @@ class RouteCommand extends Command
     {
         $collection = $this->routingParser->getCollection();
 
-        if ($input->hasOption('json')) {
+        if ($input->getOption('json')) {
             $rows = [];
             foreach ($collection as $route) {
                 $rows[] = $route;

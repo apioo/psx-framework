@@ -102,7 +102,7 @@ class SdkCommand extends Command
         $content = $generator->generate($this->scanner->generate($filter));
 
         if ($content instanceof Chunks) {
-            if ($input->hasOption('raw')) {
+            if ($input->getOption('raw')) {
                 foreach ($content->getChunks() as $identifier => $code) {
                     file_put_contents($dir . '/' . $identifier, $code);
                 }
