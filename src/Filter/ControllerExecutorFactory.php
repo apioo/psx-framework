@@ -21,6 +21,7 @@
 namespace PSX\Framework\Filter;
 
 use PSX\Api\ApiManagerInterface;
+use PSX\Api\Parser\Attribute\OperationIdBuilderInterface;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
@@ -38,12 +39,14 @@ class ControllerExecutorFactory implements ControllerExecutorFactoryInterface
     private RequestReader $requestReader;
     private ResponseWriter $responseWriter;
     private ApiManagerInterface $apiManager;
+    private OperationIdBuilderInterface $operationIdBuilder;
 
-    public function __construct(RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager)
+    public function __construct(RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager, OperationIdBuilderInterface $operationIdBuilder)
     {
         $this->requestReader = $requestReader;
         $this->responseWriter = $responseWriter;
         $this->apiManager = $apiManager;
+        $this->operationIdBuilder = $operationIdBuilder;
     }
 
     public function factory(object $controller, string $methodName, Context $context): FilterInterface
@@ -54,7 +57,8 @@ class ControllerExecutorFactory implements ControllerExecutorFactoryInterface
             $context,
             $this->requestReader,
             $this->responseWriter,
-            $this->apiManager
+            $this->apiManager,
+            $this->operationIdBuilder
         );
     }
 }

@@ -21,7 +21,10 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\OperationId;
+use PSX\Api\Attribute\Param;
 use PSX\Api\Attribute\Path;
+use PSX\Api\Attribute\Query;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
@@ -57,7 +60,8 @@ class GeneratorController extends ControllerAbstract
 
     #[Get]
     #[Path('/system/generator/:type')]
-    public function generate(string $type, ?string $filter = null, ?string $config = null): mixed
+    #[OperationId('system.generate')]
+    public function generate(#[Param] string $type, #[Query] ?string $filter = null, #[Query] ?string $config = null): mixed
     {
         $registry = $this->generatorFactory->factory();
 
@@ -73,7 +77,7 @@ class GeneratorController extends ControllerAbstract
         if ($result instanceof Chunks) {
             // write chunks to zip file
             $file = tempnam($this->config->get('psx_path_cache'), 'sdk-' . $type);
-            $result->writeTo($file);
+            $result->writeToZip($file);
 
             $result = new File($file, 'sdk.zip', 'application/zip');
         } else {

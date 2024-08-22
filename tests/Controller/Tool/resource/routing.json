@@ -3,192 +3,192 @@
     {
       "method": "GET",
       "path": "\/authorization\/authorize",
-      "operationId": "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet"
+      "operationId": "oauth.authorize"
     },
     {
       "method": "POST",
       "path": "\/authorization\/authorize",
-      "operationId": "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost"
+      "operationId": "oauth.authorize"
     },
     {
       "method": "GET",
       "path": "\/authorization\/callback",
-      "operationId": "PSX.Framework.Controller.OAuth2.CallbackController.doGet"
+      "operationId": "oauth.callback"
     },
     {
       "method": "POST",
       "path": "\/authorization\/callback",
-      "operationId": "PSX.Framework.Controller.OAuth2.CallbackController.doPost"
+      "operationId": "oauth.callback"
     },
     {
       "method": "POST",
       "path": "\/authorization\/token",
-      "operationId": "PSX.Framework.Controller.OAuth2.TokenController.doPost"
+      "operationId": "oauth.token"
     },
     {
       "method": "GET",
       "path": "\/system\/discovery",
-      "operationId": "PSX.Framework.Controller.Tool.DiscoveryController.show"
+      "operationId": "system.getLinks"
     },
     {
       "method": "GET",
       "path": "\/system\/generator\/:type",
-      "operationId": "PSX.Framework.Controller.Tool.GeneratorController.generate"
+      "operationId": "system.generate"
     },
     {
       "method": "GET",
       "path": "\/system\/routing",
-      "operationId": "PSX.Framework.Controller.Tool.RoutingController.show"
+      "operationId": "system.getRouting"
     },
     {
       "method": "GET",
       "path": "\/tests\/body",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet"
+      "operationId": "tests.controller.foo.application.body_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/dummy",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet"
+      "operationId": "tests.controller.foo.application.dummy_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/exception",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet"
+      "operationId": "tests.controller.foo.application.exception_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/filter",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet"
+      "operationId": "tests.controller.foo.application.filter_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/passthru",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet"
+      "operationId": "tests.controller.foo.application.passthru_controller.doGet"
     },
     {
       "method": "POST",
       "path": "\/tests\/passthru",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doPost"
+      "operationId": "tests.controller.foo.application.passthru_controller.doPost"
     },
     {
       "method": "GET",
       "path": "\/tests\/popo\/:id",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doGet"
+      "operationId": "tests.controller.foo.application.popo_controller.doGet"
     },
     {
       "method": "POST",
       "path": "\/tests\/popo\/:id",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doPost"
+      "operationId": "tests.controller.foo.application.popo_controller.doPost"
     },
     {
       "method": "GET",
       "path": "\/tests\/redirect",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet"
+      "operationId": "tests.controller.foo.application.redirect_exception_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/schema\/:name\/:type",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet"
+      "operationId": "tests.controller.foo.application.schema_controller.doGet"
     },
     {
       "method": "POST",
       "path": "\/tests\/schema\/:name\/:type",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost"
+      "operationId": "tests.controller.foo.application.schema_controller.doPost"
     },
     {
       "method": "PUT",
       "path": "\/tests\/schema\/:name\/:type",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut"
+      "operationId": "tests.controller.foo.application.schema_controller.doPut"
     },
     {
       "method": "DELETE",
       "path": "\/tests\/schema\/:name\/:type",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete"
+      "operationId": "tests.controller.foo.application.schema_controller.doDelete"
     },
     {
       "method": "PATCH",
       "path": "\/tests\/schema\/:name\/:type",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch"
+      "operationId": "tests.controller.foo.application.schema_controller.doPatch"
     },
     {
       "method": "GET",
       "path": "\/tests\/status\/:code",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet"
+      "operationId": "tests.controller.foo.application.status_code_exception_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/table",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet"
+      "operationId": "tests.controller.foo.application.table_controller.doGet"
     },
     {
       "method": "GET",
       "path": "\/tests\/table\/row",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.TableController.doRow"
+      "operationId": "tests.controller.foo.application.table_controller.doRow"
     },
     {
       "method": "GET",
       "path": "\/tests\/table\/nested",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.TableController.doNested"
+      "operationId": "tests.controller.foo.application.table_controller.doNested"
     },
     {
       "method": "GET",
       "path": "\/tests\/typeschema\/:id",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doGet"
+      "operationId": "tests.controller.foo.application.type_schema_controller.doGet"
     },
     {
       "method": "POST",
       "path": "\/tests\/typeschema\/:id",
-      "operationId": "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost"
+      "operationId": "tests.controller.foo.application.type_schema_controller.doPost"
     },
     {
       "method": "GET",
       "path": "\/population\/popo",
-      "operationId": "PSX.Framework.App.Controller.PopulationPopo.getAll"
+      "operationId": "app.controller.population_popo.getAll"
     },
     {
       "method": "GET",
       "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationPopo.get"
+      "operationId": "app.controller.population_popo.get"
     },
     {
       "method": "POST",
       "path": "\/population\/popo",
-      "operationId": "PSX.Framework.App.Controller.PopulationPopo.create"
+      "operationId": "app.controller.population_popo.create"
     },
     {
       "method": "PUT",
       "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationPopo.update"
+      "operationId": "app.controller.population_popo.update"
     },
     {
       "method": "DELETE",
       "path": "\/population\/popo\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationPopo.delete"
+      "operationId": "app.controller.population_popo.delete"
     },
     {
       "method": "GET",
       "path": "\/population\/typeschema",
-      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.getAll"
+      "operationId": "app.controller.population_type_schema.getAll"
     },
     {
       "method": "POST",
       "path": "\/population\/typeschema",
-      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.get"
+      "operationId": "app.controller.population_type_schema.get"
     },
     {
       "method": "GET",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.create"
+      "operationId": "app.controller.population_type_schema.create"
     },
     {
       "method": "PUT",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.update"
+      "operationId": "app.controller.population_type_schema.update"
     },
     {
       "method": "DELETE",
       "path": "\/population\/typeschema\/:id",
-      "operationId": "PSX.Framework.App.Controller.PopulationTypeSchema.delete"
+      "operationId": "app.controller.population_type_schema.delete"
     }
   ]
 }

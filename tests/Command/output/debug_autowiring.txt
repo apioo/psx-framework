@@ -66,6 +66,12 @@ Autowirable Types
  This factory returns a GeneratorRegistry which contains all available generator types and which can be used to obtain an actual generator
  PSX\Api\GeneratorFactory
  
+ OperationIdBuilder
+ PSX\Api\Parser\Attribute\OperationIdBuilder
+ 
+ OperationIdBuilder
+ PSX\Api\Parser\Attribute\OperationIdBuilderInterface - alias:PSX\Api\Parser\Attribute\OperationIdBuilder
+ 
  LocalRepository
  PSX\Api\Repository\LocalRepository
  

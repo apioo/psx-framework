@@ -4,192 +4,192 @@
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/authorization/authorize</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doGet</operationId>
+   <operationId type="string">oauth.authorize</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/authorization/authorize</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.AuthorizationController.doPost</operationId>
+   <operationId type="string">oauth.authorize</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/authorization/callback</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doGet</operationId>
+   <operationId type="string">oauth.callback</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/authorization/callback</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.CallbackController.doPost</operationId>
+   <operationId type="string">oauth.callback</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/authorization/token</path>
-   <operationId type="string">PSX.Framework.Controller.OAuth2.TokenController.doPost</operationId>
+   <operationId type="string">oauth.token</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/system/discovery</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.DiscoveryController.show</operationId>
+   <operationId type="string">system.getLinks</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/system/generator/:type</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.GeneratorController.generate</operationId>
+   <operationId type="string">system.generate</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/system/routing</path>
-   <operationId type="string">PSX.Framework.Controller.Tool.RoutingController.show</operationId>
+   <operationId type="string">system.getRouting</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/body</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.body_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/dummy</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.dummy_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/exception</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.exception_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/filter</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.filter_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/passthru</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.passthru_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/tests/passthru</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doPost</operationId>
+   <operationId type="string">tests.controller.foo.application.passthru_controller.doPost</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/popo/:id</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.PopoController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.popo_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/tests/popo/:id</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.PopoController.doPost</operationId>
+   <operationId type="string">tests.controller.foo.application.popo_controller.doPost</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/redirect</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.redirect_exception_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/schema/:name/:type</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.schema_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/tests/schema/:name/:type</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost</operationId>
+   <operationId type="string">tests.controller.foo.application.schema_controller.doPost</operationId>
   </entry>
   <entry type="object">
    <method type="string">PUT</method>
    <path type="string">/tests/schema/:name/:type</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut</operationId>
+   <operationId type="string">tests.controller.foo.application.schema_controller.doPut</operationId>
   </entry>
   <entry type="object">
    <method type="string">DELETE</method>
    <path type="string">/tests/schema/:name/:type</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete</operationId>
+   <operationId type="string">tests.controller.foo.application.schema_controller.doDelete</operationId>
   </entry>
   <entry type="object">
    <method type="string">PATCH</method>
    <path type="string">/tests/schema/:name/:type</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch</operationId>
+   <operationId type="string">tests.controller.foo.application.schema_controller.doPatch</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/status/:code</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.status_code_exception_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/table</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.table_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/table/row</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TableController.doRow</operationId>
+   <operationId type="string">tests.controller.foo.application.table_controller.doRow</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/table/nested</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TableController.doNested</operationId>
+   <operationId type="string">tests.controller.foo.application.table_controller.doNested</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/tests/typeschema/:id</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doGet</operationId>
+   <operationId type="string">tests.controller.foo.application.type_schema_controller.doGet</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/tests/typeschema/:id</path>
-   <operationId type="string">PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost</operationId>
+   <operationId type="string">tests.controller.foo.application.type_schema_controller.doPost</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/population/popo</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationPopo.getAll</operationId>
+   <operationId type="string">app.controller.population_popo.getAll</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/population/popo/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationPopo.get</operationId>
+   <operationId type="string">app.controller.population_popo.get</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/population/popo</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationPopo.create</operationId>
+   <operationId type="string">app.controller.population_popo.create</operationId>
   </entry>
   <entry type="object">
    <method type="string">PUT</method>
    <path type="string">/population/popo/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationPopo.update</operationId>
+   <operationId type="string">app.controller.population_popo.update</operationId>
   </entry>
   <entry type="object">
    <method type="string">DELETE</method>
    <path type="string">/population/popo/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationPopo.delete</operationId>
+   <operationId type="string">app.controller.population_popo.delete</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/population/typeschema</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationTypeSchema.getAll</operationId>
+   <operationId type="string">app.controller.population_type_schema.getAll</operationId>
   </entry>
   <entry type="object">
    <method type="string">POST</method>
    <path type="string">/population/typeschema</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationTypeSchema.get</operationId>
+   <operationId type="string">app.controller.population_type_schema.get</operationId>
   </entry>
   <entry type="object">
    <method type="string">GET</method>
    <path type="string">/population/typeschema/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationTypeSchema.create</operationId>
+   <operationId type="string">app.controller.population_type_schema.create</operationId>
   </entry>
   <entry type="object">
    <method type="string">PUT</method>
    <path type="string">/population/typeschema/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationTypeSchema.update</operationId>
+   <operationId type="string">app.controller.population_type_schema.update</operationId>
   </entry>
   <entry type="object">
    <method type="string">DELETE</method>
    <path type="string">/population/typeschema/:id</path>
-   <operationId type="string">PSX.Framework.App.Controller.PopulationTypeSchema.delete</operationId>
+   <operationId type="string">app.controller.population_type_schema.delete</operationId>
   </entry>
  </routings>
 </record>

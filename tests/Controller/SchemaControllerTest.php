@@ -147,7 +147,7 @@ JSON;
 
         $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals([
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.schema_controller.doGet'],
             'x-stability' => ['experimental'],
         ], $response->getHeaders());
         $this->assertEmpty($body, $body);
@@ -164,7 +164,7 @@ JSON;
             'access-control-allow-methods' => ['OPTIONS, HEAD, GET, POST, PUT, DELETE, PATCH'],
             'access-control-allow-headers' => ['Accept, Accept-Language, Authorization, Content-Language, Content-Type'],
             'access-control-expose-headers' => ['*'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.schema_controller.doGet'],
             'x-stability' => ['experimental'],
         ], $response->getHeaders());
         $this->assertEmpty($body);

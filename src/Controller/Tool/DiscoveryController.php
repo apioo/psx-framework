@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\OperationId;
 use PSX\Api\Attribute\Path;
 use PSX\Api\GeneratorFactory;
 use PSX\Api\GeneratorRegistry;
@@ -49,6 +50,7 @@ class DiscoveryController extends ControllerAbstract
 
     #[Get]
     #[Path('/system/discovery')]
+    #[OperationId('system.getLinks')]
     public function show(): DiscoveryCollection
     {
         $collection = new DiscoveryCollection();

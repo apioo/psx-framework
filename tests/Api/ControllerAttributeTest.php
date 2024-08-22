@@ -46,11 +46,11 @@ class ControllerAttributeTest extends ControllerDbTestCase
 
         $this->assertInstanceOf(SpecificationInterface::class, $specification);
 
-        $getOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet');
-        $postOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost');
-        $putOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut');
-        $deleteOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete');
-        $patchOperation = $specification->getOperations()->get('PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch');
+        $getOperation = $specification->getOperations()->get('tests.controller.foo.application.schema_controller.doGet');
+        $postOperation = $specification->getOperations()->get('tests.controller.foo.application.schema_controller.doPost');
+        $putOperation = $specification->getOperations()->get('tests.controller.foo.application.schema_controller.doPut');
+        $deleteOperation = $specification->getOperations()->get('tests.controller.foo.application.schema_controller.doDelete');
+        $patchOperation = $specification->getOperations()->get('tests.controller.foo.application.schema_controller.doPatch');
 
         $this->assertInstanceOf(OperationInterface::class, $getOperation);
         $this->assertInstanceOf(OperationInterface::class, $postOperation);

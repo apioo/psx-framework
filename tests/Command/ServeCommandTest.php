@@ -39,11 +39,11 @@ class ServeCommandTest extends ControllerTestCase
         $command = Environment::getService(Application::class)->find('serve');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'method'  => 'GET',
             'uri'     => '/system/routing',
             'headers' => 'Accept=application/xml',
-        ));
+        ]);
 
         $actual = $commandTester->getDisplay();
         $expect = file_get_contents(__DIR__ . '/output/routes.xml');

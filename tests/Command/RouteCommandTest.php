@@ -39,12 +39,12 @@ class RouteCommandTest extends ControllerTestCase
         $command = Environment::getService(Application::class)->find('route');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
-        ));
+        $commandTester->execute([
+            '--json'
+        ]);
 
         $actual = trim($commandTester->getDisplay());
-        $expect = trim(file_get_contents(__DIR__ . '/output/routes.txt'));
 
-        $this->assertEquals($expect, $actual, $actual);
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/output/routes.json', $actual, $actual);
     }
 }

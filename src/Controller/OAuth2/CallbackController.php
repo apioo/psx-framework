@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\OAuth2;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\OperationId;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
@@ -54,7 +55,8 @@ class CallbackController extends ControllerAbstract
     #[QueryParam('error_description', Type::STRING)]
     #[QueryParam('code', Type::STRING)]
     #[QueryParam('state', Type::STRING)]
-    public function doGet(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
+    #[OperationId('oauth.callback')]
+    public function callbackGet(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);
     }
@@ -65,7 +67,8 @@ class CallbackController extends ControllerAbstract
     #[QueryParam('error_description', Type::STRING)]
     #[QueryParam('code', Type::STRING)]
     #[QueryParam('state', Type::STRING)]
-    public function doPost(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
+    #[OperationId('oauth.callback')]
+    public function callbackPost(?string $error, ?string $error_description, ?string $code, ?string $state): mixed
     {
         return $this->execute($error, $error_description, $code, $state);
     }

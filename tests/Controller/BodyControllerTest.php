@@ -45,7 +45,7 @@ JSON;
             'content-type' => ['application/json'],
             'vary' => ['Accept'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -64,7 +64,7 @@ JSON;
             'content-type' => ['application/json'],
             'vary' => ['Accept'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -83,7 +83,7 @@ JSON;
             'content-type' => ['application/json'],
             'vary' => ['Accept'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
@@ -102,7 +102,7 @@ XML;
         $this->assertEquals([
             'content-type' => ['application/xml'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
@@ -121,7 +121,7 @@ XML;
         $this->assertEquals([
             'content-type' => ['application/xml'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertXmlStringEqualsXmlString($expect, $body, $body);
     }
@@ -149,7 +149,7 @@ TEXT;
             'content-type' => ['application/octet-stream'],
             'content-disposition' => ['attachment; filename="foo.txt"'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertEquals('foobar', $body, $body);
     }
@@ -163,7 +163,7 @@ TEXT;
         $this->assertEquals([
             'content-type' => ['application/json'],
             'x-stability' => ['experimental'],
-            'x-operation-id' => ['PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet'],
+            'x-operation-id' => ['tests.controller.foo.application.body_controller.doGet'],
         ], $response->getHeaders(), $body);
         $this->assertJsonStringEqualsJsonString('{"foo": "bar"}', $body, $body);
     }

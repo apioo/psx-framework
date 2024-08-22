@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\Tool;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\OperationId;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Parser\Attribute;
 use PSX\Framework\Controller\ControllerAbstract;
@@ -38,14 +39,17 @@ use PSX\Framework\Model\RoutingRoute;
 class RoutingController extends ControllerAbstract
 {
     private RoutingParserInterface $routingParser;
+    private Attribute\OperationIdBuilderInterface $operationIdBuilder;
 
-    public function __construct(RoutingParserInterface $routingParser)
+    public function __construct(RoutingParserInterface $routingParser, Attribute\OperationIdBuilderInterface $operationIdBuilder)
     {
         $this->routingParser = $routingParser;
+        $this->operationIdBuilder = $operationIdBuilder;
     }
 
     #[Get]
     #[Path('/system/routing')]
+    #[OperationId('system.getRouting')]
     public function show(): RoutingCollection
     {
         $collection = new RoutingCollection();
@@ -72,7 +76,7 @@ class RoutingController extends ControllerAbstract
             $router = new RoutingRoute();
             $router->setMethod($methods[0]);
             $router->setPath($path);
-            $router->setOperationId(Attribute::buildOperationId($source[0], $source[1]));
+            $router->setOperationId($this->operationIdBuilder->build($source[0], $source[1]));
 
             $result[] = $router;
         }

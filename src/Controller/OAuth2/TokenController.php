@@ -22,6 +22,7 @@ namespace PSX\Framework\Controller\OAuth2;
 
 use PSX\Api\Attribute\HeaderParam;
 use PSX\Api\Attribute\Incoming;
+use PSX\Api\Attribute\OperationId;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Model\Passthru;
@@ -95,7 +96,8 @@ class TokenController extends ControllerAbstract
     #[Path('/authorization/token')]
     #[HeaderParam('authorization', Type::STRING)]
     #[Incoming(schema: Passthru::class)]
-    public function doPost(?string $authorization, \stdClass $payload): AccessToken
+    #[OperationId('oauth.token')]
+    public function tokenPost(?string $authorization, \stdClass $payload): AccessToken
     {
         $grant = GrantFactory::factory((array) $payload);
         $parts = explode(' ', $authorization ?? '', 2);

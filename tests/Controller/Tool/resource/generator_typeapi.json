@@ -1,7 +1,7 @@
 {
   "baseUrl": "http://127.0.0.1/",
   "operations": {
-    "PSX.Framework.Controller.OAuth2.AuthorizationController.doGet": {
+    "oauth.authorize": {
       "path": "/authorization/authorize",
       "method": "GET",
       "return": {
@@ -49,55 +49,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Controller.OAuth2.AuthorizationController.doPost": {
-      "path": "/authorization/authorize",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "$ref": "Passthru"
-        }
-      },
-      "arguments": {
-        "response_type": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "client_id": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "redirect_uri": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "scope": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "state": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "PSX.Framework.Controller.OAuth2.CallbackController.doGet": {
+    "oauth.callback": {
       "path": "/authorization/callback",
       "method": "GET",
       "return": {
@@ -139,49 +91,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Controller.OAuth2.CallbackController.doPost": {
-      "path": "/authorization/callback",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "$ref": "Passthru"
-        }
-      },
-      "arguments": {
-        "error": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "error_description": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "code": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "state": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "PSX.Framework.Controller.OAuth2.TokenController.doPost": {
+    "oauth.token": {
       "path": "/authorization/token",
       "method": "POST",
       "return": {
@@ -211,7 +121,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Controller.Tool.DiscoveryController.show": {
+    "system.getLinks": {
       "path": "/system/discovery",
       "method": "GET",
       "return": {
@@ -228,7 +138,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Controller.Tool.GeneratorController.generate": {
+    "system.generate": {
       "path": "/system/generator/:type",
       "method": "GET",
       "return": {
@@ -267,7 +177,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Controller.Tool.RoutingController.show": {
+    "system.getRouting": {
       "path": "/system/routing",
       "method": "GET",
       "return": {
@@ -284,7 +194,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.BodyController.doGet": {
+    "tests.controller.foo.application.body_controller.doGet": {
       "path": "/tests/body",
       "method": "GET",
       "return": {
@@ -308,7 +218,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.DummyController.doGet": {
+    "tests.controller.foo.application.dummy_controller.doGet": {
       "path": "/tests/dummy",
       "method": "GET",
       "return": {
@@ -325,7 +235,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.ExceptionController.doGet": {
+    "tests.controller.foo.application.exception_controller.doGet": {
       "path": "/tests/exception",
       "method": "GET",
       "return": {
@@ -342,7 +252,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.FilterController.doGet": {
+    "tests.controller.foo.application.filter_controller.doGet": {
       "path": "/tests/filter",
       "method": "GET",
       "return": {
@@ -359,7 +269,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doGet": {
+    "tests.controller.foo.application.passthru_controller.doGet": {
       "path": "/tests/passthru",
       "method": "GET",
       "return": {
@@ -376,7 +286,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.PassthruController.doPost": {
+    "tests.controller.foo.application.passthru_controller.doPost": {
       "path": "/tests/passthru",
       "method": "POST",
       "return": {
@@ -400,7 +310,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doGet": {
+    "tests.controller.foo.application.popo_controller.doGet": {
       "path": "/tests/popo/:id",
       "method": "GET",
       "return": {
@@ -430,7 +340,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.PopoController.doPost": {
+    "tests.controller.foo.application.popo_controller.doPost": {
       "path": "/tests/popo/:id",
       "method": "POST",
       "return": {
@@ -460,7 +370,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.RedirectExceptionController.doGet": {
+    "tests.controller.foo.application.redirect_exception_controller.doGet": {
       "path": "/tests/redirect",
       "method": "GET",
       "return": {
@@ -477,7 +387,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doGet": {
+    "tests.controller.foo.application.schema_controller.doGet": {
       "path": "/tests/schema/:name/:type",
       "method": "GET",
       "return": {
@@ -548,7 +458,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPost": {
+    "tests.controller.foo.application.schema_controller.doPost": {
       "path": "/tests/schema/:name/:type",
       "method": "POST",
       "return": {
@@ -592,7 +502,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPut": {
+    "tests.controller.foo.application.schema_controller.doPut": {
       "path": "/tests/schema/:name/:type",
       "method": "PUT",
       "return": {
@@ -636,7 +546,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doDelete": {
+    "tests.controller.foo.application.schema_controller.doDelete": {
       "path": "/tests/schema/:name/:type",
       "method": "DELETE",
       "return": {
@@ -674,7 +584,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.SchemaController.doPatch": {
+    "tests.controller.foo.application.schema_controller.doPatch": {
       "path": "/tests/schema/:name/:type",
       "method": "PATCH",
       "return": {
@@ -718,7 +628,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.StatusCodeExceptionController.doGet": {
+    "tests.controller.foo.application.status_code_exception_controller.doGet": {
       "path": "/tests/status/:code",
       "method": "GET",
       "return": {
@@ -742,7 +652,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doGet": {
+    "tests.controller.foo.application.table_controller.doGet": {
       "path": "/tests/table",
       "method": "GET",
       "return": {
@@ -759,7 +669,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doRow": {
+    "tests.controller.foo.application.table_controller.doRow": {
       "path": "/tests/table/row",
       "method": "GET",
       "return": {
@@ -776,7 +686,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.TableController.doNested": {
+    "tests.controller.foo.application.table_controller.doNested": {
       "path": "/tests/table/nested",
       "method": "GET",
       "return": {
@@ -793,7 +703,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doGet": {
+    "tests.controller.foo.application.type_schema_controller.doGet": {
       "path": "/tests/typeschema/:id",
       "method": "GET",
       "return": {
@@ -823,7 +733,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.Tests.Controller.Foo.Application.TypeSchemaController.doPost": {
+    "tests.controller.foo.application.type_schema_controller.doPost": {
       "path": "/tests/typeschema/:id",
       "method": "POST",
       "return": {
@@ -853,7 +763,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationPopo.getAll": {
+    "app.controller.population_popo.getAll": {
       "path": "/population/popo",
       "method": "GET",
       "return": {
@@ -885,7 +795,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationPopo.get": {
+    "app.controller.population_popo.get": {
       "path": "/population/popo/:id",
       "method": "GET",
       "return": {
@@ -909,7 +819,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationPopo.create": {
+    "app.controller.population_popo.create": {
       "path": "/population/popo",
       "method": "POST",
       "return": {
@@ -933,7 +843,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationPopo.update": {
+    "app.controller.population_popo.update": {
       "path": "/population/popo/:id",
       "method": "PUT",
       "return": {
@@ -963,7 +873,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationPopo.delete": {
+    "app.controller.population_popo.delete": {
       "path": "/population/popo/:id",
       "method": "DELETE",
       "return": {
@@ -987,7 +897,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationTypeSchema.getAll": {
+    "app.controller.population_type_schema.getAll": {
       "path": "/population/typeschema",
       "method": "GET",
       "return": {
@@ -1017,7 +927,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationTypeSchema.get": {
+    "app.controller.population_type_schema.get": {
       "path": "/population/typeschema",
       "method": "POST",
       "return": {
@@ -1041,7 +951,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationTypeSchema.create": {
+    "app.controller.population_type_schema.create": {
       "path": "/population/typeschema/:id",
       "method": "GET",
       "return": {
@@ -1065,7 +975,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationTypeSchema.update": {
+    "app.controller.population_type_schema.update": {
       "path": "/population/typeschema/:id",
       "method": "PUT",
       "return": {
@@ -1095,7 +1005,7 @@
       "authorization": true,
       "tags": []
     },
-    "PSX.Framework.App.Controller.PopulationTypeSchema.delete": {
+    "app.controller.population_type_schema.delete": {
       "path": "/population/typeschema/:id",
       "method": "DELETE",
       "return": {

@@ -21,6 +21,7 @@
 namespace PSX\Framework\Controller\OAuth2;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\OperationId;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\QueryParam;
@@ -62,7 +63,8 @@ class AuthorizationController extends ControllerAbstract
     #[QueryParam('redirect_uri', Type::STRING)]
     #[QueryParam('scope', Type::STRING)]
     #[QueryParam('state', Type::STRING)]
-    public function doGet(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
+    #[OperationId('oauth.authorize')]
+    public function authorizeGet(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
     }
@@ -74,7 +76,8 @@ class AuthorizationController extends ControllerAbstract
     #[QueryParam('redirect_uri', Type::STRING)]
     #[QueryParam('scope', Type::STRING)]
     #[QueryParam('state', Type::STRING)]
-    public function doPost(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
+    #[OperationId('oauth.authorize')]
+    public function authorizePost(?string $response_type, ?string $client_id, ?string $redirect_uri, ?string $scope, ?string $state): mixed
     {
         return $this->execute($response_type, $client_id, $redirect_uri, $scope, $state);
     }

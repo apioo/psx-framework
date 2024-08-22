@@ -15,6 +15,8 @@ use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\Console\PushCommand;
 use PSX\Api\GeneratorFactory;
+use PSX\Api\Parser\Attribute\OperationIdBuilder;
+use PSX\Api\Parser\Attribute\OperationIdBuilderInterface;
 use PSX\Api\Repository;
 use PSX\Api\Scanner\FilterFactory;
 use PSX\Api\Scanner\FilterFactoryInterface;
@@ -185,6 +187,11 @@ return static function (ContainerConfigurator $container) {
             param('psx_debug'),
         ]);
     $services->alias(RoutingParserInterface::class, CachedParser::class)
+        ->public();
+
+    $services->set(OperationIdBuilder::class)
+        ->arg('$debug', param('psx_debug'));
+    $services->alias(OperationIdBuilderInterface::class, OperationIdBuilder::class)
         ->public();
 
     $services->set(Loader::class);

@@ -24,7 +24,9 @@ use PSX\Framework\Loader\RoutingParserInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -46,21 +48,36 @@ class RouteCommand extends Command
         $this->routingParser = $routingParser;
     }
 
+    protected function configure(): void
+    {
+        $this
+            ->addOption('json', 'j', InputOption::VALUE_NONE, 'Returns JSON');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $collection = $this->routingParser->getCollection();
-        $rows       = [];
 
-        foreach ($collection as $route) {
-            $rows[] = [implode('|', $route[0]), $route[1], implode('::', $route[2])];
+        if ($input->hasOption('json')) {
+            $rows = [];
+            foreach ($collection as $route) {
+                $rows[] = $route;
+            }
+
+            $output->writeln(\json_encode($rows, JSON_PRETTY_PRINT));
+        } else {
+            $rows = [];
+            foreach ($collection as $route) {
+                $rows[] = [implode('|', $route[0]), $route[1], implode('::', $route[2])];
+            }
+
+            $table = new Table($output);
+            $table
+                ->setStyle('compact')
+                ->setRows($rows);
+
+            $table->render();
         }
-
-        $table = new Table($output);
-        $table
-            ->setStyle('compact')
-            ->setRows($rows);
-
-        $table->render();
 
         return 0;
     }
