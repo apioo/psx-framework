@@ -40,7 +40,7 @@ class RouteCommandTest extends ControllerTestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            '--json'
+            '--json' => '1'
         ]);
 
         $actual = trim($commandTester->getDisplay());
