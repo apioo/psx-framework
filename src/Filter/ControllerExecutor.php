@@ -120,18 +120,20 @@ class ControllerExecutor implements FilterInterface
     private function buildArguments(OperationInterface $operation, RequestInterface $request, DefinitionsInterface $definitions): array
     {
         $result = [];
-        foreach ($operation->getArguments()->getAll() as $name => $argument) {
+        $arguments = $this->builder->buildArguments($this->controller::class, $this->methodName);
+        foreach ($arguments as $parameterName => $realName) {
+            $argument = $operation->getArguments()->get($realName);
             if ($argument->getIn() === 'path') {
-                $value = $this->context->getParameter($name);
-                $result[$name] = $this->castToType($argument->getSchema(), $value);
+                $value = $this->context->getParameter($realName);
+                $result[$parameterName] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'header') {
-                $value = $request->getHeader(HeaderName::convert($name));
-                $result[$name] = $this->castToType($argument->getSchema(), $value);
+                $value = $request->getHeader($realName);
+                $result[$parameterName] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'query') {
-                $value = $request->getUri()->getParameter($name);
-                $result[$name] = $this->castToType($argument->getSchema(), $value);
+                $value = $request->getUri()->getParameter($realName);
+                $result[$parameterName] = $this->castToType($argument->getSchema(), $value);
             } elseif ($argument->getIn() === 'body') {
-                $result[$name] = $this->parseRequest($argument->getSchema(), $request, $definitions);
+                $result[$parameterName] = $this->parseRequest($argument->getSchema(), $request, $definitions);
             }
         }
 
