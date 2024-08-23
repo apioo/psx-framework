@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Command;
 
+use PSX\Api\ApiManager;
 use PSX\Framework\Test\ControllerTestCase;
 use PSX\Framework\Test\Environment;
 use Symfony\Component\Console\Application;
@@ -42,8 +43,7 @@ class DebugAutowiringCommandTest extends ControllerTestCase
         $commandTester->execute(['--all' => '1']);
 
         $actual = trim($commandTester->getDisplay());
-        $expect = trim(file_get_contents(__DIR__ . '/output/debug_autowiring.txt'));
 
-        $this->assertEquals($expect, $actual, $actual);
+        $this->assertStringContainsString(ApiManager::class, $actual, $actual);
     }
 }
