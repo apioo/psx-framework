@@ -66,9 +66,9 @@ class ControllerExecutor implements FilterInterface
     private RequestReader $requestReader;
     private ResponseWriter $responseWriter;
     private ApiManagerInterface $apiManager;
-    private Attribute\OperationIdBuilderInterface $operationIdBuilder;
+    private Attribute\BuilderInterface $builder;
 
-    public function __construct(object $controller, string $methodName, Context $context, RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager, Attribute\OperationIdBuilderInterface $operationIdBuilder)
+    public function __construct(object $controller, string $methodName, Context $context, RequestReader $requestReader, ResponseWriter $responseWriter, ApiManagerInterface $apiManager, Attribute\BuilderInterface $builder)
     {
         $this->controller = $controller;
         $this->methodName = $methodName;
@@ -76,14 +76,14 @@ class ControllerExecutor implements FilterInterface
         $this->requestReader = $requestReader;
         $this->responseWriter = $responseWriter;
         $this->apiManager = $apiManager;
-        $this->operationIdBuilder = $operationIdBuilder;
+        $this->builder = $builder;
     }
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
         $specification = $this->apiManager->getApi(get_class($this->controller));
 
-        $operationId = $this->operationIdBuilder->build(get_class($this->controller), $this->methodName);
+        $operationId = $this->builder->buildOperationId(get_class($this->controller), $this->methodName);
         $operation = $specification->getOperations()->get($operationId);
 
         $response->setStatus($operation->getReturn()->getCode());

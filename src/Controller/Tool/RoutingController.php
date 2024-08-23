@@ -39,12 +39,12 @@ use PSX\Framework\Model\RoutingRoute;
 class RoutingController extends ControllerAbstract
 {
     private RoutingParserInterface $routingParser;
-    private Attribute\OperationIdBuilderInterface $operationIdBuilder;
+    private Attribute\BuilderInterface $builder;
 
-    public function __construct(RoutingParserInterface $routingParser, Attribute\OperationIdBuilderInterface $operationIdBuilder)
+    public function __construct(RoutingParserInterface $routingParser, Attribute\BuilderInterface $builder)
     {
         $this->routingParser = $routingParser;
-        $this->operationIdBuilder = $operationIdBuilder;
+        $this->builder = $builder;
     }
 
     #[Get]
@@ -76,7 +76,7 @@ class RoutingController extends ControllerAbstract
             $router = new RoutingRoute();
             $router->setMethod($methods[0]);
             $router->setPath($path);
-            $router->setOperationId($this->operationIdBuilder->build($source[0], $source[1]));
+            $router->setOperationId($this->builder->buildOperationId($source[0], $source[1]));
 
             $result[] = $router;
         }
