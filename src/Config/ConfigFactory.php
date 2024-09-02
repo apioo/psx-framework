@@ -56,7 +56,7 @@ class ConfigFactory
             'psx_messenger'           => 'in-memory://',
             'psx_migration_namespace' => 'App\\Migrations',
             'psx_cors_origin'         => '*',
-            'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type'],
+            'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type', 'User-Agent'],
             'psx_supported_writer'    => [
                 WriterInterface::ATOM,
                 WriterInterface::FORM,
