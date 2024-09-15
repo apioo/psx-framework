@@ -24,6 +24,8 @@ use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
+use PSX\Data\Reader;
+use PSX\Data\Reader\Xml;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Exception\InvalidFormatException;
 use PSX\DateTime\LocalDate;
@@ -38,6 +40,7 @@ use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
+use PSX\Schema\ContentType;
 use PSX\Schema\DefinitionsInterface;
 use PSX\Schema\Exception\TypeNotFoundException;
 use PSX\Schema\Format;
@@ -187,8 +190,19 @@ class ControllerExecutor implements FilterInterface
     /**
      * @throws TypeNotFoundException
      */
-    private function parseRequest(TypeInterface $type, RequestInterface $request, DefinitionsInterface $definitions): mixed
+    private function parseRequest(TypeInterface|ContentType $type, RequestInterface $request, DefinitionsInterface $definitions): mixed
     {
+        if ($type instanceof ContentType) {
+            return match ($type) {
+                ContentType::BINARY => $request->getBody(),
+                ContentType::FORM => $this->requestReader->getBody($request, Reader\Form::class),
+                ContentType::JSON => $this->requestReader->getBody($request, Reader\Json::class),
+                ContentType::MULTIPART => $this->requestReader->getBody($request, Reader\Multipart::class),
+                ContentType::TEXT => (string) $request->getBody(),
+                ContentType::XML => $this->requestReader->getBody($request, Reader\Xml::class),
+            };
+        }
+
         if (!$type instanceof ReferenceType) {
             return null;
         }
