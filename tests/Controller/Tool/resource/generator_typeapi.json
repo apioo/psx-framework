@@ -218,6 +218,126 @@
       "authorization": true,
       "tags": []
     },
+    "tests.controller.foo.application.content_type_controller.binary": {
+      "path": "/tests/content_type/binary",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "application/octet-stream"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "application/octet-stream"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "tests.controller.foo.application.content_type_controller.form": {
+      "path": "/tests/content_type/form",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "application/x-www-form-urlencoded"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "tests.controller.foo.application.content_type_controller.json": {
+      "path": "/tests/content_type/json",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "application/json"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "application/json"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "tests.controller.foo.application.content_type_controller.multipart": {
+      "path": "/tests/content_type/multipart",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "multipart/form-data"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "multipart/form-data"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "tests.controller.foo.application.content_type_controller.text": {
+      "path": "/tests/content_type/text",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "text/plain"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "text/plain"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
+    "tests.controller.foo.application.content_type_controller.xml": {
+      "path": "/tests/content_type/xml",
+      "method": "POST",
+      "return": {
+        "code": 200,
+        "contentType": "application/xml"
+      },
+      "arguments": {
+        "body": {
+          "in": "body",
+          "contentType": "application/xml"
+        }
+      },
+      "throws": [],
+      "description": "",
+      "stability": 1,
+      "security": [],
+      "authorization": true,
+      "tags": []
+    },
     "tests.controller.foo.application.dummy_controller.doGet": {
       "path": "/tests/dummy",
       "method": "GET",

@@ -20,12 +20,11 @@
 
 namespace PSX\Framework\Filter;
 
-use PSX\Api\ApiManager;
 use PSX\Api\ApiManagerInterface;
 use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
+use PSX\Data\Body;
 use PSX\Data\Reader;
-use PSX\Data\Reader\Xml;
 use PSX\DateTime\Duration;
 use PSX\DateTime\Exception\InvalidFormatException;
 use PSX\DateTime\LocalDate;
@@ -35,7 +34,7 @@ use PSX\DateTime\Period;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
-use PSX\Framework\Util\HeaderName;
+use PSX\Http\Exception\UnsupportedMediaTypeException;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
@@ -195,11 +194,11 @@ class ControllerExecutor implements FilterInterface
         if ($type instanceof ContentType) {
             return match ($type) {
                 ContentType::BINARY => $request->getBody(),
-                ContentType::FORM => $this->requestReader->getBody($request, Reader\Form::class),
-                ContentType::JSON => $this->requestReader->getBody($request, Reader\Json::class),
-                ContentType::MULTIPART => $this->requestReader->getBody($request, Reader\Multipart::class),
+                ContentType::FORM => Body\Form::from($this->requestReader->getBody($request, Reader\Form::class)),
+                ContentType::JSON => Body\Json::from($this->requestReader->getBody($request, Reader\Json::class)),
+                ContentType::MULTIPART => $this->getMultipart($this->requestReader->getBody($request, Reader\Multipart::class)),
                 ContentType::TEXT => (string) $request->getBody(),
-                ContentType::XML => $this->requestReader->getBody($request, Reader\Xml::class),
+                ContentType::XML => $this->getXml($request),
             };
         }
 
@@ -215,5 +214,21 @@ class ControllerExecutor implements FilterInterface
         }
 
         return $data;
+    }
+
+    private function getMultipart(mixed $return): Body\Multipart
+    {
+        if (!$return instanceof Body\Multipart) {
+            throw new UnsupportedMediaTypeException('Provided an invalid content type, must be multipart/form-data');
+        }
+
+        return $return;
+    }
+
+    private function getXml(RequestInterface $request): \DOMDocument
+    {
+        $dom = new \DOMDocument();
+        $dom->loadXML((string) $request->getBody());
+        return $dom;
     }
 }

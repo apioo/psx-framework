@@ -2,192 +2,222 @@
   "routings": [
     {
       "method": "GET",
-      "path": "\/authorization\/authorize",
+      "path": "/authorization/authorize",
       "operationId": "oauth.authorize"
     },
     {
       "method": "POST",
-      "path": "\/authorization\/authorize",
+      "path": "/authorization/authorize",
       "operationId": "oauth.authorize"
     },
     {
       "method": "GET",
-      "path": "\/authorization\/callback",
+      "path": "/authorization/callback",
       "operationId": "oauth.callback"
     },
     {
       "method": "POST",
-      "path": "\/authorization\/callback",
+      "path": "/authorization/callback",
       "operationId": "oauth.callback"
     },
     {
       "method": "POST",
-      "path": "\/authorization\/token",
+      "path": "/authorization/token",
       "operationId": "oauth.token"
     },
     {
       "method": "GET",
-      "path": "\/system\/discovery",
+      "path": "/system/discovery",
       "operationId": "system.getLinks"
     },
     {
       "method": "GET",
-      "path": "\/system\/generator\/:type",
+      "path": "/system/generator/:type",
       "operationId": "system.generate"
     },
     {
       "method": "GET",
-      "path": "\/system\/routing",
+      "path": "/system/routing",
       "operationId": "system.getRouting"
     },
     {
       "method": "GET",
-      "path": "\/tests\/body",
+      "path": "/tests/body",
       "operationId": "tests.controller.foo.application.body_controller.doGet"
     },
     {
+      "method": "POST",
+      "path": "/tests/content_type/binary",
+      "operationId": "tests.controller.foo.application.content_type_controller.binary"
+    },
+    {
+      "method": "POST",
+      "path": "/tests/content_type/form",
+      "operationId": "tests.controller.foo.application.content_type_controller.form"
+    },
+    {
+      "method": "POST",
+      "path": "/tests/content_type/json",
+      "operationId": "tests.controller.foo.application.content_type_controller.json"
+    },
+    {
+      "method": "POST",
+      "path": "/tests/content_type/multipart",
+      "operationId": "tests.controller.foo.application.content_type_controller.multipart"
+    },
+    {
+      "method": "POST",
+      "path": "/tests/content_type/text",
+      "operationId": "tests.controller.foo.application.content_type_controller.text"
+    },
+    {
+      "method": "POST",
+      "path": "/tests/content_type/xml",
+      "operationId": "tests.controller.foo.application.content_type_controller.xml"
+    },
+    {
       "method": "GET",
-      "path": "\/tests\/dummy",
+      "path": "/tests/dummy",
       "operationId": "tests.controller.foo.application.dummy_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/exception",
+      "path": "/tests/exception",
       "operationId": "tests.controller.foo.application.exception_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/filter",
+      "path": "/tests/filter",
       "operationId": "tests.controller.foo.application.filter_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/passthru",
+      "path": "/tests/passthru",
       "operationId": "tests.controller.foo.application.passthru_controller.doGet"
     },
     {
       "method": "POST",
-      "path": "\/tests\/passthru",
+      "path": "/tests/passthru",
       "operationId": "tests.controller.foo.application.passthru_controller.doPost"
     },
     {
       "method": "GET",
-      "path": "\/tests\/popo\/:id",
+      "path": "/tests/popo/:id",
       "operationId": "tests.controller.foo.application.popo_controller.doGet"
     },
     {
       "method": "POST",
-      "path": "\/tests\/popo\/:id",
+      "path": "/tests/popo/:id",
       "operationId": "tests.controller.foo.application.popo_controller.doPost"
     },
     {
       "method": "GET",
-      "path": "\/tests\/redirect",
+      "path": "/tests/redirect",
       "operationId": "tests.controller.foo.application.redirect_exception_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "operationId": "tests.controller.foo.application.schema_controller.doGet"
     },
     {
       "method": "POST",
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "operationId": "tests.controller.foo.application.schema_controller.doPost"
     },
     {
       "method": "PUT",
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "operationId": "tests.controller.foo.application.schema_controller.doPut"
     },
     {
       "method": "DELETE",
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "operationId": "tests.controller.foo.application.schema_controller.doDelete"
     },
     {
       "method": "PATCH",
-      "path": "\/tests\/schema\/:name\/:type",
+      "path": "/tests/schema/:name/:type",
       "operationId": "tests.controller.foo.application.schema_controller.doPatch"
     },
     {
       "method": "GET",
-      "path": "\/tests\/status\/:code",
+      "path": "/tests/status/:code",
       "operationId": "tests.controller.foo.application.status_code_exception_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/table",
+      "path": "/tests/table",
       "operationId": "tests.controller.foo.application.table_controller.doGet"
     },
     {
       "method": "GET",
-      "path": "\/tests\/table\/row",
+      "path": "/tests/table/row",
       "operationId": "tests.controller.foo.application.table_controller.doRow"
     },
     {
       "method": "GET",
-      "path": "\/tests\/table\/nested",
+      "path": "/tests/table/nested",
       "operationId": "tests.controller.foo.application.table_controller.doNested"
     },
     {
       "method": "GET",
-      "path": "\/tests\/typeschema\/:id",
+      "path": "/tests/typeschema/:id",
       "operationId": "tests.controller.foo.application.type_schema_controller.doGet"
     },
     {
       "method": "POST",
-      "path": "\/tests\/typeschema\/:id",
+      "path": "/tests/typeschema/:id",
       "operationId": "tests.controller.foo.application.type_schema_controller.doPost"
     },
     {
       "method": "GET",
-      "path": "\/population\/popo",
+      "path": "/population/popo",
       "operationId": "app.controller.population_popo.getAll"
     },
     {
       "method": "GET",
-      "path": "\/population\/popo\/:id",
+      "path": "/population/popo/:id",
       "operationId": "app.controller.population_popo.get"
     },
     {
       "method": "POST",
-      "path": "\/population\/popo",
+      "path": "/population/popo",
       "operationId": "app.controller.population_popo.create"
     },
     {
       "method": "PUT",
-      "path": "\/population\/popo\/:id",
+      "path": "/population/popo/:id",
       "operationId": "app.controller.population_popo.update"
     },
     {
       "method": "DELETE",
-      "path": "\/population\/popo\/:id",
+      "path": "/population/popo/:id",
       "operationId": "app.controller.population_popo.delete"
     },
     {
       "method": "GET",
-      "path": "\/population\/typeschema",
+      "path": "/population/typeschema",
       "operationId": "app.controller.population_type_schema.getAll"
     },
     {
       "method": "POST",
-      "path": "\/population\/typeschema",
+      "path": "/population/typeschema",
       "operationId": "app.controller.population_type_schema.get"
     },
     {
       "method": "GET",
-      "path": "\/population\/typeschema\/:id",
+      "path": "/population/typeschema/:id",
       "operationId": "app.controller.population_type_schema.create"
     },
     {
       "method": "PUT",
-      "path": "\/population\/typeschema\/:id",
+      "path": "/population/typeschema/:id",
       "operationId": "app.controller.population_type_schema.update"
     },
     {
       "method": "DELETE",
-      "path": "\/population\/typeschema\/:id",
+      "path": "/population/typeschema/:id",
       "operationId": "app.controller.population_type_schema.delete"
     }
   ]

@@ -20,14 +20,18 @@
 
 namespace PSX\Framework\Http;
 
+use PSX\Data\Body;
 use PSX\Data\GraphTraverser;
+use PSX\Data\Multipart\File;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Data\Writer;
 use PSX\Data\WriterInterface;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Http\RequestInterface;
+use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
+use PSX\Http\Stream\LazyStream;
 use PSX\Http\Stream\StringStream;
 use PSX\Http\StreamInterface;
 use PSX\Http\Writer as HttpWriter;
@@ -92,14 +96,18 @@ class ResponseWriter
             $writer = null;
             if ($body instanceof HttpWriter\WriterInterface) {
                 $writer = $body;
-            } elseif ($body instanceof \DOMDocument) {
-                $writer = new HttpWriter\Xml($body);
-            } elseif ($body instanceof \SimpleXMLElement) {
+            } elseif ($body instanceof \DOMDocument || $body instanceof \SimpleXMLElement) {
                 $writer = new HttpWriter\Xml($body);
             } elseif ($body instanceof StreamInterface) {
                 $writer = new HttpWriter\Stream($body);
             } elseif (is_string($body)) {
                 $writer = new HttpWriter\Writer($body);
+            } elseif ($body instanceof Body\Json) {
+                $writer = new HttpWriter\Json($body);
+            } elseif ($body instanceof Body\Form) {
+                $writer = new HttpWriter\Form($body->getAll());
+            } elseif ($body instanceof Body\Multipart) {
+                $writer = $this->buildMultipartWriter($body);
             }
 
             // set new response body since we want to discard every data which
@@ -187,5 +195,34 @@ class ResponseWriter
         });
 
         return $options;
+    }
+
+    private function buildMultipartWriter(Body\Multipart $body): HttpWriter\Multipart
+    {
+        $writer = new HttpWriter\Multipart('form-data');
+
+        foreach ($body->getAll() as $name => $value) {
+            if ($value instanceof File) {
+                $file = $value->getTmpName();
+                if (!is_file($file)) {
+                    throw new \RuntimeException('Provided multipart file "' . $file . '" does not exist');
+                }
+
+                $headers = [
+                    'Content-Type' => $value->getType() ?: 'application/octet-stream',
+                    'Content-Disposition' => 'form-data; name="' . $name . '"; filename="' . $value->getName() . '"',
+                ];
+
+                $writer->addPart(new Response(200, $headers, new LazyStream($file, 'rb')));
+            } else {
+                $headers = [
+                    'Content-Disposition' => 'form-data; name="' . $name . '"',
+                ];
+
+                $writer->addPart(new Response(200, $headers, new StringStream((string) $value)));
+            }
+        }
+
+        return $writer;
     }
 }

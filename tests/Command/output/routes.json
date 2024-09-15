@@ -106,6 +106,72 @@
   ],
   [
     [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/binary",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "binary"
+    ]
+  ],
+  [
+    [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/form",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "form"
+    ]
+  ],
+  [
+    [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/json",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "json"
+    ]
+  ],
+  [
+    [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/multipart",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "multipart"
+    ]
+  ],
+  [
+    [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/text",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "text"
+    ]
+  ],
+  [
+    [
+      "POST",
+      "OPTIONS"
+    ],
+    "\/tests\/content_type\/xml",
+    [
+      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
+      "xml"
+    ]
+  ],
+  [
+    [
       "GET",
       "OPTIONS",
       "HEAD"
