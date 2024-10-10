@@ -72,11 +72,6 @@
             <operationId type="string">tests.controller.foo.application.content_type_controller.text</operationId>
         </entry>
         <entry type="object">
-            <method type="string">POST</method>
-            <path type="string">/tests/content_type/xml</path>
-            <operationId type="string">tests.controller.foo.application.content_type_controller.xml</operationId>
-        </entry>
-        <entry type="object">
             <method type="string">GET</method>
             <path type="string">/tests/dummy</path>
             <operationId type="string">tests.controller.foo.application.dummy_controller.doGet</operationId>
