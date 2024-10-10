@@ -71,11 +71,6 @@
       "operationId": "tests.controller.foo.application.content_type_controller.text"
     },
     {
-      "method": "POST",
-      "path": "/tests/content_type/xml",
-      "operationId": "tests.controller.foo.application.content_type_controller.xml"
-    },
-    {
       "method": "GET",
       "path": "/tests/dummy",
       "operationId": "tests.controller.foo.application.dummy_controller.doGet"

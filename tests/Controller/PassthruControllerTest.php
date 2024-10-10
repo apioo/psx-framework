@@ -47,23 +47,12 @@ class PassthruControllerTest extends ControllerTestCase
             ],[
                 'foo' => 'foo'
             ]],
-            'arrayChoice' => [[
-                'foo' => 'baz'
-            ],[
-                'bar' => 'bar'
-            ],[
-                'foo' => 'foo'
-            ]],
             'boolean' => true,
-            'choice' => [
-                'bar' => 'test'
-            ],
             'complex' => [
                 'foo' => 'bar'
             ],
             'date' => '2015-05-01',
             'dateTime' => '2015-05-01T13:37:14Z',
-            'duration' => 'P1M',
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',

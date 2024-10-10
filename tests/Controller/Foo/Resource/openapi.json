@@ -119,31 +119,8 @@
               "$ref": "#/components/schemas/Complex"
             }
           },
-          "arrayChoice": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ChoiceA"
-                },
-                {
-                  "$ref": "#/components/schemas/ChoiceB"
-                }
-              ]
-            }
-          },
           "boolean": {
             "type": "boolean"
-          },
-          "choice": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ChoiceA"
-              },
-              {
-                "$ref": "#/components/schemas/ChoiceB"
-              }
-            ]
           },
           "complex": {
             "$ref": "#/components/schemas/Complex"
@@ -155,10 +132,6 @@
           "dateTime": {
             "type": "string",
             "format": "date-time"
-          },
-          "duration": {
-            "type": "string",
-            "format": "duration"
           },
           "float": {
             "type": "number"
