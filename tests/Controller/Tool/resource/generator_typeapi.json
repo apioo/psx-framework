@@ -7,7 +7,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
@@ -55,7 +56,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
@@ -97,7 +99,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "AccessToken"
+          "type": "reference",
+          "target": "AccessToken"
         }
       },
       "arguments": {
@@ -110,7 +113,8 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Passthru"
+            "type": "reference",
+            "target": "Passthru"
           }
         }
       },
@@ -127,7 +131,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "DiscoveryCollection"
+          "type": "reference",
+          "target": "DiscoveryCollection"
         }
       },
       "arguments": [],
@@ -144,7 +149,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
@@ -183,7 +189,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "RoutingCollection"
+          "type": "reference",
+          "target": "RoutingCollection"
         }
       },
       "arguments": [],
@@ -200,7 +207,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
@@ -323,12 +331,18 @@
       "method": "POST",
       "return": {
         "code": 200,
-        "contentType": "application/xml"
+        "schema": {
+          "type": "reference",
+          "target": "DOMDocument"
+        }
       },
       "arguments": {
         "body": {
           "in": "body",
-          "contentType": "application/xml"
+          "schema": {
+            "type": "reference",
+            "target": "DOMDocument"
+          }
         }
       },
       "throws": [],
@@ -344,7 +358,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -361,7 +376,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -378,7 +394,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -395,7 +412,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -412,14 +430,16 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Passthru"
+            "type": "reference",
+            "target": "Passthru"
           }
         }
       },
@@ -436,7 +456,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Property"
+          "type": "reference",
+          "target": "Property"
         }
       },
       "arguments": {
@@ -466,7 +487,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Property"
+          "type": "reference",
+          "target": "Property"
         }
       },
       "arguments": {
@@ -479,7 +501,8 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Property"
+            "type": "reference",
+            "target": "Property"
           }
         }
       },
@@ -496,7 +519,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -513,7 +537,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Collection"
+          "type": "reference",
+          "target": "Collection"
         }
       },
       "arguments": {
@@ -521,19 +546,12 @@
           "in": "path",
           "schema": {
             "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
+            "type": "string"
           }
         },
         "type": {
           "in": "path",
           "schema": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
             "type": "string"
           }
         },
@@ -559,15 +577,15 @@
         "date": {
           "in": "query",
           "schema": {
-            "format": "date",
-            "type": "string"
+            "type": "string",
+            "format": "date"
           }
         },
         "dateTime": {
           "in": "query",
           "schema": {
-            "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -584,7 +602,8 @@
       "return": {
         "code": 201,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -592,26 +611,20 @@
           "in": "path",
           "schema": {
             "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
+            "type": "string"
           }
         },
         "type": {
           "in": "path",
           "schema": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
             "type": "string"
           }
         },
         "record": {
           "in": "body",
           "schema": {
-            "$ref": "Create"
+            "type": "reference",
+            "target": "Create"
           }
         }
       },
@@ -628,7 +641,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -636,26 +650,20 @@
           "in": "path",
           "schema": {
             "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
+            "type": "string"
           }
         },
         "type": {
           "in": "path",
           "schema": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
             "type": "string"
           }
         },
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Update"
+            "type": "reference",
+            "target": "Update"
           }
         }
       },
@@ -672,7 +680,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -680,19 +689,12 @@
           "in": "path",
           "schema": {
             "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
+            "type": "string"
           }
         },
         "type": {
           "in": "path",
           "schema": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
             "type": "string"
           }
         }
@@ -710,7 +712,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -718,26 +721,20 @@
           "in": "path",
           "schema": {
             "description": "Name parameter",
-            "type": "string",
-            "pattern": "[A-z]+",
-            "minLength": 0,
-            "maxLength": 16
+            "type": "string"
           }
         },
         "type": {
           "in": "path",
           "schema": {
-            "enum": [
-              "foo",
-              "bar"
-            ],
             "type": "string"
           }
         },
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Patch"
+            "type": "reference",
+            "target": "Patch"
           }
         }
       },
@@ -754,7 +751,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": {
@@ -778,7 +776,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -795,7 +794,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -812,7 +812,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Passthru"
+          "type": "reference",
+          "target": "Passthru"
         }
       },
       "arguments": [],
@@ -829,7 +830,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Property"
+          "type": "reference",
+          "target": "Property"
         }
       },
       "arguments": {
@@ -859,7 +861,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Property"
+          "type": "reference",
+          "target": "Property"
         }
       },
       "arguments": {
@@ -872,7 +875,8 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Property"
+            "type": "reference",
+            "target": "Property"
           }
         }
       },
@@ -889,7 +893,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "PopulationCollection"
+          "type": "reference",
+          "target": "PopulationCollection"
         }
       },
       "arguments": {
@@ -921,7 +926,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Population"
+          "type": "reference",
+          "target": "Population"
         }
       },
       "arguments": {
@@ -945,14 +951,16 @@
       "return": {
         "code": 201,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Population"
+            "type": "reference",
+            "target": "Population"
           }
         }
       },
@@ -969,7 +977,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -982,7 +991,8 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Population"
+            "type": "reference",
+            "target": "Population"
           }
         }
       },
@@ -999,7 +1009,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -1023,7 +1034,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Collection"
+          "type": "reference",
+          "target": "Collection"
         }
       },
       "arguments": {
@@ -1053,14 +1065,16 @@
       "return": {
         "code": 201,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Entity"
+            "type": "reference",
+            "target": "Entity"
           }
         }
       },
@@ -1077,7 +1091,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Entity"
+          "type": "reference",
+          "target": "Entity"
         }
       },
       "arguments": {
@@ -1101,7 +1116,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -1114,7 +1130,8 @@
         "payload": {
           "in": "body",
           "schema": {
-            "$ref": "Entity"
+            "type": "reference",
+            "target": "Entity"
           }
         }
       },
@@ -1131,7 +1148,8 @@
       "return": {
         "code": 200,
         "schema": {
-          "$ref": "Message"
+          "type": "reference",
+          "target": "Message"
         }
       },
       "arguments": {
@@ -1152,7 +1170,7 @@
   },
   "definitions": {
     "AccessToken": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "accessToken": {
           "type": "string"
@@ -1175,46 +1193,41 @@
       }
     },
     "Any": {
-      "type": "object",
-      "additionalProperties": {
+      "type": "map",
+      "schema": {
         "type": "string"
       }
     },
     "ChoiceA": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "foo": {
           "type": "string"
         }
-      },
-      "required": [
-        "foo"
-      ]
+      }
     },
     "ChoiceB": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "bar": {
           "type": "string"
         }
-      },
-      "required": [
-        "bar"
-      ]
+      }
     },
     "Collection": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "entry": {
           "type": "array",
-          "items": {
-            "$generic": "Entry"
+          "schema": {
+            "type": "generic",
+            "name": "Entry"
           }
         }
       }
     },
     "Complex": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "foo": {
           "type": "string"
@@ -1222,26 +1235,249 @@
       }
     },
     "Create": {
-      "$extends": "Entry",
-      "type": "object",
-      "required": [
-        "title",
-        "date"
-      ]
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "Entry"
+      }
+    },
+    "DOMDocument": {
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "DOMNode"
+      },
+      "properties": {
+        "doctype": {
+          "type": "reference",
+          "target": "DOMDocumentType"
+        },
+        "implementation": {
+          "type": "reference",
+          "target": "DOMImplementation"
+        },
+        "documentElement": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "actualEncoding": {
+          "type": "string"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "xmlEncoding": {
+          "type": "string"
+        },
+        "standalone": {
+          "type": "boolean"
+        },
+        "xmlStandalone": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string"
+        },
+        "xmlVersion": {
+          "type": "string"
+        },
+        "strictErrorChecking": {
+          "type": "boolean"
+        },
+        "documentURI": {
+          "type": "string"
+        },
+        "config": {
+          "type": "any"
+        },
+        "formatOutput": {
+          "type": "boolean"
+        },
+        "validateOnParse": {
+          "type": "boolean"
+        },
+        "resolveExternals": {
+          "type": "boolean"
+        },
+        "preserveWhiteSpace": {
+          "type": "boolean"
+        },
+        "recover": {
+          "type": "boolean"
+        },
+        "substituteEntities": {
+          "type": "boolean"
+        },
+        "firstElementChild": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "lastElementChild": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "childElementCount": {
+          "type": "integer"
+        }
+      }
+    },
+    "DOMDocumentType": {
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "DOMNode"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "entities": {
+          "type": "reference",
+          "target": "DOMNamedNodeMap"
+        },
+        "notations": {
+          "type": "reference",
+          "target": "DOMNamedNodeMap"
+        },
+        "publicId": {
+          "type": "string"
+        },
+        "systemId": {
+          "type": "string"
+        },
+        "internalSubset": {
+          "type": "string"
+        }
+      }
+    },
+    "DOMElement": {
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "DOMNode"
+      },
+      "properties": {
+        "tagName": {
+          "type": "string"
+        },
+        "schemaTypeInfo": {
+          "type": "any"
+        },
+        "firstElementChild": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "lastElementChild": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "childElementCount": {
+          "type": "integer"
+        },
+        "previousElementSibling": {
+          "type": "reference",
+          "target": "DOMElement"
+        },
+        "nextElementSibling": {
+          "type": "reference",
+          "target": "DOMElement"
+        }
+      }
+    },
+    "DOMImplementation": {
+      "type": "struct"
+    },
+    "DOMNamedNodeMap": {
+      "type": "struct",
+      "properties": {
+        "length": {
+          "type": "integer"
+        }
+      }
+    },
+    "DOMNode": {
+      "type": "struct",
+      "properties": {
+        "nodeName": {
+          "type": "string"
+        },
+        "nodeValue": {
+          "type": "string"
+        },
+        "nodeType": {
+          "type": "integer"
+        },
+        "parentNode": {
+          "type": "reference",
+          "target": "DOMNode"
+        },
+        "childNodes": {
+          "type": "reference",
+          "target": "DOMNodeList"
+        },
+        "firstChild": {
+          "type": "reference",
+          "target": "DOMNode"
+        },
+        "lastChild": {
+          "type": "reference",
+          "target": "DOMNode"
+        },
+        "previousSibling": {
+          "type": "reference",
+          "target": "DOMNode"
+        },
+        "nextSibling": {
+          "type": "reference",
+          "target": "DOMNode"
+        },
+        "attributes": {
+          "type": "reference",
+          "target": "DOMNamedNodeMap"
+        },
+        "ownerDocument": {
+          "type": "reference",
+          "target": "DOMDocument"
+        },
+        "namespaceURI": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "localName": {
+          "type": "string"
+        },
+        "baseURI": {
+          "type": "string"
+        },
+        "textContent": {
+          "type": "string"
+        }
+      }
+    },
+    "DOMNodeList": {
+      "type": "struct",
+      "properties": {
+        "length": {
+          "type": "integer"
+        }
+      }
     },
     "DiscoveryCollection": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "links": {
           "type": "array",
-          "items": {
-            "$ref": "DiscoveryLink"
+          "schema": {
+            "type": "reference",
+            "target": "DiscoveryLink"
           }
         }
       }
     },
     "DiscoveryLink": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "rel": {
           "type": "string"
@@ -1256,7 +1492,7 @@
     },
     "Entity": {
       "description": "Represents an internet population entity",
-      "type": "object",
+      "type": "struct",
       "properties": {
         "id": {
           "description": "Unique id for each entry",
@@ -1264,16 +1500,11 @@
         },
         "place": {
           "description": "Position in the top list",
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64
+          "type": "integer"
         },
         "region": {
           "description": "Name of the region",
-          "type": "string",
-          "pattern": "[A-z]+",
-          "minLength": 3,
-          "maxLength": 64
+          "type": "string"
         },
         "population": {
           "description": "Complete number of population",
@@ -1289,20 +1520,13 @@
         },
         "datetime": {
           "description": "Date when the entity was created",
-          "format": "date-time",
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         }
-      },
-      "required": [
-        "place",
-        "region",
-        "population",
-        "users",
-        "worldUsers"
-      ]
+      }
     },
     "Entry": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "id": {
           "type": "integer"
@@ -1311,19 +1535,16 @@
           "type": "integer"
         },
         "title": {
-          "type": "string",
-          "pattern": "[A-z]+",
-          "minLength": 3,
-          "maxLength": 16
+          "type": "string"
         },
         "date": {
-          "format": "date-time",
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "Message": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "success": {
           "type": "boolean"
@@ -1335,20 +1556,20 @@
     },
     "Passthru": {
       "description": "No schema information available",
-      "type": "object",
-      "additionalProperties": {
+      "type": "map",
+      "schema": {
         "type": "any"
       }
     },
     "Patch": {
-      "$extends": "Entry",
-      "type": "object",
-      "required": [
-        "id"
-      ]
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "Entry"
+      }
     },
     "Population": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "id": {
           "type": "integer"
@@ -1369,75 +1590,52 @@
           "type": "number"
         },
         "insertDate": {
-          "format": "date-time",
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "PopulationCollection": {
-      "$ref": "Collection",
-      "$template": {
-        "T": "Population"
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "Collection"
       }
     },
     "Property": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "any": {
-          "$ref": "Any"
+          "type": "reference",
+          "target": "Any"
         },
         "array": {
           "type": "array",
-          "items": {
+          "schema": {
             "type": "string"
           }
         },
         "arrayComplex": {
           "type": "array",
-          "items": {
-            "$ref": "Complex"
-          }
-        },
-        "arrayChoice": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "ChoiceA"
-              },
-              {
-                "$ref": "ChoiceB"
-              }
-            ]
+          "schema": {
+            "type": "reference",
+            "target": "Complex"
           }
         },
         "boolean": {
           "type": "boolean"
         },
-        "choice": {
-          "oneOf": [
-            {
-              "$ref": "ChoiceA"
-            },
-            {
-              "$ref": "ChoiceB"
-            }
-          ]
-        },
         "complex": {
-          "$ref": "Complex"
+          "type": "reference",
+          "target": "Complex"
         },
         "date": {
-          "format": "date",
-          "type": "string"
+          "type": "string",
+          "format": "date"
         },
         "dateTime": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "duration": {
-          "format": "period",
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         },
         "float": {
           "type": "number"
@@ -1449,24 +1647,25 @@
           "type": "string"
         },
         "time": {
-          "format": "time",
-          "type": "string"
+          "type": "string",
+          "format": "time"
         }
       }
     },
     "RoutingCollection": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "routings": {
           "type": "array",
-          "items": {
-            "$ref": "RoutingRoute"
+          "schema": {
+            "type": "reference",
+            "target": "RoutingRoute"
           }
         }
       }
     },
     "RoutingRoute": {
-      "type": "object",
+      "type": "struct",
       "properties": {
         "method": {
           "type": "string"
@@ -1480,11 +1679,11 @@
       }
     },
     "Update": {
-      "$extends": "Entry",
-      "type": "object",
-      "required": [
-        "id"
-      ]
+      "type": "struct",
+      "parent": {
+        "type": "reference",
+        "target": "Entry"
+      }
     }
   }
 }

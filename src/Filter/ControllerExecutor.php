@@ -25,12 +25,10 @@ use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
 use PSX\Data\Body;
 use PSX\Data\Reader;
-use PSX\DateTime\Duration;
 use PSX\DateTime\Exception\InvalidFormatException;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\LocalDateTime;
 use PSX\DateTime\LocalTime;
-use PSX\DateTime\Period;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
@@ -41,17 +39,15 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Schema\ContentType;
 use PSX\Schema\DefinitionsInterface;
-use PSX\Schema\Exception\TypeNotFoundException;
 use PSX\Schema\Format;
 use PSX\Schema\Schema;
-use PSX\Schema\Type\AnyType;
-use PSX\Schema\Type\BooleanType;
-use PSX\Schema\Type\IntegerType;
-use PSX\Schema\Type\NumberType;
-use PSX\Schema\Type\ReferenceType;
-use PSX\Schema\Type\StringType;
-use PSX\Schema\TypeInterface;
-use PSX\Uri\Uri;
+use PSX\Schema\Type\AnyPropertyType;
+use PSX\Schema\Type\BooleanPropertyType;
+use PSX\Schema\Type\IntegerPropertyType;
+use PSX\Schema\Type\NumberPropertyType;
+use PSX\Schema\Type\PropertyTypeAbstract;
+use PSX\Schema\Type\ReferencePropertyType;
+use PSX\Schema\Type\StringPropertyType;
 
 /**
  * ControllerExecutor
@@ -113,12 +109,6 @@ class ControllerExecutor implements FilterInterface
         $filterChain->handle($request, $response);
     }
 
-    /**
-     * @param OperationInterface $operation
-     * @param RequestInterface $request
-     * @param DefinitionsInterface $definitions
-     * @throws TypeNotFoundException
-     */
     private function buildArguments(OperationInterface $operation, RequestInterface $request, DefinitionsInterface $definitions): array
     {
         $result = [];
@@ -145,30 +135,26 @@ class ControllerExecutor implements FilterInterface
     /**
      * @throws InvalidFormatException
      */
-    private function castToType(TypeInterface $type, mixed $value): mixed
+    private function castToType(PropertyTypeAbstract $type, mixed $value): mixed
     {
         if ($value === null) {
             return null;
         }
 
-        if ($type instanceof StringType) {
+        if ($type instanceof StringPropertyType) {
             return match ($type->getFormat()) {
-                Format::BINARY => $this->buildResource($value),
-                Format::DATETIME => LocalDateTime::parse($value),
                 Format::DATE => LocalDate::parse($value),
+                Format::DATETIME => LocalDateTime::parse($value),
                 Format::TIME => LocalTime::parse($value),
-                Format::PERIOD => Period::parse($value),
-                Format::DURATION => Duration::parse($value),
-                Format::URI => Uri::parse($value),
                 default => (string) $value,
             };
-        } elseif ($type instanceof IntegerType) {
+        } elseif ($type instanceof IntegerPropertyType) {
             return (int) $value;
-        } elseif ($type instanceof NumberType) {
+        } elseif ($type instanceof NumberPropertyType) {
             return (float) $value;
-        } elseif ($type instanceof BooleanType) {
+        } elseif ($type instanceof BooleanPropertyType) {
             return (bool) $value;
-        } elseif ($type instanceof AnyType) {
+        } elseif ($type instanceof AnyPropertyType) {
             return $value;
         }
 
@@ -186,31 +172,26 @@ class ControllerExecutor implements FilterInterface
         return $handle;
     }
 
-    /**
-     * @throws TypeNotFoundException
-     */
-    private function parseRequest(TypeInterface|ContentType $type, RequestInterface $request, DefinitionsInterface $definitions): mixed
+    private function parseRequest(PropertyTypeAbstract|ContentType $type, RequestInterface $request, DefinitionsInterface $definitions): mixed
     {
         if ($type instanceof ContentType) {
-            return match ($type) {
+            return match ($type->toString()) {
                 ContentType::BINARY => $request->getBody(),
                 ContentType::FORM => Body\Form::from($this->requestReader->getBody($request, Reader\Form::class)),
                 ContentType::JSON => Body\Json::from($this->requestReader->getBody($request, Reader\Json::class)),
                 ContentType::MULTIPART => $this->getMultipart($this->requestReader->getBody($request, Reader\Multipart::class)),
                 ContentType::TEXT => (string) $request->getBody(),
-                ContentType::XML => $this->getXml($request),
             };
         }
 
-        if (!$type instanceof ReferenceType) {
+        if (!$type instanceof ReferencePropertyType) {
             return null;
         }
 
-        if ($type->getRef() === 'Passthru') {
+        if ($type->getTarget() === 'Passthru') {
             $data = $this->requestReader->getBody($request);
         } else {
-            $schema = new Schema($definitions->getType($type->getRef()), $definitions);
-            $data = $this->requestReader->getBodyAs($request, $schema);
+            $data = $this->requestReader->getBodyAs($request, new Schema($definitions, $type->getTarget()));
         }
 
         return $data;
@@ -223,12 +204,5 @@ class ControllerExecutor implements FilterInterface
         }
 
         return $return;
-    }
-
-    private function getXml(RequestInterface $request): \DOMDocument
-    {
-        $dom = new \DOMDocument();
-        $dom->loadXML((string) $request->getBody());
-        return $dom;
     }
 }

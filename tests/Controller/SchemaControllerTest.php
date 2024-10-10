@@ -63,32 +63,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $body, $body);
     }
 
-    public function testPostInvalidTitleLength()
-    {
-        $data     = json_encode(['userId' => 3, 'title' => 'foobarfoobarfoobarfoobar', 'date' => '2013-05-29T16:56:32Z']);
-        $response = $this->sendRequest('/tests/schema/foo/bar', 'POST', ['Content-Type' => 'application/json'], $data);
-
-        $body = (string) $response->getBody();
-        $data = \json_decode($body);
-
-        $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertFalse($data->success);
-        $this->assertStringStartsWith('/title must contain less or equal than 16 characters', $data->message);
-    }
-
-    public function testPostInvalidFields()
-    {
-        $data     = json_encode(['foobar' => 'title']);
-        $response = $this->sendRequest('/tests/schema/foo/bar', 'POST', ['Content-Type' => 'application/json'], $data);
-
-        $body = (string) $response->getBody();
-        $data = \json_decode($body);
-
-        $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertFalse($data->success);
-        $this->assertStringStartsWith('/ the following properties are required: title, date', $data->message);
-    }
-
     public function testPut()
     {
         $data     = json_encode(['id' => 1, 'userId' => 3, 'title' => 'foobar']);

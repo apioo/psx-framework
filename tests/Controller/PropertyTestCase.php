@@ -115,28 +115,6 @@ JSON;
         $this->assertEquals('/arrayComplex must be of type array', substr($data->message, 0, 35), $body);
     }
 
-    public function testPostInvalidArrayChoice()
-    {
-        $data = <<<JSON
-{
-    "arrayChoice": [{
-        "foo": "baz"
-    },{
-        "baz": "bar"
-    },{
-        "foo": "foo"
-    }]
-}
-JSON;
-
-        $response = $this->sendRequest($this->getPath() . '/1', 'POST', [], $data);
-        $body     = (string) $response->getBody();
-        $data     = json_decode($body);
-
-        $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertEquals('/arrayChoice/1 must match one required schema', substr($data->message, 0, 45), $body);
-    }
-
     public function testPostInvalidBoolean()
     {
         $data = <<<JSON
@@ -151,24 +129,6 @@ JSON;
 
         $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/boolean must be of type boolean', substr($data->message, 0, 32), $body);
-    }
-
-    public function testPostInvalidChoice()
-    {
-        $data = <<<JSON
-{
-    "choice": {
-        "baz": "test"
-    }
-}
-JSON;
-
-        $response = $this->sendRequest($this->getPath() . '/1', 'POST', [], $data);
-        $body     = (string) $response->getBody();
-        $data     = json_decode($body);
-
-        $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertEquals('/choice must match one required schema', substr($data->message, 0, 38), $body);
     }
 
     public function testPostInvalidDateTime()
@@ -201,22 +161,6 @@ JSON;
 
         $this->assertEquals(400, $response->getStatusCode(), $body);
         $this->assertEquals('/date must be a valid full-date format [RFC3339]', substr($data->message, 0, 48), $body);
-    }
-
-    public function testPostInvalidDuration()
-    {
-        $data = <<<JSON
-{
-    "duration": "foo"
-}
-JSON;
-
-        $response = $this->sendRequest($this->getPath() . '/1', 'POST', [], $data);
-        $body     = (string) $response->getBody();
-        $data     = json_decode($body);
-
-        $this->assertEquals(400, $response->getStatusCode(), $body);
-        $this->assertEquals('/duration must be a valid period format [ISO8601]', substr($data->message, 0, 49), $body);
     }
 
     public function testPostInvalidFloat()
@@ -286,7 +230,7 @@ JSON;
     /**
      * Checks whether the data we received as post is converted to the right types
      */
-    public static function assertRecord(RecordInterface $record)
+    public static function assertRecord(RecordInterface $record): void
     {
         Assert::assertInstanceOf(RecordInterface::class, $record->any);
         Assert::assertEquals(['foo' => 'bar'], $record->any->getAll());
@@ -299,26 +243,14 @@ JSON;
         Assert::assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
         Assert::assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getAll());
-        Assert::assertIsArray($record->arrayChoice);
-        Assert::assertEquals(3, count($record->arrayChoice));
-        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[0]);
-        Assert::assertEquals(['foo' => 'baz'], $record->arrayChoice[0]->getAll());
-        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[1]);
-        Assert::assertEquals(['bar' => 'bar'], $record->arrayChoice[1]->getAll());
-        Assert::assertInstanceOf(RecordInterface::class, $record->arrayChoice[2]);
-        Assert::assertEquals(['foo' => 'foo'], $record->arrayChoice[2]->getAll());
         Assert::assertIsBool($record->boolean);
         Assert::assertEquals(true, $record->boolean);
-        Assert::assertInstanceOf(RecordInterface::class, $record->choice);
-        Assert::assertEquals(['bar' => 'test'], $record->choice->getAll());
         Assert::assertInstanceOf(RecordInterface::class, $record->complex);
         Assert::assertEquals(['foo' => 'bar'], $record->complex->getAll());
         Assert::assertInstanceOf(LocalDate::class, $record->date);
         Assert::assertEquals('2015-05-01', $record->date->toString());
         Assert::assertInstanceOf(LocalDateTime::class, $record->dateTime);
         Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->toString());
-        Assert::assertInstanceOf(Period::class, $record->duration);
-        Assert::assertEquals('P1M', $record->duration->toString());
         Assert::assertIsFloat($record->float);
         Assert::assertEquals(13.37, $record->float);
         Assert::assertIsInt($record->integer);
@@ -376,23 +308,12 @@ JSON;
             ],[
                 'foo' => 'foo'
             ]],
-            'arrayChoice' => [[
-                'foo' => 'baz'
-            ],[
-                'bar' => 'bar'
-            ],[
-                'foo' => 'foo'
-            ]],
             'boolean' => true,
-            'choice' => [
-                'bar' => 'test'
-            ],
             'complex' => [
                 'foo' => 'bar'
             ],
             'date' => LocalDate::of(2015, 5, 1),
             'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
-            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
@@ -412,23 +333,12 @@ JSON;
             ], (object) [
                 'foo' => 'foo'
             ]],
-            'arrayChoice' => [(object) [
-                'foo' => 'baz'
-            ], (object) [
-                'bar' => 'bar'
-            ], (object) [
-                'foo' => 'foo'
-            ]],
             'boolean' => true,
-            'choice' => (object) [
-                'bar' => 'test'
-            ],
             'complex' => (object) [
                 'foo' => 'bar'
             ],
             'date' => LocalDate::of(2015, 5, 1),
             'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
-            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
@@ -451,27 +361,12 @@ JSON;
                     'foo' => 'foo'
                 ])
             ],
-            'arrayChoice' => [
-                Record::fromArray([
-                    'foo' => 'baz'
-                ]),
-                Record::fromArray([
-                    'bar' => 'bar'
-                ]),
-                Record::fromArray([
-                    'foo' => 'foo'
-                ])
-            ],
             'boolean' => true,
-            'choice' => Record::fromArray([
-                'bar' => 'test'
-            ]),
             'complex' => Record::fromArray([
                 'foo' => 'bar'
             ]),
             'date' => LocalDate::of(2015, 5, 1),
             'dateTime' => LocalDateTime::of(2015, 5, 1, 13, 37, 14),
-            'duration' => Period::ofMonths(1),
             'float' => 13.37,
             'integer' => 7,
             'string' => 'bar',
@@ -488,13 +383,10 @@ JSON;
         $object->setAny($any);
         $object->setArray(['bar']);
         $object->setArrayComplex([new ChoiceA('bar'), new ChoiceA('foo')]);
-        $object->setArrayChoice([new ChoiceA('baz'), new ChoiceB('bar'), new ChoiceA('foo')]);
         $object->setBoolean(true);
-        $object->setChoice(new ChoiceB('test'));
         $object->setComplex(new Complex('bar'));
         $object->setDate(LocalDate::of(2015, 5, 1));
         $object->setDateTime(LocalDateTime::of(2015, 5, 1, 13, 37, 14));
-        $object->setDuration(Period::ofMonths(1));
         $object->setFloat(13.37);
         $object->setInteger(7);
         $object->setString('bar');
@@ -521,23 +413,12 @@ JSON;
     },{
         "foo": "foo"
     }],
-    "arrayChoice": [{
-        "foo": "baz"
-    },{
-        "bar": "bar"
-    },{
-        "foo": "foo"
-    }],
     "boolean": true,
-    "choice": {
-        "bar": "test"
-    },
     "complex": {
         "foo": "bar"
     },
     "date": "2015-05-01",
     "dateTime": "2015-05-01T13:37:14Z",
-    "duration": "P1M",
     "float": 13.37,
     "integer": 7,
     "string": "bar",

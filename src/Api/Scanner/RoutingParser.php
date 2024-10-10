@@ -66,6 +66,7 @@ class RoutingParser implements ScannerInterface
             try {
                 $spec = $this->apiManager->getApi($controller);
             } catch (InvalidApiException|ParserException $e) {
+                throw $e;
                 continue;
             }
 
