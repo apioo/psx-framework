@@ -1599,7 +1599,10 @@
       "type": "struct",
       "parent": {
         "type": "reference",
-        "target": "Collection"
+        "target": "Collection",
+        "template": {
+          "T": "Population"
+        }
       }
     },
     "Property": {
