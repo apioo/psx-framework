@@ -21,6 +21,8 @@
 namespace PSX\Framework\Http;
 
 use PSX\Data\Body;
+use PSX\Data\Exception\WriteException;
+use PSX\Data\Exception\WriterNotFoundException;
 use PSX\Data\GraphTraverser;
 use PSX\Data\Multipart\File;
 use PSX\Data\Payload;
@@ -28,6 +30,8 @@ use PSX\Data\Processor;
 use PSX\Data\Writer;
 use PSX\Data\WriterInterface;
 use PSX\Http\Environment\HttpResponseInterface;
+use PSX\Http\Exception\InternalServerErrorException;
+use PSX\Http\Exception\NotAcceptableException;
 use PSX\Http\RequestInterface;
 use PSX\Http\Response;
 use PSX\Http\ResponseInterface;
@@ -50,7 +54,7 @@ class ResponseWriter
 
     public function __construct(Processor $processor, array $supportedWriter)
     {
-        $this->processor       = $processor;
+        $this->processor = $processor;
         $this->supportedWriter = $supportedWriter;
     }
 
@@ -139,7 +143,12 @@ class ResponseWriter
         }
 
         $supported = $options->getSupportedWriter();
-        $writer    = $this->processor->getWriter($options->getContentType(), $writerType, $supported);
+
+        try {
+            $writer = $this->processor->getWriter($options->getContentType(), $writerType, $supported);
+        } catch (WriterNotFoundException $e) {
+            throw new NotAcceptableException($e->getMessage(), previous: $e);
+        }
 
         // set writer specific settings
         $callback = $options->getWriterCallback();
@@ -157,7 +166,13 @@ class ResponseWriter
             $payload->setRwSupported($supported);
         }
 
-        $result = $this->processor->write($payload);
+        try {
+            $result = $this->processor->write($payload);
+        } catch (WriteException $e) {
+            throw new InternalServerErrorException($e->getMessage(), previous: $e);
+        } catch (WriterNotFoundException $e) {
+            throw new NotAcceptableException($e->getMessage(), previous: $e);
+        }
 
         // the response may have multiple presentations based on the Accept
         // header field but only in case we have no fix writer type
@@ -167,11 +182,7 @@ class ResponseWriter
 
         // set content type header if not available
         if (!$response->hasHeader('Content-Type')) {
-            $contentType = $writer->getContentType();
-
-            if ($contentType !== null) {
-                $response->setHeader('Content-Type', $contentType);
-            }
+            $response->setHeader('Content-Type', $writer->getContentType());
         }
 
         $response->getBody()->write($result);

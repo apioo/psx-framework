@@ -50,8 +50,8 @@ use PSX\Sql\TableManagerInterface;
  */
 #[Description('lorem ipsum')]
 #[Path('/tests/schema/:name/:type')]
-#[PathParam(name: 'name', type: Type::STRING, description: 'Name parameter', minLength: 0, maxLength: 16, pattern: '[A-z]+')]
-#[PathParam(name: 'type', type: Type::STRING, enum: ['foo', 'bar'])]
+#[PathParam(name: 'name', type: Type::STRING, description: 'Name parameter')]
+#[PathParam(name: 'type', type: Type::STRING)]
 class SchemaController extends ControllerAbstract
 {
     private TableManagerInterface $tableManager;
@@ -63,7 +63,7 @@ class SchemaController extends ControllerAbstract
 
     #[Get]
     #[Description('Returns a collection')]
-    #[QueryParam(name: 'startIndex', type: Type::STRING, description: 'startIndex parameter', minimum: 0, maximum: 32)]
+    #[QueryParam(name: 'startIndex', type: Type::STRING, description: 'startIndex parameter')]
     #[QueryParam(name: 'float', type: Type::NUMBER)]
     #[QueryParam(name: 'boolean', type: Type::BOOLEAN)]
     #[QueryParam(name: 'date', type: Type::STRING, format: Format::DATE)]

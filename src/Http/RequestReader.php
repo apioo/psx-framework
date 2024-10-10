@@ -20,8 +20,13 @@
 
 namespace PSX\Framework\Http;
 
+use PSX\Data\Exception\ParseException;
+use PSX\Data\Exception\ReaderNotFoundException;
+use PSX\Data\Exception\ReadException;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
+use PSX\Http\Exception\BadRequestException;
+use PSX\Http\Exception\UnsupportedMediaTypeException;
 use PSX\Http\RequestInterface;
 use PSX\Schema\Validation\ValidatorInterface;
 use PSX\Schema\Visitor\TypeVisitor;
@@ -54,7 +59,13 @@ class RequestReader
             $payload->setRwType($readerType);
         }
 
-        return $this->processor->parse($payload);
+        try {
+            return $this->processor->parse($payload);
+        } catch (ParseException $e) {
+            throw new BadRequestException($e->getMessage(), previous: $e);
+        } catch (ReaderNotFoundException $e) {
+            throw new UnsupportedMediaTypeException($e->getMessage(), previous: $e);
+        }
     }
 
     public function getBodyAs(RequestInterface $request, mixed $schema, ?ValidatorInterface $validator = null, ?string $readerType = null): mixed
@@ -66,6 +77,12 @@ class RequestReader
             $payload->setRwType($readerType);
         }
 
-        return $this->processor->read($schema, $payload, new TypeVisitor($validator));
+        try {
+            return $this->processor->read($schema, $payload, new TypeVisitor($validator));
+        } catch (ReadException $e) {
+            throw new BadRequestException($e->getMessage(), previous: $e);
+        } catch (ReaderNotFoundException $e) {
+            throw new UnsupportedMediaTypeException($e->getMessage(), previous: $e);
+        }
     }
 }

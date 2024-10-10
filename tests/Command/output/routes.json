@@ -161,17 +161,6 @@
   ],
   [
     [
-      "POST",
-      "OPTIONS"
-    ],
-    "\/tests\/content_type\/xml",
-    [
-      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\ContentTypeController",
-      "xml"
-    ]
-  ],
-  [
-    [
       "GET",
       "OPTIONS",
       "HEAD"

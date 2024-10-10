@@ -116,16 +116,4 @@ class ContentTypeControllerTest extends ControllerDbTestCase
         $this->assertEquals(200, $response->getStatusCode(), $body);
         $this->assertEquals($expect, $body, $body);
     }
-
-    public function testXml()
-    {
-        $response = $this->sendRequest('/tests/content_type/xml', 'POST', ['Content-Type' => 'application/xml'], new StringStream('<foo>bar</foo>'));
-        $body     = (string) $response->getBody();
-        $expect   = '<foo>bar</foo>';
-
-        $this->assertEquals(200, $response->getStatusCode(), $body);
-        $this->assertEquals('application/xml', $response->getHeader('Content-Type'));
-        $this->assertXmlStringEqualsXmlString($expect, $body, $body);
-    }
-
 }

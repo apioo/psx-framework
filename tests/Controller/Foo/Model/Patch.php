@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\Schema\Attribute\Required;
-
 /**
  * Patch
  *
@@ -29,7 +27,6 @@ use PSX\Schema\Attribute\Required;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-#[Required(['id'])]
 class Patch extends Entry
 {
 }

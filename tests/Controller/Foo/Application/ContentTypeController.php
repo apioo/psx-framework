@@ -72,11 +72,4 @@ class ContentTypeController extends ControllerAbstract
     {
         return $body;
     }
-
-    #[Post]
-    #[Path('/tests/content_type/xml')]
-    public function xml(#[Body] \DOMDocument $body): \DOMDocument
-    {
-        return $body;
-    }
 }

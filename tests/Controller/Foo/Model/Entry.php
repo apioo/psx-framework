@@ -21,9 +21,6 @@
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
 use PSX\DateTime\LocalDateTime;
-use PSX\Schema\Attribute\MaxLength;
-use PSX\Schema\Attribute\MinLength;
-use PSX\Schema\Attribute\Pattern;
 
 /**
  * Entry
@@ -36,9 +33,6 @@ class Entry
 {
     private ?int $id = null;
     private ?int $userId = null;
-    #[MinLength(3)]
-    #[MaxLength(16)]
-    #[Pattern('[A-z]+')]
     private ?string $title = null;
     private ?LocalDateTime $date = null;
 

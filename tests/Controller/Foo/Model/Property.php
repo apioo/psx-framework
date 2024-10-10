@@ -45,18 +45,10 @@ class Property
      * @var array<Complex>
      */
     private ?array $arrayComplex = null;
-
-    /**
-     * @var array<ChoiceA|ChoiceB>
-     */
-    private ?array $arrayChoice = null;
-
     private ?bool $boolean = null;
-    private ChoiceA|ChoiceB|null $choice = null;
     private ?Complex $complex = null;
     private ?LocalDate $date = null;
     private ?LocalDateTime $dateTime = null;
-    private ?Period $duration = null;
     private ?float $float = null;
     private ?int $integer = null;
     private ?string $string = null;
@@ -92,16 +84,6 @@ class Property
         $this->arrayComplex = $arrayComplex;
     }
 
-    public function getArrayChoice(): ?array
-    {
-        return $this->arrayChoice;
-    }
-
-    public function setArrayChoice(array $arrayChoice): void
-    {
-        $this->arrayChoice = $arrayChoice;
-    }
-
     public function getBoolean(): ?bool
     {
         return $this->boolean;
@@ -110,16 +92,6 @@ class Property
     public function setBoolean(bool $boolean): void
     {
         $this->boolean = $boolean;
-    }
-
-    public function getChoice(): ChoiceA|ChoiceB|null
-    {
-        return $this->choice;
-    }
-
-    public function setChoice(ChoiceA|ChoiceB $choice): void
-    {
-        $this->choice = $choice;
     }
 
     public function getComplex(): ?Complex
@@ -150,16 +122,6 @@ class Property
     public function setDateTime(LocalDateTime $dateTime): void
     {
         $this->dateTime = $dateTime;
-    }
-
-    public function getDuration(): ?Period
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(Period $duration): void
-    {
-        $this->duration = $duration;
     }
 
     public function getFloat(): ?float

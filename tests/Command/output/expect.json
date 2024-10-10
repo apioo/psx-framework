@@ -1321,31 +1321,8 @@
             "$ref": "Complex"
           }
         },
-        "arrayChoice": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "ChoiceA"
-              },
-              {
-                "$ref": "ChoiceB"
-              }
-            ]
-          }
-        },
         "boolean": {
           "type": "boolean"
-        },
-        "choice": {
-          "oneOf": [
-            {
-              "$ref": "ChoiceA"
-            },
-            {
-              "$ref": "ChoiceB"
-            }
-          ]
         },
         "complex": {
           "$ref": "Complex"
@@ -1356,10 +1333,6 @@
         },
         "dateTime": {
           "format": "date-time",
-          "type": "string"
-        },
-        "duration": {
-          "format": "period",
           "type": "string"
         },
         "float": {

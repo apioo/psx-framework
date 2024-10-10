@@ -87,7 +87,7 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Get]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[PathParam(name: "id", type: Type::INTEGER)]
     #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/entity.json')]
     public function create(int $id): mixed
     {
@@ -101,7 +101,7 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Put]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[PathParam(name: "id", type: Type::INTEGER)]
     #[Incoming(schema: __DIR__ . '/../Resource/schema/population/entity.json')]
     #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/message.json')]
     public function update(int $id, Record $payload): array
@@ -122,7 +122,7 @@ class PopulationTypeSchema extends ControllerAbstract
 
     #[Delete]
     #[Path('/population/typeschema/:id')]
-    #[PathParam(name: "id", type: Type::INTEGER, required: true)]
+    #[PathParam(name: "id", type: Type::INTEGER)]
     #[Outgoing(code: 200, schema: __DIR__ . '/../Resource/schema/population/message.json')]
     public function delete(int $id): array
     {

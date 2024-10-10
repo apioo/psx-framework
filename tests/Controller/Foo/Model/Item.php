@@ -21,9 +21,6 @@
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
 use PSX\DateTime\LocalDateTime;
-use PSX\Schema\Attribute\MaxLength;
-use PSX\Schema\Attribute\MinLength;
-use PSX\Schema\Attribute\Pattern;
 
 /**
  * Item
@@ -36,9 +33,6 @@ class Item
 {
     private ?int $id = null;
     private ?Author $author = null;
-    #[MinLength(3)]
-    #[MaxLength(16)]
-    #[Pattern('[A-z]+')]
     private ?string $title = null;
     private ?LocalDateTime $date = null;
 
