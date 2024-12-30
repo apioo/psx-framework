@@ -161,17 +161,6 @@ class ControllerExecutor implements FilterInterface
         return $value;
     }
 
-    private function buildResource(mixed $value): mixed
-    {
-        $handle = fopen('php://temp', 'rw');
-        if ($handle === false) {
-            throw new \RuntimeException('Could not open resource');
-        }
-        fwrite($handle, base64_decode((string) $value) ?: '');
-        fseek($handle, 0);
-        return $handle;
-    }
-
     private function parseRequest(PropertyTypeAbstract|ContentType $type, RequestInterface $request, DefinitionsInterface $definitions): mixed
     {
         if ($type instanceof ContentType) {
