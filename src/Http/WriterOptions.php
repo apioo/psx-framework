@@ -29,107 +29,58 @@ namespace PSX\Framework\Http;
  */
 class WriterOptions
 {
-    /**
-     * @var string
-     */
-    protected $writerType;
+    private ?string $writerType = null;
+    private ?string $contentType = null;
+    private ?string $format = null;
+    private ?array $supportedWriter = null;
+    private ?\Closure $writerCallback = null;
 
-    /**
-     * @var string
-     */
-    protected $contentType;
-
-    /**
-     * @var string
-     */
-    protected $format;
-
-    /**
-     * @var array
-     */
-    protected $supportedWriter;
-
-    /**
-     * @var \Closure
-     */
-    protected $writerCallback;
-
-    /**
-     * @return string
-     */
-    public function getWriterType()
+    public function getWriterType(): ?string
     {
         return $this->writerType;
     }
 
-    /**
-     * @param string $writerType
-     */
-    public function setWriterType($writerType)
+    public function setWriterType(string $writerType): void
     {
         $this->writerType = $writerType;
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): ?string
     {
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
-    
-    /**
-     * @return string
-     */
-    public function getFormat()
+
+    public function getFormat(): ?string
     {
         return $this->format;
     }
 
-    /**
-     * @param string $format
-     */
-    public function setFormat($format)
+    public function setFormat(string $format): void
     {
         $this->format = $format;
     }
 
-    /**
-     * @return array
-     */
-    public function getSupportedWriter()
+    public function getSupportedWriter(): ?array
     {
         return $this->supportedWriter;
     }
 
-    /**
-     * @param array $supportedWriter
-     */
-    public function setSupportedWriter(array $supportedWriter)
+    public function setSupportedWriter(array $supportedWriter): void
     {
         $this->supportedWriter = $supportedWriter;
     }
 
-    /**
-     * @return \Closure
-     */
-    public function getWriterCallback()
+    public function getWriterCallback(): ?\Closure
     {
         return $this->writerCallback;
     }
 
-    /**
-     * @param \Closure $writerCallback
-     */
-    public function setWriterCallback(\Closure $writerCallback)
+    public function setWriterCallback(\Closure $writerCallback): void
     {
         $this->writerCallback = $writerCallback;
     }
