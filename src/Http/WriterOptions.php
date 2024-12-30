@@ -40,7 +40,7 @@ class WriterOptions
         return $this->writerType;
     }
 
-    public function setWriterType(string $writerType): void
+    public function setWriterType(?string $writerType): void
     {
         $this->writerType = $writerType;
     }
@@ -50,7 +50,7 @@ class WriterOptions
         return $this->contentType;
     }
 
-    public function setContentType(string $contentType): void
+    public function setContentType(?string $contentType): void
     {
         $this->contentType = $contentType;
     }
@@ -60,7 +60,7 @@ class WriterOptions
         return $this->format;
     }
 
-    public function setFormat(string $format): void
+    public function setFormat(?string $format): void
     {
         $this->format = $format;
     }
@@ -70,7 +70,7 @@ class WriterOptions
         return $this->supportedWriter;
     }
 
-    public function setSupportedWriter(array $supportedWriter): void
+    public function setSupportedWriter(?array $supportedWriter): void
     {
         $this->supportedWriter = $supportedWriter;
     }
@@ -80,7 +80,7 @@ class WriterOptions
         return $this->writerCallback;
     }
 
-    public function setWriterCallback(\Closure $writerCallback): void
+    public function setWriterCallback(?\Closure $writerCallback): void
     {
         $this->writerCallback = $writerCallback;
     }
