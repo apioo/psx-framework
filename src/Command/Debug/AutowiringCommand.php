@@ -11,8 +11,8 @@
 
 namespace PSX\Framework\Command\Debug;
 
-use PSX\Framework\Console\Descriptor\Descriptor;
 use PSX\Framework\Dependency\ContainerBuilder;
+use Symfony\Bundle\FrameworkBundle\Console\Descriptor\Descriptor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -21,11 +21,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 /**
  * A console command for autowiring information.
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
+ *
+ * @internal
  */
 #[AsCommand(name: 'debug:autowiring', description: 'List classes/interfaces you can use for autowiring')]
 class AutowiringCommand extends ContainerCommand
@@ -71,7 +74,7 @@ EOF
             $serviceIds = array_filter($serviceIds, fn ($serviceId) => false !== stripos(str_replace('\\', '', $serviceId), $searchNormalized) && !str_starts_with($serviceId, '.'));
 
             if (!$serviceIds) {
-                $errorIo->error(sprintf('No autowirable classes or interfaces found matching "%s"', $search));
+                $errorIo->error(\sprintf('No autowirable classes or interfaces found matching "%s"', $search));
 
                 return 1;
             }
@@ -90,7 +93,7 @@ EOF
         $io->title('Autowirable Types');
         $io->text('The following classes & interfaces can be used as type-hints when autowiring:');
         if ($search) {
-            $io->text(sprintf('(only showing classes/interfaces matching <comment>%s</comment>)', $search));
+            $io->text(\sprintf('(only showing classes/interfaces matching <comment>%s</comment>)', $search));
         }
         $hasAlias = [];
         $all = $input->getOption('all');
@@ -113,7 +116,7 @@ EOF
                 }
             }
 
-            $serviceLine = sprintf('<fg=yellow>%s</>', $serviceId);
+            $serviceLine = \sprintf('<fg=yellow>%s</>', $serviceId);
 
             if ($container->hasAlias($serviceId)) {
                 $hasAlias[$serviceId] = true;
@@ -126,6 +129,11 @@ EOF
                         continue;
                     }
                     $target = substr($id, \strlen($previousId) + 3);
+
+                    if ($previousId.' $'.(new Target($target))->getParsedName() === $serviceId) {
+                        $serviceLine .= ' - <fg=magenta>target:</><fg=cyan>'.$target.'</>';
+                        break;
+                    }
                 }
 
                 if ($container->hasDefinition($serviceAlias) && $decorated = $container->getDefinition($serviceAlias)->getTag('container.decorator')) {
@@ -152,7 +160,7 @@ EOF
         $io->newLine();
 
         if (0 < $serviceIdsNb) {
-            $io->text(sprintf('%s more concrete service%s would be displayed when adding the "--all" option.', $serviceIdsNb, $serviceIdsNb > 1 ? 's' : ''));
+            $io->text(\sprintf('%s more concrete service%s would be displayed when adding the "--all" option.', $serviceIdsNb, $serviceIdsNb > 1 ? 's' : ''));
         }
         if ($all) {
             $io->text('Pro-tip: use interfaces in your type-hints instead of classes to benefit from the dependency inversion principle.');

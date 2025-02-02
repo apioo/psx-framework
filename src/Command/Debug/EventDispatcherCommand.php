@@ -12,8 +12,7 @@
 namespace PSX\Framework\Command\Debug;
 
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
-use PSX\Framework\Console\Descriptor\TextDescriptor;
+use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Completion\CompletionInput;
@@ -30,19 +29,18 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
  * A console command for retrieving information about event dispatcher.
  *
  * @author Matthieu Auger <mail@matthieuauger.com>
+ *
+ * @final
  */
 #[AsCommand(name: 'debug:event-dispatcher', description: 'Display configured listeners for an application')]
 class EventDispatcherCommand extends Command
 {
-    private const DEFAULT_DISPATCHER = PsrEventDispatcherInterface::class;
+    private const DEFAULT_DISPATCHER = 'event_dispatcher';
 
-    private ContainerInterface $dispatchers;
-
-    public function __construct(ContainerInterface $dispatchers)
-    {
+    public function __construct(
+        private ContainerInterface $dispatchers,
+    ) {
         parent::__construct();
-
-        $this->dispatchers = $dispatchers;
     }
 
     protected function configure(): void
@@ -51,6 +49,7 @@ class EventDispatcherCommand extends Command
             ->setDefinition([
                 new InputArgument('event', InputArgument::OPTIONAL, 'An event name or a part of the event name'),
                 new InputOption('dispatcher', null, InputOption::VALUE_REQUIRED, 'To view events of a specific event dispatcher', self::DEFAULT_DISPATCHER),
+                new InputOption('format', null, InputOption::VALUE_REQUIRED, \sprintf('The output format ("%s")', implode('", "', $this->getAvailableFormatOptions())), 'txt'),
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw description'),
             ])
             ->setHelp(<<<'EOF'
@@ -61,6 +60,10 @@ The <info>%command.name%</info> command displays all configured listeners:
 To get specific listeners for an event, specify its name:
 
   <info>php %command.full_name% kernel.request</info>
+
+The <info>--format</info> option specifies the format of the command output:
+
+  <info>php %command.full_name% --format=json</info>
 EOF
             )
         ;
@@ -76,7 +79,7 @@ EOF
         $options = [];
         $dispatcherServiceName = $input->getOption('dispatcher');
         if (!$this->dispatchers->has($dispatcherServiceName)) {
-            $io->getErrorStyle()->error(sprintf('Event dispatcher "%s" is not available.', $dispatcherServiceName));
+            $io->getErrorStyle()->error(\sprintf('Event dispatcher "%s" is not available.', $dispatcherServiceName));
 
             return 1;
         }
@@ -90,7 +93,7 @@ EOF
                 // if there is no direct match, try find partial matches
                 $events = $this->searchForEvent($dispatcher, $event);
                 if (0 === \count($events)) {
-                    $io->getErrorStyle()->warning(sprintf('The event "%s" does not have any registered listeners.', $event));
+                    $io->getErrorStyle()->warning(\sprintf('The event "%s" does not have any registered listeners.', $event));
 
                     return 0;
                 } elseif (1 === \count($events)) {
@@ -101,12 +104,13 @@ EOF
             }
         }
 
-        $helper = new TextDescriptor();
+        $helper = new DescriptorHelper();
 
         if (self::DEFAULT_DISPATCHER !== $dispatcherServiceName) {
             $options['dispatcher_service_name'] = $dispatcherServiceName;
         }
 
+        $options['format'] = $input->getOption('format');
         $options['raw_text'] = $input->getOption('raw');
         $options['output'] = $io;
         $helper->describe($io, $dispatcher, $options);
@@ -133,6 +137,10 @@ EOF
 
             return;
         }
+
+        if ($input->mustSuggestOptionValuesFor('format')) {
+            $suggestions->suggestValues($this->getAvailableFormatOptions());
+        }
     }
 
     private function searchForEvent(EventDispatcherInterface $dispatcher, string $needle): array
@@ -147,5 +155,11 @@ EOF
         }
 
         return $output;
+    }
+
+    /** @return string[] */
+    private function getAvailableFormatOptions(): array
+    {
+        return (new DescriptorHelper())->getFormats();
     }
 }

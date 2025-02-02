@@ -12,8 +12,8 @@
 namespace PSX\Framework\Command\Debug;
 
 use Psr\Container\ContainerInterface;
-use PSX\Framework\Console\Descriptor\TextDescriptor;
 use PSX\Framework\Dependency\ContainerBuilder;
+use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Completion\CompletionInput;
@@ -59,6 +59,7 @@ class ContainerCommand extends Command
                 new InputOption('types', null, InputOption::VALUE_NONE, 'Display types (classes/interfaces) available in the container'),
                 new InputOption('env-var', null, InputOption::VALUE_REQUIRED, 'Display a specific environment variable used in the container'),
                 new InputOption('env-vars', null, InputOption::VALUE_NONE, 'Display environment variables used in the container'),
+                new InputOption('format', null, InputOption::VALUE_REQUIRED, \sprintf('The output format ("%s")', implode('", "', $this->getAvailableFormatOptions())), 'txt'),
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw description'),
                 new InputOption('deprecations', null, InputOption::VALUE_NONE, 'Display deprecations generated when compiling and warming up the container'),
             ])
@@ -112,6 +113,9 @@ using the <info>--show-hidden</info> flag:
 
   <info>php %command.full_name% --show-hidden</info>
 
+The <info>--format</info> option specifies the format of the command output:
+
+  <info>php %command.full_name% --format=json</info>
 EOF
             )
         ;
@@ -138,10 +142,16 @@ EOF
             $options['filter'] = $this->filterToServiceTypes(...);
         } elseif ($input->getOption('parameters')) {
             $parameters = [];
-            foreach ($object->getParameterBag()->all() as $k => $v) {
+            $parameterBag = $object->getParameterBag();
+            foreach ($parameterBag->all() as $k => $v) {
                 $parameters[$k] = $object->resolveEnvPlaceholders($v);
             }
             $object = new ParameterBag($parameters);
+            if ($parameterBag instanceof ParameterBag) {
+                foreach ($parameterBag->allDeprecated() as $k => $deprecation) {
+                    $object->deprecate($k, ...$deprecation);
+                }
+            }
             $options = [];
         } elseif ($parameter = $input->getOption('parameter')) {
             $options = ['parameter' => $parameter];
@@ -159,8 +169,8 @@ EOF
             $options = [];
         }
 
-        $helper = new TextDescriptor();
-        $options['show_arguments'] = $input->getOption('show-arguments');
+        $helper = new DescriptorHelper();
+        $options['format'] = $input->getOption('format');
         $options['show_hidden'] = $input->getOption('show-hidden');
         $options['raw_text'] = $input->getOption('raw');
         $options['output'] = $io;
@@ -169,17 +179,17 @@ EOF
         try {
             $helper->describe($io, $object, $options);
 
-            if (isset($options['id'])) {
+            if ('txt' === $options['format'] && isset($options['id'])) {
                 if ($object->hasDefinition($options['id'])) {
                     $definition = $object->getDefinition($options['id']);
                     if ($definition->isDeprecated()) {
-                        $errorIo->warning($definition->getDeprecation($options['id'])['message'] ?? sprintf('The "%s" service is deprecated.', $options['id']));
+                        $errorIo->warning($definition->getDeprecation($options['id'])['message'] ?? \sprintf('The "%s" service is deprecated.', $options['id']));
                     }
                 }
                 if ($object->hasAlias($options['id'])) {
                     $alias = $object->getAlias($options['id']);
                     if ($alias->isDeprecated()) {
-                        $errorIo->warning($alias->getDeprecation($options['id'])['message'] ?? sprintf('The "%s" alias is deprecated.', $options['id']));
+                        $errorIo->warning($alias->getDeprecation($options['id'])['message'] ?? \sprintf('The "%s" alias is deprecated.', $options['id']));
                     }
                 }
             }
@@ -275,14 +285,16 @@ EOF
 
         $matchingServices = $this->findServiceIdsContaining($container, $name, $showHidden);
         if (!$matchingServices) {
-            throw new InvalidArgumentException(sprintf('No services found that match "%s".', $name));
+            throw new InvalidArgumentException(\sprintf('No services found that match "%s".', $name));
         }
 
         if (1 === \count($matchingServices)) {
             return $matchingServices[0];
         }
 
-        return $io->choice('Select one of the following services to display its information', $matchingServices);
+        natsort($matchingServices);
+
+        return $io->choice('Select one of the following services to display its information', array_values($matchingServices));
     }
 
     private function findProperTagName(InputInterface $input, SymfonyStyle $io, SymfonyContainerBuilder $container, string $tagName): string
@@ -293,14 +305,16 @@ EOF
 
         $matchingTags = $this->findTagsContaining($container, $tagName);
         if (!$matchingTags) {
-            throw new InvalidArgumentException(sprintf('No tags found that match "%s".', $tagName));
+            throw new InvalidArgumentException(\sprintf('No tags found that match "%s".', $tagName));
         }
 
         if (1 === \count($matchingTags)) {
             return $matchingTags[0];
         }
 
-        return $io->choice('Select one of the following tags to display its information', $matchingTags);
+        natsort($matchingTags);
+
+        return $io->choice('Select one of the following tags to display its information', array_values($matchingTags));
     }
 
     private function findServiceIdsContaining(SymfonyContainerBuilder $container, string $name, bool $showHidden): array
@@ -354,5 +368,11 @@ EOF
         }
 
         return class_exists($serviceId) || interface_exists($serviceId, false);
+    }
+
+    /** @return string[] */
+    private function getAvailableFormatOptions(): array
+    {
+        return (new DescriptorHelper())->getFormats();
     }
 }
