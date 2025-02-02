@@ -57,7 +57,7 @@ class RoutingParser implements ScannerInterface
 
         $collections = $this->routingParser->getCollection($filter);
         foreach ($collections as $collection) {
-            [$methods, $path, $source] = $collection;
+            [, , $source] = $collection;
 
             if (is_array($source) && count($source) === 2) {
                 $controller = $source[0];

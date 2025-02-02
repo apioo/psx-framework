@@ -163,7 +163,6 @@ class OAuth2AuthenticationTest extends TestCase
     {
         return $this->getMockBuilder(FilterChain::class)
             ->setConstructorArgs([[]])
-            ->setMethods(['handle'])
             ->getMock();
     }
 }

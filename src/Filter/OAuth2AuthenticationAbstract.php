@@ -70,7 +70,7 @@ abstract class OAuth2AuthenticationAbstract implements FilterInterface
 
     abstract public function onSuccess(ResponseInterface $response): void;
 
-    public function onFailure(ResponseInterface $response): void
+    public function onFailure(): void
     {
         $params = [
             'realm' => $this->realm ?: 'psx',
@@ -79,7 +79,7 @@ abstract class OAuth2AuthenticationAbstract implements FilterInterface
         throw new UnauthorizedException('Invalid access token', 'Bearer', $params);
     }
 
-    public function onMissing(ResponseInterface $response): void
+    public function onMissing(): void
     {
         $params = [
             'realm' => $this->realm ?: 'psx',

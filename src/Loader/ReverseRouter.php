@@ -55,7 +55,7 @@ class ReverseRouter
         $parts = array();
         $i     = 0;
 
-        foreach ($path as $key => $part) {
+        foreach ($path as $part) {
             if (isset($part[0]) && ($part[0] == ':' || $part[0] == '*')) {
                 $name = substr($part, 1);
 

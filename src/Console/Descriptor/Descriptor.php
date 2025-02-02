@@ -11,18 +11,14 @@
 
 namespace PSX\Framework\Console\Descriptor;
 
-use Symfony\Component\Config\Resource\ClassExistenceResource;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Descriptor\DescriptorInterface;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
-use Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
@@ -31,41 +27,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 abstract class Descriptor implements DescriptorInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    public function describe(OutputInterface $output, mixed $object, array $options = []): void
+    public function describe(OutputInterface $output, object $object, array $options = []): void
     {
         $this->output = $output;
 
-        if ($object instanceof ContainerBuilder) {
-            (new AnalyzeServiceReferencesPass(false, false))->process($object);
-        }
-
         match (true) {
-            $object instanceof ParameterBag => $this->describeContainerParameters($object, $options),
-            $object instanceof ContainerBuilder && isset($options['group_by']) && 'tags' === $options['group_by'] => $this->describeContainerTags($object, $options),
-            $object instanceof ContainerBuilder && isset($options['id']) => $this->describeContainerService($this->resolveServiceDefinition($object, $options['id']), $options, $object),
-            $object instanceof ContainerBuilder && isset($options['parameter']) => $this->describeContainerParameter($object->resolveEnvPlaceholders($object->getParameter($options['parameter'])), $options),
-            $object instanceof ContainerBuilder && isset($options['deprecations']) => $this->describeContainerDeprecations($object, $options),
-            $object instanceof ContainerBuilder => $this->describeContainerServices($object, $options),
-            $object instanceof Definition => $this->describeContainerDefinition($object, $options),
-            $object instanceof Alias => $this->describeContainerAlias($object, $options),
-            $object instanceof EventDispatcherInterface => $this->describeEventDispatcherListeners($object, $options),
-            \is_callable($object) => $this->describeCallable($object, $options),
-            default => throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_debug_type($object))),
+            $object instanceof InputArgument => $this->describeInputArgument($object, $options),
+            $object instanceof InputOption => $this->describeInputOption($object, $options),
+            $object instanceof InputDefinition => $this->describeInputDefinition($object, $options),
+            $object instanceof Command => $this->describeCommand($object, $options),
+            $object instanceof Application => $this->describeApplication($object, $options),
+            default => throw new InvalidArgumentException(\sprintf('Object of type "%s" is not describable.', get_debug_type($object))),
         };
-
-        if ($object instanceof ContainerBuilder) {
-            $object->getCompiler()->getServiceReferenceGraph()->clear();
-        }
-    }
-
-    protected function getOutput(): OutputInterface
-    {
-        return $this->output;
     }
 
     protected function write(string $content, bool $decorated = false): void
@@ -73,216 +48,28 @@ abstract class Descriptor implements DescriptorInterface
         $this->output->write($content, false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
     }
 
-    abstract protected function describeContainerParameters(ParameterBag $parameters, array $options = []): void;
-
-    abstract protected function describeContainerTags(ContainerBuilder $builder, array $options = []): void;
+    /**
+     * Describes an InputArgument instance.
+     */
+    abstract protected function describeInputArgument(InputArgument $argument, array $options = []): void;
 
     /**
-     * Describes a container service by its name.
-     *
-     * Common options are:
-     * * name: name of described service
-     *
-     * @param Definition|Alias|object $service
+     * Describes an InputOption instance.
      */
-    abstract protected function describeContainerService(object $service, array $options = [], ContainerBuilder $builder = null): void;
+    abstract protected function describeInputOption(InputOption $option, array $options = []): void;
 
     /**
-     * Describes container services.
-     *
-     * Common options are:
-     * * tag: filters described services by given tag
+     * Describes an InputDefinition instance.
      */
-    abstract protected function describeContainerServices(ContainerBuilder $builder, array $options = []): void;
-
-    abstract protected function describeContainerDeprecations(ContainerBuilder $builder, array $options = []): void;
-
-    abstract protected function describeContainerDefinition(Definition $definition, array $options = [], ContainerBuilder $builder = null): void;
-
-    abstract protected function describeContainerAlias(Alias $alias, array $options = [], ContainerBuilder $builder = null): void;
-
-    abstract protected function describeContainerParameter(mixed $parameter, array $options = []): void;
-
-    abstract protected function describeContainerEnvVars(array $envs, array $options = []): void;
+    abstract protected function describeInputDefinition(InputDefinition $definition, array $options = []): void;
 
     /**
-     * Describes event dispatcher listeners.
-     *
-     * Common options are:
-     * * name: name of listened event
+     * Describes a Command instance.
      */
-    abstract protected function describeEventDispatcherListeners(EventDispatcherInterface $eventDispatcher, array $options = []);
+    abstract protected function describeCommand(Command $command, array $options = []): void;
 
-    abstract protected function describeCallable(mixed $callable, array $options = []);
-
-    protected function formatValue(mixed $value): string
-    {
-        if ($value instanceof \UnitEnum) {
-            return ltrim(var_export($value, true), '\\');
-        }
-
-        if (\is_object($value)) {
-            return sprintf('object(%s)', $value::class);
-        }
-
-        if (\is_string($value)) {
-            return $value;
-        }
-
-        return preg_replace("/\n\s*/s", '', var_export($value, true));
-    }
-
-    protected function formatParameter(mixed $value): string
-    {
-        if ($value instanceof \UnitEnum) {
-            return ltrim(var_export($value, true), '\\');
-        }
-
-        // Recursively search for enum values, so we can replace it
-        // before json_encode (which will not display anything for \UnitEnum otherwise)
-        if (\is_array($value)) {
-            array_walk_recursive($value, static function (&$value) {
-                if ($value instanceof \UnitEnum) {
-                    $value = ltrim(var_export($value, true), '\\');
-                }
-            });
-        }
-
-        if (\is_bool($value) || \is_array($value) || (null === $value)) {
-            $jsonString = json_encode($value);
-
-            if (preg_match('/^(.{60})./us', $jsonString, $matches)) {
-                return $matches[1].'...';
-            }
-
-            return $jsonString;
-        }
-
-        return (string) $value;
-    }
-
-    protected function resolveServiceDefinition(ContainerBuilder $builder, string $serviceId): mixed
-    {
-        if ($builder->hasDefinition($serviceId)) {
-            return $builder->getDefinition($serviceId);
-        }
-
-        // Some service IDs don't have a Definition, they're aliases
-        if ($builder->hasAlias($serviceId)) {
-            return $builder->getAlias($serviceId);
-        }
-
-        if ('service_container' === $serviceId) {
-            return (new Definition(ContainerInterface::class))->setPublic(true)->setSynthetic(true);
-        }
-
-        // the service has been injected in some special way, just return the service
-        return $builder->get($serviceId);
-    }
-
-    protected function findDefinitionsByTag(ContainerBuilder $builder, bool $showHidden): array
-    {
-        $definitions = [];
-        $tags = $builder->findTags();
-        asort($tags);
-
-        foreach ($tags as $tag) {
-            foreach ($builder->findTaggedServiceIds($tag) as $serviceId => $attributes) {
-                $definition = $this->resolveServiceDefinition($builder, $serviceId);
-
-                if ($showHidden xor '.' === ($serviceId[0] ?? null)) {
-                    continue;
-                }
-
-                if (!isset($definitions[$tag])) {
-                    $definitions[$tag] = [];
-                }
-
-                $definitions[$tag][$serviceId] = $definition;
-            }
-        }
-
-        return $definitions;
-    }
-
-    protected function sortParameters(ParameterBag $parameters): array
-    {
-        $parameters = $parameters->all();
-        ksort($parameters);
-
-        return $parameters;
-    }
-
-    protected function sortServiceIds(array $serviceIds): array
-    {
-        asort($serviceIds);
-
-        return $serviceIds;
-    }
-
-    protected function sortTaggedServicesByPriority(array $services): array
-    {
-        $maxPriority = [];
-        foreach ($services as $service => $tags) {
-            $maxPriority[$service] = \PHP_INT_MIN;
-            foreach ($tags as $tag) {
-                $currentPriority = $tag['priority'] ?? 0;
-                if ($maxPriority[$service] < $currentPriority) {
-                    $maxPriority[$service] = $currentPriority;
-                }
-            }
-        }
-        uasort($maxPriority, fn ($a, $b) => $b <=> $a);
-
-        return array_keys($maxPriority);
-    }
-
-    protected function sortTagsByPriority(array $tags): array
-    {
-        $sortedTags = [];
-        foreach ($tags as $tagName => $tag) {
-            $sortedTags[$tagName] = $this->sortByPriority($tag);
-        }
-
-        return $sortedTags;
-    }
-
-    protected function sortByPriority(array $tag): array
-    {
-        usort($tag, fn ($a, $b) => ($b['priority'] ?? 0) <=> ($a['priority'] ?? 0));
-
-        return $tag;
-    }
-
-    public static function getClassDescription(string $class, string &$resolvedClass = null): string
-    {
-        $resolvedClass = $class;
-        try {
-            $resource = new ClassExistenceResource($class, false);
-
-            // isFresh() will explode ONLY if a parent class/trait does not exist
-            $resource->isFresh(0);
-
-            $r = new \ReflectionClass($class);
-            $resolvedClass = $r->name;
-
-            if ($docComment = $r->getDocComment()) {
-                $docComment = preg_split('#\n\s*\*\s*[\n@]#', substr($docComment, 3, -2), 2)[0];
-
-                return trim(preg_replace('#\s*\n\s*\*\s*#', ' ', $docComment));
-            }
-        } catch (\ReflectionException) {
-        }
-
-        return '';
-    }
-
-    protected function getServiceEdges(ContainerBuilder $builder, string $serviceId): array
-    {
-        try {
-            return array_map(fn (ServiceReferenceGraphEdge $edge) => $edge->getSourceNode()->getId(), $builder->getCompiler()->getServiceReferenceGraph()->getNode($serviceId)->getInEdges());
-        } catch (InvalidArgumentException $exception) {
-            return [];
-        }
-    }
+    /**
+     * Describes an Application instance.
+     */
+    abstract protected function describeApplication(Application $application, array $options = []): void;
 }
