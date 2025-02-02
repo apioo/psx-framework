@@ -167,16 +167,12 @@ EOF
             $io->comment('Re-run the command with a -vv option to see logs about consumed messages.');
         }
 
-        $this->worker = new Worker([DefaultTransport::NAME => $this->transport], $this->messageBus, $this->eventDispatcher, $this->logger);
         $options = [
             'sleep' => $input->getOption('sleep') * 1000000,
         ];
 
-        try {
-            $this->worker->run($options);
-        } finally {
-            $this->worker = null;
-        }
+        $worker = new Worker([DefaultTransport::NAME => $this->transport], $this->messageBus, $this->eventDispatcher, $this->logger);
+        $worker->run($options);
 
         return 0;
     }

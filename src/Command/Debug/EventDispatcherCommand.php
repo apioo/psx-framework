@@ -12,6 +12,7 @@
 namespace PSX\Framework\Command\Debug;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +36,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[AsCommand(name: 'debug:event-dispatcher', description: 'Display configured listeners for an application')]
 class EventDispatcherCommand extends Command
 {
-    private const DEFAULT_DISPATCHER = 'event_dispatcher';
+    private const DEFAULT_DISPATCHER = PsrEventDispatcherInterface::class;
 
     public function __construct(
         private ContainerInterface $dispatchers,
