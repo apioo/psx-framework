@@ -53,14 +53,19 @@ class SetupTransportCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        if ($this->transport instanceof SetupableTransportInterface) {
-            $this->transport->setup();
-
-            $io->success(sprintf('The "%s" transport was set up successfully.', DefaultTransport::NAME));
-        } else {
-            $io->note(sprintf('The "%s" transport does not support setup.', DefaultTransport::NAME));
+        if (!$this->transport instanceof SetupableTransportInterface) {
+            $io->note(\sprintf('The "%s" transport does not support setup.', DefaultTransport::NAME));
+            return self::FAILURE;
         }
 
-        return 0;
+        try {
+            $this->transport->setup();
+
+            $io->success(\sprintf('The "%s" transport was set up successfully.', DefaultTransport::NAME));
+        } catch (\Exception $e) {
+            throw new \RuntimeException(\sprintf('An error occurred while setting up the "%s" transport: ', DefaultTransport::NAME).$e->getMessage(), 0, $e);
+        }
+
+        return self::SUCCESS;
     }
 }
