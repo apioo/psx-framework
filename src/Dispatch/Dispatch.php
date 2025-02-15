@@ -71,7 +71,7 @@ class Dispatch implements DispatchInterface
     /**
      * Routes the request to the fitting controller and returns the response
      */
-    public function route(RequestInterface $request, ResponseInterface $response, Context $context = null): ResponseInterface
+    public function route(RequestInterface $request, ResponseInterface $response, ?Context $context = null): ResponseInterface
     {
         $this->level++;
 
