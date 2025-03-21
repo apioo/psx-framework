@@ -25,6 +25,7 @@ use PSX\Api\OperationInterface;
 use PSX\Api\Parser\Attribute;
 use PSX\Data\Body;
 use PSX\Data\Reader;
+use PSX\Data\Transformer\Noop;
 use PSX\DateTime\Exception\InvalidFormatException;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\LocalDateTime;
@@ -170,6 +171,7 @@ class ControllerExecutor implements FilterInterface
                 ContentType::JSON => Body\Json::from($this->requestReader->getBody($request, Reader\Json::class)),
                 ContentType::MULTIPART => $this->getMultipart($this->requestReader->getBody($request, Reader\Multipart::class)),
                 ContentType::TEXT => (string) $request->getBody(),
+                ContentType::XML => $this->requestReader->getBody($request, Reader\Xml::class, new Noop()),
             };
         }
 

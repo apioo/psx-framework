@@ -25,6 +25,7 @@ use PSX\Data\Exception\ReaderNotFoundException;
 use PSX\Data\Exception\ReadException;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
+use PSX\Data\TransformerInterface;
 use PSX\Http\Exception\BadRequestException;
 use PSX\Http\Exception\UnsupportedMediaTypeException;
 use PSX\Http\RequestInterface;
@@ -50,13 +51,17 @@ class RequestReader
     /**
      * Returns the result of the reader for the request
      */
-    public function getBody(RequestInterface $request, ?string $readerType = null): mixed
+    public function getBody(RequestInterface $request, ?string $readerType = null, ?TransformerInterface $transformer = null): mixed
     {
         $data = (string) $request->getBody();
 
         $payload = Payload::create($data, $request->getHeader('Content-Type'));
         if ($readerType !== null) {
             $payload->setRwType($readerType);
+        }
+
+        if ($transformer instanceof TransformerInterface) {
+            $payload->setTransformer($transformer);
         }
 
         try {
