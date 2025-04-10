@@ -57,6 +57,7 @@ class ConfigFactory
             'psx_migration_namespace' => 'App\\Migrations',
             'psx_cors_origin'         => '*',
             'psx_cors_headers'        => ['Accept', 'Accept-Language', 'Authorization', 'Content-Language', 'Content-Type', 'User-Agent'],
+            'psx_trusted_ip_header'   => null,
             'psx_supported_writer'    => [
                 WriterInterface::FORM,
                 WriterInterface::JSON,

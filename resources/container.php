@@ -34,6 +34,7 @@ use PSX\Framework\Console\ApplicationFactory;
 use PSX\Framework\Data\ProcessorFactory;
 use PSX\Framework\Dependency\Configurator;
 use PSX\Framework\Dispatch\Dispatch;
+use PSX\Framework\Environment\IPResolver;
 use PSX\Framework\Event\EventDispatcherFactory;
 use PSX\Framework\Exception\Converter;
 use PSX\Framework\Exception\ConverterInterface;
@@ -326,12 +327,13 @@ return static function (ContainerConfigurator $container) {
     $services->set(MessengerEventListener\AddErrorDetailsStampListener::class);
     $services->set(MessengerEventListener\DispatchPcntlSignalListener::class);
     $services->set(MessengerEventListener\StopWorkerOnRestartSignalListener::class);
-    $services->set(MessengerEventListener\StopWorkerOnSignalsListener::class);
     $services->set(MessengerEventListener\StopWorkerOnCustomStopExceptionListener::class);
 
     // test environment
     $services->set(Environment::class)
         ->public();
+
+    $services->set(IPResolver::class);
 
     // global filter chain
     $services->set(PreFilterCollection::class)
