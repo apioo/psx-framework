@@ -133,12 +133,11 @@ class Dispatch implements DispatchInterface
 
         if ($e instanceof StatusCode\MethodNotAllowedException) {
             $allowedMethods = $e->getAllowedMethods();
-
             if (!empty($allowedMethods)) {
                 $response->setHeader('Allow', implode(', ', $allowedMethods));
             }
         } elseif ($e instanceof StatusCode\UnauthorizedException) {
-            $type       = $e->getType();
+            $type = $e->getType();
             $parameters = $e->getParameters();
 
             if (!empty($type)) {
@@ -147,6 +146,11 @@ class Dispatch implements DispatchInterface
                 } else {
                     $response->setHeader('WWW-Authenticate', $type);
                 }
+            }
+        } elseif ($e instanceof StatusCode\TooManyRequestsException) {
+            $retryAfter = $e->getRetryAfter();
+            if ($retryAfter > 0) {
+                $response->setHeader('Retry-After', $retryAfter);
             }
         }
     }
