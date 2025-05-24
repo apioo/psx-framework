@@ -21,6 +21,7 @@
 namespace PSX\Framework\Loader;
 
 use InvalidArgumentException;
+use PSX\Framework\Config\BaseUrlInterface;
 
 /**
  * ReverseRouter
@@ -31,17 +32,8 @@ use InvalidArgumentException;
  */
 class ReverseRouter
 {
-    private RoutingParserInterface $routingParser;
-    private string $url;
-    private string $dispatch;
-    private ?string $basePath;
-
-    public function __construct(RoutingParserInterface $routingParser, string $url, string $dispatch)
+    public function __construct(private readonly RoutingParserInterface $routingParser, private readonly BaseUrlInterface $baseUrl)
     {
-        $this->routingParser = $routingParser;
-        $this->url           = $url;
-        $this->dispatch      = $dispatch;
-        $this->basePath      = parse_url($this->url, PHP_URL_PATH);
     }
 
     public function getPath(array $source, array $parameters = array(), $leadingPath = true): ?string
@@ -98,12 +90,12 @@ class ReverseRouter
 
     public function getBasePath(): string
     {
-        return $this->basePath ?? '';
+        return $this->baseUrl->getPath();
     }
 
     public function getDispatchUrl(): string
     {
-        return $this->url . '/' . $this->dispatch;
+        return $this->baseUrl->getDispatchUrl();
     }
 
     public function getAbsolutePath($source, array $parameters = []): ?string
@@ -116,7 +108,7 @@ class ReverseRouter
         if ($this->isAbsoluteUrl($path)) {
             return $path;
         } else {
-            return $this->basePath . '/' . $this->dispatch . $path;
+            return $this->baseUrl->getDispatchPath() . $path;
         }
     }
 
@@ -149,6 +141,6 @@ class ReverseRouter
 
     private function isAbsoluteUrl(string $path): bool
     {
-        return substr($path, 0, 7) == 'http://' || substr($path, 0, 8) == 'https://';
+        return str_starts_with($path, 'http://') || str_starts_with($path, 'https://');
     }
 }

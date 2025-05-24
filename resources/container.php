@@ -25,6 +25,8 @@ use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\Repository\SDKgen\Config as SDKgenConfig;
 use PSX\Framework\Api\Scanner\RoutingParser as ScannerRoutingParser;
+use PSX\Framework\Config\BaseUrl;
+use PSX\Framework\Config\BaseUrlInterface;
 use PSX\Framework\Config\ConfigInterface;
 use PSX\Framework\Config\ContainerConfig;
 use PSX\Framework\Config\Directory;
@@ -96,6 +98,7 @@ use Symfony\Component\Messenger\Retry\MultiplierRetryStrategy;
 use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
 use Symfony\Component\Messenger\Transport as MessengerTransport;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
@@ -113,6 +116,12 @@ return static function (ContainerConfigurator $container) {
         ->arg('$srcDir', param('psx_path_src'))
         ->arg('$logDir', param('psx_path_log'));
     $services->alias(DirectoryInterface::class, Directory::class)
+        ->public();
+
+    $services->set(BaseUrl::class)
+        ->arg('$url', param('psx_url'))
+        ->arg('$dispatch', param('psx_dispatch'));
+    $services->alias(BaseUrlInterface::class, BaseUrl::class)
         ->public();
 
     $services->set(FilesystemAdapter::class)
@@ -207,9 +216,7 @@ return static function (ContainerConfigurator $container) {
     $services->alias(DispatchInterface::class, Dispatch::class)
         ->public();
 
-    $services->set(ReverseRouter::class)
-        ->arg('$url', param('psx_url'))
-        ->arg('$dispatch', param('psx_dispatch'));
+    $services->set(ReverseRouter::class);
 
     $services->set(ScannerRoutingParser::class);
     $services->alias(ScannerInterface::class, ScannerRoutingParser::class)
@@ -228,7 +235,7 @@ return static function (ContainerConfigurator $container) {
         ->args([
             tagged_iterator('psx.api_repository'),
             tagged_iterator('psx.api_configurator'),
-            param('psx_url') . '/' . param('psx_dispatch')
+            expr('service(\'' . addslashes(BaseUrlInterface::class) . '\').getDispatchUrl()'),
         ]);
 
     $services->set(ApiManager::class)

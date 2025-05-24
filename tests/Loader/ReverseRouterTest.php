@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Loader;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Framework\Config\BaseUrl;
 use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\PhpFile;
 
@@ -36,7 +37,7 @@ class ReverseRouterTest extends TestCase
     public function testGetPathRoutes()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('/', $router->getPath(['PSX\Framework\Loader\Foo1Controller', 'show']));
         $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
@@ -57,7 +58,7 @@ class ReverseRouterTest extends TestCase
     public function testGetPathNamedParameter()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('/foo/bla/blub', $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['foo' => 'blub', 'bar' => 'bla']));
     }
@@ -65,7 +66,7 @@ class ReverseRouterTest extends TestCase
     public function testGetPathIndexedParameter()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('/foo/bla/blub', $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['bla', 'blub']));
     }
@@ -75,7 +76,7 @@ class ReverseRouterTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $router->getPath(['PSX\Framework\Loader\Foo4Controller', 'show'], ['bla']);
     }
@@ -85,7 +86,7 @@ class ReverseRouterTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $router->getPath(['PSX\Framework\Loader\Foo8Controller', 'show'], ['bla']);
     }
@@ -93,7 +94,7 @@ class ReverseRouterTest extends TestCase
     public function testGetNotExisting()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertNull($router->getPath(['Foo\Bar', 'show']));
         $this->assertNull($router->getAbsolutePath(['Foo\Bar', 'show']));
@@ -103,22 +104,22 @@ class ReverseRouterTest extends TestCase
     public function testGetPath()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', ''));
 
         $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', 'index.php/'));
 
         $this->assertEquals('/foo/bar', $router->getPath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getPath(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
@@ -126,22 +127,22 @@ class ReverseRouterTest extends TestCase
     public function testGetAbsolutePath()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', ''));
 
         $this->assertEquals('/foo/bar/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', 'index.php/'));
 
         $this->assertEquals('/foo/bar/index.php/foo/bar', $router->getAbsolutePath(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getAbsolutePath(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
@@ -149,22 +150,22 @@ class ReverseRouterTest extends TestCase
     public function testGetUrl()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('http://foo.com/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', ''));
 
         $this->assertEquals('http://foo.com/foo/bar/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', 'index.php/');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', 'index.php/'));
 
         $this->assertEquals('http://foo.com/foo/bar/index.php/foo/bar', $router->getUrl(['PSX\Framework\Loader\Foo2Controller', 'show']));
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('http://cdn.foo.com/serve/foo/common.js', $router->getUrl(['PSX\Framework\Loader\Foo13Controller', 'show'], ['path' => 'foo/common.js']));
     }
@@ -172,12 +173,12 @@ class ReverseRouterTest extends TestCase
     public function testGetBasePath()
     {
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com', ''));
 
         $this->assertEquals('', $router->getBasePath());
 
         $routingFile = new PhpFile(__DIR__ . '/routes.php');
-        $router      = new ReverseRouter($routingFile, 'http://foo.com/foo/bar', '');
+        $router      = new ReverseRouter($routingFile, new BaseUrl('http://foo.com/foo/bar', ''));
 
         $this->assertEquals('/foo/bar', $router->getBasePath());
     }
