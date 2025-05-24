@@ -1,12 +1,21 @@
 <?php
-
 /*
- * This file is part of the Symfony package.
+ * PSX is an open source PHP framework to develop RESTful APIs.
+ * For the current version and information visit <https://phpsx.org>
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * Copyright (c) Christoph Kappestein <christoph.kappestein@gmail.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace PSX\Framework\Command\Debug;
@@ -27,11 +36,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
+ * Based on the Symfony package. For the full copyright and license information,
+ * please take a look at https://github.com/symfony/symfony
+ *
  * A console command for retrieving information about event dispatcher.
  *
+ * @author Fabien Potencier <fabien@symfony.com>
  * @author Matthieu Auger <mail@matthieuauger.com>
- *
- * @final
+ * @author Christoph Kappestein <christoph.kappestein@gmail.com>
  */
 #[AsCommand(name: 'debug:event-dispatcher', description: 'Display configured listeners for an application')]
 class EventDispatcherCommand extends Command
