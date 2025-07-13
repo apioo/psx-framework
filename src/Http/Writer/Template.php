@@ -38,13 +38,15 @@ class Template extends Writer
 {
     private string $templateFile;
     private ReverseRouter $reverseRouter;
+    private ?int $statusCode;
 
-    public function __construct(mixed $data, string $templateFile, ReverseRouter $reverseRouter)
+    public function __construct(mixed $data, string $templateFile, ReverseRouter $reverseRouter, ?int $statusCode = null)
     {
         parent::__construct($data);
 
-        $this->templateFile  = $templateFile;
+        $this->templateFile = $templateFile;
         $this->reverseRouter = $reverseRouter;
+        $this->statusCode = $statusCode;
     }
 
     public function writeTo(ResponseInterface $response): void
@@ -71,6 +73,10 @@ class Template extends Writer
             foreach ($fields as $key => $value) {
                 $template->assign($key, $value);
             }
+        }
+
+        if ($this->statusCode !== null) {
+            $response->setStatus($this->statusCode);
         }
 
         $response->getBody()->write($template->transform());
