@@ -1,52 +1,6 @@
 [
   [
     [
-      "GET",
-      "OPTIONS",
-      "HEAD"
-    ],
-    "\/authorization\/authorize",
-    [
-      "PSX\\Framework\\Controller\\OAuth2\\AuthorizationController",
-      "authorizeGet"
-    ]
-  ],
-  [
-    [
-      "POST",
-      "OPTIONS"
-    ],
-    "\/authorization\/authorize",
-    [
-      "PSX\\Framework\\Controller\\OAuth2\\AuthorizationController",
-      "authorizePost"
-    ]
-  ],
-  [
-    [
-      "GET",
-      "OPTIONS",
-      "HEAD"
-    ],
-    "\/authorization\/callback",
-    [
-      "PSX\\Framework\\Controller\\OAuth2\\CallbackController",
-      "callbackGet"
-    ]
-  ],
-  [
-    [
-      "POST",
-      "OPTIONS"
-    ],
-    "\/authorization\/callback",
-    [
-      "PSX\\Framework\\Controller\\OAuth2\\CallbackController",
-      "callbackPost"
-    ]
-  ],
-  [
-    [
       "POST",
       "OPTIONS"
     ],

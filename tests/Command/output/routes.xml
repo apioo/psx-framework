@@ -2,26 +2,6 @@
 <record type="object">
     <routings type="array">
         <entry type="object">
-            <method type="string">GET</method>
-            <path type="string">/authorization/authorize</path>
-            <operationId type="string">oauth.authorize</operationId>
-        </entry>
-        <entry type="object">
-            <method type="string">POST</method>
-            <path type="string">/authorization/authorize</path>
-            <operationId type="string">oauth.authorize</operationId>
-        </entry>
-        <entry type="object">
-            <method type="string">GET</method>
-            <path type="string">/authorization/callback</path>
-            <operationId type="string">oauth.callback</operationId>
-        </entry>
-        <entry type="object">
-            <method type="string">POST</method>
-            <path type="string">/authorization/callback</path>
-            <operationId type="string">oauth.callback</operationId>
-        </entry>
-        <entry type="object">
             <method type="string">POST</method>
             <path type="string">/authorization/token</path>
             <operationId type="string">oauth.token</operationId>

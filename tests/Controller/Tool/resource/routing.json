@@ -1,26 +1,6 @@
 {
   "routings": [
     {
-      "method": "GET",
-      "path": "/authorization/authorize",
-      "operationId": "oauth.authorize"
-    },
-    {
-      "method": "POST",
-      "path": "/authorization/authorize",
-      "operationId": "oauth.authorize"
-    },
-    {
-      "method": "GET",
-      "path": "/authorization/callback",
-      "operationId": "oauth.callback"
-    },
-    {
-      "method": "POST",
-      "path": "/authorization/callback",
-      "operationId": "oauth.callback"
-    },
-    {
       "method": "POST",
       "path": "/authorization/token",
       "operationId": "oauth.token"
