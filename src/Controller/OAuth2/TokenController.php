@@ -36,6 +36,7 @@ use PSX\Http\ResponseInterface;
 use PSX\OAuth2\AccessToken;
 use PSX\OAuth2\Error;
 use PSX\OAuth2\Exception\ErrorExceptionAbstract;
+use PSX\OAuth2\Grant\AuthorizationCode;
 use PSX\OAuth2\GrantFactory;
 use PSX\Schema\Type;
 
@@ -109,6 +110,15 @@ class TokenController extends ControllerAbstract
             $data = explode(':', base64_decode($data), 2);
             $clientId = $data[0] ?? null;
             $clientSecret = $data[1] ?? null;
+
+            if (!empty($clientId) && !empty($clientSecret)) {
+                $credentials = new Credentials($clientId, $clientSecret);
+            }
+        }
+
+        if ($credentials === null && $grant instanceof AuthorizationCode) {
+            $clientId = $grant->getClientId();
+            $clientSecret = $grant->getClientSecret();
 
             if (!empty($clientId) && !empty($clientSecret)) {
                 $credentials = new Credentials($clientId, $clientSecret);
