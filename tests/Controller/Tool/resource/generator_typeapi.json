@@ -1063,6 +1063,9 @@
         "expiresIn": {
           "type": "integer"
         },
+        "idToken": {
+          "type": "string"
+        },
         "refreshToken": {
           "type": "string"
         },
