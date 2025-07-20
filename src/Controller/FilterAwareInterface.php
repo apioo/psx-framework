@@ -36,7 +36,7 @@ interface FilterAwareInterface
      * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
      * service is invoked before the controller
      *
-     * @return string[]
+     * @return array<string|callable>
      */
     public function getPreFilter(): array;
 
@@ -44,7 +44,7 @@ interface FilterAwareInterface
      * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
      * service is invoked after the controller
      *
-     * @return string[]
+     * @return array<string|callable>
      */
     public function getPostFilter(): array;
 }
