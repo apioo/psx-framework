@@ -67,13 +67,11 @@ class BaseUrl implements BaseUrlInterface
 
     private function autoDetectUrl(): string
     {
-        $https  = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : null;
-        $scheme = !empty($https) && $https != 'off' ? 'https' : 'http';
-        $host   = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? 'localhost');
+        $https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : null;
+        $httpsForwarded = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) : null;
 
-        if (empty($host)) {
-            throw new \RuntimeException('Could not detect hostname, please specify the url in your config');
-        }
+        $scheme = $https === 'on' || $httpsForwarded === 'https' ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? 'localhost');
 
         return $scheme . '://' . $host;
     }
