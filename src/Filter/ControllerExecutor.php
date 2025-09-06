@@ -30,6 +30,7 @@ use PSX\DateTime\Exception\InvalidFormatException;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\LocalDateTime;
 use PSX\DateTime\LocalTime;
+use PSX\Framework\Controller\MiddlewareInterface;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Framework\Loader\Context;
@@ -99,6 +100,8 @@ class ControllerExecutor implements FilterInterface
 
         if ($request->getMethod() === 'OPTIONS') {
             // for OPTIONS requests we dont execute the controller
+        } elseif ($this->controller instanceof MiddlewareInterface) {
+            call_user_func_array([$this->controller, $this->methodName], [$request, $response]);
         } else {
             $arguments = $this->buildArguments($operation, $request, $specification->getDefinitions());
 
