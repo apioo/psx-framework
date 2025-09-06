@@ -90,7 +90,13 @@ class Loader implements LoaderInterface
         $filterChain = new FilterChain();
         $filterChain->addAll($this->preFilterCollection);
         $filterChain->addAll($preFilterCollection);
-        $filterChain->on($this->controllerExecutorFactory->factory($controller, $methodName, $context));
+
+        if ($controller instanceof FilterInterface) {
+            $filterChain->on($controller);
+        } else {
+            $filterChain->on($this->controllerExecutorFactory->factory($controller, $methodName, $context));
+        }
+
         $filterChain->addAll($postFilterCollection);
         $filterChain->addAll($this->postFilterCollection);
 
