@@ -46,13 +46,23 @@
       "method": "POST"
     },
     {
-      "rel": "spec-typeapi",
-      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-typeapi",
+      "rel": "spec-graphql",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-graphql",
       "method": "POST"
     },
     {
       "rel": "spec-openapi",
       "href": "http:\/\/127.0.0.1\/system\/generator\/spec-openapi",
+      "method": "POST"
+    },
+    {
+      "rel": "spec-openrpc",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-openrpc",
+      "method": "POST"
+    },
+    {
+      "rel": "spec-typeapi",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/spec-typeapi",
       "method": "POST"
     },
     {
