@@ -20,11 +20,15 @@
 
 namespace PSX\Framework\Dependency;
 
+use LogicException;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Config\ConfigFactory;
 use PSX\Framework\Messenger\DefaultBus;
 use PSX\Framework\Messenger\DefaultTransport;
 use PSX\Framework\Messenger\MessengerPass;
+use ReflectionMethod;
+use Reflector;
+use RuntimeException;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -66,7 +70,16 @@ class ContainerBuilder
 
         require_once $targetFile;
 
-        return new \ProjectServiceContainer();
+        if (!class_exists('ProjectServiceContainer')) {
+            throw new RuntimeException('Could not find container class');
+        }
+
+        $container = new \ProjectServiceContainer();
+        if (!$container instanceof ContainerInterface) {
+            throw new RuntimeException('Generated container must implement: ' . ContainerInterface::class);
+        }
+
+        return $container;
     }
 
     public static function getContainerBuilder(string $appDir, array $containerFiles): SymfonyContainerBuilder
@@ -104,24 +117,24 @@ class ContainerBuilder
                 if (is_iterable($callbackFiles)) {
                     self::resolve($loader, $callbackFiles, $actualFiles);
                 } else {
-                    throw new \RuntimeException('Provided container file callable must return an iterable');
+                    throw new RuntimeException('Provided container file callable must return an iterable');
                 }
             } else {
-                throw new \RuntimeException('Provided an invalid container file, must be either a string or callable');
+                throw new RuntimeException('Provided an invalid container file, must be either a string or callable');
             }
         }
     }
 
     private static function registerAttributeForAutoconfiguration(SymfonyContainerBuilder $container): void
     {
-        $container->registerAttributeForAutoconfiguration(AsMessageHandler::class, static function (ChildDefinition $definition, AsMessageHandler $attribute, \ReflectionClass|\ReflectionMethod $reflector): void {
+        $container->registerAttributeForAutoconfiguration(AsMessageHandler::class, static function (ChildDefinition $definition, AsMessageHandler $attribute, Reflector $reflector): void {
             $tagAttributes = get_object_vars($attribute);
             $tagAttributes['bus'] = $tagAttributes['bus'] ?? DefaultBus::NAME;
             $tagAttributes['from_transport'] = $tagAttributes['fromTransport'] ?? DefaultTransport::NAME;
             unset($tagAttributes['fromTransport']);
-            if ($reflector instanceof \ReflectionMethod) {
+            if ($reflector instanceof ReflectionMethod) {
                 if (isset($tagAttributes['method'])) {
-                    throw new \LogicException(sprintf('AsMessageHandler attribute cannot declare a method on "%s::%s()".', $reflector->class, $reflector->name));
+                    throw new LogicException(sprintf('AsMessageHandler attribute cannot declare a method on "%s::%s()".', $reflector->class, $reflector->name));
                 }
                 $tagAttributes['method'] = $reflector->getName();
             }
