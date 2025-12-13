@@ -20,7 +20,9 @@
 
 namespace PSX\Framework\Loader;
 
+use ArrayIterator;
 use Countable;
+use Traversable;
 
 /**
  * RoutingCollection
@@ -53,9 +55,9 @@ class RoutingCollection implements \IteratorAggregate, Countable
         return $this->routings;
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->routings);
+        return new ArrayIterator($this->routings);
     }
 
     public function count(): int
