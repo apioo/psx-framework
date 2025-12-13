@@ -23,6 +23,7 @@ namespace PSX\Framework\Logger;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
@@ -35,13 +36,8 @@ use Psr\Log\LoggerInterface;
  */
 class LoggerFactory
 {
-    private string $logDir;
-    private int $logLevel;
-
-    public function __construct(string $logDir, int $logLevel)
+    public function __construct(private string $logDir, private int|Level $logLevel)
     {
-        $this->logDir = $logDir;
-        $this->logLevel = $logLevel;
     }
 
     public function factory(string $namespace = 'psx'): LoggerInterface
@@ -54,10 +50,12 @@ class LoggerFactory
 
     protected function newHandler(): HandlerInterface
     {
+        $level = is_int($this->logLevel) ? Level::from($this->logLevel) : $this->logLevel;
+
         if ($this->logDir === 'php://error_log') {
-            return new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $this->logLevel);
+            return new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $level);
         } else {
-            return new StreamHandler($this->logDir . '/app.log', $this->logLevel);
+            return new StreamHandler($this->logDir . '/app.log', $level);
         }
     }
 }
