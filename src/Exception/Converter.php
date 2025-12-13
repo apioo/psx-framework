@@ -71,10 +71,10 @@ class Converter implements ConverterInterface
                 foreach ($lines as $number => $line) {
                     $lineNo = $offset + $number + 1;
 
-                    if ($lineNo == $exception->getLine()) {
-                        $context.= '<b>' . str_pad($lineNo, 4) . htmlspecialchars($line) . '</b>';
+                    if ($lineNo === $exception->getLine()) {
+                        $context.= '<b>' . str_pad((string) $lineNo, 4) . htmlspecialchars((string) $line) . '</b>';
                     } else {
-                        $context.= str_pad($lineNo, 4) . htmlspecialchars($line);
+                        $context.= str_pad((string) $lineNo, 4) . htmlspecialchars((string) $line);
                     }
                 }
             }
