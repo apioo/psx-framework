@@ -20,6 +20,8 @@
 
 namespace PSX\Framework\Controller;
 
+use PSX\Http\FilterInterface;
+
 /**
  * A controller can implement this interface to add a middleware before or after the controller invocation. It receives
  * the raw HTTP request and response and can add specific behaviour to it. Those middlewares are only attached to the
@@ -36,7 +38,7 @@ interface FilterAwareInterface
      * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
      * service is invoked before the controller
      *
-     * @return array<string|callable>
+     * @return array<string|callable|FilterInterface>
      */
     public function getPreFilter(): array;
 
@@ -44,7 +46,7 @@ interface FilterAwareInterface
      * Returns an array of service ids as middleware, the service must implement the PSX\Http\FilterInterface. The
      * service is invoked after the controller
      *
-     * @return array<string|callable>
+     * @return array<string|callable|FilterInterface>
      */
     public function getPostFilter(): array;
 }
