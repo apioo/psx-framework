@@ -38,12 +38,12 @@ class Uuid
 
     public static function timeBased()
     {
-        return self::generate(self::V_1, sha1(microtime()));
+        return self::generate(self::V_1, sha1(implode('.', hrtime())));
     }
 
     public static function pseudoRandom()
     {
-        return self::generate(self::V_4, sha1(uniqid(rand(), true)));
+        return self::generate(self::V_4, sha1(random_bytes(128)));
     }
 
     public static function nameBased($name)
