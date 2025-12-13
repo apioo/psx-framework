@@ -39,6 +39,7 @@ use PSX\Http\RequestInterface;
 use PSX\Http\ResponseInterface;
 use PSX\Http\Stream\StringStream;
 use PSX\Schema\Exception\ValidationException;
+use Throwable;
 
 /**
  * The dispatcher routes the request to the fitting controller. The route method contains the global try catch for the
@@ -75,7 +76,7 @@ class Dispatch implements DispatchInterface
     {
         $this->level++;
 
-        $this->eventDispatcher->dispatch(new RequestIncomingEvent($request), Event::REQUEST_INCOMING);
+        $this->eventDispatcher->dispatch(new RequestIncomingEvent($request));
 
         // load controller
         if ($context === null) {
@@ -91,8 +92,8 @@ class Dispatch implements DispatchInterface
             $response->setStatus($e->getStatusCode());
             $response->setHeader('Location', $e->getLocation());
             $response->setBody(new StringStream());
-        } catch (\Throwable $e) {
-            $this->eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)), Event::EXCEPTION_THROWN);
+        } catch (Throwable $e) {
+            $this->eventDispatcher->dispatch(new ExceptionThrownEvent($e, new ControllerContext($request, $response)));
 
             $this->handleException($e, $response);
 
@@ -103,18 +104,18 @@ class Dispatch implements DispatchInterface
 
         // for HEAD requests we never return a response body
         if ($request->getMethod() == 'HEAD') {
-            $response->setHeader('Content-Length', $response->getBody()->getSize());
+            $response->setHeader('Content-Length', (string) $response->getBody()->getSize());
             $response->setBody(new StringStream(''));
         }
 
-        $this->eventDispatcher->dispatch(new ResponseSendEvent($response), Event::RESPONSE_SEND);
+        $this->eventDispatcher->dispatch(new ResponseSendEvent($response));
 
         $this->level--;
 
         return $response;
     }
 
-    protected function handleException(\Throwable $e, ResponseInterface $response): void
+    protected function handleException(Throwable $e, ResponseInterface $response): void
     {
         if ($e instanceof StatusCode\StatusCodeException) {
             $this->handleStatusCodeException($e, $response);
@@ -150,7 +151,7 @@ class Dispatch implements DispatchInterface
         } elseif ($e instanceof StatusCode\TooManyRequestsException) {
             $retryAfter = $e->getRetryAfter();
             if ($retryAfter > 0) {
-                $response->setHeader('Retry-After', $retryAfter);
+                $response->setHeader('Retry-After', (string) $retryAfter);
             }
         }
     }
