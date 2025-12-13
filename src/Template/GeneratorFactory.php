@@ -29,14 +29,11 @@ namespace PSX\Framework\Template;
  */
 class GeneratorFactory implements GeneratorFactoryInterface
 {
-    public function getByContentType($contentType)
+    public function getByContentType(string $contentType): ?GeneratorInterface
     {
-        switch ($contentType) {
-            case 'text/html':
-                return new Generator\Html();
-
-            default:
-                return null;
-        }
+        return match ($contentType) {
+            'text/html' => new Generator\Html(),
+            default => null,
+        };
     }
 }

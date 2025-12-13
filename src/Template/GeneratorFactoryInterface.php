@@ -31,9 +31,6 @@ interface GeneratorFactoryInterface
 {
     /**
      * Returns a generator based on a content type
-     *
-     * @param string $contentType
-     * @return GeneratorInterface
      */
-    public function getByContentType($contentType);
+    public function getByContentType(string $contentType): ?GeneratorInterface;
 }
