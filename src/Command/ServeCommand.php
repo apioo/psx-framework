@@ -58,8 +58,8 @@ class ServeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $engine      = new Engine($input, $output);
-        $environment = new Environment($this->dispatch, $engine, true);
+        $engine = new Engine($input, $output);
+        $environment = new Environment($this->dispatch, $engine);
 
         $environment->serve();
 

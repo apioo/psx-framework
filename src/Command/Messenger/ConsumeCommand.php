@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Command\Messenger;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use PSX\Framework\Messenger\DefaultTransport;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,6 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnFailureLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMemoryLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
@@ -50,8 +50,6 @@ use Symfony\Component\Messenger\Worker;
 #[AsCommand(name: 'messenger:consume', description: 'Consume messages')]
 class ConsumeCommand extends Command
 {
-    private ?Worker $worker = null;
-
     public function __construct(
         private TransportInterface $transport,
         private MessageBusInterface $messageBus,
@@ -155,7 +153,7 @@ EOF
         $io = new SymfonyStyle($input, $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output);
         $io->success(sprintf('Consuming messages from transport "%s".', $this->transport::class));
 
-        if ($stopsWhen) {
+        if (count($stopsWhen) > 0) {
             $last = array_pop($stopsWhen);
             $stopsWhen = ($stopsWhen ? implode(', ', $stopsWhen).' or ' : '').$last;
             $io->comment("The worker will automatically exit once it has {$stopsWhen}.");

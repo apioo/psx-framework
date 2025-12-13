@@ -20,7 +20,6 @@
 
 namespace PSX\Framework\Command\Debug;
 
-use Psr\Container\ContainerInterface;
 use PSX\Framework\Dependency\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -33,7 +32,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -208,7 +209,7 @@ EOF
                 }
             }
 
-            if (isset($options['id']) && isset($this->container->getRemovedIds()[$options['id']])) {
+            if (isset($options['id']) && $this->container instanceof Container && isset($this->container->getRemovedIds()[$options['id']])) {
                 $errorIo->note(sprintf('The "%s" service or alias has been removed or inlined when the container was compiled.', $options['id']));
             }
         } catch (ServiceNotFoundException $e) {

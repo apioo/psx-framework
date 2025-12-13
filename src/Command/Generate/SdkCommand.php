@@ -130,7 +130,7 @@ class SdkCommand extends Command
         return 0;
     }
 
-    private function getConfig(InputInterface $input): ?Config
+    private function getConfig(InputInterface $input): Config
     {
         $config = $input->getOption('config');
         if (!empty($config)) {
