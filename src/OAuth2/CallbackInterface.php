@@ -22,6 +22,7 @@ namespace PSX\Framework\OAuth2;
 
 use PSX\OAuth2\AccessToken;
 use PSX\OAuth2\Authorization\AuthorizationCode;
+use Throwable;
 
 /**
  * CallbackInterface
@@ -45,5 +46,5 @@ interface CallbackInterface
     /**
      * Is called if the client was redirected with an GET error parameter
      */
-    public function onError(\Throwable $e): mixed;
+    public function onError(Throwable $e): mixed;
 }

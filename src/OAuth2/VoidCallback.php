@@ -20,8 +20,12 @@
 
 namespace PSX\Framework\OAuth2;
 
+use GuzzleHttp\HandlerStack;
+use PSX\Http\Client\Client;
 use PSX\OAuth2\AccessToken;
 use PSX\OAuth2\Authorization\AuthorizationCode;
+use PSX\Uri\Url;
+use Throwable;
 
 /**
  * VoidCallback
@@ -35,6 +39,14 @@ class VoidCallback implements CallbackInterface
     public function getAuthorizationCode(string $code, string $state): AuthorizationCode
     {
         // TODO: Implement getAuthorizationCode() method.
+
+        $stack = HandlerStack::create();
+
+        $client = new Client(['handler' => $stack]);
+        $oauth  = new AuthorizationCode($client, Url::parse('http://127.0.0.1/api'));
+        $oauth->setClientPassword('s6BhdRkqt3', 'gX1fBat3bV');
+
+        return $oauth;
     }
 
     public function onAccessToken(AccessToken $accessToken): mixed
@@ -42,7 +54,7 @@ class VoidCallback implements CallbackInterface
         return null;
     }
 
-    public function onError(\Throwable $e): mixed
+    public function onError(Throwable $e): mixed
     {
         return null;
     }
