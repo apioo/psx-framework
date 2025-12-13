@@ -56,13 +56,13 @@ abstract class OAuth2AuthenticationAbstract implements FilterInterface
 
                     $filterChain->handle($request, $response);
                 } else {
-                    $this->onFailure($response);
+                    $this->onFailure();
                 }
             } else {
-                $this->onMissing($response);
+                $this->onMissing();
             }
         } else {
-            $this->onMissing($response);
+            $this->onMissing();
         }
     }
 
