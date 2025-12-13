@@ -84,8 +84,10 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Command\StopWorkersCommand;
 use Symfony\Component\Messenger\EventListener as MessengerEventListener;
@@ -109,6 +111,7 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias(ContainerInterface::class, 'service_container')
         ->public();
+    $services->alias(SymfonyContainerInterface::class, 'service_container');
 
     $services->set(Directory::class)
         ->arg('$appDir', param('psx_path_app'))
@@ -178,6 +181,7 @@ return static function (ContainerConfigurator $container) {
         ->factory([service(EventDispatcherFactory::class), 'factory']);
     $services->alias(EventDispatcherInterface::class, EventDispatcher::class)
         ->public();
+    $services->alias(SymfonyEventDispatcherInterface::class, EventDispatcher::class);
 
     $services->set(Converter::class)
         ->arg('$debug', param('psx_debug'));
