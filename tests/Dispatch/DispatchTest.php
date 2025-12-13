@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Dispatch;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\Framework\Test\ControllerTestCase;
 
 /**
@@ -46,9 +47,7 @@ class DispatchTest extends ControllerTestCase
         $this->assertEquals(500, $response->getStatusCode());
     }
 
-    /**
-     * @dataProvider statusCodeProvider
-     */
+    #[DataProvider('statusCodeProvider')]
     public function testStatusException($code)
     {
         $response = $this->sendRequest('/tests/status/' . $code, 'GET');
@@ -66,7 +65,7 @@ class DispatchTest extends ControllerTestCase
         }
     }
 
-    public function statusCodeProvider()
+    public static function statusCodeProvider(): array
     {
         return [
             [301],

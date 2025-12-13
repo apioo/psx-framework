@@ -21,7 +21,7 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PHPUnit\Framework\Assert;
-use PSX\Framework\Tests\Controller\SchemaApi\PropertyTestCase;
+use PSX\Framework\Tests\Controller\PropertyTestCase;
 use PSX\Http\Environment\HttpContextInterface;
 
 /**

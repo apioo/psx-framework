@@ -95,7 +95,7 @@ class ConverterTest extends TestCase
         }
     }
 
-    protected function getRuntimeException()
+    protected function getRuntimeException(): RuntimeException
     {
         try {
             // [CONTEXT-START]
@@ -110,7 +110,5 @@ class ConverterTest extends TestCase
         } catch (RuntimeException $e) {
             return $e;
         }
-
-        return null;
     }
 }

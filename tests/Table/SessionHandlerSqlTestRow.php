@@ -2,30 +2,54 @@
 
 namespace PSX\Framework\Tests\Table;
 
-class SessionHandlerSqlTestRow extends \PSX\Record\Record
+class SessionHandlerSqlTestRow implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    public function setId(?string $id) : void
+    private ?string $id = null;
+    private mixed $content = null;
+    private ?\PSX\DateTime\LocalDateTime $date = null;
+    public function setId(string $id): void
     {
-        $this->setProperty('id', $id);
+        $this->id = $id;
     }
-    public function getId() : ?string
+    public function getId(): string
     {
-        return $this->getProperty('id');
+        return $this->id ?? throw new \PSX\Sql\Exception\NoValueAvailable('No value for required column "id" was provided');
     }
-    public function setContent(mixed $content) : void
+    public function setContent(mixed $content): void
     {
-        $this->setProperty('content', $content);
+        $this->content = $content;
     }
-    public function getContent() : mixed
+    public function getContent(): mixed
     {
-        return $this->getProperty('content');
+        return $this->content ?? throw new \PSX\Sql\Exception\NoValueAvailable('No value for required column "content" was provided');
     }
-    public function setDate(?\DateTime $date) : void
+    public function setDate(\PSX\DateTime\LocalDateTime $date): void
     {
-        $this->setProperty('date', $date);
+        $this->date = $date;
     }
-    public function getDate() : ?\DateTime
+    public function getDate(): \PSX\DateTime\LocalDateTime
     {
-        return $this->getProperty('date');
+        return $this->date ?? throw new \PSX\Sql\Exception\NoValueAvailable('No value for required column "date" was provided');
+    }
+    public function toRecord(): \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = new \PSX\Record\Record();
+        $record->put('id', $this->id);
+        $record->put('content', $this->content);
+        $record->put('date', $this->date);
+        return $record;
+    }
+    public function jsonSerialize(): object
+    {
+        return (object) $this->toRecord()->getAll();
+    }
+    public static function from(array|\ArrayAccess $data): self
+    {
+        $row = new self();
+        $row->id = isset($data['id']) && is_string($data['id']) ? $data['id'] : null;
+        $row->content = isset($data['content']) ? $data['content'] : null;
+        $row->date = isset($data['date']) && $data['date'] instanceof \DateTimeInterface ? \PSX\DateTime\LocalDateTime::from($data['date']) : null;
+        return $row;
     }
 }

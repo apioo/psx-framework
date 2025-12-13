@@ -26,7 +26,6 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 use PSX\Framework\OAuth2\CallbackInterface;
-use PSX\Framework\Tests\Controller\OAuth2\AuthorizationControllerTest;
 use PSX\Http\Client\Client;
 use PSX\Http\Environment\HttpResponse;
 use PSX\OAuth2\AccessToken;
@@ -66,7 +65,7 @@ JSON;
 
         $client = new Client(['handler' => $stack]);
         $oauth  = new AuthorizationCode($client, Url::parse('http://127.0.0.1/api'));
-        $oauth->setClientPassword(AuthorizationControllerTest::CLIENT_ID, AuthorizationControllerTest::CLIENT_SECRET);
+        $oauth->setClientPassword('s6BhdRkqt3', 'gX1fBat3bV');
 
         return $oauth;
     }

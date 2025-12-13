@@ -24,14 +24,14 @@ use PHPUnit\Framework\Assert;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Incoming;
 use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Param;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\PathParam;
 use PSX\Api\Attribute\Post;
-use PSX\Api\Attribute\QueryParam;
+use PSX\Api\Attribute\Query;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\LocalDateTime;
 use PSX\DateTime\LocalTime;
-use PSX\DateTime\Period;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Framework\Tests\Controller\Foo\Model;
 use PSX\Framework\Tests\Controller\PropertyTestCase;
@@ -46,15 +46,11 @@ use PSX\Schema\Type;
  * @link    https://phpsx.org
  */
 #[Path('/tests/popo/:id')]
-#[PathParam(name: 'id', type: Type::INTEGER)]
 class PopoController extends ControllerAbstract
 {
-    use PropertyControllerTrait;
-
     #[Get]
-    #[QueryParam(name: 'type', type: Type::INTEGER)]
     #[Outgoing(code: 200, schema: Model\Property::class)]
-    public function doGet(int $id, int $type): mixed
+    public function doGet(#[Param] int $id, #[Query] int $type): mixed
     {
         Assert::assertEquals(1, $id);
 
@@ -64,7 +60,7 @@ class PopoController extends ControllerAbstract
     #[Post]
     #[Incoming(schema: Model\Property::class)]
     #[Outgoing(code: 200, schema: Model\Property::class)]
-    public function doPost(int $id, Model\Property $payload): mixed
+    public function doPost(#[Param] int $id, Model\Property $payload): mixed
     {
         Assert::assertInstanceOf(Model\Property::class, $payload);
         Assert::assertInstanceOf(RecordInterface::class, $payload->getAny());

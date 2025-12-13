@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Util;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Util\HeaderName;
 
@@ -32,15 +33,13 @@ use PSX\Framework\Util\HeaderName;
  */
 class HeaderNameTest extends TestCase
 {
-    /**
-     * @dataProvider nameDateProvider
-     */
+    #[DataProvider('nameDateProvider')]
     public function testConvert(string $actual, string $expect)
     {
         $this->assertEquals($expect, HeaderName::convert($actual));
     }
 
-    public function nameDateProvider(): array
+    public static function nameDateProvider(): array
     {
         return [
             ['authorization', 'Authorization'],

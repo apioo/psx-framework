@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Test\Api;
 
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\Framework\App\ApiTestCase;
 use PSX\Framework\Test\Environment;
 
@@ -33,9 +34,7 @@ use PSX\Framework\Test\Environment;
  */
 class CollectionTest extends ApiTestCase
 {
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testGetAll($path)
     {
         $response = $this->sendRequest('/' . $path, 'GET');
@@ -47,9 +46,7 @@ class CollectionTest extends ApiTestCase
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testGetLimited($path)
     {
         $response = $this->sendRequest('/' . $path . '?startIndex=4&count=4', 'GET');
@@ -61,9 +58,7 @@ class CollectionTest extends ApiTestCase
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testPost($path)
     {
         $payload = json_encode([
@@ -106,9 +101,7 @@ JSON;
         $this->assertEquals($expect, $result);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testPut($path)
     {
         $response = $this->sendRequest('/' . $path, 'PUT');
@@ -118,9 +111,7 @@ JSON;
         $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testDelete($path)
     {
         $response = $this->sendRequest('/' . $path, 'DELETE');
@@ -130,7 +121,7 @@ JSON;
         $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
-    public function routeDataProvider()
+    public static function routeDataProvider(): array
     {
         return [
             ['population/popo'],

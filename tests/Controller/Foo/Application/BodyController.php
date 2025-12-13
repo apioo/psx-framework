@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
+use DOMDocument;
 use PSX\Api\Attribute\Get;
 use PSX\Api\Attribute\Path;
 use PSX\Api\Attribute\QueryParam;
@@ -27,6 +28,8 @@ use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Writer;
 use PSX\Record\Record;
 use PSX\Schema\Type;
+use SimpleXMLElement;
+use stdClass;
 
 /**
  * SetBodyController
@@ -49,7 +52,7 @@ class BodyController extends ControllerAbstract
                 break;
 
             case 'stdclass':
-                $body = new \stdClass();
+                $body = new stdClass();
                 $body->foo = array('bar');
 
                 $data = $body;
@@ -60,14 +63,14 @@ class BodyController extends ControllerAbstract
                 break;
 
             case 'dom':
-                $dom = new \DOMDocument();
+                $dom = new DOMDocument();
                 $dom->appendChild($dom->createElement('foo', 'bar'));
 
                 $data = $dom;
                 break;
 
             case 'simplexml':
-                $data = new \SimpleXMLElement('<foo>bar</foo>');
+                $data = new SimpleXMLElement('<foo>bar</foo>');
                 break;
 
             case 'string':

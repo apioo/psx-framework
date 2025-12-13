@@ -76,6 +76,7 @@ class ContentTypeControllerTest extends ControllerDbTestCase
     {
         $this->markTestSkipped('Currently works only on single execution since $_FILES is modified');
 
+        /** @phpstan-ignore deadCode.unreachable */
         $fileName = __DIR__ . '/resource/tmp_file.txt';
         file_put_contents($fileName, 'foobar');
 

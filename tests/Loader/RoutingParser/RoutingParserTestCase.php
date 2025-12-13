@@ -20,6 +20,7 @@
 
 namespace PSX\Framework\Tests\Loader\RoutingParser;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use PSX\Framework\Loader\RoutingCollection;
 
@@ -38,6 +39,7 @@ abstract class RoutingParserTestCase extends TestCase
 
         $this->assertInstanceOf(RoutingCollection::class, $collection);
 
+        /** @var ArrayIterator $iterator */
         $iterator = $collection->getIterator();
         $routing = $iterator->current();
 

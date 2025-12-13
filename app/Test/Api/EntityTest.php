@@ -21,6 +21,7 @@
 namespace PSX\Framework\App\Test\Api;
 
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\Framework\App\ApiTestCase;
 use PSX\Framework\Test\Environment;
 
@@ -33,12 +34,10 @@ use PSX\Framework\Test\Environment;
  */
 class EntityTest extends ApiTestCase
 {
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testGet($path)
     {
-        $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'GET');
+        $response = $this->sendRequest('/' . str_replace(':id', '1', $path), 'GET');
 
         $actual = (string) $response->getBody();
         $expect = file_get_contents(__DIR__ . '/resource/entity.json');
@@ -47,33 +46,27 @@ class EntityTest extends ApiTestCase
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testGetNotFound($path)
     {
-        $response = $this->sendRequest('/' . str_replace(':id', 16, $path), 'GET');
+        $response = $this->sendRequest('/' . str_replace(':id', '16', $path), 'GET');
 
         $actual = (string) $response->getBody();
 
         $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testPost($path)
     {
-        $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'POST');
+        $response = $this->sendRequest('/' . str_replace(':id', '1', $path), 'POST');
 
         $actual = (string) $response->getBody();
 
         $this->assertEquals(404, $response->getStatusCode(), $actual);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testPut($path)
     {
         $payload = json_encode([
@@ -85,7 +78,7 @@ class EntityTest extends ApiTestCase
             'worldUsers' => 0.6,
         ]);
 
-        $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'PUT', ['Content-Type' => 'application/json'], $payload);
+        $response = $this->sendRequest('/' . str_replace(':id', '1', $path), 'PUT', ['Content-Type' => 'application/json'], $payload);
 
         $actual = (string) $response->getBody();
         $expect = <<<JSON
@@ -118,12 +111,10 @@ JSON;
         $this->assertEquals($expect, $result);
     }
 
-    /**
-     * @dataProvider routeDataProvider
-     */
+    #[DataProvider('routeDataProvider')]
     public function testDelete($path)
     {
-        $response = $this->sendRequest('/' . str_replace(':id', 1, $path), 'DELETE');
+        $response = $this->sendRequest('/' . str_replace(':id', '1', $path), 'DELETE');
 
         $actual = (string) $response->getBody();
         $expect = <<<JSON
@@ -148,7 +139,7 @@ JSON;
         $this->assertEmpty($result);
     }
 
-    public function routeDataProvider()
+    public static function routeDataProvider(): array
     {
         return [
             ['population/popo/:id'],

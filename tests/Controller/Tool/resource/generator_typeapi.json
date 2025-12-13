@@ -1,1063 +1,9 @@
 {
   "baseUrl": "http://127.0.0.1",
-  "operations": {
-    "oauth.token": {
-      "path": "/authorization/token",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "AccessToken"
-        }
-      },
-      "arguments": {
-        "authorization": {
-          "in": "header",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Passthru"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "system.getLinks": {
-      "path": "/system/discovery",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "DiscoveryCollection"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "system.generate": {
-      "path": "/system/generator/:type",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": {
-        "type": {
-          "in": "path",
-          "schema": {
-            "description": "",
-            "type": "string"
-          }
-        },
-        "filter": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "string"
-          }
-        },
-        "config": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "string"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "system.getRouting": {
-      "path": "/system/routing",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "RoutingCollection"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.body_controller.doGet": {
-      "path": "/tests/body",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": {
-        "type": {
-          "in": "query",
-          "schema": {
-            "type": "string"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.content_type_controller.binary": {
-      "path": "/tests/content_type/binary",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "contentType": "application/octet-stream"
-      },
-      "arguments": {
-        "body": {
-          "in": "body",
-          "contentType": "application/octet-stream"
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.content_type_controller.form": {
-      "path": "/tests/content_type/form",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "contentType": "application/x-www-form-urlencoded"
-      },
-      "arguments": {
-        "body": {
-          "in": "body",
-          "contentType": "application/x-www-form-urlencoded"
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.content_type_controller.json": {
-      "path": "/tests/content_type/json",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "contentType": "application/json"
-      },
-      "arguments": {
-        "body": {
-          "in": "body",
-          "contentType": "application/json"
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.content_type_controller.multipart": {
-      "path": "/tests/content_type/multipart",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "contentType": "multipart/form-data"
-      },
-      "arguments": {
-        "body": {
-          "in": "body",
-          "contentType": "multipart/form-data"
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.content_type_controller.text": {
-      "path": "/tests/content_type/text",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "contentType": "text/plain"
-      },
-      "arguments": {
-        "body": {
-          "in": "body",
-          "contentType": "text/plain"
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.dummy_controller.doGet": {
-      "path": "/tests/dummy",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.exception_controller.doGet": {
-      "path": "/tests/exception",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.filter_controller.doGet": {
-      "path": "/tests/filter",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.passthru_controller.doGet": {
-      "path": "/tests/passthru",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.passthru_controller.doPost": {
-      "path": "/tests/passthru",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": {
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Passthru"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.popo_controller.doGet": {
-      "path": "/tests/popo/:id",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Property"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "in": "query",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.popo_controller.doPost": {
-      "path": "/tests/popo/:id",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Property"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Property"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.redirect_exception_controller.doGet": {
-      "path": "/tests/redirect",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.schema_controller.doGet": {
-      "path": "/tests/schema/:name/:type",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Collection"
-        }
-      },
-      "arguments": {
-        "name": {
-          "in": "path",
-          "schema": {
-            "description": "Name parameter",
-            "type": "string"
-          }
-        },
-        "type": {
-          "in": "path",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "startIndex": {
-          "in": "query",
-          "schema": {
-            "description": "startIndex parameter",
-            "type": "string"
-          }
-        },
-        "float": {
-          "in": "query",
-          "schema": {
-            "type": "number"
-          }
-        },
-        "boolean": {
-          "in": "query",
-          "schema": {
-            "type": "boolean"
-          }
-        },
-        "date": {
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "format": "date"
-          }
-        },
-        "dateTime": {
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Returns a collection",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.schema_controller.doPost": {
-      "path": "/tests/schema/:name/:type",
-      "method": "POST",
-      "return": {
-        "code": 201,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "name": {
-          "in": "path",
-          "schema": {
-            "description": "Name parameter",
-            "type": "string"
-          }
-        },
-        "type": {
-          "in": "path",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "record": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Create"
-          }
-        }
-      },
-      "throws": [],
-      "description": "lorem ipsum",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.schema_controller.doPut": {
-      "path": "/tests/schema/:name/:type",
-      "method": "PUT",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "name": {
-          "in": "path",
-          "schema": {
-            "description": "Name parameter",
-            "type": "string"
-          }
-        },
-        "type": {
-          "in": "path",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Update"
-          }
-        }
-      },
-      "throws": [],
-      "description": "lorem ipsum",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.schema_controller.doDelete": {
-      "path": "/tests/schema/:name/:type",
-      "method": "DELETE",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "name": {
-          "in": "path",
-          "schema": {
-            "description": "Name parameter",
-            "type": "string"
-          }
-        },
-        "type": {
-          "in": "path",
-          "schema": {
-            "type": "string"
-          }
-        }
-      },
-      "throws": [],
-      "description": "lorem ipsum",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.schema_controller.doPatch": {
-      "path": "/tests/schema/:name/:type",
-      "method": "PATCH",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "name": {
-          "in": "path",
-          "schema": {
-            "description": "Name parameter",
-            "type": "string"
-          }
-        },
-        "type": {
-          "in": "path",
-          "schema": {
-            "type": "string"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Patch"
-          }
-        }
-      },
-      "throws": [],
-      "description": "lorem ipsum",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.status_code_exception_controller.doGet": {
-      "path": "/tests/status/:code",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": {
-        "code": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.table_controller.doGet": {
-      "path": "/tests/table",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.table_controller.doRow": {
-      "path": "/tests/table/row",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.table_controller.doNested": {
-      "path": "/tests/table/nested",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Passthru"
-        }
-      },
-      "arguments": [],
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.type_schema_controller.doGet": {
-      "path": "/tests/typeschema/:id",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Property"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "type": {
-          "in": "query",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "tests.controller.foo.application.type_schema_controller.doPost": {
-      "path": "/tests/typeschema/:id",
-      "method": "POST",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Property"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Property"
-          }
-        }
-      },
-      "throws": [],
-      "description": "",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_popo.getAll": {
-      "path": "/population/popo",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "PopulationCollection"
-        }
-      },
-      "arguments": {
-        "startIndex": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "integer"
-          }
-        },
-        "count": {
-          "in": "query",
-          "schema": {
-            "description": "",
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_popo.get": {
-      "path": "/population/popo/:id",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Population"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_popo.create": {
-      "path": "/population/popo",
-      "method": "POST",
-      "return": {
-        "code": 201,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Population"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_popo.update": {
-      "path": "/population/popo/:id",
-      "method": "PUT",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Population"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_popo.delete": {
-      "path": "/population/popo/:id",
-      "method": "DELETE",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_type_schema.getAll": {
-      "path": "/population/typeschema",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Collection"
-        }
-      },
-      "arguments": {
-        "startIndex": {
-          "in": "query",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "count": {
-          "in": "query",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_type_schema.get": {
-      "path": "/population/typeschema",
-      "method": "POST",
-      "return": {
-        "code": 201,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Entity"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_type_schema.create": {
-      "path": "/population/typeschema/:id",
-      "method": "GET",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Entity"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_type_schema.update": {
-      "path": "/population/typeschema/:id",
-      "method": "PUT",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        },
-        "payload": {
-          "in": "body",
-          "schema": {
-            "type": "reference",
-            "target": "Entity"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    },
-    "app.controller.population_type_schema.delete": {
-      "path": "/population/typeschema/:id",
-      "method": "DELETE",
-      "return": {
-        "code": 200,
-        "schema": {
-          "type": "reference",
-          "target": "Message"
-        }
-      },
-      "arguments": {
-        "id": {
-          "in": "path",
-          "schema": {
-            "type": "integer"
-          }
-        }
-      },
-      "throws": [],
-      "description": "Collection endpoint",
-      "stability": 1,
-      "security": [],
-      "authorization": true,
-      "tags": []
-    }
-  },
   "definitions": {
     "AccessToken": {
-      "type": "struct",
       "properties": {
         "accessToken": {
-          "type": "string"
-        },
-        "tokenType": {
           "type": "string"
         },
         "expiresIn": {
@@ -1074,88 +20,96 @@
         },
         "state": {
           "type": "string"
+        },
+        "tokenType": {
+          "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "Any": {
-      "type": "map",
       "schema": {
         "type": "string"
-      }
+      },
+      "type": "map"
     },
     "ChoiceA": {
-      "type": "struct",
       "properties": {
         "foo": {
           "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "ChoiceB": {
-      "type": "struct",
       "properties": {
         "bar": {
           "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "Collection": {
-      "type": "struct",
       "properties": {
         "entry": {
-          "type": "array",
           "schema": {
-            "type": "generic",
-            "name": "Entry"
-          }
+            "target": "Entry",
+            "type": "reference"
+          },
+          "type": "array"
         }
-      }
+      },
+      "type": "struct"
     },
     "Complex": {
-      "type": "struct",
       "properties": {
         "foo": {
           "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "Create": {
-      "type": "struct",
       "parent": {
-        "type": "reference",
-        "target": "Entry"
-      }
+        "target": "Entry",
+        "type": "reference"
+      },
+      "type": "struct"
     },
     "DiscoveryCollection": {
-      "type": "struct",
       "properties": {
         "links": {
-          "type": "array",
           "schema": {
-            "type": "reference",
-            "target": "DiscoveryLink"
-          }
+            "target": "DiscoveryLink",
+            "type": "reference"
+          },
+          "type": "array"
         }
-      }
+      },
+      "type": "struct"
     },
     "DiscoveryLink": {
-      "type": "struct",
       "properties": {
-        "rel": {
-          "type": "string"
-        },
         "href": {
           "type": "string"
         },
         "method": {
           "type": "string"
+        },
+        "rel": {
+          "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "Entity": {
       "description": "Represents an internet population entity",
-      "type": "struct",
       "properties": {
+        "datetime": {
+          "description": "Date when the entity was created",
+          "format": "date-time",
+          "type": "string"
+        },
         "id": {
           "description": "Unique id for each entry",
           "type": "integer"
@@ -1164,13 +118,13 @@
           "description": "Position in the top list",
           "type": "integer"
         },
-        "region": {
-          "description": "Name of the region",
-          "type": "string"
-        },
         "population": {
           "description": "Complete number of population",
           "type": "integer"
+        },
+        "region": {
+          "description": "Name of the region",
+          "type": "string"
         },
         "users": {
           "description": "Number of internet users",
@@ -1179,128 +133,113 @@
         "worldUsers": {
           "description": "Percentage users of the world",
           "type": "number"
-        },
-        "datetime": {
-          "description": "Date when the entity was created",
-          "type": "string",
-          "format": "date-time"
         }
-      }
+      },
+      "type": "struct"
     },
     "Entry": {
-      "type": "struct",
       "properties": {
-        "id": {
-          "type": "integer"
+        "date": {
+          "format": "date-time",
+          "type": "string"
         },
-        "userId": {
+        "id": {
           "type": "integer"
         },
         "title": {
           "type": "string"
         },
-        "date": {
-          "type": "string",
-          "format": "date-time"
+        "userId": {
+          "type": "integer"
         }
-      }
+      },
+      "type": "struct"
     },
     "Message": {
-      "type": "struct",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "message": {
           "type": "string"
+        },
+        "success": {
+          "type": "boolean"
         }
-      }
+      },
+      "type": "struct"
     },
     "Passthru": {
       "description": "No schema information available",
-      "type": "map",
       "schema": {
         "type": "any"
-      }
+      },
+      "type": "map"
     },
     "Patch": {
-      "type": "struct",
       "parent": {
-        "type": "reference",
-        "target": "Entry"
-      }
+        "target": "Entry",
+        "type": "reference"
+      },
+      "type": "struct"
     },
     "Population": {
-      "type": "struct",
       "properties": {
         "id": {
           "type": "integer"
         },
+        "insertDate": {
+          "format": "date-time",
+          "type": "string"
+        },
         "place": {
+          "type": "integer"
+        },
+        "population": {
           "type": "integer"
         },
         "region": {
           "type": "string"
-        },
-        "population": {
-          "type": "integer"
         },
         "users": {
           "type": "integer"
         },
         "worldUsers": {
           "type": "number"
-        },
-        "insertDate": {
-          "type": "string",
-          "format": "date-time"
         }
-      }
-    },
-    "PopulationCollection": {
-      "type": "struct",
-      "parent": {
-        "type": "reference",
-        "target": "Collection",
-        "template": {
-          "T": "Population"
-        }
-      }
+      },
+      "type": "struct"
     },
     "Property": {
-      "type": "struct",
       "properties": {
         "any": {
-          "type": "reference",
-          "target": "Any"
+          "target": "Any",
+          "type": "reference"
         },
         "array": {
-          "type": "array",
           "schema": {
             "type": "string"
-          }
+          },
+          "type": "array"
         },
         "arrayComplex": {
-          "type": "array",
           "schema": {
-            "type": "reference",
-            "target": "Complex"
-          }
+            "target": "Complex",
+            "type": "reference"
+          },
+          "type": "array"
         },
         "boolean": {
           "type": "boolean"
         },
         "complex": {
-          "type": "reference",
-          "target": "Complex"
+          "target": "Complex",
+          "type": "reference"
         },
         "date": {
-          "type": "string",
-          "format": "date"
+          "format": "date",
+          "type": "string"
         },
         "dateTime": {
-          "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "type": "string"
         },
         "float": {
           "type": "number"
@@ -1312,43 +251,1080 @@
           "type": "string"
         },
         "time": {
-          "type": "string",
-          "format": "time"
+          "format": "time",
+          "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "RoutingCollection": {
-      "type": "struct",
       "properties": {
         "routings": {
-          "type": "array",
           "schema": {
-            "type": "reference",
-            "target": "RoutingRoute"
-          }
+            "target": "RoutingRoute",
+            "type": "reference"
+          },
+          "type": "array"
         }
-      }
+      },
+      "type": "struct"
     },
     "RoutingRoute": {
-      "type": "struct",
       "properties": {
         "method": {
           "type": "string"
         },
-        "path": {
-          "type": "string"
-        },
         "operationId": {
           "type": "string"
+        },
+        "path": {
+          "type": "string"
         }
-      }
+      },
+      "type": "struct"
     },
     "Update": {
-      "type": "struct",
       "parent": {
-        "type": "reference",
-        "target": "Entry"
-      }
+        "target": "Entry",
+        "type": "reference"
+      },
+      "type": "struct"
+    }
+  },
+  "operations": {
+    "app.controller.population_popo.create": {
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Population",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "POST",
+      "path": "/population/popo",
+      "return": {
+        "code": 201,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_popo.delete": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "DELETE",
+      "path": "/population/popo/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_popo.get": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "GET",
+      "path": "/population/popo/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Population",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_popo.getAll": {
+      "arguments": {
+        "count": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        },
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "GET",
+      "path": "/population/popo",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Collection",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_popo.update": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Population",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "PUT",
+      "path": "/population/popo/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_type_schema.create": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "GET",
+      "path": "/population/typeschema/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Entity",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_type_schema.delete": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "DELETE",
+      "path": "/population/typeschema/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_type_schema.get": {
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Entity",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "POST",
+      "path": "/population/typeschema",
+      "return": {
+        "code": 201,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_type_schema.getAll": {
+      "arguments": {
+        "count": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "GET",
+      "path": "/population/typeschema",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Collection",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "app.controller.population_type_schema.update": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Entity",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Collection endpoint",
+      "method": "PUT",
+      "path": "/population/typeschema/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "oauth.token": {
+      "arguments": {
+        "authorization": {
+          "in": "header",
+          "schema": {
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Passthru",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/authorization/token",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "AccessToken",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "system.generate": {
+      "arguments": {
+        "config": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        },
+        "filter": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "description": "",
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/system/generator/:type",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "system.getLinks": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/system/discovery",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "DiscoveryCollection",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "system.getRouting": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/system/routing",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "RoutingCollection",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.body_controller.doGet": {
+      "arguments": {
+        "type": {
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/body",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.content_type_controller.binary": {
+      "arguments": {
+        "body": {
+          "contentType": "application/octet-stream",
+          "in": "body"
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/content_type/binary",
+      "return": {
+        "code": 200,
+        "contentType": "application/octet-stream"
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.content_type_controller.form": {
+      "arguments": {
+        "body": {
+          "contentType": "application/x-www-form-urlencoded",
+          "in": "body"
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/content_type/form",
+      "return": {
+        "code": 200,
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.content_type_controller.json": {
+      "arguments": {
+        "body": {
+          "contentType": "application/json",
+          "in": "body"
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/content_type/json",
+      "return": {
+        "code": 200,
+        "contentType": "application/json"
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.content_type_controller.multipart": {
+      "arguments": {
+        "body": {
+          "contentType": "multipart/form-data",
+          "in": "body"
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/content_type/multipart",
+      "return": {
+        "code": 200,
+        "contentType": "multipart/form-data"
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.content_type_controller.text": {
+      "arguments": {
+        "body": {
+          "contentType": "text/plain",
+          "in": "body"
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/content_type/text",
+      "return": {
+        "code": 200,
+        "contentType": "text/plain"
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.dummy_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/dummy",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.exception_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/exception",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.filter_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/filter",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.passthru_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/passthru",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.passthru_controller.doPost": {
+      "arguments": {
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Passthru",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/passthru",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.popo_controller.doGet": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        },
+        "type": {
+          "in": "query",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/popo/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Property",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.popo_controller.doPost": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Property",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/popo/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Property",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.redirect_exception_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/redirect",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.schema_controller.doDelete": {
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "lorem ipsum",
+      "method": "DELETE",
+      "path": "/tests/schema/:name/:type",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.schema_controller.doGet": {
+      "arguments": {
+        "boolean": {
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        "date": {
+          "in": "query",
+          "schema": {
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "dateTime": {
+          "in": "query",
+          "schema": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "float": {
+          "in": "query",
+          "schema": {
+            "type": "number"
+          }
+        },
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string"
+          }
+        },
+        "startIndex": {
+          "in": "query",
+          "schema": {
+            "description": "startIndex parameter",
+            "type": "string"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "Returns a collection",
+      "method": "GET",
+      "path": "/tests/schema/:name/:type",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Collection",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.schema_controller.doPatch": {
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Patch",
+            "type": "reference"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "lorem ipsum",
+      "method": "PATCH",
+      "path": "/tests/schema/:name/:type",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.schema_controller.doPost": {
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string"
+          }
+        },
+        "record": {
+          "in": "body",
+          "schema": {
+            "target": "Create",
+            "type": "reference"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "lorem ipsum",
+      "method": "POST",
+      "path": "/tests/schema/:name/:type",
+      "return": {
+        "code": 201,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.schema_controller.doPut": {
+      "arguments": {
+        "name": {
+          "in": "path",
+          "schema": {
+            "description": "Name parameter",
+            "type": "string"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Update",
+            "type": "reference"
+          }
+        },
+        "type": {
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "lorem ipsum",
+      "method": "PUT",
+      "path": "/tests/schema/:name/:type",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Message",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.status_code_exception_controller.doGet": {
+      "arguments": {
+        "code": {
+          "in": "path",
+          "schema": {
+            "description": "",
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/status/:code",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.table_controller.doGet": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/table",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.table_controller.doRow": {
+      "arguments": [],
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/table/row",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Passthru",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.type_schema_controller.doGet": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "type": {
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "GET",
+      "path": "/tests/typeschema/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Property",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
+    },
+    "tests.controller.foo.application.type_schema_controller.doPost": {
+      "arguments": {
+        "id": {
+          "in": "path",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "payload": {
+          "in": "body",
+          "schema": {
+            "target": "Property",
+            "type": "reference"
+          }
+        }
+      },
+      "authorization": true,
+      "description": "",
+      "method": "POST",
+      "path": "/tests/typeschema/:id",
+      "return": {
+        "code": 200,
+        "schema": {
+          "target": "Property",
+          "type": "reference"
+        }
+      },
+      "security": [],
+      "stability": 1,
+      "tags": [],
+      "throws": []
     }
   }
 }

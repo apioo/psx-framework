@@ -20,8 +20,6 @@
 
 namespace PSX\Framework\Tests\Controller\Foo\Model;
 
-use PSX\Framework\Tests\Controller\Foo\Schema\Entry;
-
 /**
  * CollectionV2
  *

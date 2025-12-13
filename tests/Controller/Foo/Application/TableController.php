@@ -47,7 +47,7 @@ class TableController extends ControllerAbstract
     public function doGet(): mixed
     {
         return [
-            'entry' => $this->tableManager->getTable(TestTable::class)->getAll()
+            'entry' => $this->tableManager->getTable(TestTable::class)->findAll()
         ];
     }
 
@@ -55,15 +55,6 @@ class TableController extends ControllerAbstract
     #[Path('/tests/table/row')]
     public function doRow(): mixed
     {
-        return $this->tableManager->getTable(TestTable::class)->getOneById(1);
-    }
-
-    #[Get]
-    #[Path('/tests/table/nested')]
-    public function doNested(): mixed
-    {
-        return [
-            'entry' => $this->tableManager->getTable(TestTable::class)->getNestedResult()
-        ];
+        return $this->tableManager->getTable(TestTable::class)->findOneById(1);
     }
 }

@@ -43,6 +43,7 @@ class MessengerTest extends ControllerTestCase
     public function testSend()
     {
         $messageBus = Environment::getService(MessageBusInterface::class);
+        /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = Environment::getService(EventDispatcherInterface::class);
 
         $message = new TestMessage('foobar');

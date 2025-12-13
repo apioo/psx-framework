@@ -30,7 +30,6 @@ use PSX\Api\Attribute\Post;
 use PSX\Api\Attribute\Put;
 use PSX\Framework\App\Model;
 use PSX\Framework\App\Model\Message;
-use PSX\Framework\App\Model\PopulationCollection;
 use PSX\Framework\App\Service\Population;
 use PSX\Framework\App\Table;
 use PSX\Framework\Controller\ControllerAbstract;
@@ -52,7 +51,7 @@ class PopulationPopo extends ControllerAbstract
 
     #[Get]
     #[Path('/population/popo')]
-    public function getAll(?int $startIndex, ?int $count): PopulationCollection
+    public function getAll(?int $startIndex, ?int $count): Model\Collection
     {
         return $this->populationTable->getCollection(
             $startIndex,

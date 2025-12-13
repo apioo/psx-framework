@@ -133,11 +133,6 @@
         </entry>
         <entry type="object">
             <method type="string">GET</method>
-            <path type="string">/tests/table/nested</path>
-            <operationId type="string">tests.controller.foo.application.table_controller.doNested</operationId>
-        </entry>
-        <entry type="object">
-            <method type="string">GET</method>
             <path type="string">/tests/typeschema/:id</path>
             <operationId type="string">tests.controller.foo.application.type_schema_controller.doGet</operationId>
         </entry>

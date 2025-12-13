@@ -36,6 +36,6 @@ class BootstrapTest extends TestCase
     {
         Bootstrap::setupEnvironment();
 
-        $this->assertTrue(defined('PSX'));
+        $this->assertTrue(defined('PSX') && PSX === true);
     }
 }

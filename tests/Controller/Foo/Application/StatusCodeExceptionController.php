@@ -21,11 +21,12 @@
 namespace PSX\Framework\Tests\Controller\Foo\Application;
 
 use PSX\Api\Attribute\Get;
+use PSX\Api\Attribute\Outgoing;
+use PSX\Api\Attribute\Param;
 use PSX\Api\Attribute\Path;
-use PSX\Api\Attribute\PathParam;
+use PSX\Api\Model\Passthru;
 use PSX\Framework\Controller\ControllerAbstract;
 use PSX\Http\Exception as StatusCode;
-use PSX\Schema\Type;
 
 /**
  * StatusCodeExceptionController
@@ -38,8 +39,8 @@ class StatusCodeExceptionController extends ControllerAbstract
 {
     #[Get]
     #[Path('/tests/status/:code')]
-    #[PathParam('code', Type::INTEGER)]
-    public function doGet(int $code): mixed
+    #[Outgoing(code: 200, schema: Passthru::class)]
+    public function doGet(#[Param] int $code): void
     {
         switch ($code) {
             case 301:

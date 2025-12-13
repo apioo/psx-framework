@@ -305,18 +305,6 @@
       "OPTIONS",
       "HEAD"
     ],
-    "\/tests\/table\/nested",
-    [
-      "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\TableController",
-      "doNested"
-    ]
-  ],
-  [
-    [
-      "GET",
-      "OPTIONS",
-      "HEAD"
-    ],
     "\/tests\/typeschema\/:id",
     [
       "PSX\\Framework\\Tests\\Controller\\Foo\\Application\\TypeSchemaController",

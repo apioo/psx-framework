@@ -20,7 +20,7 @@
 
 namespace PSX\Framework\Tests\OAuth2;
 
-use PSX\Framework\Oauth2\AccessRequest;
+use PSX\Framework\OAuth2\AccessRequest;
 use PSX\Framework\OAuth2\AuthorizerInterface;
 use PSX\Uri\Url;
 

@@ -132,11 +132,6 @@
     },
     {
       "method": "GET",
-      "path": "/tests/table/nested",
-      "operationId": "tests.controller.foo.application.table_controller.doNested"
-    },
-    {
-      "method": "GET",
       "path": "/tests/typeschema/:id",
       "operationId": "tests.controller.foo.application.type_schema_controller.doGet"
     },

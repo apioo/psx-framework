@@ -31,24 +31,4 @@ use PSX\Framework\Tests\Table\HandlerCommentTable;
  */
 class TestTable extends HandlerCommentTable
 {
-    public function getNestedResult()
-    {
-        $sql = '  SELECT id,
-                         userId,
-                         title,
-                         date
-                    FROM psx_handler_comment
-                ORDER BY id DESC';
-
-        $definition = $this->doCollection($sql, [], [
-            'id' => $this->fieldInteger('id'),
-            'title' => 'title',
-            'author' => [
-                'userId' => $this->fieldInteger('userId'),
-                'date' => $this->fieldDateTime('date'),
-            ],
-        ]);
-
-        return $this->build($definition);
-    }
 }

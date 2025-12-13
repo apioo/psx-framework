@@ -18,29 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Framework\Tests\Controller\Foo\Model;
+namespace PSX\Framework\Tests;
+
+use Fusio\Impl\Backend;
+use Fusio\Impl\Tests\Fixture;
+use PSX\Framework\Test\DbTestCase;
+use PSX\Sql\Generator\Generator;
 
 /**
- * Collection
+ * GenerateTableTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class Collection
+class GenerateTableTest extends DbTestCase
 {
-    /**
-     * @var array<Entry>
-     */
-    private ?array $entry = null;
-
-    public function getEntry(): ?array
+    public function getDataSet(): array
     {
-        return $this->entry;
+        return $this->createFromFile(__DIR__ . '/table_fixture.php');
     }
 
-    public function setEntry(?array $entry): void
+    public function testGenerate()
     {
-        $this->entry = $entry;
+        $this->markTestSkipped();
+
+        /** @phpstan-ignore deadCode.unreachable */
+        $target = __DIR__ . '/Table';
+        $namespace = 'PSX\Framework\Tests\Table';
+
+        $generator = new Generator($this->connection, $namespace, 'psx_');
+        $count = 0;
+        foreach ($generator->generate() as $className => $source) {
+            file_put_contents($target . '/' . $className . '.php', '<?php' . "\n\n" . $source);
+            $count++;
+        }
+
+        $this->assertNotEmpty($count);
     }
 }

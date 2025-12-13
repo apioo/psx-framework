@@ -35,15 +35,17 @@ class UuidTest extends TestCase
     public function testTimeBase()
     {
         $uuid = Uuid::timeBased();
+
         sleep(1);
-        $this->assertTrue($uuid != Uuid::timeBased());
+
+        $this->assertTrue($uuid !== Uuid::timeBased());
     }
 
     public function testPseudoRandom()
     {
         $uuid = Uuid::pseudoRandom();
 
-        $this->assertTrue($uuid != Uuid::pseudoRandom());
+        $this->assertTrue($uuid !== Uuid::pseudoRandom());
     }
 
     public function testNameBased()

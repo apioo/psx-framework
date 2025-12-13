@@ -21,6 +21,7 @@
 namespace PSX\Framework\Tests\Controller;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\DateTime\LocalDate;
 use PSX\DateTime\LocalDateTime;
 use PSX\DateTime\LocalTime;
@@ -43,9 +44,7 @@ use PSX\Record\RecordInterface;
  */
 abstract class PropertyTestCase extends ControllerTestCase
 {
-    /**
-     * @dataProvider getDataTypes
-     */
+    #[DataProvider('getDataTypes')]
     public function testGet($type)
     {
         $response = $this->sendRequest($this->getPath() . '/1?type=' . $type, 'GET');
@@ -232,33 +231,33 @@ JSON;
      */
     public static function assertRecord(RecordInterface $record): void
     {
-        Assert::assertInstanceOf(RecordInterface::class, $record->any);
-        Assert::assertEquals(['foo' => 'bar'], $record->any->getAll());
-        Assert::assertIsArray($record->array);
-        Assert::assertEquals(1, count($record->array));
-        Assert::assertEquals(['bar'], $record->array);
-        Assert::assertIsArray($record->arrayComplex);
-        Assert::assertEquals(2, count($record->arrayComplex));
-        Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[0]);
-        Assert::assertEquals(['foo' => 'bar'], $record->arrayComplex[0]->getAll());
-        Assert::assertInstanceOf(RecordInterface::class, $record->arrayComplex[1]);
-        Assert::assertEquals(['foo' => 'foo'], $record->arrayComplex[1]->getAll());
-        Assert::assertIsBool($record->boolean);
-        Assert::assertEquals(true, $record->boolean);
-        Assert::assertInstanceOf(RecordInterface::class, $record->complex);
-        Assert::assertEquals(['foo' => 'bar'], $record->complex->getAll());
-        Assert::assertInstanceOf(LocalDate::class, $record->date);
-        Assert::assertEquals('2015-05-01', $record->date->toString());
-        Assert::assertInstanceOf(LocalDateTime::class, $record->dateTime);
-        Assert::assertEquals('2015-05-01T13:37:14Z', $record->dateTime->toString());
-        Assert::assertIsFloat($record->float);
-        Assert::assertEquals(13.37, $record->float);
-        Assert::assertIsInt($record->integer);
-        Assert::assertEquals(7, $record->integer);
-        Assert::assertIsString($record->string);
-        Assert::assertEquals('bar', $record->string);
-        Assert::assertInstanceOf(LocalTime::class, $record->time);
-        Assert::assertEquals('13:37:14', $record->time->toString());
+        Assert::assertInstanceOf(RecordInterface::class, $record->get('any'));
+        Assert::assertEquals(['foo' => 'bar'], $record->get('any')->getAll());
+        Assert::assertIsArray($record->get('array'));
+        Assert::assertEquals(1, count($record->get('array')));
+        Assert::assertEquals(['bar'], $record->get('array'));
+        Assert::assertIsArray($record->get('arrayComplex'));
+        Assert::assertEquals(2, count($record->get('arrayComplex')));
+        Assert::assertInstanceOf(RecordInterface::class, $record->get('arrayComplex')[0]);
+        Assert::assertEquals(['foo' => 'bar'], $record->get('arrayComplex')[0]->getAll());
+        Assert::assertInstanceOf(RecordInterface::class, $record->get('arrayComplex')[1]);
+        Assert::assertEquals(['foo' => 'foo'], $record->get('arrayComplex')[1]->getAll());
+        Assert::assertIsBool($record->get('boolean'));
+        Assert::assertEquals(true, $record->get('boolean'));
+        Assert::assertInstanceOf(RecordInterface::class, $record->get('complex'));
+        Assert::assertEquals(['foo' => 'bar'], $record->get('complex')->getAll());
+        Assert::assertInstanceOf(LocalDate::class, $record->get('date'));
+        Assert::assertEquals('2015-05-01', $record->get('date')->toString());
+        Assert::assertInstanceOf(LocalDateTime::class, $record->get('dateTime'));
+        Assert::assertEquals('2015-05-01T13:37:14Z', $record->get('dateTime')->toString());
+        Assert::assertIsFloat($record->get('float'));
+        Assert::assertEquals(13.37, $record->get('float'));
+        Assert::assertIsInt($record->get('integer'));
+        Assert::assertEquals(7, $record->get('integer'));
+        Assert::assertIsString($record->get('string'));
+        Assert::assertEquals('bar', $record->get('string'));
+        Assert::assertInstanceOf(LocalTime::class, $record->get('time'));
+        Assert::assertEquals('13:37:14', $record->get('time')->toString());
     }
 
     /**
