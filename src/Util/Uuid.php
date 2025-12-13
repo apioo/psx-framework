@@ -30,28 +30,31 @@ namespace PSX\Framework\Util;
  */
 class Uuid
 {
-    const V_1 = 0x1000;
-    const V_2 = 0x2000;
-    const V_3 = 0x3000;
-    const V_4 = 0x4000;
-    const V_5 = 0x5000;
+    public const V_1 = 0x1000;
+    public const V_2 = 0x2000;
+    public const V_3 = 0x3000;
+    public const V_4 = 0x4000;
+    public const V_5 = 0x5000;
 
-    public static function timeBased()
+    public static function timeBased(): string
     {
         return self::generate(self::V_1, sha1(implode('.', hrtime())));
     }
 
-    public static function pseudoRandom()
+    /**
+     * @throws \Random\RandomException
+     */
+    public static function pseudoRandom(): string
     {
         return self::generate(self::V_4, sha1(random_bytes(128)));
     }
 
-    public static function nameBased($name)
+    public static function nameBased($name): string
     {
         return self::generate(self::V_5, sha1($name));
     }
 
-    public static function generate($version, $hash)
+    public static function generate($version, $hash): string
     {
         $timeLow            = substr($hash, 0, 8);
         $timeMid            = substr($hash, 8, 4);
