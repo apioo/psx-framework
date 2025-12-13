@@ -1,0 +1,10 @@
+parameters:
+	level: 5
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- app
+		- src
+		- tests
+	excludePaths:
+		- tests/cache/*
+		- tests/configuration.php
