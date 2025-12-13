@@ -175,6 +175,7 @@ class ControllerExecutor implements FilterInterface
                 ContentType::MULTIPART => $this->getMultipart($this->requestReader->getBody($request, Reader\Multipart::class)),
                 ContentType::TEXT => (string) $request->getBody(),
                 ContentType::XML => $this->requestReader->getBody($request, Reader\Xml::class, new Noop()),
+                default => throw new UnsupportedMediaTypeException('Provided an unsupported media type: ' . $type->toString()),
             };
         }
 
