@@ -26,6 +26,7 @@ use Doctrine\Migrations\MigratorConfiguration;
 use Psr\Container\ContainerInterface;
 use PSX\Framework\Bootstrap;
 use PSX\Framework\Connection\ConnectionFactory;
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
 /**
  * Environment
@@ -88,7 +89,12 @@ class Environment
 
     public static function getConfig(string $name): mixed
     {
-        return self::$instance->container->getParameter($name);
+        $container = self::$instance->container;
+        if ($container instanceof SymfonyContainerInterface) {
+            return $container->getParameter($name);
+        } else {
+            return null;
+        }
     }
 
     private function setupConnection(): void
