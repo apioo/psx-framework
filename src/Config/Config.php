@@ -28,7 +28,7 @@ use PSX\Record\Record;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
- * @template-extends \PSX\Record\Record<mixed>
+ * @extends \PSX\Record\Record<mixed>
  */
 class Config extends Record implements ConfigInterface
 {
