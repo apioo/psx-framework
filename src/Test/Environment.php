@@ -79,7 +79,7 @@ class Environment
 
     /**
      * @template T
-     * @psalm-param class-string<T> $id
+     * @param class-string<T> $id
      * @return T
      */
     public static function getService(string $id): mixed
