@@ -39,6 +39,7 @@ class Config extends Record implements ConfigInterface
     {
         $config = include($file);
         if (is_array($config)) {
+            /** @phpstan-ignore new.static */
             return new static($config);
         } else {
             throw new NotFoundException('Config file must return an array');
