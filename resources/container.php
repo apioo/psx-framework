@@ -75,6 +75,7 @@ use PSX\Framework\Test\Environment;
 use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
 use PSX\Http\Filter;
+use PSX\Http\PsrFactory;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\SchemaManagerInterface;
 use PSX\Sql\TableManager;
@@ -155,6 +156,8 @@ return static function (ContainerConfigurator $container) {
     $services->set(HttpClient::class);
     $services->alias(HttpClientInterface::class, HttpClient::class)
         ->public();
+
+    $services->set(PsrFactory::class);
 
     $services->set(ProcessorFactory::class);
     $services->set(Processor::class)
