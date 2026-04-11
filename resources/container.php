@@ -21,6 +21,8 @@ use PSX\Api\Repository;
 use PSX\Api\Scanner\FilterFactory;
 use PSX\Api\Scanner\FilterFactoryInterface;
 use PSX\Api\ScannerInterface;
+use PSX\Api\TypeHub\Publisher;
+use PSX\Api\TypeHub\PublisherInterface;
 use PSX\Data\Processor;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Api\Repository\SDKgen\Config as SDKgenConfig;
@@ -233,6 +235,10 @@ return static function (ContainerConfigurator $container) {
 
     $services->set(FilterFactory::class);
     $services->alias(FilterFactoryInterface::class, FilterFactory::class)
+        ->public();
+
+    $services->set(Publisher::class);
+    $services->alias(PublisherInterface::class, Publisher::class)
         ->public();
 
     $services->set(Repository\LocalRepository::class);
