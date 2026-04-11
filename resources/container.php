@@ -100,6 +100,7 @@ use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
 use Symfony\Component\Messenger\Retry\MultiplierRetryStrategy;
 use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
 use Symfony\Component\Messenger\Transport as MessengerTransport;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyContractsEventDispatcherInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -185,6 +186,7 @@ return static function (ContainerConfigurator $container) {
     $services->alias(EventDispatcherInterface::class, EventDispatcher::class)
         ->public();
     $services->alias(SymfonyEventDispatcherInterface::class, EventDispatcher::class);
+    $services->alias(SymfonyContractsEventDispatcherInterface::class, EventDispatcher::class);
 
     $services->set(Converter::class)
         ->arg('$debug', param('psx_debug'));
