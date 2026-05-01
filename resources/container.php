@@ -78,6 +78,8 @@ use PSX\Http\Client\Client as HttpClient;
 use PSX\Http\Client\ClientInterface as HttpClientInterface;
 use PSX\Http\Filter;
 use PSX\Http\PsrFactory;
+use PSX\Schema\ObjectMapper;
+use PSX\Schema\ObjectMapperInterface;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\SchemaManagerInterface;
 use PSX\Sql\TableManager;
@@ -170,6 +172,10 @@ return static function (ContainerConfigurator $container) {
     $services->set(SchemaManager::class)
         ->arg('$debug', param('psx_debug'));
     $services->alias(SchemaManagerInterface::class, SchemaManager::class)
+        ->public();
+
+    $services->set(ObjectMapper::class);
+    $services->alias(ObjectMapperInterface::class, ObjectMapper::class)
         ->public();
 
     $services->set(TableManager::class);
