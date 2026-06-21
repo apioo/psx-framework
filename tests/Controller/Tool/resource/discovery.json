@@ -96,6 +96,21 @@
       "method": "POST"
     },
     {
+      "rel": "model-jsonschema-anthropic",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-jsonschema-anthropic",
+      "method": "POST"
+    },
+    {
+      "rel": "model-jsonschema-gemini",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-jsonschema-gemini",
+      "method": "POST"
+    },
+    {
+      "rel": "model-jsonschema-openai",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/model-jsonschema-openai",
+      "method": "POST"
+    },
+    {
       "rel": "model-kotlin",
       "href": "http:\/\/127.0.0.1\/system\/generator\/model-kotlin",
       "method": "POST"
@@ -148,6 +163,41 @@
     {
       "rel": "model-visualbasic",
       "href": "http:\/\/127.0.0.1\/system\/generator\/model-visualbasic",
+      "method": "POST"
+    },
+    {
+      "rel": "client-csharp",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-csharp",
+      "method": "POST"
+    },
+    {
+      "rel": "client-go",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-go",
+      "method": "POST"
+    },
+    {
+      "rel": "client-java",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-java",
+      "method": "POST"
+    },
+    {
+      "rel": "client-python",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/client-python",
+      "method": "POST"
+    },
+    {
+      "rel": "server-csharp",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/server-csharp",
+      "method": "POST"
+    },
+    {
+      "rel": "server-java",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/server-java",
+      "method": "POST"
+    },
+    {
+      "rel": "server-python",
+      "href": "http:\/\/127.0.0.1\/system\/generator\/server-python",
       "method": "POST"
     }
   ]
