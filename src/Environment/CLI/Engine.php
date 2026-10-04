@@ -22,11 +22,13 @@ namespace PSX\Framework\Environment\CLI;
 
 use PSX\Engine\DispatchInterface;
 use PSX\Engine\EngineInterface;
+use PSX\Http\Http;
 use PSX\Http\Request;
 use PSX\Http\Server\ResponseFactory;
 use PSX\Uri\Uri;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -38,8 +40,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Engine implements EngineInterface
 {
+    public const USER_AGENT = 'PSX CLI';
+
     private InputInterface $input;
     private OutputInterface $output;
+    private ?int $statusCode = null;
 
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -57,7 +62,21 @@ class Engine implements EngineInterface
 
         $response = $dispatch->route($request, $response);
 
+        $this->statusCode = $response->getStatusCode();
+
+        // the status line is written to stderr so that stdout contains only the response body
+        $errorOutput = $this->output instanceof ConsoleOutputInterface ? $this->output->getErrorOutput() : null;
+        $errorOutput?->writeln('HTTP/1.1 ' . $this->statusCode . ' ' . (Http::CODES[$this->statusCode] ?? ''));
+
         $this->output->write($response->getBody()->__toString());
+    }
+
+    /**
+     * Returns the status code of the last served response
+     */
+    public function getStatusCode(): ?int
+    {
+        return $this->statusCode;
     }
 
     private function createRequest(string $method, string $uri, ?string $rawHeaders = null)
@@ -65,6 +84,10 @@ class Engine implements EngineInterface
         $headers = [];
         if (!empty($rawHeaders)) {
             parse_str($rawHeaders, $headers);
+        }
+
+        if (!in_array('user-agent', array_map('strtolower', array_keys($headers)))) {
+            $headers['User-Agent'] = self::USER_AGENT;
         }
 
         $body = null;

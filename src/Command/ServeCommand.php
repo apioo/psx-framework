@@ -37,7 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-#[AsCommand(name: 'serve', description: 'Accepts an HTTP request via stdin and returns the HTTP response')]
+#[AsCommand(name: 'serve', description: 'Accepts an HTTP request via stdin and returns the HTTP response, the status line is written to stderr')]
 class ServeCommand extends Command
 {
     private DispatchInterface $dispatch;
@@ -68,6 +68,8 @@ class ServeCommand extends Command
 
         $environment->serve();
 
-        return 0;
+        $statusCode = $engine->getStatusCode() ?? 500;
+
+        return $statusCode >= 400 ? self::FAILURE : self::SUCCESS;
     }
 }

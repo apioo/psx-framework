@@ -49,6 +49,22 @@ class ServeCommandTest extends ControllerTestCase
         $expect = file_get_contents(__DIR__ . '/output/routes.xml');
 
         $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+        $this->assertSame(0, $commandTester->getStatusCode());
+    }
+
+    public function testCommandNotFound()
+    {
+        $command = Environment::getService(Application::class)->find('serve');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'method'  => 'GET',
+            'uri'     => '/foo/bar/unknown',
+        ], ['capture_stderr_separately' => true]);
+
+        $this->assertSame(1, $commandTester->getStatusCode());
+        $this->assertSame('HTTP/1.1 404 Not Found', trim($commandTester->getErrorOutput()));
+        $this->assertJson($commandTester->getDisplay());
     }
 
     public function testCommandPost()
@@ -88,5 +104,6 @@ class ServeCommandTest extends ControllerTestCase
         $actual = $commandTester->getDisplay();
 
         $this->assertJsonStringEqualsJsonString(json_encode($payload), $actual, $actual);
+        $this->assertSame(0, $commandTester->getStatusCode());
     }
 }
