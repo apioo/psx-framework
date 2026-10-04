@@ -27,6 +27,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -58,6 +59,10 @@ class ServeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($input instanceof StreamableInputInterface && $input->getStream() === null) {
+            $input->setStream(STDIN);
+        }
+
         $engine = new Engine($input, $output);
         $environment = new Environment($this->dispatch, $engine);
 

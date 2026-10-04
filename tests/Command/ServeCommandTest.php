@@ -50,4 +50,43 @@ class ServeCommandTest extends ControllerTestCase
 
         $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
+
+    public function testCommandPost()
+    {
+        $payload = [
+            'any' => [
+                'foo' => 'bar'
+            ],
+            'array' => ['bar'],
+            'arrayComplex' => [[
+                'foo' => 'bar'
+            ],[
+                'foo' => 'foo'
+            ]],
+            'boolean' => true,
+            'complex' => [
+                'foo' => 'bar'
+            ],
+            'date' => '2015-05-01',
+            'dateTime' => '2015-05-01T13:37:14Z',
+            'float' => 13.37,
+            'integer' => 7,
+            'string' => 'bar',
+            'time' => '13:37:14',
+        ];
+
+        $command = Environment::getService(Application::class)->find('serve');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs([json_encode($payload)]);
+        $commandTester->execute([
+            'method'  => 'POST',
+            'uri'     => '/tests/passthru',
+            'headers' => 'Content-Type=application/json',
+        ]);
+
+        $actual = $commandTester->getDisplay();
+
+        $this->assertJsonStringEqualsJsonString(json_encode($payload), $actual, $actual);
+    }
 }

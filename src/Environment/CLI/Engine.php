@@ -86,7 +86,11 @@ class Engine implements EngineInterface
 
         while (!feof($handle)) {
             $line = fgets($handle);
-            $pos  = strpos($line, chr(4));
+            if ($line === false) {
+                break;
+            }
+
+            $pos = strpos($line, chr(4));
 
             if ($pos !== false) {
                 $body.= substr($line, 0, $pos);
