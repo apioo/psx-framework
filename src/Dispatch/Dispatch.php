@@ -23,7 +23,6 @@ namespace PSX\Framework\Dispatch;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PSX\Engine\DispatchInterface;
 use PSX\Framework\Event\Context\ControllerContext;
-use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
 use PSX\Framework\Event\RequestIncomingEvent;
 use PSX\Framework\Event\ResponseSendEvent;
