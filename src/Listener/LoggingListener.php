@@ -20,11 +20,9 @@
 
 namespace PSX\Framework\Listener;
 
-use Psr\Log\LoggerInterface;
-use PSX\Framework\DisplayException;
 use PSX\Framework\Event\Event;
 use PSX\Framework\Event\ExceptionThrownEvent;
-use PSX\Http\Exception\StatusCodeException;
+use PSX\Framework\Logger\ExceptionLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -36,28 +34,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LoggingListener implements EventSubscriberInterface
 {
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(private ExceptionLogger $logger)
     {
     }
 
     public function onExceptionThrown(ExceptionThrownEvent $event): void
     {
-        $exception = $event->getException();
-        $context = ['exception' => $exception];
-
-        if ($exception instanceof StatusCodeException) {
-            if ($exception->isClientError()) {
-                $this->logger->notice($exception->getMessage(), $context);
-            } elseif ($exception->isServerError()) {
-                $this->logger->error($exception->getMessage(), $context);
-            } else {
-                $this->logger->info($exception->getMessage(), $context);
-            }
-        } elseif ($exception instanceof DisplayException) {
-            $this->logger->notice($exception->getMessage(), $context);
-        } else {
-            $this->logger->error($exception->getMessage(), $context);
-        }
+        $this->logger->log($event->getException());
     }
 
     public static function getSubscribedEvents(): array

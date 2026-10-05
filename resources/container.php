@@ -61,6 +61,7 @@ use PSX\Framework\Loader\ReverseRouter;
 use PSX\Framework\Loader\RoutingParser\AttributeParser;
 use PSX\Framework\Loader\RoutingParser\CachedParser;
 use PSX\Framework\Loader\RoutingParserInterface;
+use PSX\Framework\Logger\ExceptionLogger;
 use PSX\Framework\Logger\LoggerFactory;
 use PSX\Framework\Mailer\MailerFactory;
 use PSX\Framework\Messenger\DefaultTransport;
@@ -145,6 +146,7 @@ return static function (ContainerConfigurator $container) {
         ->factory([service(LoggerFactory::class), 'factory']);
     $services->alias(LoggerInterface::class, Logger::class)
         ->public();
+    $services->set(ExceptionLogger::class);
 
     $services->set(ConnectionFactory::class)
         ->arg('$params', param('psx_connection'));
