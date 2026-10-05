@@ -21,6 +21,7 @@
 namespace PSX\Framework\Event;
 
 use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
+use Throwable;
 
 /**
  * ExceptionThrownEvent
@@ -31,16 +32,11 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
  */
 class ExceptionThrownEvent extends SymfonyEvent
 {
-    private \Throwable $exception;
-    private ContextInterface $context;
-
-    public function __construct(\Throwable $exception, ContextInterface $context)
+    public function __construct(private Throwable $exception, private ContextInterface $context)
     {
-        $this->exception = $exception;
-        $this->context   = $context;
     }
 
-    public function getException(): \Throwable
+    public function getException(): Throwable
     {
         return $this->exception;
     }

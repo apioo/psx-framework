@@ -34,13 +34,8 @@ use PSX\Http\ResponseInterface;
  */
 class ControllerContext implements ContextInterface
 {
-    private RequestInterface $request;
-    private ResponseInterface $response;
-
-    public function __construct(RequestInterface $request, ResponseInterface $response)
+    public function __construct(private RequestInterface $request, private ResponseInterface $response)
     {
-        $this->request  = $request;
-        $this->response = $response;
     }
 
     public function getRequest(): RequestInterface
