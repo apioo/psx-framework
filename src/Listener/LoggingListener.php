@@ -36,24 +36,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LoggingListener implements EventSubscriberInterface
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function onExceptionThrown(ExceptionThrownEvent $event): void
     {
         $exception = $event->getException();
-        $severity  = $exception instanceof \ErrorException ? $exception->getSeverity() : null;
-        $context   = array(
-            'file'     => $exception->getFile(),
-            'line'     => $exception->getLine(),
-            'trace'    => $exception->getTraceAsString(),
-            'code'     => $exception->getCode(),
-            'severity' => $severity,
-        );
+        $context = ['exception' => $exception];
 
         if ($exception instanceof StatusCodeException) {
             if ($exception->isClientError()) {
