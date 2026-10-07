@@ -75,13 +75,13 @@ class SdkCommand extends Command
         $dir = $this->getOutputDir($input);
         $registry = $this->factory->factory();
 
-        $type = $input->getArgument('type') ?? LocalRepository::CLIENT_TYPESCRIPT;;
+        $type = $this->getType($input);
         if (!is_string($type) || !in_array($type, $registry->getPossibleTypes())) {
             throw new \InvalidArgumentException('Provided an invalid type, possible values are: ' . implode(', ', $registry->getPossibleTypes()));
         }
 
         $config = $this->getConfig($input);
-        $filterName = $input->getOption('filter');
+        $filterName = $this->getFilter($input);
         if (empty($filterName)) {
             $filterName = $this->filterFactory->getDefault();
         }
@@ -102,7 +102,7 @@ class SdkCommand extends Command
         $content = $generator->generate($this->scanner->generate($filter));
 
         if ($content instanceof Chunks) {
-            if ($input->getOption('raw')) {
+            if ($this->isRaw($input)) {
                 foreach ($content->getChunks() as $identifier => $code) {
                     file_put_contents($dir . '/' . $identifier, $code);
                 }
@@ -130,6 +130,26 @@ class SdkCommand extends Command
         return 0;
     }
 
+    protected function getType(InputInterface $input): ?string
+    {
+        return $input->getArgument('type') ?? LocalRepository::CLIENT_TYPESCRIPT;
+    }
+
+    protected function getFilter(InputInterface $input): ?string
+    {
+        return $input->getOption('filter');
+    }
+
+    protected function getOutput(InputInterface $input): ?string
+    {
+        return $input->getOption('output');
+    }
+
+    protected function isRaw(InputInterface $input): bool
+    {
+        return $input->getOption('raw');
+    }
+
     private function getConfig(InputInterface $input): Config
     {
         $config = $input->getOption('config');
@@ -148,7 +168,7 @@ class SdkCommand extends Command
 
     private function getOutputDir(InputInterface $input): string
     {
-        $outputDir = $input->getOption('output');
+        $outputDir = $this->getOutput($input);
         if (is_dir($outputDir)) {
             return $outputDir;
         }
