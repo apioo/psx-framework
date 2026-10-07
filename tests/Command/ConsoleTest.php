@@ -53,6 +53,7 @@ class ConsoleTest extends ControllerTestCase
             'dump-schema',
             'execute',
             'generate',
+            'generate:frontend',
             'generate:model',
             'generate:sdk',
             'generate:table',
