@@ -87,7 +87,7 @@ class SdkCommand extends Command
         }
 
         $filter = null;
-        if (!empty($filterName) && is_string($filterName)) {
+        if (!empty($filterName)) {
             $filter = $this->filterFactory->getFilter($filterName);
             if ($filter === null) {
                 throw new \RuntimeException('Provided an invalid filter name');
