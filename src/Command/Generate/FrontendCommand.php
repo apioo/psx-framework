@@ -57,7 +57,7 @@ class FrontendCommand extends SdkCommand
     protected function getOutput(InputInterface $input): ?string
     {
         $output = parent::getOutput($input);
-        if (empty($output)) {
+        if (empty($output) || $output === 'output') {
             $output = '../frontend/src/app/generated';
         }
 
