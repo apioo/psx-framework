@@ -199,8 +199,9 @@ class ResponseWriter
         $options->setSupportedWriter($this->supportedWriter);
         $options->setWriterCallback(function(WriterInterface $writer) use ($request){
             if ($writer instanceof Writer\Jsonp) {
-                if (!$writer->getCallbackName()) {
-                    $writer->setCallbackName($request->getUri()->getParameter('callback'));
+                $callbackName = $request->getUri()->getParameter('callback');
+                if (!empty($callbackName) && is_string($callbackName) && !$writer->getCallbackName()) {
+                    $writer->setCallbackName($callbackName);
                 }
             }
         });
