@@ -29,6 +29,7 @@ use PSX\Schema\SchemaManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -52,6 +53,12 @@ class ModelCommand extends Command
         $this->schemaManager = $schemaManager;
     }
 
+    protected function configure(): void
+    {
+        $this
+            ->addOption('mapping', 'm', InputOption::VALUE_REQUIRED, 'Optional the mapping used for imports', null);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $appDir = $this->directory->getAppDir();
@@ -71,6 +78,11 @@ class ModelCommand extends Command
 
         $config = new Config();
         $config->put(Config::NAMESPACE, 'App\\Model');
+
+        $mapping = $this->getMapping($input->getOption('mapping'));
+        if ($mapping !== null) {
+            $config->put(Config::MAPPING, $mapping);
+        }
 
         $count = $this->generate($source, $target, $format, $config);
 
@@ -97,5 +109,17 @@ class ModelCommand extends Command
         } else {
             throw new \RuntimeException('The configured generator cant produce files');
         }
+    }
+
+    private function getMapping(mixed $mapping): ?array
+    {
+        if (empty($mapping) || !is_string($mapping)) {
+            return null;
+        }
+
+        $result = [];
+        parse_str($mapping, $result);
+
+        return $result;
     }
 }
